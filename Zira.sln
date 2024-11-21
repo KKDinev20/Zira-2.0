@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zira.Presentation", "src\Zira.Presentation\Zira.Presentation.csproj", "{D63D27AD-1AB8-4463-8148-94BB8A411375}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zira.Data", "src\Zira.Data\Zira.Data.csproj", "{3C74F0A4-4509-49AD-AF9B-323EB33DEA63}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zira.Services", "src\Zira.Services\Zira.Services.csproj", "{B53B53C5-56AB-4911-B71F-C93D2EA2DD6B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zira.Common", "src\Zira.Common\Zira.Common.csproj", "{300C01E4-8CE5-4394-8B43-D108A948CF9D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFiles", "SolutionFiles", "{E38B9422-75CC-43D7-BC38-B3B02C06BC87}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D63D27AD-1AB8-4463-8148-94BB8A411375}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D63D27AD-1AB8-4463-8148-94BB8A411375}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D63D27AD-1AB8-4463-8148-94BB8A411375}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D63D27AD-1AB8-4463-8148-94BB8A411375}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C74F0A4-4509-49AD-AF9B-323EB33DEA63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C74F0A4-4509-49AD-AF9B-323EB33DEA63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C74F0A4-4509-49AD-AF9B-323EB33DEA63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C74F0A4-4509-49AD-AF9B-323EB33DEA63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B53B53C5-56AB-4911-B71F-C93D2EA2DD6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B53B53C5-56AB-4911-B71F-C93D2EA2DD6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B53B53C5-56AB-4911-B71F-C93D2EA2DD6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B53B53C5-56AB-4911-B71F-C93D2EA2DD6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{300C01E4-8CE5-4394-8B43-D108A948CF9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{300C01E4-8CE5-4394-8B43-D108A948CF9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{300C01E4-8CE5-4394-8B43-D108A948CF9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{300C01E4-8CE5-4394-8B43-D108A948CF9D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
