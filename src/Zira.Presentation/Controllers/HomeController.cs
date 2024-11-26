@@ -1,27 +1,41 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Zira.Presentation.Models;
+using Zira.Services.Common.Constants;
+using Zira.Services.Common.Contracts;
+using Microsoft.AspNetCore.Identity;
+using Zira.Services.Common.Models;
 
 namespace Zira.Presentation.Controllers;
 
 public class HomeController : Controller
 {
+    private readonly IEmailService _emailService;
     private readonly ILogger<HomeController> _logger;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(
+        IEmailService emailService,
+        ILogger<HomeController> logger)
     {
+        _emailService = emailService;
         _logger = logger;
     }
 
-    public IActionResult Index()
+    [HttpGet("/")]
+    public async Task<IActionResult> Index(string strategy = EmailSenderStrategies.NoOps)
     {
-        return View();
+        var emailModel = new EmailModel
+        {
+            Subject = "Welcome to Zira!",
+            Email = "recipient@zira.com",
+            Message = $"This email was sent using the '{strategy}' strategy."
+        };
+
+        var result = await _emailService.SendEmailAsync(emailModel, strategy);
+        return Ok(result);
+
     }
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

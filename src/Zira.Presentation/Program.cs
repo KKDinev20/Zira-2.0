@@ -16,6 +16,8 @@ public class Program
 
         var app = builder.Build();
         
+        app.PrepareAsync();
+        
         if (app.Environment.IsDevelopment())
         {
             // do nothing

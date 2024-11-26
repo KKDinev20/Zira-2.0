@@ -18,10 +18,11 @@ public static class DependencyInjection
         if (configuration.GetSection("Emails:SendGrid").GetValue<bool>("Enabled"))
         {
             services.Configure<EmailSendGridOptions>(configuration.GetSection("Emails:SendGrid"));
-            services.AddKeyedScoped<IEmailSender, SendGridSender>(EmailSendGridStrategy.SendGrid);
+            services.AddKeyedScoped<IEmailSender, SendGridSender>(EmailSenderStrategies.SendGrid);
         }
         
         services.AddScoped<IEmailService, EmailService>();
+        services.AddKeyedScoped<IEmailSender, NoOpsSender>(EmailSenderStrategies.NoOps);
         
         return services;
     }

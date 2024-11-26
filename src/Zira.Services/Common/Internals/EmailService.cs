@@ -4,29 +4,48 @@ using Essentials.Results;
 using Microsoft.Extensions.DependencyInjection;
 using Zira.Services.Common.Constants;
 using Zira.Services.Common.Contracts;
+using Zira.Services.Common.Internals.EmailSenders;
 using Zira.Services.Common.Models;
 
 namespace Zira.Services.Common.Internals;
 
 internal class EmailService : IEmailService
 {
-    private readonly IServiceProvider serviceProvider;
+    private readonly IServiceProvider _serviceProvider;
 
     public EmailService(IServiceProvider serviceProvider)
     {
-        this.serviceProvider = serviceProvider;
+        _serviceProvider = serviceProvider;
     }
 
     public async Task<StandardResult> SendEmailAsync(EmailModel model, string senderStrategy)
     {
-        var sender = this.serviceProvider.GetKeyedService<IEmailSender>(senderStrategy);
+        try
+        {
+            var sender = ResolveEmailSender(senderStrategy);
 
-        if (sender == null)
+            if (sender == null)
+            {
+                return StandardResult
+                    .UnsuccessfulResult($"No registered email sender found for strategy: '{senderStrategy}'");
+            }
+
+            return await sender.SendEmailAsync(model);
+        }
+        catch (Exception ex)
         {
             return StandardResult
-                .UnsuccessfulResult($"There is no registered email sender strategy: '{senderStrategy}'");
+                .UnsuccessfulResult($"Error occurred while sending email: {ex.Message}");
         }
-        
-        return await sender.SendEmailAsync(model);
+    }
+
+    private IEmailSender? ResolveEmailSender(string senderStrategy)
+    {
+        return senderStrategy switch
+        {
+            EmailSenderStrategies.SendGrid => _serviceProvider.GetService<SendGridSender>(),
+            EmailSenderStrategies.NoOps => _serviceProvider.GetService<NoOpsSender>(),
+            _ => null
+        };
     }
 }

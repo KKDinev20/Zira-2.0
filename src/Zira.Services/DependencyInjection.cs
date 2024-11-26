@@ -10,8 +10,8 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddIdentityServices();
         services.AddCommonServices(configuration);
+        services.AddIdentityServices();
         
         return services;
     }
