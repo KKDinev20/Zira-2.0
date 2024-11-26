@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Zira.Services.Common;
 
 namespace Zira.Services;
 
@@ -10,6 +11,7 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         services.AddIdentityServices();
+        services.AddCommonServices(configuration);
         
         return services;
     }
