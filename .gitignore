@@ -398,8 +398,8 @@ FodyWeavers.xsd
 *.sln.iml
 
 # Custom
+# appsettings.json // ignore when using normal project
 appsettings.*.json
-appsettings.json
 
 .idea
-.DS_store
+.DS_Store
