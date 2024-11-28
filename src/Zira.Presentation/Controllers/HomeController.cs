@@ -28,8 +28,8 @@ public class HomeController : Controller
         var emailSent = await _emailService.SendEmailAsync(
             new EmailModel
             {
-                Subject = "Welcome to EduSystem!",
-                Email = "example_user@edusystem.dev",
+                Subject = "Welcome to Zira!",
+                Email = "example_user@zira.dev",
                 Message = $"You have received email with strategy {strategy}."
             },
             strategy);
