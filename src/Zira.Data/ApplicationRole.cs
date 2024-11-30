@@ -3,6 +3,4 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Zira.Data;
 
-public class ApplicationRole : IdentityRole<Guid>
-{
-}
+public class ApplicationRole : IdentityRole<Guid>;

@@ -1,10 +1,9 @@
 using System;
 using System.Threading.Tasks;
-using Zira.Services.Common.Contracts;
-using Zira.Services.Common.Models;
 using Essentials.Results;
 using Microsoft.Extensions.DependencyInjection;
 using Zira.Services.Common.Contracts;
+using Zira.Services.Common.Models;
 
 namespace Zira.Services.Common.Internals;
 
@@ -26,7 +25,7 @@ internal class EmailService : IEmailService
             return StandardResult
                 .UnsuccessfulResult($"There is no registered email sender strategy: '{senderStrategy}'");
         }
-        
+
         return await sender.SendEmailAsync(model);
     }
 }

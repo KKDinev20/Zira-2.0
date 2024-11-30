@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
-using Zira.Services.Common.Models;
 using Essentials.Results;
+using Zira.Services.Common.Models;
 
 namespace Zira.Services.Common.Contracts;
 

@@ -13,7 +13,7 @@ public static class DependencyInjection
     {
         services.AddCommonServices(configuration);
         services.AddIdentityServices();
-        
+
         return services;
     }
 }

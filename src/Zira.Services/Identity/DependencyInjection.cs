@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
-using Zira.Data;
 using Microsoft.Extensions.DependencyInjection;
+using Zira.Data;
 
 namespace Zira.Services.Identity;
 

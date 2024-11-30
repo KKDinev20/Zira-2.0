@@ -19,11 +19,10 @@ public static class DependencyInjection
             services.Configure<EmailSmtpOptions>(configuration.GetSection("Emails:Smtp"));
             services.AddKeyedScoped<IEmailSender, SmtpSender>(EmailSenderStrategies.Smtp);
         }
-        
-        
+
         services.AddScoped<IEmailService, EmailService>();
         services.AddKeyedScoped<IEmailSender, NoOpsSender>(EmailSenderStrategies.NoOps);
-        
+
         return services;
     }
 }

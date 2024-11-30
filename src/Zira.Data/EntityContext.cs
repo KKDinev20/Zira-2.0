@@ -12,7 +12,10 @@ public class EntityContext : IdentityDbContext<ApplicationUser, ApplicationRole,
     public DbSet<Budget> Budgets { get; set; }
     public DbSet<Reminder> Reminders { get; set; }
 
-    public EntityContext(DbContextOptions<EntityContext> options) : base(options)
+#pragma warning disable SA1201
+    public EntityContext(DbContextOptions<EntityContext> options)
+#pragma warning restore SA1201
+        : base(options)
     {
     }
 
@@ -34,7 +37,7 @@ public class EntityContext : IdentityDbContext<ApplicationUser, ApplicationRole,
             .HasOne(b => b.User)
             .WithMany()
             .HasForeignKey(b => b.UserId);
-        
+
         modelBuilder.Entity<Reminder>()
             .HasOne(r => r.User)
             .WithMany()

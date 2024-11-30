@@ -9,8 +9,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddData(builder.Configuration);
 builder.Services.AddServices(builder.Configuration);
-
-
 builder.Services.AddMvc();
 
 var app = builder.Build();

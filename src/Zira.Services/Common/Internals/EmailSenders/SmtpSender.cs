@@ -2,12 +2,12 @@ using System;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
-using Zira.Services.Common.Models;
-using Zira.Services.Common.Options;
 using Essentials.Results;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Zira.Services.Common.Contracts;
+using Zira.Services.Common.Models;
+using Zira.Services.Common.Options;
 
 namespace Zira.Services.Common.Internals.EmailSenders;
 
@@ -23,7 +23,7 @@ internal class SmtpSender : IEmailSender
         this.optionsAccessor = optionsAccessor;
         this.logger = logger;
     }
-    
+
     public async Task<StandardResult> SendEmailAsync(EmailModel model)
     {
         try
@@ -38,7 +38,7 @@ internal class SmtpSender : IEmailSender
                 From = new MailAddress(options.SenderEmail),
                 Subject = model.Subject,
                 Body = model.Message,
-                IsBodyHtml = false
+                IsBodyHtml = false,
             };
 
             mailMessage.To.Add(model.Email);

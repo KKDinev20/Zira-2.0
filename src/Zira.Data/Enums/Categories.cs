@@ -15,5 +15,5 @@ public enum Categories
     Savings,
     HouseholdSupplies,
     Travel,
-    Other
+    Other,
 }

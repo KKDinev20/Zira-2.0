@@ -7,5 +7,5 @@ public enum Sources
     Investment,
     Rental,
     Bonus,
-    Other
+    Other,
 }
