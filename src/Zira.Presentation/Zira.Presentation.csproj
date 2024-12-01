@@ -26,4 +26,10 @@
       <ProjectReference Include="..\Zira.Services\Zira.Services.csproj" />
     </ItemGroup>
 
+
+
+    <ItemGroup>
+      <AdditionalFiles Include="Views\Shared\Pages\Dashboard\Index.cshtml" />
+    </ItemGroup>
+
 </Project>

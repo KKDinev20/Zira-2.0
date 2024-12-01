@@ -1,0 +1,12 @@
+﻿
+@await Html.PartialAsync("Partials/Dashboard/_Styles");
+
+<body>
+<div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+        @RenderBody()
+    </div>
+</div>
+</body>
+
+@await Html.PartialAsync("Partials/Dashboard/_Scripts");

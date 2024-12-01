@@ -1,0 +1,18 @@
+﻿@{
+    Layout = "_LandingPageLayout";
+}
+
+<body class="index-page">
+@await Html.PartialAsync("Partials/LandingPage/_Navbar")
+
+<main class="main">
+    @await Html.PartialAsync("Partials/LandingPage/_Hero")
+    @await Html.PartialAsync("Partials/LandingPage/_Features")
+    @await Html.PartialAsync("Partials/LandingPage/_FeaturesCards")
+    @await Html.PartialAsync("Partials/LandingPage/_Services")
+    @await Html.PartialAsync("Partials/LandingPage/_Stats")
+    @await Html.PartialAsync("Partials/LandingPage/_FAQ")
+</main>
+@await Html.PartialAsync("Partials/LandingPage/_Footer")
+<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+</body>
