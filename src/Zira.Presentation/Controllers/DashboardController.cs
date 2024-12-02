@@ -6,6 +6,6 @@ public class DashboardController : Controller
 {
     public IActionResult Index()
     {
-        return this.View();
+        return this.View("Pages/Dashboard/Index");
     }
 }
