@@ -6,5 +6,5 @@ namespace Zira.Services.Common.Contracts;
 
 public interface IEmailService
 {
-    Task<StandardResult> SendEmailAsync(EmailModel model, string senderStrategy);
+    Task SendEmailAsync(EmailModel emailModel);
 }

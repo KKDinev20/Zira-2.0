@@ -1,31 +1,50 @@
 using System;
 using System.Threading.Tasks;
-using Essentials.Results;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 using Zira.Services.Common.Contracts;
 using Zira.Services.Common.Models;
 
-namespace Zira.Services.Common.Internals;
-
-internal class EmailService : IEmailService
+namespace Zira.Services.Common.Internals
 {
-    private readonly IServiceProvider serviceProvider;
-
-    public EmailService(IServiceProvider serviceProvider)
+    public class EmailService : IEmailService
     {
-        this.serviceProvider = serviceProvider;
-    }
+        private readonly string? apiKey;
 
-    public async Task<StandardResult> SendEmailAsync(EmailModel model, string senderStrategy)
-    {
-        var sender = this.serviceProvider.GetKeyedService<IEmailSender>(senderStrategy);
-
-        if (sender == null)
+        public EmailService(IConfiguration configuration)
         {
-            return StandardResult
-                .UnsuccessfulResult($"There is no registered email sender strategy: '{senderStrategy}'");
+            this.apiKey = configuration.GetValue<string>("SendGrid:ApiKey");
+            if (string.IsNullOrEmpty(this.apiKey))
+            {
+                throw new Exception("SendGrid API key is not configured.");
+            }
         }
 
-        return await sender.SendEmailAsync(model);
+        public async Task SendEmailAsync(EmailModel emailModel)
+        {
+            try
+            {
+                var client = new SendGridClient(this.apiKey);
+                var from = new EmailAddress("kkdinev20@codingburgas.bg");
+                var to = new EmailAddress(emailModel.ToEmail);
+                var msg = MailHelper.CreateSingleEmail(from, to, emailModel.Subject, emailModel.Body, emailModel.Body);
+
+                var response = await client.SendEmailAsync(msg);
+
+                var responseBody = await response.Body.ReadAsStringAsync();
+                Console.WriteLine($"SendGrid Response: {response.StatusCode}, {responseBody}");
+
+                if (response.StatusCode != System.Net.HttpStatusCode.Accepted)
+                {
+                    throw new Exception($"Error sending email. Status Code: {response.StatusCode}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error sending email: {ex.Message}");
+                throw;
+            }
+        }
     }
 }
