@@ -14,13 +14,17 @@ public class HomeController : Controller
         this.emailService = emailService;
     }
 
-    public async Task<IActionResult> SendConfirmationEmail()
+    public async Task<IActionResult> BudgetAlert()
     {
         var emailModel = new EmailModel
         {
             ToEmail = "konstantindinv@gmail.com",
-            Subject = "Confirmation Email",
-            Body = "<h1>Thank you for registering!</h1><p>Your registration is complete.</p>",
+            Subject = "Budget Alert",
+            Body = @"
+                <h1>Warning!</h1>
+                <p>You seem to be exceeding your monthly budget limit.</p>
+                <p>Consider changing your limit in the settings.</p>
+            ",
         };
 
         await this.emailService.SendEmailAsync(emailModel);
