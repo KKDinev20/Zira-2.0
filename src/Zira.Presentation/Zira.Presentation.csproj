@@ -29,7 +29,7 @@
 
 
     <ItemGroup>
-      <AdditionalFiles Include="Views\Shared\Pages\Dashboard\Index.cshtml" />
+      <AdditionalFiles Include="Views\Home\Index.cshtml" />
     </ItemGroup>
 
 </Project>

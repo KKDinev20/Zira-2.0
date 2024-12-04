@@ -14,6 +14,12 @@ public class HomeController : Controller
         this.emailService = emailService;
     }
 
+    [HttpGet("/")]
+    public IActionResult Index()
+    {
+        return this.View();
+    }
+
     public async Task<IActionResult> BudgetAlert()
     {
         var emailModel = new EmailModel

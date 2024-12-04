@@ -1,0 +1,18 @@
+﻿@{
+    Layout = "Shared/_LandingLayout";
+}
+
+<body class="index-page">
+@await Html.PartialAsync("Shared/_Navbar")
+
+<main class="main">
+    @await Html.PartialAsync("Shared/_Hero")
+    @await Html.PartialAsync("Shared/_Features")
+    @await Html.PartialAsync("Shared/_FeaturesCards")
+    @await Html.PartialAsync("Shared/_Services")
+    @await Html.PartialAsync("Shared/_Stats")
+    @await Html.PartialAsync("Shared/_FAQ")
+</main>
+@await Html.PartialAsync("Shared/_Footer")
+<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+</body>
