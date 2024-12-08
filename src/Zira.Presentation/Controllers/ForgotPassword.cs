@@ -7,6 +7,6 @@ public class ForgotPassword : Controller
     // GET
     public IActionResult Index()
     {
-        return this.View("Pages/ForgotPassword/Index");
+        return this.View("Index");
     }
 }

@@ -6,6 +6,6 @@ public class LoginController : Controller
 {
     public IActionResult Index()
     {
-        return this.View("Pages/Login/Index");
+        return this.View("Index");
     }
 }

@@ -7,6 +7,6 @@ public class RegisterController : Controller
     // GET
     public IActionResult Index()
     {
-        return this.View("Pages/Register/Index");
+        return this.View("Index");
     }
 }
