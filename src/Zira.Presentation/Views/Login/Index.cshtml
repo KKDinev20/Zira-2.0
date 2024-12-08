@@ -11,12 +11,11 @@ Layout = "Shared/_LoginLayout";
                 <div class="card-body">
                     <!-- Logo -->
                     <div class="app-brand justify-content-center">
-                        <a href="index.html" class="app-brand-link gap-2">
+                        <a asp-controller="Home" asp-action="Index" class="app-brand-link gap-2">
                             <span class="app-brand-logo demo">
                                 <svg
                                     width="25"
                                     viewBox="0 0 25 42"
-                                    version="1.1"
                                     xmlns="http://www.w3.org/2000/svg"
                                     xmlns:xlink="http://www.w3.org/1999/xlink">
                                     <defs>
@@ -61,14 +60,14 @@ Layout = "Shared/_LoginLayout";
                                     </g>
                                 </svg>
                             </span>
-                            <span class="app-brand-text demo text-body fw-bolder">Sneat</span>
+                            <span class="app-brand-text demo text-body fw-bolder">Jira</span>
                         </a>
                     </div>
                     <!-- /Logo -->
-                    <h4 class="mb-2">Welcome to Sneat! 👋</h4>
-                    <p class="mb-4">Please sign-in to your account and start the adventure</p>
+                    <h4 class="mb-2">Welcome to Jira! 👋</h4>
+                    <p class="mb-4">Please sign in to your account and start the adventure</p>
 
-                    <form id="formAuthentication" class="mb-3" action="index.html" method="POST">
+                    <form id="formAuthentication" class="mb-3" asp-controller="Home" asp-action="Index"  method="POST">
                         <div class="mb-3">
                             <label for="email" class="form-label">Email or Username</label>
                             <input
@@ -82,7 +81,7 @@ Layout = "Shared/_LoginLayout";
                         <div class="mb-3 form-password-toggle">
                             <div class="d-flex justify-content-between">
                                 <label class="form-label" for="password">Password</label>
-                                <a href="auth-forgot-password-basic.html">
+                                <a asp-controller="ForgotPassword" asp-action="Index" >
                                     <small>Forgot Password?</small>
                                 </a>
                             </div>
@@ -110,7 +109,7 @@ Layout = "Shared/_LoginLayout";
 
                     <p class="text-center">
                         <span>New on our platform?</span>
-                        <a href="auth-register-basic.html">
+                        <a asp-controller="Register" asp-action="Index" >
                             <span>Create an account</span>
                         </a>
                     </p>

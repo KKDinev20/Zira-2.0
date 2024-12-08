@@ -12,12 +12,11 @@ Layout = "Shared/_RegisterLayout";
                 <div class="card-body">
                     <!-- Logo -->
                     <div class="app-brand justify-content-center">
-                        <a href="index.html" class="app-brand-link gap-2">
+                        <a asp-controller="Home" asp-action="Index"  class="app-brand-link gap-2">
                   <span class="app-brand-logo demo">
                     <svg
                         width="25"
                         viewBox="0 0 25 42"
-                        version="1.1"
                         xmlns="http://www.w3.org/2000/svg"
                         xmlns:xlink="http://www.w3.org/1999/xlink"
                     >
@@ -68,14 +67,14 @@ Layout = "Shared/_RegisterLayout";
                       </g>
                     </svg>
                   </span>
-                            <span class="app-brand-text demo text-body fw-bolder">Sneat</span>
+                            <span class="app-brand-text demo text-body fw-bolder">JIra</span>
                         </a>
                     </div>
                     <!-- /Logo -->
                     <h4 class="mb-2">Adventure starts here 🚀</h4>
                     <p class="mb-4">Make your app management easy and fun!</p>
 
-                    <form id="formAuthentication" class="mb-3" action="index.html" method="POST">
+                    <form id="formAuthentication" class="mb-3" asp-controller="Home" asp-action="Index"  method="POST">
                         <div class="mb-3">
                             <label for="username" class="form-label">Username</label>
                             <input
@@ -120,7 +119,7 @@ Layout = "Shared/_RegisterLayout";
 
                     <p class="text-center">
                         <span>Already have an account?</span>
-                        <a href="auth-login-basic.html">
+                        <a asp-controller="Login" asp-action="Index" >
                             <span>Sign in instead</span>
                         </a>
                     </p>
