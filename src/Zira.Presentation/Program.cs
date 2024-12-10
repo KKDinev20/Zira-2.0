@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -6,6 +7,16 @@ using Zira.Presentation;
 using Zira.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services
+    .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(
+        CookieAuthenticationDefaults.AuthenticationScheme,
+        options =>
+        {
+            options.LoginPath = "/login";
+            options.LogoutPath = "/logout";
+        });
 
 builder.Services.AddData(builder.Configuration);
 builder.Services.AddServices(builder.Configuration);
@@ -34,11 +45,12 @@ app.UseRouting();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=LandingPage}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
