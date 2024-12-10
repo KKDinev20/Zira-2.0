@@ -1,4 +1,7 @@
-﻿@model Zira.Presentation.Models.RegisterViewModel
+﻿@using Microsoft.Extensions.Localization
+
+@model Zira.Presentation.Models.RegisterViewModel
+
 @{
 Layout = "_AuthenticationLayout";
 }
@@ -8,61 +11,46 @@ Layout = "_AuthenticationLayout";
         <div class="authentication-inner">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="mb-2">Adventure starts here 🚀</h4>
-                    <p class="mb-4">Make your app management easy and fun!</p>
+                    <h4 class="mb-2">@Text.RegisterTitle</h4>
+                    <p class="mb-4">@Text.RegisterSubtitle</p>
 
-                    <form id="formAuthentication" asp-action="Register" method="post" novalidate>
+                    <form id="formAuthentication" asp-action="Register" method="post">
                         @Html.AntiForgeryToken()
 
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email"
-                                   class="form-control @(ViewData.ModelState["Email"]?.Errors.Count > 0 ? "is-invalid" : "")"
-                                   id="email"
-                                   name="Email"
-                                   placeholder="Enter your email"
-                                   value="@Model.Email" />
+                            <label for="email" class="form-label">@Text.EmailLabel</label>
+                            <input type="email" class="form-control" id="email" name="Email" placeholder="@Text.EmailLabel" value="@Model.Email" />
                             @if (ViewData.ModelState["Email"]?.Errors.Count > 0)
                             {
-                            <span class="text-danger">@ViewData.ModelState["Email"]?.Errors[0].ErrorMessage</span>
+                            <span class="text-danger">@ViewData.ModelState["Email"]?.Errors[0]?.ErrorMessage</span>
                             }
                         </div>
 
                         <div class="mb-3 form-password-toggle">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password"
-                                   class="form-control @(ViewData.ModelState["Password"]?.Errors.Count > 0 ? "is-invalid" : "")"
-                                   id="password"
-                                   name="Password"
-                                   placeholder="••••••••"
-                                   value="@Model.Password" />
+                            <label class="form-label" for="password">@Text.PasswordLabel</label>
+                            <input type="password" id="password" class="form-control" name="Password" placeholder="••••••••" value="@Model.Password" />
                             @if (ViewData.ModelState["Password"]?.Errors.Count > 0)
                             {
-                            <span class="text-danger">@ViewData.ModelState["Password"]?.Errors[0].ErrorMessage</span>
+                            <span class="text-danger">@ViewData.ModelState["Password"]?.Errors[0]?.ErrorMessage</span>
                             }
                         </div>
 
                         <div class="mb-3 form-password-toggle">
-                            <label for="confirmPassword" class="form-label">Confirm Password</label>
-                            <input type="password"
-                                   class="form-control @(ViewData.ModelState["ConfirmPassword"]?.Errors.Count > 0 ? "is-invalid" : "")"
-                                   id="confirmPassword"
-                                   name="ConfirmPassword"
-                                   placeholder="••••••••"
-                                   value="@Model.ConfirmPassword" />
+                            <label class="form-label" for="confirmPassword">@Text.ConfirmPasswordLabel</label>
+                            <input type="password" id="confirmPassword" class="form-control" name="ConfirmPassword" placeholder="••••••••" value="@Model.ConfirmPassword" />
                             @if (ViewData.ModelState["ConfirmPassword"]?.Errors.Count > 0)
                             {
-                            <span class="text-danger">@ViewData.ModelState["ConfirmPassword"]?.Errors[0].ErrorMessage</span>
+                            <span class="text-danger">@ViewData.ModelState["ConfirmPassword"]?.Errors[0]?.ErrorMessage</span>
                             }
                         </div>
 
-                        <button class="btn btn-primary d-grid w-100" type="submit">Sign up</button>
+                        <button class="btn btn-primary d-grid w-100" type="submit">@Text.SignUpButton</button>
                     </form>
 
-                    <p class="text-center mt-3">
-                        <span>Already have an account?</span>
-                        <a asp-controller="Authentication" asp-action="Login" class="text-primary">
-                            <span>Sign in instead</span>
+                    <p class="text-center">
+                        <span>@Text.AlreadyHaveAccount</span>
+                        <a asp-controller="Authentication" asp-action="Login">
+                            <span>@Text.SignInInstead</span>
                         </a>
                     </p>
                 </div>

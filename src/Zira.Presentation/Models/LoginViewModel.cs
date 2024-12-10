@@ -4,10 +4,14 @@ namespace Zira.Presentation.Models;
 
 public class LoginViewModel
 {
-    [Required]
+    [Required(
+        ErrorMessageResourceType = typeof(Common.Text),
+        ErrorMessageResourceName = "EmailIsRequiredErrorMessage")]
     public string? Email { get; set; }
 
-    [Required]
+    [Required(
+        ErrorMessageResourceType = typeof(Common.Text),
+        ErrorMessageResourceName = "PasswordIsRequiredErrorMessage")]
     public string? Password { get; set; }
     public bool RememberAccess { get; set; }
 }

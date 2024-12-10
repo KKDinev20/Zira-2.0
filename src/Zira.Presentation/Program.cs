@@ -20,6 +20,8 @@ builder.Services
 
 builder.Services.AddData(builder.Configuration);
 builder.Services.AddServices(builder.Configuration);
+builder.Services.AddLocalization(options => options.ResourcesPath = "Common");
+
 builder.Services.AddMvc();
 
 var app = builder.Build();
