@@ -23,14 +23,23 @@
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Update="Resources\Text.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
+      <EmbeddedResource Update="Emails.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Emails.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Text.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>Text.Designer.cs</LastGenOutput>
       </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Resources\Text.Designer.cs">
+      <Compile Update="Emails.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Emails.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Text.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>Text.resx</DependentUpon>

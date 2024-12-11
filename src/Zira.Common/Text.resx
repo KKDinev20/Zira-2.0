@@ -90,13 +90,28 @@
     <data name="ConfirmPasswordLabel" xml:space="preserve">
     <value>Потвърдете паролата</value>
   </data>
-    <data name="SignUpButton" xml:space="preserve">
-    <value>Регистрация</value>
-  </data>
-    <data name="AlreadyHaveAccount" xml:space="preserve">
+  <data name="AlreadyHaveAccount" xml:space="preserve">
     <value>Вече имате акаунт?</value>
   </data>
     <data name="SignInInstead" xml:space="preserve">
     <value>Влезте вместо това</value>
   </data>
+    <data name="ResetPasswordTitle" xml:space="preserve">
+        <value>Нулиране на вашата парола</value>
+    </data>
+    <data name="InvalidLoginErrorMessage" xml:space="preserve">
+        <value>Имейлът или паролата не съвпадат</value>
+    </data>
+    <data name="UserLockedOutErrorMessage" xml:space="preserve">
+        <value>Профилът Ви е временно заключен</value>
+    </data>
+    <data name="RegisterSuccessMessage" xml:space="preserve">
+        <value>Вашата регистрация беше успешна. Използвайте данните си за да влезете в системата.</value>
+    </data>
+    <data name="ForgotPasswordSuccessMessage" xml:space="preserve">
+        <value>Вашата заявка беше успешна. Моля проверете имейл адреса си за линк за промяна на парола.</value>
+    </data>
+    <data name="ResetPasswordButtonText" xml:space="preserve">
+        <value>Смени паролата</value>
+    </data>
 </root>

@@ -28,7 +28,7 @@ namespace Zira.Common {
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        public Text() {
+        internal Text() {
         }
         
         /// <summary>
@@ -38,7 +38,7 @@ namespace Zira.Common {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Zira.Common.Resources.Text", typeof(Text).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Zira.Common.Text", typeof(Text).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -132,11 +132,29 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Вашата заявка беше успешна. Моля проверете имейл адреса си за линк за промяна на парола..
+        /// </summary>
+        public static string ForgotPasswordSuccessMessage {
+            get {
+                return ResourceManager.GetString("ForgotPasswordSuccessMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Забравена парола? 🔒.
         /// </summary>
         public static string ForgotPasswordTitle {
             get {
                 return ResourceManager.GetString("ForgotPasswordTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Имейлът или паролата не съвпадат.
+        /// </summary>
+        public static string InvalidLoginErrorMessage {
+            get {
+                return ResourceManager.GetString("InvalidLoginErrorMessage", resourceCulture);
             }
         }
         
@@ -204,11 +222,38 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Вашата регистрация беше успешна. Използвайте данните си за да влезете в системата..
+        /// </summary>
+        public static string RegisterSuccessMessage {
+            get {
+                return ResourceManager.GetString("RegisterSuccessMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Приключението започва тук 🚀.
         /// </summary>
         public static string RegisterTitle {
             get {
                 return ResourceManager.GetString("RegisterTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Смени паролата.
+        /// </summary>
+        public static string ResetPasswordButtonText {
+            get {
+                return ResourceManager.GetString("ResetPasswordButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Нулиране на вашата парола.
+        /// </summary>
+        public static string ResetPasswordTitle {
+            get {
+                return ResourceManager.GetString("ResetPasswordTitle", resourceCulture);
             }
         }
         
@@ -240,11 +285,20 @@ namespace Zira.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Регистрация.
+        ///   Looks up a localized string similar to Създайте акаунт.
         /// </summary>
         public static string SignUpButton {
             get {
                 return ResourceManager.GetString("SignUpButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Профилът Ви е временно заключен.
+        /// </summary>
+        public static string UserLockedOutErrorMessage {
+            get {
+                return ResourceManager.GetString("UserLockedOutErrorMessage", resourceCulture);
             }
         }
     }

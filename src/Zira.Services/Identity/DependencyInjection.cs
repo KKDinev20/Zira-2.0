@@ -14,6 +14,7 @@ internal static class DependencyInjection
             {
                 options.SignIn.RequireConfirmedAccount = true;
                 options.SignIn.RequireConfirmedEmail = true;
+                options.Password.RequiredLength = 8;
             })
             .AddEntityFrameworkStores<EntityContext>()
             .AddDefaultTokenProviders();
