@@ -15,258 +15,259 @@ using Zira.Presentation.Models;
 using Zira.Services.Common.Contracts;
 using Zira.Services.Identity.Extensions;
 
-namespace Zira.Presentation.Controllers;
-
-[Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
-public class AuthenticationController : Controller
+namespace Zira.Presentation.Controllers
 {
-    private readonly UserManager<ApplicationUser> userManager;
-    private readonly SignInManager<ApplicationUser> signInManager;
-    private readonly IEmailService emailService;
-    private readonly UrlEncoder urlEncoder;
-    private readonly ILogger<AuthenticationController> logger;
-
-    public AuthenticationController(
-        UserManager<ApplicationUser> userManager,
-        SignInManager<ApplicationUser> signInManager,
-        IEmailService emailService,
-        UrlEncoder urlEncoder,
-        ILogger<AuthenticationController> logger)
+    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+    public class AuthenticationController : Controller
     {
-        this.userManager = userManager;
-        this.signInManager = signInManager;
-        this.emailService = emailService;
-        this.urlEncoder = urlEncoder;
-        this.logger = logger;
-    }
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly IEmailService emailService;
+        private readonly UrlEncoder urlEncoder;
+        private readonly ILogger<AuthenticationController> logger;
 
-    [HttpGet("/login")]
-    [AllowAnonymous]
-    public IActionResult Login()
-    {
-        if (this.IsUserAuthenticated())
+        public AuthenticationController(
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            IEmailService emailService,
+            UrlEncoder urlEncoder,
+            ILogger<AuthenticationController> logger)
         {
-            return this.RedirectToDefault();
+            this.userManager = userManager;
+            this.signInManager = signInManager;
+            this.emailService = emailService;
+            this.urlEncoder = urlEncoder;
+            this.logger = logger;
         }
 
-        var model = new LoginViewModel();
-        return this.View(model);
-    }
-
-    [HttpPost("/login")]
-    [ValidateAntiForgeryToken]
-    [AllowAnonymous]
-    public async Task<IActionResult> Login(LoginViewModel model)
-    {
-        if (this.IsUserAuthenticated())
+        [HttpGet("/login")]
+        [AllowAnonymous]
+        public IActionResult Login()
         {
-            return this.RedirectToDefault();
-        }
-
-        if (this.ModelState.IsValid)
-        {
-            var user = await this.userManager.FindByEmailAsync(model.Email!);
-            if (user == null || !(await this.userManager.CheckPasswordAsync(user, model.Password!)))
+            if (this.IsUserAuthenticated())
             {
-                this.ModelState.AddModelError(string.Empty, Common.Text.InvalidLoginErrorMessage);
-                return this.View(model);
+                return this.RedirectToDefault();
             }
 
-            if (await this.userManager.IsLockedOutAsync(user))
+            var model = new LoginViewModel();
+            return this.View(model);
+        }
+
+        [HttpPost("/login")]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if (this.IsUserAuthenticated())
             {
-                this.ModelState.AddModelError(string.Empty, Common.Text.UserLockedOutErrorMessage);
-                return this.View(model);
+                return this.RedirectToDefault();
             }
 
-            await this.SignInAsync(user, model.RememberAccess);
+            if (this.ModelState.IsValid)
+            {
+                var user = await this.userManager.FindByEmailAsync(model.Email!);
+                if (user == null || !(await this.userManager.CheckPasswordAsync(user, model.Password!)))
+                {
+                    this.ModelState.AddModelError(string.Empty, Common.Text.InvalidLoginErrorMessage);
+                    return this.View(model);
+                }
 
-            return this.RedirectToDefault();
+                if (await this.userManager.IsLockedOutAsync(user))
+                {
+                    this.ModelState.AddModelError(string.Empty, Common.Text.UserLockedOutErrorMessage);
+                    return this.View(model);
+                }
+
+                await this.SignInAsync(user, model.RememberAccess);
+
+                return this.RedirectToDefault();
+            }
+
+            return this.View(model);
         }
 
-        return this.View(model);
-    }
-
-    [HttpGet("/register")]
-    [AllowAnonymous]
-    public IActionResult Register()
-    {
-        if (this.IsUserAuthenticated())
+        [HttpGet("/register")]
+        [AllowAnonymous]
+        public IActionResult Register()
         {
-            return this.RedirectToDefault();
+            if (this.IsUserAuthenticated())
+            {
+                return this.RedirectToDefault();
+            }
+
+            var model = new RegisterViewModel();
+            return this.View(model);
         }
 
-        var model = new RegisterViewModel();
-        return this.View(model);
-    }
-
-    [HttpPost("/register")]
-    [ValidateAntiForgeryToken]
-    [AllowAnonymous]
-    public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
-    {
-        if (this.IsUserAuthenticated())
+        [HttpPost("/register")]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
         {
-            return this.RedirectToDefault();
-        }
+            if (this.IsUserAuthenticated())
+            {
+                return this.RedirectToDefault();
+            }
 
-        if (this.ModelState.IsValid)
-        {
-            var result = await this.userManager.CreateAsync(
-                new ApplicationUser
+            if (this.ModelState.IsValid)
+            {
+                var user = new ApplicationUser
                 {
                     UserName = registerViewModel.Email,
                     Email = registerViewModel.Email,
-                },
-                registerViewModel.Password!);
+                };
 
-            if (result.Succeeded)
-            {
-                this.TempData["MessageText"] = Text.RegisterSuccessMessage;
-                this.TempData["MessageVariant"] = "success";
-                return this.RedirectToAction(nameof(this.Login));
-            }
-            else
-            {
-                // Log the errors from the CreateAsync result
-                foreach (var error in result.Errors)
+                var result = await this.userManager.CreateAsync(user, registerViewModel.Password!);
+
+                if (result.Succeeded)
                 {
-                    this.ModelState.AddModelError(string.Empty, error.Description);
+                    this.TempData["MessageText"] = Text.RegisterSuccessMessage;
+                    this.TempData["MessageVariant"] = "success";
+                    return this.RedirectToAction(nameof(this.Login));
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        this.logger.LogError("Error creating user: {Error}", error.Description);
+                        this.ModelState.AddModelError(string.Empty, error.Description);
+                    }
                 }
             }
+
+            return this.View(registerViewModel);
         }
 
-        return this.View(registerViewModel);
-    }
-
-    [HttpGet("/forgot-password")]
-    [AllowAnonymous]
-    public IActionResult ForgotPassword()
-    {
-        if (this.IsUserAuthenticated())
+        [HttpGet("/forgot-password")]
+        [AllowAnonymous]
+        public IActionResult ForgotPassword()
         {
-            return this.RedirectToDefault();
-        }
-
-        var model = new ForgotPasswordViewModel();
-        return this.View(model);
-    }
-
-    [HttpPost("/forgot-password")]
-    [ValidateAntiForgeryToken]
-    [AllowAnonymous]
-    public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel forgotPasswordViewModel)
-    {
-        if (this.IsUserAuthenticated())
-        {
-            return this.RedirectToDefault();
-        }
-
-        if (this.ModelState.IsValid)
-        {
-            var user = await this.userManager.FindByEmailAsync(forgotPasswordViewModel.Email!);
-            if (user != null)
+            if (this.IsUserAuthenticated())
             {
-                var resetPasswordToken = await this.userManager.GeneratePasswordResetTokenAsync(user);
-                var resetPasswordEncodedToken = UrlEncoder.Default.Encode(resetPasswordToken);
-                var resetPasswordUrl = this.HttpContext
-                    .GetAbsoluteRoute($"/reset-password?email={user.Email}&token={resetPasswordEncodedToken}");
-
-                var result = await this.emailService.SendResetPasswordEmailAsync(
-                    user.Email!,
-                    resetPasswordUrl);
-
-                this.logger.LogInformation("Reset password email send result {Result}", result);
+                return this.RedirectToDefault();
             }
 
-            this.TempData["MessageText"] = Text.ForgotPasswordSuccessMessage;
-            this.TempData["MessageVariant"] = "success";
-
-            return this.RedirectToAction(nameof(this.Login));
+            var model = new ForgotPasswordViewModel();
+            return this.View(model);
         }
 
-        return this.View(forgotPasswordViewModel);
-    }
-
-    [AllowAnonymous]
-    [HttpGet("/reset-password")]
-    public async Task<IActionResult> ResetPassword(string email, string token)
-    {
-        if (this.IsUserAuthenticated())
+        [HttpPost("/forgot-password")]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel forgotPasswordViewModel)
         {
-            return this.RedirectToDefault();
+            if (this.IsUserAuthenticated())
+            {
+                return this.RedirectToDefault();
+            }
+
+            if (this.ModelState.IsValid)
+            {
+                var user = await this.userManager.FindByEmailAsync(forgotPasswordViewModel.Email!);
+                if (user != null)
+                {
+                    var resetPasswordToken = await this.userManager.GeneratePasswordResetTokenAsync(user);
+                    var resetPasswordEncodedToken = UrlEncoder.Default.Encode(resetPasswordToken);
+                    var resetPasswordUrl = this.HttpContext
+                        .GetAbsoluteRoute($"/reset-password?email={user.Email}&token={resetPasswordEncodedToken}");
+
+                    var result = await this.emailService.SendResetPasswordEmailAsync(
+                        user.Email!,
+                        resetPasswordUrl);
+
+                    this.logger.LogInformation("Reset password email send result {Result}", result);
+                }
+
+                this.TempData["MessageText"] = Text.ForgotPasswordSuccessMessage;
+                this.TempData["MessageVariant"] = "success";
+
+                return this.RedirectToAction(nameof(this.Login));
+            }
+
+            return this.View(forgotPasswordViewModel);
         }
 
-        if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(token))
+        [AllowAnonymous]
+        [HttpGet("/reset-password")]
+        public async Task<IActionResult> ResetPassword(string email, string token)
         {
-            return this.NotFound();
-        }
+            if (this.IsUserAuthenticated())
+            {
+                return this.RedirectToDefault();
+            }
 
-        var user = await this.userManager.FindByEmailAsync(email);
-        if (user == null)
-        {
-            return this.NotFound();
-        }
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(token))
+            {
+                return this.NotFound();
+            }
 
-        var model = new ResetPasswordViewModel
-        {
-            Token = token,
-            Email = email,
-        };
-
-        return this.View(model);
-    }
-
-    [HttpPost("/reset-password")]
-    [AllowAnonymous]
-    public async Task<IActionResult> ResetPassword(ResetPasswordViewModel resetPasswordViewModel)
-    {
-        if (this.IsUserAuthenticated())
-        {
-            return this.RedirectToDefault();
-        }
-
-        if (this.ModelState.IsValid)
-        {
-            var user = await this.userManager.FindByEmailAsync(resetPasswordViewModel.Email!);
+            var user = await this.userManager.FindByEmailAsync(email);
             if (user == null)
             {
                 return this.NotFound();
             }
 
-            var result = await this.userManager.ResetPasswordAsync(user, resetPasswordViewModel.Token!, resetPasswordViewModel.Password!);
-            if (result.Succeeded)
+            var model = new ResetPasswordViewModel
             {
-                return this.RedirectToAction(nameof(this.Login));
-            }
+                Token = token,
+                Email = email,
+            };
 
-            this.ModelState.AssignIdentityErrors(result.Errors);
+            return this.View(model);
         }
 
-        return this.View(resetPasswordViewModel);
-    }
-
-    [HttpPost("/logout")]
-    public async Task<IActionResult> Logout()
-    {
-        await this.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-        return this.RedirectToAction(nameof(this.Login));
-    }
-
-    private async Task SignInAsync(
-        ApplicationUser user,
-        bool rememberMe)
-    {
-        var claimsPrinciple = await this.signInManager
-            .ClaimsFactory
-            .CreateAsync(user);
-
-        await this.HttpContext.SignInAsync(
-            CookieAuthenticationDefaults.AuthenticationScheme,
-            claimsPrinciple,
-            new AuthenticationProperties
+        [HttpPost("/reset-password")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel resetPasswordViewModel)
+        {
+            if (this.IsUserAuthenticated())
             {
-                ExpiresUtc = DateTimeOffset.UtcNow.AddDays(30),
-                IsPersistent = rememberMe,
-            });
+                return this.RedirectToDefault();
+            }
+
+            if (this.ModelState.IsValid)
+            {
+                var user = await this.userManager.FindByEmailAsync(resetPasswordViewModel.Email!);
+                if (user == null)
+                {
+                    return this.NotFound();
+                }
+
+                var result = await this.userManager.ResetPasswordAsync(user, resetPasswordViewModel.Token!, resetPasswordViewModel.Password!);
+                if (result.Succeeded)
+                {
+                    return this.RedirectToAction(nameof(this.Login));
+                }
+
+                this.ModelState.AssignIdentityErrors(result.Errors);
+            }
+
+            return this.View(resetPasswordViewModel);
+        }
+
+        [HttpPost("/logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await this.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return this.RedirectToAction(nameof(this.Login));
+        }
+
+        private async Task SignInAsync(
+            ApplicationUser user,
+            bool rememberMe)
+        {
+            var claimsPrinciple = await this.signInManager
+                .ClaimsFactory
+                .CreateAsync(user);
+
+            await this.HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                claimsPrinciple,
+                new AuthenticationProperties
+                {
+                    ExpiresUtc = DateTimeOffset.UtcNow.AddDays(30),
+                    IsPersistent = rememberMe,
+                });
+        }
     }
 }

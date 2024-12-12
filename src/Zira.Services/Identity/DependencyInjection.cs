@@ -9,12 +9,12 @@ internal static class DependencyInjection
     public static IServiceCollection AddIdentityServices(
         this IServiceCollection services)
     {
-        services.AddIdentity<ApplicationUser, ApplicationRole>(
-                options =>
+        services
+            .AddIdentity<ApplicationUser, ApplicationRole>(options =>
             {
-                options.SignIn.RequireConfirmedAccount = true;
+                options.SignIn.RequireConfirmedAccount = false;
                 options.SignIn.RequireConfirmedEmail = true;
-                options.Password.RequiredLength = 8;
+                options.Password.RequiredLength = 6;
             })
             .AddEntityFrameworkStores<EntityContext>()
             .AddDefaultTokenProviders();

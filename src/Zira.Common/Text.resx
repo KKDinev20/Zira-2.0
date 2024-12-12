@@ -1,9 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <root>
     <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <xsd:element name="root" msdata:IsDataSet="true">
-            
+
         </xsd:element>
     </xsd:schema>
     <resheader name="resmimetype">
@@ -19,15 +19,15 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="LoginTitle" xml:space="preserve">
-    <value>Добре дошли в Jira! 👋</value>
-  </data>
+        <value>Добре дошли в Zira! 👋</value>
+    </data>
     <data name="LoginSubtitle" xml:space="preserve">
     <value>Влезте в акаунта си, за да започнете приключението</value>
   </data>
     <data name="EmailLabel" xml:space="preserve">
     <value>Имейл или потребителско име</value>
   </data>
-    <data name="PasswordLabel" xml:space="preserve">
+    <data name="PasswordTitle" xml:space="preserve">
     <value>Парола</value>
   </data>
     <data name="ForgotPasswordButton" xml:space="preserve">
@@ -42,13 +42,13 @@
     <data name="SignUpButton" xml:space="preserve">
     <value>Създайте акаунт</value>
   </data>
-    <data name="RegisterTitle" xml:space="preserve">
+    <data name="RegisterSlogan" xml:space="preserve">
     <value>Приключението започва тук 🚀</value>
   </data>
-    <data name="RegisterSubtitle" xml:space="preserve">
+    <data name="RegisterText" xml:space="preserve">
     <value>Направете управлението на приложението лесно и забавно!</value>
   </data>
-    <data name="ConfirmPasswordLabel" xml:space="preserve">
+    <data name="ConfirmPassword" xml:space="preserve">
     <value>Потвърдете паролата</value>
   </data>
     <data name="ForgotPasswordTitle" xml:space="preserve">
@@ -81,7 +81,7 @@
     <data name="RegisterSubtitle" xml:space="preserve">
     <value>Направете управлението на приложението лесно и забавно!</value>
   </data>
-    <data name="EmailLabel" xml:space="preserve">
+    <data name="EmailTitle" xml:space="preserve">
     <value>Имейл</value>
   </data>
     <data name="PasswordLabel" xml:space="preserve">
@@ -90,7 +90,7 @@
     <data name="ConfirmPasswordLabel" xml:space="preserve">
     <value>Потвърдете паролата</value>
   </data>
-  <data name="AlreadyHaveAccount" xml:space="preserve">
+    <data name="AlreadyHaveAccount" xml:space="preserve">
     <value>Вече имате акаунт?</value>
   </data>
     <data name="SignInInstead" xml:space="preserve">

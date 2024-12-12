@@ -80,6 +80,15 @@ namespace Zira.Common {
         /// <summary>
         ///   Looks up a localized string similar to Потвърдете паролата.
         /// </summary>
+        public static string ConfirmPassword {
+            get {
+                return ResourceManager.GetString("ConfirmPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Потвърдете паролата.
+        /// </summary>
         public static string ConfirmPasswordLabel {
             get {
                 return ResourceManager.GetString("ConfirmPasswordLabel", resourceCulture);
@@ -105,11 +114,20 @@ namespace Zira.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Имейл.
+        ///   Looks up a localized string similar to Имейл или потребителско име.
         /// </summary>
         public static string EmailLabel {
             get {
                 return ResourceManager.GetString("EmailLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Имейл.
+        /// </summary>
+        public static string EmailTitle {
+            get {
+                return ResourceManager.GetString("EmailTitle", resourceCulture);
             }
         }
         
@@ -168,7 +186,7 @@ namespace Zira.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Добре дошли в Jira! 👋.
+        ///   Looks up a localized string similar to Добре дошли в Zira! 👋.
         /// </summary>
         public static string LoginTitle {
             get {
@@ -213,6 +231,24 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Парола.
+        /// </summary>
+        public static string PasswordTitle {
+            get {
+                return ResourceManager.GetString("PasswordTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Приключението започва тук 🚀.
+        /// </summary>
+        public static string RegisterSlogan {
+            get {
+                return ResourceManager.GetString("RegisterSlogan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Направете управлението на приложението лесно и забавно!.
         /// </summary>
         public static string RegisterSubtitle {
@@ -227,6 +263,15 @@ namespace Zira.Common {
         public static string RegisterSuccessMessage {
             get {
                 return ResourceManager.GetString("RegisterSuccessMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Направете управлението на приложението лесно и забавно!.
+        /// </summary>
+        public static string RegisterText {
+            get {
+                return ResourceManager.GetString("RegisterText", resourceCulture);
             }
         }
         
