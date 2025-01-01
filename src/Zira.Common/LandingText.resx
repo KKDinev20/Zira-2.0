@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="ManagingYourFinances" xml:space="preserve">
+        <value>Управляване на Вашите финанси</value>
+    </data>
+    <data name="TakeControl" xml:space="preserve">
+        <value>Поемете контрол върху</value>
+    </data>
+    <data name="YourBudget" xml:space="preserve">
+        <value>бюджета си</value>
+    </data>
+    <data name="WithEase" xml:space="preserve">
+        <value>с лекота</value>
+    </data>
+    <data name="AboutSection" xml:space="preserve">
+        <value>Проследявайте разходите си, задавайте бюджетни ограничения и постигайте финансовите си цели без усилия.
+ Нашата система ви помага да сте на върха на финансите си с актуализации в реално време и проницателни отчети.</value>
+    </data>
+    <data name="Video" xml:space="preserve">
+        <value>Демо</value>
+    </data>
+    <data name="GetStarted" xml:space="preserve">
+        <value>Вход</value>
+    </data>
+    <data name="Awards1" xml:space="preserve">
+        <value>3x носител на награда</value>
+    </data>
+    <data name="AwardsDesc1" xml:space="preserve">
+        <value>Признат за отлични постижения</value>
+    </data>
+    <data name="Awards2" xml:space="preserve">
+        <value>6,5 хил. потребители</value>
+    </data>
+    <data name="AwardsDesc2" xml:space="preserve">
+        <value>Управляващи бюджета си ежедневно</value>
+    </data>
+    <data name="Awards3" xml:space="preserve">
+        <value>80 хил. транзакции</value>
+    </data>
+    <data name="Awards4" xml:space="preserve">
+        <value>6x препоръчан</value>
+    </data>
+    <data name="AwardsDesc3" xml:space="preserve">
+        <value>Проследявани месечно</value>
+    </data>
+    <data name="AwardsDesc4" xml:space="preserve">
+        <value>В най-добрите финансови блогове</value>
+    </data>
+    <data name="FeatureBox1" xml:space="preserve">
+        <value>Проследяване на разходите</value>
+    </data>
+    <data name="FeatureBoxDesc1" xml:space="preserve">
+        <value>Наблюдавайте ежедневните си разходи и ги категоризирайте автоматично, за да следите навиците си за харчене.</value>
+    </data>
+    <data name="FeatureBox2" xml:space="preserve">
+        <value>Планиране на бюджета</value>
+    </data>
+    <data name="FeatureBoxDesc2" xml:space="preserve">
+        <value>Задане на бюджетни лимити и финансови цели, с цел осигуряване, че се спазват правилата за разходите и спестяванията.</value>
+    </data>
+    <data name="FeatureBox3" xml:space="preserve">
+        <value>Финансови анализи</value>
+    </data>
+    <data name="FeatureBox4" xml:space="preserve">
+        <value>Сигурни транзакции</value>
+    </data>
+    <data name="FeatureBoxDesc3" xml:space="preserve">
+        <value>Получете представа за финансовото си състояние с подробни отчети и визуализации на моделите на разходите ви.</value>
+    </data>
+    <data name="FeatureBoxDesc4" xml:space="preserve">
+        <value>Уверете се, че финансовите ви данни са в безопасност с нашите първокласни функции за сигурност и протоколи за криптиране.</value>
+    </data>
+    <data name="Features" xml:space="preserve">
+       <value>Функции</value> 
+    </data>
+    <data name="Services" xml:space="preserve">
+       <value>Услуги</value> 
+    </data>
+    <data name="FAQ" xml:space="preserve">
+       <value>Въпроси</value> 
+    </data>
+    <data name="ServicesDesc" xml:space="preserve">
+        <value>Запознайте се с набора от услуги, които предлагаме, за да ви помогнем да управлявате финансите си ефективно.</value>
+    </data>
+    <data name="ActiveUsers" xml:space="preserve">
+        <value>Активни потребители</value>
+    </data>
+    <data name="BudgetsCreated" xml:space="preserve">
+        <value>Създадени бюджети</value>
+    </data>
+    <data name="TransactionsTracked" xml:space="preserve">
+        <value>Отчетени транзакции</value>
+    </data>
+    <data name="FinancialAdvisors" xml:space="preserve">
+        <value>Финансови отчети</value>
+    </data>
+    <data name="UsefulLink" xml:space="preserve">
+        <value>Полезни ресурси</value>
+    </data>
+    <data name="AboutUs" xml:space="preserve">
+        <value>За нас</value>
+    </data>
+    <data name="TermsOfService" xml:space="preserve">
+        <value>Условия за ползване</value>
+    </data>
+    <data name="FAQTitle" xml:space="preserve">
+        <value>Имате въпрос? Проверете често задаваните въпроси</value>
+    </data>
+    <data name="FAQDesc" xml:space="preserve">
+        <value>Намерете отговори на често задавани въпроси относно управлението на бюджета и използването на нашата система.</value>
+    </data>
+    <data name="Question1" xml:space="preserve">
+        <value>Как да следя разходите си?</value>
+    </data>
+    <data name="Question2" xml:space="preserve">
+        <value>Мога ли да задам лимити на бюджета си?</value>
+    </data>
+    <data name="Question3" xml:space="preserve">
+       <value>Как да прегледам финансовите отчети?</value>
+    </data>
+    <data name="Question4" xml:space="preserve">
+       <value>Сигурни ли са финансовите ми данни?</value>
+    </data>
+    <data name="Question5" xml:space="preserve">
+       <value>Как мога да се свържа за помощ?</value>
+    </data>
+    <data name="Answer1" xml:space="preserve">
+        <value>Нашата система автоматично категоризира разходите ви и предоставя актуализации в реално време. Можете също така да добавяте разходи ръчно чрез таблото за управление.</value>
+    </data>
+    <data name="Answer2" xml:space="preserve">
+        <value>Да, можете да зададете месечни или годишни бюджетни лимити за различни категории. Нашата система ще ви предупреди, когато сте близо до превишаване на лимитите си.</value>
+    </data>
+    <data name="Answer3" xml:space="preserve">
+        <value>Можете да разглеждате подробни финансови отчети и визуализации в раздел „Отчети“ на таблото за управление. Тези отчети ви помагат да разберете моделите на разходите си и да вземате информирани решения.</value>
+    </data>
+    <data name="Answer4" xml:space="preserve">
+        <value>Използваме първокласни функции за сигурност и протоколи за криптиране, за да гарантираме, че финансовите ви данни са сигурни и защитени.</value>
+    </data>
+    <data name="Answer5" xml:space="preserve">
+        <value>Можете да се свържете с нашия екип за поддръжка чрез раздела „Поддръжка“ на таблото за управление или да ни изпратите имейл на support@zira.com. Ние сме тук, за да ви помогнем 24/7.</value>
+    </data>
+    <data name="FeaturesDesc" xml:space="preserve">
+        <value>Открийте мощните инструменти, които ви помагат да управлявате ефективно финансите си
+</value>
+    </data>
+    <data name="Feature1" xml:space="preserve">
+        <value>Следете разходите си</value>
+    </data>
+    <data name="Feature2" xml:space="preserve">
+        <value>Планирайте бюджета си</value>
+    </data>
+    <data name="Feature3" xml:space="preserve">
+        <value>Получаване на финансова информация</value>
+    </data>
+    <data name="FeatureDesc1" xml:space="preserve">
+        <value>Водете си подробен отчет за навиците си на харчене и определете областите, в които можете да спестите.</value>
+    </data>
+    <data name="FeatureDesc2" xml:space="preserve">
+        <value>Определете бюджетни ограничения и цели, за да сте сигурни, че ще спазвате финансовите си планове.</value>
+    </data>
+    <data name="FeatureDesc3" xml:space="preserve">
+        <value>Вземайте информирани решения с подробна информация за финансовото си състояние.</value>
+    </data>
+    <data name="Feature1Point1" xml:space="preserve">
+        <value>Автоматично категоризиране на разходите.</value>
+    </data>
+    <data name="Feature1Point2" xml:space="preserve">
+        <value>Актуализации на разходите ви в реално време.</value>
+    </data>
+    <data name="Feature1Point3" xml:space="preserve">
+        <value>Подробни отчети и визуализации.</value>
+    </data>
+    <data name="Feature2Point1" xml:space="preserve">
+        <value>Бюджетни категории с възможност за персонализиране.</value>
+    </data>
+    <data name="Feature2Point2" xml:space="preserve">
+        <value>Предупреждения за бюджетни ограничения.</value>
+    </data>
+    <data name="Feature2Point3" xml:space="preserve">
+        <value>Месечно и годишно планиране на бюджета.</value>
+    </data>
+    <data name="Feature3Point1" xml:space="preserve">
+        <value>Изчерпателни финансови отчети.</value>
+    </data>
+    <data name="Feature3Point2" xml:space="preserve">
+        <value>Поглед към моделите на разходите.</value>
+    </data>
+    <data name="Feature3Point3" xml:space="preserve">
+        <value>Препоръки за финансово подобрение.</value>
+    </data>
+</root>

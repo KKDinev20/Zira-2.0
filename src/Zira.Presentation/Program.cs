@@ -16,6 +16,7 @@ builder.Services
         {
             options.LoginPath = "/login";
             options.LogoutPath = "/logout";
+            options.AccessDeniedPath = "/access-denied";
         });
 
 builder.Services.AddData(builder.Configuration);

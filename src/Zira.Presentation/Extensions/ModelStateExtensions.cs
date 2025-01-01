@@ -20,9 +20,9 @@ namespace Zira.Presentation.Extensions
                     key = "Password";
                 }
 
-                if (Text.ResourceManager != null)
+                if (AuthenticationText.ResourceManager != null)
                 {
-                    string errorMessage = Text.ResourceManager.GetStringOrDefault($"{error.Code}ErrorMessage");
+                    string errorMessage = AuthenticationText.ResourceManager.GetStringOrDefault($"{error.Code}ErrorMessage");
                     modelState.AddModelError(key, errorMessage);
                 }
                 else

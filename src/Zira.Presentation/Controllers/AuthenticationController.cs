@@ -68,13 +68,13 @@ namespace Zira.Presentation.Controllers
                 var user = await this.userManager.FindByEmailAsync(model.Email!);
                 if (user == null || !(await this.userManager.CheckPasswordAsync(user, model.Password!)))
                 {
-                    this.ModelState.AddModelError(string.Empty, Common.Text.InvalidLoginErrorMessage);
+                    this.ModelState.AddModelError(string.Empty, Common.AuthenticationText.InvalidLoginErrorMessage);
                     return this.View(model);
                 }
 
                 if (await this.userManager.IsLockedOutAsync(user))
                 {
-                    this.ModelState.AddModelError(string.Empty, Common.Text.UserLockedOutErrorMessage);
+                    this.ModelState.AddModelError(string.Empty, Common.AuthenticationText.UserLockedOutErrorMessage);
                     return this.View(model);
                 }
 
@@ -121,7 +121,7 @@ namespace Zira.Presentation.Controllers
 
                 if (result.Succeeded)
                 {
-                    this.TempData["MessageText"] = Text.RegisterSuccessMessage;
+                    this.TempData["MessageText"] = AuthenticationText.RegisterSuccessMessage;
                     this.TempData["MessageVariant"] = "success";
                     return this.RedirectToAction(nameof(this.Login));
                 }
@@ -178,7 +178,7 @@ namespace Zira.Presentation.Controllers
                     this.logger.LogInformation("Reset password email send result {Result}", result);
                 }
 
-                this.TempData["MessageText"] = Text.ForgotPasswordSuccessMessage;
+                this.TempData["MessageText"] = AuthenticationText.ForgotPasswordSuccessMessage;
                 this.TempData["MessageVariant"] = "success";
 
                 return this.RedirectToAction(nameof(this.Login));
@@ -248,7 +248,11 @@ namespace Zira.Presentation.Controllers
         [HttpPost("/logout")]
         public async Task<IActionResult> Logout()
         {
-            await this.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            if (this.IsUserAuthenticated())
+            {
+                await this.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            }
+
             return this.RedirectToAction(nameof(this.Login));
         }
 

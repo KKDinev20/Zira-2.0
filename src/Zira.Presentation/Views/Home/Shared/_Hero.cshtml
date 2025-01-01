@@ -7,25 +7,24 @@
         <div class="hero-content" data-aos="fade-up" data-aos-delay="200">
           <div class="company-badge mb-4">
             <i class="bi bi-gear-fill me-2"></i>
-            Managing Your Finances
+              @LandingText.ManagingYourFinances
           </div>
 
           <h1 class="mb-4">
-            Take Control of <br>
-            Your Budget <br>
-            <span class="accent-text">With Ease</span>
+            @LandingText.TakeControl <br>
+            @LandingText.YourBudget <br>
+            <span class="accent-text">@LandingText.WithEase</span>
           </h1>
 
           <p class="mb-4 mb-md-5">
-            Track your expenses, set budget limits, and achieve your financial goals effortlessly.
-            Our system helps you stay on top of your finances with real-time updates and insightful reports.
+            @LandingText.AboutSection
           </p>
 
           <div class="hero-buttons">
-            <a href="#about" class="btn btn-primary me-0 me-sm-2 mx-1">Get Started</a>
-            <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="btn btn-link mt-2 mt-sm-0 glightbox">
+            <a asp-controller="Authentication" asp-action="Register" class="btn btn-primary me-0 me-sm-2 mx-1">@LandingText.GetStarted</a>
+            <a href="" class="btn btn-link mt-2 mt-sm-0 glightbox">
               <i class="bi bi-play-circle me-1"></i>
-              Watch Demo
+                @LandingText.Video
             </a>
           </div>
         </div>
@@ -45,8 +44,8 @@
             <i class="bi bi-trophy"></i>
           </div>
           <div class="stat-content">
-            <h4>3x Award Winner</h4>
-            <p class="mb-0">Recognized for excellence</p>
+            <h4>@LandingText.Awards1</h4>
+            <p class="mb-0">@LandingText.AwardsDesc1</p>
           </div>
         </div>
       </div>
@@ -56,8 +55,8 @@
             <i class="bi bi-briefcase"></i>
           </div>
           <div class="stat-content">
-            <h4>6.5k Users</h4>
-            <p class="mb-0">Managing budgets daily</p>
+            <h4>@LandingText.Awards2</h4>
+            <p class="mb-0">@LandingText.AwardsDesc2</p>
           </div>
         </div>
       </div>
@@ -67,8 +66,8 @@
             <i class="bi bi-graph-up"></i>
           </div>
           <div class="stat-content">
-            <h4>80k Transactions</h4>
-            <p class="mb-0">Tracked monthly</p>
+            <h4>@LandingText.Awards3</h4>
+            <p class="mb-0">@LandingText.AwardsDesc3</p>
           </div>
         </div>
       </div>
@@ -78,8 +77,8 @@
             <i class="bi bi-award"></i>
           </div>
           <div class="stat-content">
-            <h4>6x Featured</h4>
-            <p class="mb-0">In top finance blogs</p>
+            <h4>@LandingText.Awards4</h4>
+            <p class="mb-0">@LandingText.AwardsDesc4</p>
           </div>
         </div>
       </div>

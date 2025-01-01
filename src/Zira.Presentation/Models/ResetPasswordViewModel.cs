@@ -11,13 +11,13 @@ public class ResetPasswordViewModel
     public string? Token { get; set; }
 
     [Required(
-        ErrorMessageResourceType = typeof(Common.Text),
+        ErrorMessageResourceType = typeof(Common.AuthenticationText),
         ErrorMessageResourceName = "PasswordIsRequiredErrorMessage")]
     public string? Password { get; set; }
 
     [Compare(
         nameof(Password),
-        ErrorMessageResourceType = typeof(Common.Text),
+        ErrorMessageResourceType = typeof(Common.AuthenticationText),
         ErrorMessageResourceName = "PasswordIsDifferentThanConfirmedErrorMessage")]
     public string? ConfirmPassword { get; set; }
 }

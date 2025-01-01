@@ -1,6 +1,6 @@
 ﻿@model LoginViewModel
 @{
-Layout = "_AuthenticationLayout";
+    Layout = "_AuthenticationLayout";
 }
 
 <title>Login</title>
@@ -15,30 +15,29 @@ Layout = "_AuthenticationLayout";
                         </a>
                     </div>
 
-                    <p class="mb-4">@Text.LoginSubtitle</p>
+                    <p class="mb-4">@AuthenticationText.LoginSubtitle</p>
 
                     <form id="formAuthentication" asp-action="Login" method="post" class="mb-3">
                         @Html.AntiForgeryToken()
-
                         <div class="mb-3">
-                            <label for="email-username" class="form-label">@Text.EmailLabel</label>
+                            <label for="email-username" class="form-label">@AuthenticationText.EmailLabel</label>
                             <input
                                 type="text"
                                 class="form-control @(ViewData.ModelState["email-username"]?.Errors.Count > 0 ? "is-invalid" : "")"
-                                placeholder="@Text.EmailLabel"
+                                placeholder="@AuthenticationText.EmailLabel"
                                 asp-for="Email"
-                                value="@ViewData["email-username"]" />
+                                value="@ViewData["email-username"]"/>
                             @if (ViewData.ModelState["email-username"]?.Errors.Count > 0)
                             {
-                            <div class="invalid-feedback">@ViewData.ModelState["email-username"]?.Errors[0].ErrorMessage</div>
+                                <div class="invalid-feedback">@ViewData.ModelState["email-username"]?.Errors[0].ErrorMessage</div>
                             }
                         </div>
 
                         <div class="mb-3 form-password-toggle">
                             <div class="d-flex justify-content-between">
-                                <label for="password" class="form-label">@Text.PasswordLabel</label>
+                                <label asp-for="Password" class="form-label">@AuthenticationText.PasswordLabel</label>
                                 <a asp-controller="Authentication" asp-action="ForgotPassword" class="text-decoration-none">
-                                    <small>@Text.ForgotPasswordButton</small>
+                                    <small>@AuthenticationText.ForgotPasswordButton</small>
                                 </a>
                             </div>
                             <div class="input-group input-group-merge">
@@ -47,24 +46,26 @@ Layout = "_AuthenticationLayout";
                                     class="form-control @(ViewData.ModelState["password"]?.Errors.Count > 0 ? "is-invalid" : "")"
                                     asp-for="Password"
                                     placeholder="••••••••"
-                                    aria-describedby="password" />
-                                <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                                    aria-describedby="password"/>
+                                <span class="input-group-text cursor-pointer">
+                                    <i class="bx bx-hide"></i>
+                                </span>
                                 @if (ViewData.ModelState["password"]?.Errors.Count > 0)
                                 {
-                                <div class="invalid-feedback">@ViewData.ModelState["password"]?.Errors[0].ErrorMessage</div>
+                                    <div class="invalid-feedback">@ViewData.ModelState["password"]?.Errors[0].ErrorMessage</div>
                                 }
                             </div>
                         </div>
 
                         <div class="mb-3">
-                            <button class="btn btn-primary d-grid w-100" type="submit">@Text.SignInButton</button>
+                            <button class="btn btn-primary d-grid w-100" type="submit">@AuthenticationText.SignInButton</button>
                         </div>
                     </form>
 
                     <p class="text-center">
-                        <span>@Text.NewUser</span>
+                        <span>@AuthenticationText.NewUser</span>
                         <a asp-controller="Authentication" asp-action="Register" class="text-decoration-none">
-                            <span>@Text.SignUpButton</span>
+                            <span>@AuthenticationText.SignUpButton</span>
                         </a>
                     </p>
                 </div>

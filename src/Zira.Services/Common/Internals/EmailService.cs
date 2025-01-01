@@ -33,7 +33,7 @@ namespace Zira.Services.Common.Internals
                 var response = await client.SendEmailAsync(msg);
 
                 var responseBody = await response.Body.ReadAsStringAsync();
-                Console.WriteLine($"SendGrid Response: {response.StatusCode}, {responseBody}");
+                Console.WriteLine($@"SendGrid Response: {response.StatusCode}, {responseBody}");
 
                 if (response.StatusCode != System.Net.HttpStatusCode.Accepted)
                 {
@@ -42,7 +42,7 @@ namespace Zira.Services.Common.Internals
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error sending email: {ex.Message}");
+                Console.WriteLine($@"Error sending email: {ex.Message}");
                 throw;
             }
         }

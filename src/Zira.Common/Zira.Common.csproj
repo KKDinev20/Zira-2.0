@@ -28,9 +28,13 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>Emails.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <EmbeddedResource Update="Text.resx">
+      <EmbeddedResource Update="AuthenticationText.resx">
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>Text.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="LandingText.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>LandingText.Designer.cs</LastGenOutput>
       </EmbeddedResource>
     </ItemGroup>
 
@@ -40,10 +44,15 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>Emails.resx</DependentUpon>
       </Compile>
-      <Compile Update="Text.Designer.cs">
+      <Compile Update="AuthenticationText.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
-        <DependentUpon>Text.resx</DependentUpon>
+        <DependentUpon>AuthenticationText.resx</DependentUpon>
+      </Compile>
+      <Compile Update="LandingText.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>LandingText.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 
