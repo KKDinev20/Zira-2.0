@@ -1,9 +1,11 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Zira.Data;
+using Zira.Services.Identity.Constants;
 
 namespace Zira.Presentation;
 
@@ -17,6 +19,38 @@ public static class AppPreparation
             var dbContext = scope.ServiceProvider.GetRequiredService<EntityContext>();
 
             await dbContext.Database.MigrateAsync();
+
+            if (!await dbContext.Roles.AnyAsync())
+            {
+                using var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
+                foreach (var role in Roles.List)
+                {
+                    await roleManager.CreateAsync(new ApplicationRole
+                    {
+                        Name = role,
+                    });
+                }
+            }
+
+            if (!await dbContext.Users.AnyAsync())
+            {
+                using var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+                var user = new ApplicationUser
+                {
+                    UserName = AdminCredentials.AdminEmail,
+                    Email = AdminCredentials.AdminEmail,
+                    EmailConfirmed = true,
+                };
+
+                var adminCreatedResult = await userManager.CreateAsync(
+                    user,
+                    AdminCredentials.AdminPassword);
+
+                if (adminCreatedResult.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(user, Roles.Admin);
+                }
+            }
         }
         catch (Exception e)
         {

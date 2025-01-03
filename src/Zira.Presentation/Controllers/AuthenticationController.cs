@@ -13,6 +13,7 @@ using Zira.Data;
 using Zira.Presentation.Extensions;
 using Zira.Presentation.Models;
 using Zira.Services.Common.Contracts;
+using Zira.Services.Identity.Constants;
 using Zira.Services.Identity.Extensions;
 
 namespace Zira.Presentation.Controllers
@@ -102,7 +103,7 @@ namespace Zira.Presentation.Controllers
         [HttpPost("/register")]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
-        public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
+        public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (this.IsUserAuthenticated())
             {
@@ -113,29 +114,26 @@ namespace Zira.Presentation.Controllers
             {
                 var user = new ApplicationUser
                 {
-                    UserName = registerViewModel.Email,
-                    Email = registerViewModel.Email,
+                    UserName = model.Email,
+                    Email = model.Email,
                 };
-
-                var result = await this.userManager.CreateAsync(user, registerViewModel.Password!);
+                var result = await this.userManager.CreateAsync(
+                    user,
+                    model.Password!);
 
                 if (result.Succeeded)
                 {
+                    await this.userManager.AddToRoleAsync(user, Roles.User);
+
                     this.TempData["MessageText"] = AuthenticationText.RegisterSuccessMessage;
                     this.TempData["MessageVariant"] = "success";
                     return this.RedirectToAction(nameof(this.Login));
                 }
-                else
-                {
-                    foreach (var error in result.Errors)
-                    {
-                        this.logger.LogError("Error creating user: {Error}", error.Description);
-                        this.ModelState.AddModelError(string.Empty, error.Description);
-                    }
-                }
+
+                this.ModelState.AssignIdentityErrors(result.Errors);
             }
 
-            return this.View(registerViewModel);
+            return this.View(model);
         }
 
         [HttpGet("/forgot-password")]
@@ -154,7 +152,7 @@ namespace Zira.Presentation.Controllers
         [HttpPost("/forgot-password")]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
-        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel forgotPasswordViewModel)
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
             if (this.IsUserAuthenticated())
             {
@@ -163,7 +161,7 @@ namespace Zira.Presentation.Controllers
 
             if (this.ModelState.IsValid)
             {
-                var user = await this.userManager.FindByEmailAsync(forgotPasswordViewModel.Email!);
+                var user = await this.userManager.FindByEmailAsync(model.Email!);
                 if (user != null)
                 {
                     var resetPasswordToken = await this.userManager.GeneratePasswordResetTokenAsync(user);
@@ -184,7 +182,7 @@ namespace Zira.Presentation.Controllers
                 return this.RedirectToAction(nameof(this.Login));
             }
 
-            return this.View(forgotPasswordViewModel);
+            return this.View(model);
         }
 
         [AllowAnonymous]
@@ -218,7 +216,7 @@ namespace Zira.Presentation.Controllers
 
         [HttpPost("/reset-password")]
         [AllowAnonymous]
-        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel resetPasswordViewModel)
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
         {
             if (this.IsUserAuthenticated())
             {
@@ -227,13 +225,13 @@ namespace Zira.Presentation.Controllers
 
             if (this.ModelState.IsValid)
             {
-                var user = await this.userManager.FindByEmailAsync(resetPasswordViewModel.Email!);
+                var user = await this.userManager.FindByEmailAsync(model.Email!);
                 if (user == null)
                 {
                     return this.NotFound();
                 }
 
-                var result = await this.userManager.ResetPasswordAsync(user, resetPasswordViewModel.Token!, resetPasswordViewModel.Password!);
+                var result = await this.userManager.ResetPasswordAsync(user, model.Token!, model.Password!);
                 if (result.Succeeded)
                 {
                     return this.RedirectToAction(nameof(this.Login));
@@ -242,17 +240,19 @@ namespace Zira.Presentation.Controllers
                 this.ModelState.AssignIdentityErrors(result.Errors);
             }
 
-            return this.View(resetPasswordViewModel);
+            return this.View(model);
+        }
+
+        [HttpGet("/access-denied")]
+        public IActionResult AccessDenied()
+        {
+            return this.View();
         }
 
         [HttpPost("/logout")]
         public async Task<IActionResult> Logout()
         {
-            if (this.IsUserAuthenticated())
-            {
-                await this.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            }
-
+            await this.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return this.RedirectToAction(nameof(this.Login));
         }
 
@@ -269,7 +269,7 @@ namespace Zira.Presentation.Controllers
                 claimsPrinciple,
                 new AuthenticationProperties
                 {
-                    ExpiresUtc = DateTimeOffset.UtcNow.AddDays(30),
+                    ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30),
                     IsPersistent = rememberMe,
                 });
         }

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Zira.Services.Identity.Constants;
 
 namespace Zira.Presentation.Controllers;
 
@@ -6,6 +8,8 @@ namespace Zira.Presentation.Controllers;
 public class DashboardController : Controller
 {
     [HttpGet("")]
+    [Authorize(Policies.UserPolicy)]
+    [Authorize(Roles = "User")]
     public IActionResult Index()
     {
         return this.View();

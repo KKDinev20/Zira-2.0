@@ -19,18 +19,75 @@
 
     <ItemGroup>
         <_ContentIncludedByDefault Remove="Areas\Identity\Pages\_ViewStart.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Authentication\ForgotPassword.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Authentication\Login.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Authentication\Register.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Authentication\ResetPassword.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Authentication\Shared\_Scripts.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Authentication\Shared\_Styles.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Authentication\_AuthenticationLayout.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Dashboard\Index.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Dashboard\Shared\_DashboardLayout.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Dashboard\Shared\_Scripts.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Dashboard\Shared\_Sidebar.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Dashboard\Shared\_Statistics.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Dashboard\Shared\_Styles.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Dashboard\Shared\_TopBar.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Dashboard\Shared\_WelcomeBack.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Home\Index.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Home\Shared\_FAQ.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Home\Shared\_Features.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Home\Shared\_FeaturesCards.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Home\Shared\_Footer.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Home\Shared\_Hero.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Home\Shared\_LandingLayout.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Home\Shared\_Navbar.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Home\Shared\_Scripts.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Home\Shared\_Services.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Home\Shared\_Stats.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Home\Shared\_Styles.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Shared\Error.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Shared\_LoginPartial.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Shared\_ValidationScriptsPartial.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Views\Authentication\AccessDenied.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Views\Authentication\ForgotPassword.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Views\Authentication\Login.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Views\Authentication\Register.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Views\Authentication\ResetPassword.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Views\Authentication\Shared\_Scripts.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Views\Authentication\Shared\_Styles.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Views\Authentication\_AuthenticationLayout.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Views\Dashboard\Index.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Views\Dashboard\Shared\_DashboardLayout.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Views\Dashboard\Shared\_Scripts.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Views\Dashboard\Shared\_Sidebar.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Views\Dashboard\Shared\_Statistics.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Views\Dashboard\Shared\_Styles.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Views\Dashboard\Shared\_TopBar.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Views\Dashboard\Shared\_WelcomeBack.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Views\Home\Index.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Views\Home\Shared\_FAQ.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Views\Home\Shared\_Features.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Views\Home\Shared\_FeaturesCards.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Views\Home\Shared\_Footer.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Views\Home\Shared\_Hero.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Views\Home\Shared\_LandingLayout.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Views\Home\Shared\_Navbar.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Views\Home\Shared\_Scripts.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Views\Home\Shared\_Services.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Views\Home\Shared\_Stats.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Views\Home\Shared\_Styles.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Views\Shared\Error.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Views\Shared\_LoginPartial.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Views\Shared\_ValidationScriptsPartial.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Views\_ViewImports.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\_ViewImports.cshtml" />
     </ItemGroup>
 
 
 
     <ItemGroup>
       <ProjectReference Include="..\Zira.Services\Zira.Services.csproj" />
-    </ItemGroup>
-
-
-
-    <ItemGroup>
-      <AdditionalFiles Include="Views\Home\Index.cshtml" />
     </ItemGroup>
 
 </Project>

@@ -5,6 +5,7 @@ using Microsoft.Extensions.Hosting;
 using Zira.Data;
 using Zira.Presentation;
 using Zira.Services;
+using Zira.Services.Identity.Constants;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,9 +20,30 @@ builder.Services
             options.AccessDeniedPath = "/access-denied";
         });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy(
+        Policies.AdminPolicy,
+        policyBuilder =>
+    {
+        policyBuilder.RequireAuthenticatedUser();
+        policyBuilder.AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme);
+        policyBuilder.RequireRole(Roles.Admin);
+    });
+    options.AddPolicy(
+        Policies.UserPolicy,
+        policyBuilder =>
+    {
+        policyBuilder.RequireAuthenticatedUser();
+        policyBuilder.AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme);
+        policyBuilder.RequireRole(Roles.User);
+    });
+});
+
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddData(builder.Configuration);
 builder.Services.AddServices(builder.Configuration);
-builder.Services.AddLocalization(options => options.ResourcesPath = "Common");
 
 builder.Services.AddMvc();
 
@@ -36,7 +58,6 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
     app.UseHttpsRedirection();
 }
@@ -45,15 +66,9 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapControllers();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapControllers();
 
 app.Run();

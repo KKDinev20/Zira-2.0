@@ -1,12 +1,14 @@
-﻿@using Microsoft.Extensions.Localization
-
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.Extensions.Localization
+@using Zira.Presentation.Extensions
 @model Zira.Presentation.Models.RegisterViewModel
 
 @{
 Layout = "_AuthenticationLayout";
 }
 
-<title>Register</title>
+<title>@AuthenticationText.RegisterTitle</title>
+
 <div class="container-xxl">
     <div class="authentication-wrapper authentication-basic container-p-y">
         <div class="authentication-inner">
@@ -15,42 +17,61 @@ Layout = "_AuthenticationLayout";
                     <h4 class="mb-2">@AuthenticationText.RegisterTitle</h4>
                     <p class="mb-4">@AuthenticationText.RegisterSubtitle</p>
 
+                    @if (TempData.ContainsKey("MessageText"))
+                    {
+                    <div class="alert alert-@TempData["MessageVariant"]">
+                        @TempData["MessageText"]
+                    </div>
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(ViewData.ModelState.GetFirstGlobalError()))
+                    {
+                    <div class="alert alert-danger">
+                        @ViewData.ModelState.GetFirstGlobalError()
+                    </div>
+                    }
+
                     <form id="formAuthentication" asp-action="Register" method="post">
                         @Html.AntiForgeryToken()
 
                         <div class="mb-3">
                             <label asp-for="Email" class="form-label">@AuthenticationText.EmailLabel</label>
-                            <input type="email" class="form-control" id="email" name="Email" placeholder="@AuthenticationText.EmailLabel" value="@Model.Email" />
+                            <input type="email" class="form-control @(ViewData.ModelState["Email"]?.Errors.Count > 0 ? "is-invalid" : "")"
+                                   id="email" name="Email" placeholder="@AuthenticationText.EmailLabel" value="@Model.Email" />
                             @if (ViewData.ModelState["Email"]?.Errors.Count > 0)
                             {
-                            <span class="text-danger">@ViewData.ModelState["Email"]?.Errors[0]?.ErrorMessage</span>
+                            <div class="invalid-feedback">@ViewData.ModelState["Email"]?.Errors[0]?.ErrorMessage</div>
                             }
                         </div>
 
                         <div class="mb-3 form-password-toggle">
                             <label class="form-label" asp-for="Password">@AuthenticationText.PasswordLabel</label>
-                            <input type="password" id="password" class="form-control" name="Password" placeholder="••••••••" value="@Model.Password" />
+                            <input type="password" id="password" class="form-control @(ViewData.ModelState["Password"]?.Errors.Count > 0 ? "is-invalid" : "")"
+                                   name="Password" placeholder="••••••••" value="@Model.Password" />
                             @if (ViewData.ModelState["Password"]?.Errors.Count > 0)
                             {
-                            <span class="text-danger">@ViewData.ModelState["Password"]?.Errors[0]?.ErrorMessage</span>
+                            <div class="invalid-feedback">@ViewData.ModelState["Password"]?.Errors[0]?.ErrorMessage</div>
                             }
                         </div>
 
                         <div class="mb-3 form-password-toggle">
                             <label class="form-label" asp-for="ConfirmPassword">@AuthenticationText.ConfirmPasswordLabel</label>
-                            <input type="password" id="confirmPassword" class="form-control" name="ConfirmPassword" placeholder="••••••••" value="@Model.ConfirmPassword" />
+                            <input type="password" id="confirmPassword" class="form-control @(ViewData.ModelState["ConfirmPassword"]?.Errors.Count > 0 ? "is-invalid" : "")"
+                                   name="ConfirmPassword" placeholder="••••••••" value="@Model.ConfirmPassword" />
                             @if (ViewData.ModelState["ConfirmPassword"]?.Errors.Count > 0)
                             {
-                            <span class="text-danger">@ViewData.ModelState["ConfirmPassword"]?.Errors[0]?.ErrorMessage</span>
+                            <div class="invalid-feedback">@ViewData.ModelState["ConfirmPassword"]?.Errors[0]?.ErrorMessage</div>
                             }
                         </div>
 
-                        <button class="btn btn-primary d-grid w-100" type="submit">@AuthenticationText.SignUpButton</button>
+                        <div class="mb-3">
+                            <button class="btn btn-primary d-grid w-100" type="submit">@AuthenticationText.SignUpButton</button>
+                        </div>
                     </form>
 
                     <p class="text-center">
                         <span>@AuthenticationText.AlreadyHaveAccount</span>
-                        <a asp-controller="Authentication" asp-action="Login">
+                        <a asp-controller="Authentication" asp-action="Login" class="text-decoration-none">
                             <span>@AuthenticationText.SignInInstead</span>
                         </a>
                     </p>
