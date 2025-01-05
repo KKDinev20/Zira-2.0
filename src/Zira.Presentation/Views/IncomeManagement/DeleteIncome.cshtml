@@ -1,0 +1,43 @@
+﻿@{
+Layout = "Shared/_IncomeLayout";
+}
+
+<div class="container-fluid">
+    <div class="card">
+        <h5 class="card-header">Delete Income</h5>
+        <div class="card-body">
+            <h6 class="card-title">Are you sure you want to delete the following income record?</h6>
+
+            <div class="table-responsive text-nowrap">
+                <table class="table">
+                    <caption class="ms-4">
+                        Income Details
+                    </caption>
+                    <thead>
+                    <tr>
+                        <th>Source</th>
+                        <th>Amount</th>
+                        <th>Date Received</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <i class="bx bx-briefcase fa-lg text-primary me-3"></i> <strong>@Model.Source</strong>
+                        </td>
+                        <td>@Model.Amount.ToString("C")</td>
+                        <td>@Model.DateReceived.ToString("yyyy-MM-dd")</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <form method="post">
+                <input type="hidden" name="id" value="@Model.IncomeId" />
+
+                <button type="submit" class="btn btn-danger">Delete</button>
+                <a href="@Url.Action("IncomeList", "IncomeManagement")" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>

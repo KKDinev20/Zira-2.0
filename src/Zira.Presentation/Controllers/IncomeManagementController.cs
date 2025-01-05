@@ -62,19 +62,6 @@ public class IncomeManagementController : Controller
         return this.View(incomes);
     }
 
-    public async Task<bool> DeleteIncome(Guid id)
-    {
-        var user = await this.context.Users.FindAsync(id);
-        if (user == null)
-        {
-            return false;
-        }
-
-        this.context.Users.Remove(user);
-        await this.context.SaveChangesAsync();
-        return true;
-    }
-
     [HttpGet("/edit-income/{id}")]
     public async Task<IActionResult> EditIncome(Guid id)
     {
@@ -120,5 +107,32 @@ public class IncomeManagementController : Controller
 
         this.ViewBag.Sources = Enum.GetValues(typeof(Sources));
         return this.View(model);
+    }
+
+    [HttpGet("/delete-income/{id}")]
+    public async Task<IActionResult> DeleteIncome(Guid id)
+    {
+        var income = await this.context.Incomes.FindAsync(id);
+        if (income == null)
+        {
+            return this.NotFound();
+        }
+
+        return this.View(income);
+    }
+
+    [HttpPost("/delete-income/{id}")]
+    public async Task<IActionResult> DeleteIncomeConfirmed(Guid id)
+    {
+        var income = await this.context.Incomes.FindAsync(id);
+        if (income == null)
+        {
+            return this.NotFound();
+        }
+
+        this.context.Incomes.Remove(income);
+        await this.context.SaveChangesAsync();
+
+        return this.RedirectToAction("IncomeList");
     }
 }
