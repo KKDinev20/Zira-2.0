@@ -82,6 +82,8 @@
         <_ContentIncludedByDefault Remove="Views\Views\Shared\_ValidationScriptsPartial.cshtml" />
         <_ContentIncludedByDefault Remove="Views\Views\_ViewImports.cshtml" />
         <_ContentIncludedByDefault Remove="Views\_ViewImports.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Dashboard\IncomeManagement\AddIncome.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Dashboard\IncomeManagement\IncomeList.cshtml" />
     </ItemGroup>
 
 

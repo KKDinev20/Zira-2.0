@@ -9,7 +9,6 @@ public class DashboardController : Controller
 {
     [HttpGet("")]
     [Authorize(Policies.UserPolicy)]
-    [Authorize(Roles = "User")]
     public IActionResult Index()
     {
         return this.View();

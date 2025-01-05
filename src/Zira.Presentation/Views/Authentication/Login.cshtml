@@ -2,7 +2,7 @@
 @using Zira.Presentation.Extensions
 @model LoginViewModel
 @{
-Layout = "_AuthenticationLayout";
+    Layout = "_AuthenticationLayout";
 }
 
 <title>Login</title>
@@ -21,16 +21,16 @@ Layout = "_AuthenticationLayout";
 
                     @if (TempData.ContainsKey("MessageText"))
                     {
-                    <div class="alert alert-@TempData["MessageVariant"]">
-                        @TempData["MessageText"]
-                    </div>
+                        <div class="alert alert-@TempData["MessageVariant"]">
+                            @TempData["MessageText"]
+                        </div>
                     }
 
                     @if (!string.IsNullOrWhiteSpace(ViewData.ModelState.GetFirstGlobalError()))
                     {
-                    <div class="alert alert-danger">
-                        @ViewData.ModelState.GetFirstGlobalError()
-                    </div>
+                        <div class="alert alert-danger">
+                            @ViewData.ModelState.GetFirstGlobalError()
+                        </div>
                     }
 
                     <form id="formAuthentication" asp-action="Login" method="post" class="mb-3">
@@ -46,7 +46,7 @@ Layout = "_AuthenticationLayout";
                                 value="@ViewData["email-username"]"/>
                             @if (ViewData.ModelState["Email"]?.Errors.Count > 0)
                             {
-                            <div class="invalid-feedback">Имейлът е задължително поле</div>
+                                <div class="invalid-feedback">Имейлът е задължително поле</div>
                             }
                         </div>
 
@@ -69,7 +69,7 @@ Layout = "_AuthenticationLayout";
                                 </span>
                                 @if (ViewData.ModelState["Password"]?.Errors.Count > 0)
                                 {
-                                <div class="invalid-feedback">Паролата е задължително поле</div>
+                                    <div class="invalid-feedback">Паролата е задължително поле</div>
                                 }
                             </div>
                         </div>
