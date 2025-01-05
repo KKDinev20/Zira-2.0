@@ -29,26 +29,26 @@ public class IncomeManagementController : Controller
     }
 
     [HttpPost("/add-income/")]
-    public async Task<IActionResult> AddIncome(Income model)
+    public async Task<IActionResult> AddIncome(Income incomeModel)
     {
         if (this.ModelState.IsValid)
         {
-            model.IncomeId = Guid.NewGuid();
-            model.UserId = this.User.GetUserId();
+            incomeModel.IncomeId = Guid.NewGuid();
+            incomeModel.UserId = this.User.GetUserId();
 
-            if (model.DateReceived == default)
+            if (incomeModel.DateReceived == default)
             {
-                model.DateReceived = DateTime.Now;
+                incomeModel.DateReceived = DateTime.Now;
             }
 
-            this.context.Incomes.Add(model);
+            this.context.Incomes.Add(incomeModel);
             await this.context.SaveChangesAsync();
 
             return this.RedirectToAction("IncomeList");
         }
 
         this.ViewBag.Sources = Enum.GetValues(typeof(Sources));
-        return this.View(model);
+        return this.View(incomeModel);
     }
 
     [HttpGet("/income-list/")]
@@ -122,7 +122,7 @@ public class IncomeManagementController : Controller
     }
 
     [HttpPost("/delete-income/{id}")]
-    public async Task<IActionResult> DeleteIncomeConfirmed(Guid id)
+    public async Task<IActionResult> DeleteIncomeAsync(Guid id)
     {
         var income = await this.context.Incomes.FindAsync(id);
         if (income == null)

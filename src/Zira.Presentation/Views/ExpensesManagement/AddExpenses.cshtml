@@ -1,0 +1,79 @@
+﻿@{
+    Layout = "Shared/_ExpensesLayout";
+}
+<div class="content-wrapper">
+    <div class="container-fluid d-flex justify-content-center align-items-center" style="height: 80vh;">
+        <div class="col-xl">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-center align-items-center">
+                    <h5 class="mb-0 text-center">Add Expense</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="AddExpenses" asp-controller="ExpensesManagement" method="post">
+                        <div class="mb-3">
+                            <label class="form-label" for="expense-amount">Amount</label>
+                            <div class="input-group input-group-merge">
+                                <span id="expense-amount-icon" class="input-group-text">
+                                    <i class="bx bx-money"></i>
+                                </span>
+                                <input
+                                    type="number"
+                                    class="form-control"
+                                    id="expense-amount"
+                                    name="Amount"
+                                    placeholder="Enter expense amount"
+                                    required
+                                    step="0.01"
+                                    aria-label="Amount"
+                                    aria-describedby="expense-amount-icon"/>
+                            </div>
+                        </div>
+
+                        <!-- Category Input -->
+                        <div class="mb-3">
+                            <label class="form-label" for="expense-category">Category</label>
+                            <div class="input-group input-group-merge">
+                                <span id="expense-category-icon" class="input-group-text">
+                                    <i class="bx bx-briefcase"></i>
+                                </span>
+                                <select
+                                    class="form-control"
+                                    id="expense-category"
+                                    name="Category"
+                                    required
+                                    aria-label="Expense Category"
+                                    aria-describedby="expense-category-icon">
+                                    <option value="" disabled selected>Select a category</option>
+                                    @foreach (var category in Enum.GetValues(typeof(Zira.Data.Enums.Categories)))
+                                    {
+                                        <option value="@category">@category</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Date Spent Input -->
+                        <div class="mb-3">
+                            <label class="form-label" for="expense-date">Date Spent</label>
+                            <div class="input-group input-group-merge">
+                                <span id="expense-date-icon" class="input-group-text">
+                                    <i class="bx bx-calendar"></i>
+                                </span>
+                                <input
+                                    type="date"
+                                    class="form-control"
+                                    id="expense-date"
+                                    name="DateSpent"
+                                    required
+                                    aria-label="Date Spent"
+                                    aria-describedby="expense-date-icon"/>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Add Expense</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

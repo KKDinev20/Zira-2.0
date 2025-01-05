@@ -84,6 +84,14 @@
         <_ContentIncludedByDefault Remove="Views\_ViewImports.cshtml" />
         <_ContentIncludedByDefault Remove="Views\Dashboard\IncomeManagement\AddIncome.cshtml" />
         <_ContentIncludedByDefault Remove="Views\Dashboard\IncomeManagement\IncomeList.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\ExpensesManagement\AddExpenses.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\ExpensesManagement\ExpensesList.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\ExpensesManagement\Shared\_ExpensesLayout.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\ExpensesManagement\Shared\_Footer.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\ExpensesManagement\Shared\_Scripts.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\ExpensesManagement\Shared\_Sidebar.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\ExpensesManagement\Shared\_Styles.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\ExpensesManagement\Shared\_TopBar.cshtml" />
     </ItemGroup>
 
 
