@@ -23,20 +23,11 @@ builder.Services
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy(
-        Policies.AdminPolicy,
-        policyBuilder =>
-    {
-        policyBuilder.RequireAuthenticatedUser();
-        policyBuilder.AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme);
-        policyBuilder.RequireRole(Roles.Admin);
-    });
-    options.AddPolicy(
         Policies.UserPolicy,
         policyBuilder =>
     {
         policyBuilder.RequireAuthenticatedUser();
         policyBuilder.AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme);
-        policyBuilder.RequireRole(Roles.User);
     });
 });
 

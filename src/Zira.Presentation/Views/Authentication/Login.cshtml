@@ -37,7 +37,7 @@
                         @Html.AntiForgeryToken()
 
                         <div class="mb-3">
-                            <label for="email-username" class="form-label">@AuthenticationText.EmailLabel</label>
+                            <label asp-for="Email" class="form-label">@AuthenticationText.EmailLabel</label>
                             <input
                                 type="text"
                                 class="form-control @(ViewData.ModelState["Email"]?.Errors.Count > 0 ? "is-invalid" : "")"
@@ -46,13 +46,13 @@
                                 value="@ViewData["email-username"]"/>
                             @if (ViewData.ModelState["Email"]?.Errors.Count > 0)
                             {
-                                <div class="invalid-feedback">Имейлът е задължително поле</div>
+                                <div class="invalid-feedback">@AuthenticationText.EmailIsRequiredErrorMessage</div>
                             }
                         </div>
 
                         <div class="mb-3 form-password-toggle">
                             <div class="d-flex justify-content-between">
-                                <label asp-for="Password" class="form-label">@AuthenticationText.PasswordLabel</label>
+                                <label asp-for="Password" class="form-label">@AuthenticationText.PasswordTitle</label>
                                 <a asp-controller="Authentication" asp-action="ForgotPassword" class="text-decoration-none">
                                     <small>@AuthenticationText.ForgotPasswordButton</small>
                                 </a>
@@ -69,7 +69,7 @@
                                 </span>
                                 @if (ViewData.ModelState["Password"]?.Errors.Count > 0)
                                 {
-                                    <div class="invalid-feedback">Паролата е задължително поле</div>
+                                    <div class="invalid-feedback">@AuthenticationText.PasswordIsRequiredErrorMessage</div>
                                 }
                             </div>
                         </div>

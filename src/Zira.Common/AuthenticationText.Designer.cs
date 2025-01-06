@@ -7,10 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Zira.Common {
+namespace Zira.Common
+{
     using System;
-    
-    
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -18,333 +18,321 @@ namespace Zira.Common {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute(
+        "System.Resources.Tools.StronglyTypedResourceBuilder",
+        "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class AuthenticationText {
-        
+    public class AuthenticationText
+    {
         private static global::System.Resources.ResourceManager resourceMan;
-        
+
         private static global::System.Globalization.CultureInfo resourceCulture;
-        
-        [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal AuthenticationText() {
+
+        [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+            "Microsoft.Performance",
+            "CA1811:AvoidUncalledPrivateCode")]
+        internal AuthenticationText()
+        {
         }
-        
+
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
-            get {
-                if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Zira.Common.AuthenticationText", typeof(AuthenticationText).Assembly);
+        [global::System.ComponentModel.EditorBrowsableAttribute(
+            global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        public static global::System.Resources.ResourceManager ResourceManager
+        {
+            get
+            {
+                if (object.ReferenceEquals(resourceMan, null))
+                {
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager(
+                        "Zira.Common.AuthenticationText",
+                        typeof(AuthenticationText).Assembly);
                     resourceMan = temp;
                 }
+
                 return resourceMan;
             }
         }
-        
+
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
-            get {
-                return resourceCulture;
-            }
-            set {
-                resourceCulture = value;
-            }
+        [global::System.ComponentModel.EditorBrowsableAttribute(
+            global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        public static global::System.Globalization.CultureInfo Culture
+        {
+            get { return resourceCulture; }
+            set { resourceCulture = value; }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Вече имате акаунт?.
         /// </summary>
-        public static string AlreadyHaveAccount {
-            get {
-                return ResourceManager.GetString("AlreadyHaveAccount", resourceCulture);
-            }
+        public static string AlreadyHaveAccount
+        {
+            get { return ResourceManager.GetString("AlreadyHaveAccount", resourceCulture); }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Обратно към вход.
         /// </summary>
-        public static string BackToLogin {
-            get {
-                return ResourceManager.GetString("BackToLogin", resourceCulture);
-            }
+        public static string BackToLogin
+        {
+            get { return ResourceManager.GetString("BackToLogin", resourceCulture); }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Потвърдете паролата.
         /// </summary>
-        public static string ConfirmPassword {
-            get {
-                return ResourceManager.GetString("ConfirmPassword", resourceCulture);
-            }
+        public static string ConfirmPassword
+        {
+            get { return ResourceManager.GetString("ConfirmPassword", resourceCulture); }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Потвърдете паролата.
         /// </summary>
-        public static string ConfirmPasswordLabel {
-            get {
-                return ResourceManager.GetString("ConfirmPasswordLabel", resourceCulture);
-            }
+        public static string ConfirmPasswordLabel
+        {
+            get { return ResourceManager.GetString("ConfirmPasswordLabel", resourceCulture); }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Имейлът е в невалиден формат.
         /// </summary>
-        public static string EmailIsInvalidErrorMessage {
-            get {
-                return ResourceManager.GetString("EmailIsInvalidErrorMessage", resourceCulture);
-            }
+        public static string EmailIsInvalidErrorMessage
+        {
+            get { return ResourceManager.GetString("EmailIsInvalidErrorMessage", resourceCulture); }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Имейлът е задължително поле.
         /// </summary>
-        public static string EmailIsRequiredErrorMessage {
-            get {
-                return ResourceManager.GetString("EmailIsRequiredErrorMessage", resourceCulture);
-            }
+        public static string EmailIsRequiredErrorMessage
+        {
+            get { return ResourceManager.GetString("EmailIsRequiredErrorMessage", resourceCulture); }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Имейл или потребителско име.
         /// </summary>
-        public static string EmailLabel {
-            get {
-                return ResourceManager.GetString("EmailLabel", resourceCulture);
-            }
+        public static string EmailLabel
+        {
+            get { return ResourceManager.GetString("EmailLabel", resourceCulture); }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Имейл.
         /// </summary>
-        public static string EmailTitle {
-            get {
-                return ResourceManager.GetString("EmailTitle", resourceCulture);
-            }
+        public static string EmailTitle
+        {
+            get { return ResourceManager.GetString("EmailTitle", resourceCulture); }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Забравена парола?.
         /// </summary>
-        public static string ForgotPasswordButton {
-            get {
-                return ResourceManager.GetString("ForgotPasswordButton", resourceCulture);
-            }
+        public static string ForgotPasswordButton
+        {
+            get { return ResourceManager.GetString("ForgotPasswordButton", resourceCulture); }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Въведете имейл адреса си и ние ще ви изпратим инструкции за възстановяване на паролата.
         /// </summary>
-        public static string ForgotPasswordSubtitle {
-            get {
-                return ResourceManager.GetString("ForgotPasswordSubtitle", resourceCulture);
-            }
+        public static string ForgotPasswordSubtitle
+        {
+            get { return ResourceManager.GetString("ForgotPasswordSubtitle", resourceCulture); }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Вашата заявка беше успешна. Моля проверете имейл адреса си за линк за промяна на парола..
         /// </summary>
-        public static string ForgotPasswordSuccessMessage {
-            get {
-                return ResourceManager.GetString("ForgotPasswordSuccessMessage", resourceCulture);
-            }
+        public static string ForgotPasswordSuccessMessage
+        {
+            get { return ResourceManager.GetString("ForgotPasswordSuccessMessage", resourceCulture); }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Забравена парола? 🔒.
         /// </summary>
-        public static string ForgotPasswordTitle {
-            get {
-                return ResourceManager.GetString("ForgotPasswordTitle", resourceCulture);
-            }
+        public static string ForgotPasswordTitle
+        {
+            get { return ResourceManager.GetString("ForgotPasswordTitle", resourceCulture); }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Имейлът или паролата не съвпадат.
         /// </summary>
-        public static string InvalidLoginErrorMessage {
-            get {
-                return ResourceManager.GetString("InvalidLoginErrorMessage", resourceCulture);
-            }
+        public static string InvalidLoginErrorMessage
+        {
+            get { return ResourceManager.GetString("InvalidLoginErrorMessage", resourceCulture); }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Влезте в акаунта си, за да започнете приключението.
         /// </summary>
-        public static string LoginSubtitle {
-            get {
-                return ResourceManager.GetString("LoginSubtitle", resourceCulture);
-            }
+        public static string LoginSubtitle
+        {
+            get { return ResourceManager.GetString("LoginSubtitle", resourceCulture); }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Добре дошли в Zira! 👋.
         /// </summary>
-        public static string LoginTitle {
-            get {
-                return ResourceManager.GetString("LoginTitle", resourceCulture);
-            }
+        public static string LoginTitle
+        {
+            get { return ResourceManager.GetString("LoginTitle", resourceCulture); }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Нов ли сте на платформата?.
         /// </summary>
-        public static string NewUser {
-            get {
-                return ResourceManager.GetString("NewUser", resourceCulture);
-            }
+        public static string NewUser
+        {
+            get { return ResourceManager.GetString("NewUser", resourceCulture); }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Потвърдената парола не съвпада.
         /// </summary>
-        public static string PasswordIsDifferentThanConfirmedErrorMessage {
-            get {
-                return ResourceManager.GetString("PasswordIsDifferentThanConfirmedErrorMessage", resourceCulture);
-            }
+        public static string PasswordIsDifferentThanConfirmedErrorMessage
+        {
+            get { return ResourceManager.GetString("PasswordIsDifferentThanConfirmedErrorMessage", resourceCulture); }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Паролата е задължително поле.
         /// </summary>
-        public static string PasswordIsRequiredErrorMessage {
-            get {
-                return ResourceManager.GetString("PasswordIsRequiredErrorMessage", resourceCulture);
-            }
+        public static string PasswordIsRequiredErrorMessage
+        {
+            get { return ResourceManager.GetString("PasswordIsRequiredErrorMessage", resourceCulture); }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Парола.
         /// </summary>
-        public static string PasswordLabel {
-            get {
-                return ResourceManager.GetString("PasswordLabel", resourceCulture);
-            }
+        public static string PasswordLabel
+        {
+            get { return ResourceManager.GetString("PasswordLabel", resourceCulture); }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Парола.
         /// </summary>
-        public static string PasswordTitle {
-            get {
-                return ResourceManager.GetString("PasswordTitle", resourceCulture);
-            }
+        public static string PasswordTitle
+        {
+            get { return ResourceManager.GetString("PasswordTitle", resourceCulture); }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Приключението започва тук 🚀.
         /// </summary>
-        public static string RegisterSlogan {
-            get {
-                return ResourceManager.GetString("RegisterSlogan", resourceCulture);
-            }
+        public static string RegisterSlogan
+        {
+            get { return ResourceManager.GetString("RegisterSlogan", resourceCulture); }
         }
-        
+
+        public static string PageNotFoundTitle
+        {
+            get { return ResourceManager.GetString("PageNotFoundTitle", resourceCulture); }
+        }
+
+        public static string PageNotFoundMessage
+        {
+            get { return ResourceManager.GetString("PageNotFoundMessage", resourceCulture); }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Направете управлението на приложението лесно и забавно!.
         /// </summary>
-        public static string RegisterSubtitle {
-            get {
-                return ResourceManager.GetString("RegisterSubtitle", resourceCulture);
-            }
+        public static string RegisterSubtitle
+        {
+            get { return ResourceManager.GetString("RegisterSubtitle", resourceCulture); }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Вашата регистрация беше успешна. Използвайте данните си за да влезете в системата..
         /// </summary>
-        public static string RegisterSuccessMessage {
-            get {
-                return ResourceManager.GetString("RegisterSuccessMessage", resourceCulture);
-            }
+        public static string RegisterSuccessMessage
+        {
+            get { return ResourceManager.GetString("RegisterSuccessMessage", resourceCulture); }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Направете управлението на приложението лесно и забавно!.
         /// </summary>
-        public static string RegisterText {
-            get {
-                return ResourceManager.GetString("RegisterText", resourceCulture);
-            }
+        public static string RegisterText
+        {
+            get { return ResourceManager.GetString("RegisterText", resourceCulture); }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Приключението започва тук 🚀.
         /// </summary>
-        public static string RegisterTitle {
-            get {
-                return ResourceManager.GetString("RegisterTitle", resourceCulture);
-            }
+        public static string RegisterTitle
+        {
+            get { return ResourceManager.GetString("RegisterTitle", resourceCulture); }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Смени паролата.
         /// </summary>
-        public static string ResetPasswordButtonText {
-            get {
-                return ResourceManager.GetString("ResetPasswordButtonText", resourceCulture);
-            }
+        public static string ResetPasswordButtonText
+        {
+            get { return ResourceManager.GetString("ResetPasswordButtonText", resourceCulture); }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Нулиране на вашата парола.
         /// </summary>
-        public static string ResetPasswordTitle {
-            get {
-                return ResourceManager.GetString("ResetPasswordTitle", resourceCulture);
-            }
+        public static string ResetPasswordTitle
+        {
+            get { return ResourceManager.GetString("ResetPasswordTitle", resourceCulture); }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Изпратете линк за възстановяване.
         /// </summary>
-        public static string SendResetLinkButton {
-            get {
-                return ResourceManager.GetString("SendResetLinkButton", resourceCulture);
-            }
+        public static string SendResetLinkButton
+        {
+            get { return ResourceManager.GetString("SendResetLinkButton", resourceCulture); }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Влез.
         /// </summary>
-        public static string SignInButton {
-            get {
-                return ResourceManager.GetString("SignInButton", resourceCulture);
-            }
+        public static string SignInButton
+        {
+            get { return ResourceManager.GetString("SignInButton", resourceCulture); }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Влезте вместо това.
         /// </summary>
-        public static string SignInInstead {
-            get {
-                return ResourceManager.GetString("SignInInstead", resourceCulture);
-            }
+        public static string SignInInstead
+        {
+            get { return ResourceManager.GetString("SignInInstead", resourceCulture); }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Създайте акаунт.
         /// </summary>
-        public static string SignUpButton {
-            get {
-                return ResourceManager.GetString("SignUpButton", resourceCulture);
-            }
+        public static string SignUpButton
+        {
+            get { return ResourceManager.GetString("SignUpButton", resourceCulture); }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Профилът Ви е временно заключен.
         /// </summary>
-        public static string UserLockedOutErrorMessage {
-            get {
-                return ResourceManager.GetString("UserLockedOutErrorMessage", resourceCulture);
-            }
+        public static string UserLockedOutErrorMessage
+        {
+            get { return ResourceManager.GetString("UserLockedOutErrorMessage", resourceCulture); }
         }
     }
 }

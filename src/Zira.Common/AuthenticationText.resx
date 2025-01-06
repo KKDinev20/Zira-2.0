@@ -17,10 +17,6 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-
-    <data name="LoginTitle" xml:space="preserve">
-        <value>Добре дошли в Zira! 👋</value>
-    </data>
     <data name="LoginSubtitle" xml:space="preserve">
         <value>Влезте в акаунта си, за да започнете приключението</value>
     </data>
@@ -46,15 +42,8 @@
     <data name="RegisterSlogan" xml:space="preserve">
         <value>Приключението започва тук 🚀</value>
     </data>
-    <data name="RegisterText" xml:space="preserve">
-        <value>Направете управлението на приложението лесно и забавно!</value>
-    </data>
     <data name="ConfirmPassword" xml:space="preserve">
         <value>Потвърдете паролата</value>
-    </data>
-
-    <data name="ForgotPasswordTitle" xml:space="preserve">
-        <value>Забравена парола? 🔒</value>
     </data>
     <data name="ForgotPasswordSubtitle" xml:space="preserve">
         <value>Въведете имейл адреса си и ние ще ви изпратим инструкции за възстановяване на паролата</value>
@@ -108,5 +97,11 @@
 
     <data name="ResetPasswordButtonText" xml:space="preserve">
         <value>Смени паролата</value>
+    </data>
+    <data name="PageNotFoundTitle" xml:space="preserve">
+        <value>Страницата не е намерена :(</value>
+    </data>
+    <data name="PageNotFoundMessage" xml:space="preserve">
+        <value>Опа! 😖 Търсеният URL адрес не беше намерен на този сървър.</value>
     </data>
 </root>

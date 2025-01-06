@@ -123,8 +123,6 @@ namespace Zira.Presentation.Controllers
 
                 if (result.Succeeded)
                 {
-                    await this.userManager.AddToRoleAsync(user, Roles.User);
-
                     this.TempData["MessageText"] = AuthenticationText.RegisterSuccessMessage;
                     this.TempData["MessageVariant"] = "success";
                     return this.RedirectToAction(nameof(this.Login));
