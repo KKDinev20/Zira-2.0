@@ -3,9 +3,9 @@
         <div class="d-flex align-items-end row">
             <div class="col-sm-7">
                 <div class="card-body">
-                    <h5 class="card-title text-primary">Welcome back, @User.Identity?.Name! 🎉</h5>
+                    <h5 class="card-title text-primary">@string.Format(DashboardText.WelcomeBack, User.Identity?.Name) 🎉</h5>
                     <p class="mb-4">
-                        Stay on track and review your recent expenses.
+                        @DashboardText.StayOnTrack
                     </p>
                 </div>
             </div>

@@ -82,4 +82,37 @@
     <data name="Account" xml:space="preserve">
         <value>Акаунт</value>
     </data>
+    <data name="Groceries" xml:space="preserve">
+        <value>Хранителни стоки</value>
+    </data>
+    <data name="Utilities" xml:space="preserve">
+        <value>Комунални услуги</value>
+    </data>
+    <data name="Balance" xml:space="preserve">
+    <value>Баланс</value>
+</data>
+    <data name="Expenses" xml:space="preserve">
+    <value>Разходи</value>
+</data>
+    <data name="TotalBalance" xml:space="preserve">
+    <value>Общ баланс</value>
+</data>
+    <data name="ExpensesThisWeek" xml:space="preserve">
+    <value>Разходи тази седмица</value>
+</data>
+    <data name="LessThanLastWeek" xml:space="preserve">
+    <value>$39 по-малко от миналата седмица</value>
+</data>
+    <data name="WelcomeBack" xml:space="preserve">
+    <value>Добре дошъл отново, {0}!</value>
+</data>
+    <data name="StayOnTrack" xml:space="preserve">
+    <value>Останете на път и прегледайте последните си разходи.</value>
+</data>
+    <data name="MonthlyIncome" xml:space="preserve">
+    <value>Месечен доход</value>
+</data>
+    <data name="MonthlyExpenses" xml:space="preserve">
+    <value>Месечни разходи</value>
+</data>
 </root>
