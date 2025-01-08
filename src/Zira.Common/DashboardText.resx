@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Dashboard" xml:space="preserve">
+        <value>Табло</value>
+    </data>
+    <data name="ExpenseManagement" xml:space="preserve">
+        <value>Управление на разходите</value>
+    </data>
+    <data name="AddExpenses" xml:space="preserve">
+        <value>Добавяне на разходи</value>
+    </data>
+    <data name="ExpenseList" xml:space="preserve">
+        <value>Списък на разходите</value>
+    </data>
+    <data name="IncomeManagement" xml:space="preserve">
+        <value>Управление на доходите</value>
+    </data>
+    <data name="AddIncome" xml:space="preserve">
+        <value>Добавяне на доход</value>
+    </data>
+    <data name="IncomeList" xml:space="preserve">
+        <value>Списък на доходите</value>
+    </data>
+    <data name="Budgeting" xml:space="preserve">
+        <value>Бюджетиране</value>
+    </data>
+    <data name="SetBudget" xml:space="preserve">
+        <value>Задаване на бюджет</value>
+    </data>
+    <data name="BudgetOverview" xml:space="preserve">
+        <value>Преглед на бюджета</value>
+    </data>
+    <data name="Analytics" xml:space="preserve">
+        <value>Анализи</value>
+    </data>
+    <data name="FinancialSummary" xml:space="preserve">
+        <value>Финансово обобщение</value>
+    </data>
+    <data name="Comparison" xml:space="preserve">
+        <value>Сравнение на разходите</value>
+    </data>
+    <data name="AccountSettings" xml:space="preserve">
+        <value>Настройки на акаунта</value>
+    </data>
+    <data name="Profile" xml:space="preserve">
+        <value>Профил</value>
+    </data>
+    <data name="NotificationPreferences" xml:space="preserve">
+        <value>Предпочитания за известия</value>
+    </data>
+    <data name="Automation" xml:space="preserve">
+        <value>Автоматизация</value>
+    </data>
+    <data name="BillReminders" xml:space="preserve">
+        <value>Напомняния за сметки</value>
+    </data>
+    <data name="NotificationConfig" xml:space="preserve">
+        <value>Конфигурация на известията</value>
+    </data>
+    <data name="Documentation" xml:space="preserve">
+        <value>Документация</value>
+    </data>
+    <data name="AdditionalInformation" xml:space="preserve">
+        <value>Допълнителна информация</value>
+    </data>
+    <data name="Account" xml:space="preserve">
+        <value>Акаунт</value>
+    </data>
+</root>

@@ -78,7 +78,7 @@ public class ExpensesManagementController : Controller
         return this.View(expense);
     }
 
-    [HttpPost("/edit-expense/{id}")]
+    [HttpPut("/edit-expense/{id}")]
     public async Task<IActionResult> EditExpenses(Guid id, Expense model)
     {
         if (id != model.ExpenseId)
@@ -121,7 +121,7 @@ public class ExpensesManagementController : Controller
         return this.View(expense);
     }
 
-    [HttpPost("/delete-expense/{id}")]
+    [HttpDelete("/delete-expense/{id}")]
     public async Task<IActionResult> DeleteExpenseAsync(Guid id)
     {
         var expense = await this.context.Expenses.FindAsync(id);

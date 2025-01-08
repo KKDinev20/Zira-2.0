@@ -36,6 +36,10 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>LandingText.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="DashboardText.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>DashboardText.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -53,6 +57,11 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>LandingText.resx</DependentUpon>
+      </Compile>
+      <Compile Update="DashboardText.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>DashboardText.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 
