@@ -1,107 +1,156 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <xsd:element name="root" msdata:IsDataSet="true">
-        </xsd:element>
-    </xsd:schema>
-
     <resheader name="resmimetype">
         <value>text/microsoft-resx</value>
     </resheader>
     <resheader name="version">
-        <value>1.3</value>
+        <value>2.0</value>
     </resheader>
     <resheader name="reader">
-        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <resheader name="writer">
-        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="LoginSubtitle" xml:space="preserve">
-        <value>Влезте в акаунта си, за да започнете приключението</value>
-    </data>
-    <data name="EmailLabel" xml:space="preserve">
-        <value>Имейл или потребителско име</value>
-    </data>
-    <data name="PasswordTitle" xml:space="preserve">
-        <value>Парола</value>
-    </data>
-    <data name="ForgotPasswordButton" xml:space="preserve">
-        <value>Забравена парола?</value>
-    </data>
-    <data name="SignInButton" xml:space="preserve">
-        <value>Влез</value>
-    </data>
-    <data name="NewUser" xml:space="preserve">
-        <value>Нов ли сте на платформата?</value>
-    </data>
-    <data name="SignUpButton" xml:space="preserve">
-        <value>Създайте акаунт</value>
-    </data>
-
-    <data name="RegisterSlogan" xml:space="preserve">
-        <value>Приключението започва тук 🚀</value>
-    </data>
-    <data name="ConfirmPassword" xml:space="preserve">
-        <value>Потвърдете паролата</value>
-    </data>
-    <data name="ForgotPasswordSubtitle" xml:space="preserve">
-        <value>Въведете имейл адреса си и ние ще ви изпратим инструкции за възстановяване на паролата</value>
-    </data>
-    <data name="SendResetLinkButton" xml:space="preserve">
-        <value>Изпратете линк за възстановяване</value>
-    </data>
-
-    <data name="EmailIsRequiredErrorMessage" xml:space="preserve">
-        <value>Имейлът е задължително поле</value>
-    </data>
-    <data name="EmailIsInvalidErrorMessage" xml:space="preserve">
-        <value>Имейлът е в невалиден формат</value>
-    </data>
-    <data name="PasswordIsRequiredErrorMessage" xml:space="preserve">
-        <value>Паролата е задължително поле</value>
-    </data>
-    <data name="PasswordIsDifferentThanConfirmedErrorMessage" xml:space="preserve">
-        <value>Потвърдената парола не съвпада</value>
-    </data>
-
     <data name="BackToLogin" xml:space="preserve">
-        <value>Обратно към вход</value>
-    </data>
-
-    <data name="RegisterTitle" xml:space="preserve">
-        <value>Приключението започва тук 🚀</value>
-    </data>
-    <data name="RegisterSubtitle" xml:space="preserve">
-        <value>Направете управлението на приложението лесно и забавно!</value>
-    </data>
-
-    <data name="ResetPasswordTitle" xml:space="preserve">
-        <value>Нулиране на вашата парола</value>
-    </data>
-
-    <data name="InvalidLoginErrorMessage" xml:space="preserve">
-        <value>Имейлът или паролата не съвпадат</value>
-    </data>
-    <data name="UserLockedOutErrorMessage" xml:space="preserve">
-        <value>Профилът Ви е временно заключен</value>
-    </data>
-
-    <data name="RegisterSuccessMessage" xml:space="preserve">
-        <value>Вашата регистрация беше успешна. Използвайте данните си за да влезете в системата.</value>
-    </data>
-
+    <value>Обратно към вход</value>
+  </data>
+    <data name="ConfirmPassword" xml:space="preserve">
+    <value>Потвърдете паролата</value>
+  </data>
+    <data name="EmailIsInvalidErrorMessage" xml:space="preserve">
+    <value>Имейлът е в невалиден формат</value>
+  </data>
+    <data name="EmailIsRequiredErrorMessage" xml:space="preserve">
+    <value>Имейлът е задължително поле</value>
+  </data>
+    <data name="EmailLabel" xml:space="preserve">
+    <value>Имейл или потребителско име</value>
+  </data>
+    <data name="ForgotPasswordButton" xml:space="preserve">
+    <value>Забравена парола?</value>
+  </data>
+    <data name="ForgotPasswordSubtitle" xml:space="preserve">
+    <value>Въведете имейл адреса си и ние ще ви изпратим инструкции за възстановяване на паролата</value>
+  </data>
     <data name="ForgotPasswordSuccessMessage" xml:space="preserve">
-        <value>Вашата заявка беше успешна. Моля проверете имейл адреса си за линк за промяна на парола.</value>
-    </data>
-
-    <data name="ResetPasswordButtonText" xml:space="preserve">
-        <value>Смени паролата</value>
-    </data>
-    <data name="PageNotFoundTitle" xml:space="preserve">
-        <value>Страницата не е намерена :(</value>
-    </data>
+    <value>Вашата заявка беше успешна. Моля проверете имейл адреса си за линк за промяна на парола.</value>
+  </data>
+    <data name="InvalidLoginErrorMessage" xml:space="preserve">
+    <value>Имейлът или паролата не съвпадат</value>
+  </data>
+    <data name="LoginSubtitle" xml:space="preserve">
+    <value>Влезте в акаунта си, за да започнете приключението</value>
+  </data>
+    <data name="NewUser" xml:space="preserve">
+    <value>Нов ли сте на платформата?</value>
+  </data>
     <data name="PageNotFoundMessage" xml:space="preserve">
-        <value>Опа! 😖 Търсеният URL адрес не беше намерен на този сървър.</value>
-    </data>
+    <value>Опа! 😖 Търсеният URL адрес не беше намерен на този сървър.</value>
+  </data>
+    <data name="PageNotFoundTitle" xml:space="preserve">
+    <value>Страницата не е намерена :(</value>
+  </data>
+    <data name="PasswordIsDifferentThanConfirmedErrorMessage" xml:space="preserve">
+    <value>Потвърдената парола не съвпада</value>
+  </data>
+    <data name="PasswordIsRequiredErrorMessage" xml:space="preserve">
+    <value>Паролата е задължително поле</value>
+  </data>
+    <data name="PasswordTitle" xml:space="preserve">
+    <value>Парола</value>
+  </data>
+    <data name="RegisterSlogan" xml:space="preserve">
+    <value>Приключението започва тук 🚀</value>
+  </data>
+    <data name="RegisterSubtitle" xml:space="preserve">
+    <value>Направете управлението на приложението лесно и забавно!</value>
+  </data>
+    <data name="RegisterSuccessMessage" xml:space="preserve">
+    <value>Вашата регистрация беше успешна. Използвайте данните си за да влезете в системата.</value>
+  </data>
+    <data name="RegisterTitle" xml:space="preserve">
+    <value>Приключението започва тук 🚀</value>
+  </data>
+    <data name="ResetPasswordButtonText" xml:space="preserve">
+    <value>Смени паролата</value>
+  </data>
+    <data name="ResetPasswordTitle" xml:space="preserve">
+    <value>Нулиране на вашата парола</value>
+  </data>
+    <data name="SendResetLinkButton" xml:space="preserve">
+    <value>Изпратете линк за възстановяване</value>
+  </data>
+    <data name="SignInButton" xml:space="preserve">
+    <value>Влез</value>
+  </data>
+    <data name="SignUpButton" xml:space="preserve">
+    <value>Създайте акаунт</value>
+  </data>
+    <data name="UserLockedOutErrorMessage" xml:space="preserve">
+    <value>Профилът Ви е временно заключен</value>
+  </data>
+  <data name="AlreadyHaveAccount" xml:space="preserve">
+    <value>Имате акаунт?</value>
+  </data>
+  <data name="SignInInstead" xml:space="preserve">
+    <value>Влезте директно</value>
+  </data>
+  <data name="PasswordLabel" xml:space="preserve">
+    <value>Поле за парола</value>
+  </data>
+  <data name="ConfirmPasswordLabel" xml:space="preserve">
+    <value>Потвърдете паролата си</value>
+  </data>
+  <data name="CurrentPasswordIsRequiredErrorMessage" xml:space="preserve">
+    <value>Моля, въведете текущата си парола.
+</value>
+  </data>
+  <data name="NewPasswordIsRequiredErrorMessage" xml:space="preserve">
+    <value>Моля, въведете нова парола.</value>
+  </data>
+  <data name="NewEmailIsRequiredErrorMessage" xml:space="preserve">
+    <value>Моля, въведете новия си имейл адрес.</value>
+  </data>
+  <data name="NewEmailIsInvalidErrorMessage" xml:space="preserve">
+    <value>Невалиден имейл адрес.</value>
+  </data>
+  <data name="NewEmailLabel" xml:space="preserve">
+    <value>Нов имейл адрес</value>
+  </data>
+  <data name="CurrentPasswordLabel" xml:space="preserve">
+    <value>Текуща парола
+</value>
+  </data>
+  <data name="NewPasswordLabel" xml:space="preserve">
+    <value>Нова парола
+</value>
+  </data>
+  <data name="ConfirmNewPasswordIsRequiredErrorMessage" xml:space="preserve">
+    <value>Моля, потвърдете новата си парола.
+</value>
+  </data>
+  <data name="PasswordsDoNotMatchErrorMessage" xml:space="preserve">
+    <value>Новата парола и потвърдената парола не съвпадат.
+</value>
+  </data>
+  <data name="ConfirmNewPasswordLabel" xml:space="preserve">
+    <value>Потвърдете новата парола</value>
+  </data>
+  <data name="ChangeEmailTitle" xml:space="preserve">
+    <value>Промяна на имейл адреса
+</value>
+  </data>
+  <data name="ChangeEmailButtonText" xml:space="preserve">
+    <value>Смяна на имейл адреса</value>
+  </data>
+  <data name="ChangePasswordButtonText" xml:space="preserve">
+    <value>Смяна на паролата</value>
+  </data>
+  <data name="OldPasswordLabel" xml:space="preserve">
+    <value>Стара Парола</value>
+  </data>
+  <data name="ChangePasswordTitle" xml:space="preserve">
+    <value>Промяна на паролата</value>
+  </data>
 </root>

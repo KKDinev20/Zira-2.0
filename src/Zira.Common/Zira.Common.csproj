@@ -28,10 +28,6 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>Emails.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <EmbeddedResource Update="AuthenticationText.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>Text.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
       <EmbeddedResource Update="LandingText.resx">
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>LandingText.Designer.cs</LastGenOutput>
@@ -40,6 +36,10 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>DashboardText.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="AuthenticationText.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>AuthenticationText.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -47,11 +47,6 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>Emails.resx</DependentUpon>
-      </Compile>
-      <Compile Update="AuthenticationText.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>AuthenticationText.resx</DependentUpon>
       </Compile>
       <Compile Update="LandingText.Designer.cs">
         <DesignTime>True</DesignTime>
@@ -62,6 +57,11 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>DashboardText.resx</DependentUpon>
+      </Compile>
+      <Compile Update="AuthenticationText.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>AuthenticationText.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 
