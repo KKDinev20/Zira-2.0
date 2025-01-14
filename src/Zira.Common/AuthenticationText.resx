@@ -153,4 +153,19 @@
   <data name="ChangePasswordTitle" xml:space="preserve">
     <value>Промяна на паролата</value>
   </data>
+  <data name="EmailChangeSuccess" xml:space="preserve">
+    <value>Вашият имейл и потребителско име бяха успешно променени. Моля, влезте отново.</value>
+  </data>
+    <data name="PasswordChangeSuccess" xml:space="preserve">
+      <value>Вашата парола беше успешно променена. Моля, влезте отново.</value>
+  </data>
+  <data name="PasswordChangeFailed" xml:space="preserve">
+      <value>Не успяхте да промените паролата. Моля, опитайте отново.</value>
+  </data>
+  <data name="EmailChangeFailed" xml:space="preserve">
+      <value>Не успяхте да промените имейла. Моля, опитайте отново.</value>
+  </data>
+  <data name="UsernameChangeFailed" xml:space="preserve">
+      <value>Не успя да актуализирате потребителското име. Моля, опитайте отново.</value>
+  </data>
 </root>

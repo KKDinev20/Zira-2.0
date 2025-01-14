@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Zira.Common;
 using Zira.Data;
+using Zira.Data.Models;
 using Zira.Presentation.Extensions;
 using Zira.Presentation.Models;
 using Zira.Services.Common.Contracts;

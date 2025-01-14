@@ -1,10 +1,13 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Zira.Common;
 using Zira.Data;
+using Zira.Data.Models;
 using Zira.Presentation.Extensions;
 using Zira.Presentation.Models;
 
@@ -14,17 +17,11 @@ namespace Zira.Presentation.Controllers;
 public class AccountController : Controller
 {
     private readonly UserManager<ApplicationUser> userManager;
-    private readonly SignInManager<ApplicationUser> signInManager;
-    private readonly ILogger<AuthenticationController> logger;
 
     public AccountController(
-        UserManager<ApplicationUser> userManager,
-        SignInManager<ApplicationUser> signInManager,
-        ILogger<AuthenticationController> logger)
+        UserManager<ApplicationUser> userManager)
     {
         this.userManager = userManager;
-        this.signInManager = signInManager;
-        this.logger = logger;
     }
 
     [HttpGet("/change-email")]
@@ -56,19 +53,19 @@ public class AccountController : Controller
 
                 if (usernameUpdateResult.Succeeded)
                 {
-                    await this.signInManager.RefreshSignInAsync(user);
-                    this.TempData["MessageText"] = "Your email and username have been changed successfully.";
+                    await this.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                    this.TempData["MessageText"] = @AuthenticationText.EmailChangeSuccess;
                     this.TempData["MessageVariant"] = "success";
                     return this.RedirectToLogin();
                 }
                 else
                 {
                     await this.userManager.ChangeEmailAsync(user, user.Email!, token);
-                    this.ModelState.AddModelError(string.Empty, "Failed to update username. Please try again.");
+                    this.ModelState.AddModelError(string.Empty, @AuthenticationText.UsernameChangeFailed);
                 }
             }
 
-            this.ModelState.AddModelError(string.Empty, "Failed to change email. Please try again.");
+            this.ModelState.AddModelError(string.Empty, @AuthenticationText.EmailChangeFailed);
         }
 
         return this.View(model);
@@ -96,13 +93,13 @@ public class AccountController : Controller
             var result = await this.userManager.ChangePasswordAsync(user, model.OldPassword!, model.NewPassword!);
             if (result.Succeeded)
             {
-                await this.signInManager.RefreshSignInAsync(user);
-                this.TempData["MessageText"] = "Your password has been changed successfully.";
+                await this.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                this.TempData["MessageText"] = @AuthenticationText.PasswordChangeSuccess;
                 this.TempData["MessageVariant"] = "success";
                 return this.RedirectToLogin();
             }
 
-            this.ModelState.AddModelError(string.Empty, "Failed to change password. Please try again.");
+            this.ModelState.AddModelError(string.Empty, @AuthenticationText.PasswordChangeFailed);
         }
 
         return this.View(model);

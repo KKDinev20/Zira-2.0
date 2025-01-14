@@ -172,6 +172,24 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Не успяхте да промените имейла. Моля, опитайте отново..
+        /// </summary>
+        public static string EmailChangeFailed {
+            get {
+                return ResourceManager.GetString("EmailChangeFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Вашият имейл и потребителско име бяха успешно променени. Моля, влезте отново..
+        /// </summary>
+        public static string EmailChangeSuccess {
+            get {
+                return ResourceManager.GetString("EmailChangeSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Имейлът е в невалиден формат.
         /// </summary>
         public static string EmailIsInvalidErrorMessage {
@@ -326,6 +344,24 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Не успяхте да промените паролата. Моля, опитайте отново..
+        /// </summary>
+        public static string PasswordChangeFailed {
+            get {
+                return ResourceManager.GetString("PasswordChangeFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Вашата парола беше успешно променена. Моля, влезте отново..
+        /// </summary>
+        public static string PasswordChangeSuccess {
+            get {
+                return ResourceManager.GetString("PasswordChangeSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Потвърдената парола не съвпада.
         /// </summary>
         public static string PasswordIsDifferentThanConfirmedErrorMessage {
@@ -467,6 +503,15 @@ namespace Zira.Common {
         public static string UserLockedOutErrorMessage {
             get {
                 return ResourceManager.GetString("UserLockedOutErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Не успя да актуализирате потребителското име. Моля, опитайте отново..
+        /// </summary>
+        public static string UsernameChangeFailed {
+            get {
+                return ResourceManager.GetString("UsernameChangeFailed", resourceCulture);
             }
         }
     }

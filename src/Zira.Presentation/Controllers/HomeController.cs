@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Zira.Data;
+using Zira.Data.Models;
 using Zira.Services.Common.Contracts;
 using Zira.Services.Common.Models;
 using Zira.Services.Identity.Constants;

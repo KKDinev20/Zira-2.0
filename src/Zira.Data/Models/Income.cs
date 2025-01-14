@@ -1,5 +1,6 @@
 ﻿using System;
 using Zira.Data.Enums;
+using Zira.Data.Models;
 
 namespace Zira.Data;
 
@@ -11,5 +12,5 @@ public class Income
     public Sources Source { get; set; }
     public DateTime DateReceived { get; set; }
 
-    public ApplicationUser? User { get; set; }
+    public User? User { get; set; }
 }

@@ -2,6 +2,7 @@ using System;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Zira.Data;
+using Zira.Data.Models;
 using Zira.Services.Identity.Contracts;
 using Zira.Services.Identity.Internals;
 
