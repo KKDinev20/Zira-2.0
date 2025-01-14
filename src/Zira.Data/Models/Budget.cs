@@ -11,5 +11,5 @@ public class Budget
     public decimal Amount { get; set; }
     public DateTime Month { get; set; }
 
-    public User? User { get; set; }
+    public ApplicationUser? User { get; set; }
 }

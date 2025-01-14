@@ -10,6 +10,6 @@ public static class ControllerExtensions
     public static IActionResult RedirectToDefault(this Controller controller) =>
         controller.RedirectToAction("Index", "Dashboard");
 
-    public static IActionResult RedirectToLogin(this Controller controller) =>
-        controller.RedirectToAction("Login", "Authentication");
+    public static IActionResult RedirectToProfile(this Controller controller) =>
+        controller.RedirectToAction("CompleteProfile", "Account");
 }

@@ -17,11 +17,61 @@ namespace Zira.Presentation.Controllers;
 public class AccountController : Controller
 {
     private readonly UserManager<ApplicationUser> userManager;
+    private readonly EntityContext context;
 
     public AccountController(
-        UserManager<ApplicationUser> userManager)
+        UserManager<ApplicationUser> userManager,
+        EntityContext context)
     {
         this.userManager = userManager;
+        this.context = context;
+    }
+
+    [HttpGet("/complete-profile")]
+    public async Task<IActionResult> CompleteProfile()
+    {
+        var user = await this.userManager.GetUserAsync(this.User);
+        if (user == null)
+        {
+            return this.RedirectToAction(nameof(AuthenticationController.Login), "Authentication");
+        }
+
+        /*var viewModel = new CompleteProfileViewModel
+        {
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            BirthDate = user.BirthDate,
+            AvatarUrl = user.AvatarUrl,
+        };*/
+
+        //return this.View(viewModel);
+        return this.View();
+    }
+
+    [HttpPost("/complete-profile")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> CompleteProfile(CompleteProfileViewModel model)
+    {
+        if (this.ModelState.IsValid)
+        {
+            var user = await this.userManager.GetUserAsync(this.User);
+            if (user == null)
+            {
+                return this.RedirectToAction(nameof(AuthenticationController.Login), "Authentication");
+            }
+
+            /*user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.BirthDate = model.BirthDate;
+            user.AvatarUrl = model.AvatarUrl;
+
+            this.context.Users.Update(user);*/
+            await this.context.SaveChangesAsync();
+
+            return this.RedirectToAction("Dashboard", "Home");
+        }
+
+        return this.View(model);
     }
 
     [HttpGet("/change-email")]
@@ -56,7 +106,6 @@ public class AccountController : Controller
                     await this.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
                     this.TempData["MessageText"] = @AuthenticationText.EmailChangeSuccess;
                     this.TempData["MessageVariant"] = "success";
-                    return this.RedirectToLogin();
                 }
                 else
                 {
@@ -96,7 +145,6 @@ public class AccountController : Controller
                 await this.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
                 this.TempData["MessageText"] = @AuthenticationText.PasswordChangeSuccess;
                 this.TempData["MessageVariant"] = "success";
-                return this.RedirectToLogin();
             }
 
             this.ModelState.AddModelError(string.Empty, @AuthenticationText.PasswordChangeFailed);
