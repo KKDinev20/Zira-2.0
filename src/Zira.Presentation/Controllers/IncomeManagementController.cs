@@ -24,7 +24,7 @@ public class IncomeManagementController : Controller
     [HttpGet("/add-income/")]
     public IActionResult AddIncome()
     {
-        this.ViewBag.Sources = Enum.GetValues(typeof(Sources));
+        this.ViewBag.Sources = Enum.GetValues(typeof(Sources)).Cast<Sources>().ToList();
         return this.View();
     }
 
@@ -33,12 +33,23 @@ public class IncomeManagementController : Controller
     {
         if (this.ModelState.IsValid)
         {
+            var userId = this.User.GetUserId();
+
+            var user = await this.context.Users
+                .FirstOrDefaultAsync(u => u.ApplicationUserId == userId);
+
+            if (user == null)
+            {
+                this.ModelState.AddModelError("", "User does not exist.");
+                return this.View(incomeModel);
+            }
+
             incomeModel.IncomeId = Guid.NewGuid();
-            incomeModel.UserId = this.User.GetUserId();
+            incomeModel.UserId = user.Id;
 
             if (incomeModel.DateReceived == default)
             {
-                incomeModel.DateReceived = DateTime.Now;
+                incomeModel.DateReceived = DateTime.UtcNow;
             }
 
             this.context.Incomes.Add(incomeModel);
@@ -47,7 +58,7 @@ public class IncomeManagementController : Controller
             return this.RedirectToAction("IncomeList");
         }
 
-        this.ViewBag.Sources = Enum.GetValues(typeof(Sources));
+        this.ViewBag.Sources = Enum.GetValues(typeof(Sources)).Cast<Sources>().ToList();
         return this.View(incomeModel);
     }
 
@@ -55,8 +66,17 @@ public class IncomeManagementController : Controller
     public async Task<IActionResult> IncomeList()
     {
         var userId = this.User.GetUserId();
+
+        var user = await this.context.Users
+            .FirstOrDefaultAsync(u => u.ApplicationUserId == userId);
+
+        if (user == null)
+        {
+            return this.NotFound("User not found.");
+        }
+
         var incomes = await this.context.Incomes
-            .Where(i => i.UserId == userId)
+            .Where(i => i.UserId == user.Id)
             .ToListAsync();
 
         return this.View(incomes);
@@ -66,7 +86,9 @@ public class IncomeManagementController : Controller
     public async Task<IActionResult> EditIncome(Guid id)
     {
         var income = await this.context.Incomes
-            .FirstOrDefaultAsync(i => i.IncomeId == id && i.UserId == this.User.GetUserId());
+            .Include(i => i.User)
+            .FirstOrDefaultAsync(
+                i => i.IncomeId == id && i.User.ApplicationUserId == this.User.GetUserId());
 
         if (income == null)
         {
@@ -89,7 +111,9 @@ public class IncomeManagementController : Controller
         if (this.ModelState.IsValid)
         {
             var income = await this.context.Incomes
-                .FirstOrDefaultAsync(i => i.IncomeId == id && i.UserId == this.User.GetUserId());
+                .Include(i => i.User)
+                .FirstOrDefaultAsync(
+                    i => i.IncomeId == id && i.User.ApplicationUserId == this.User.GetUserId());
 
             if (income == null)
             {
@@ -105,14 +129,18 @@ public class IncomeManagementController : Controller
             return this.RedirectToAction("IncomeList");
         }
 
-        this.ViewBag.Sources = Enum.GetValues(typeof(Sources));
+        this.ViewBag.Sources = Enum.GetValues(typeof(Sources)).Cast<Sources>().ToList();
         return this.View(model);
     }
 
     [HttpGet("/delete-income/{id}")]
     public async Task<IActionResult> DeleteIncome(Guid id)
     {
-        var income = await this.context.Incomes.FindAsync(id);
+        var income = await this.context.Incomes
+            .Include(i => i.User)
+            .FirstOrDefaultAsync(
+                i => i.IncomeId == id && i.User.ApplicationUserId == this.User.GetUserId());
+
         if (income == null)
         {
             return this.NotFound();
@@ -124,7 +152,11 @@ public class IncomeManagementController : Controller
     [HttpPost("/delete-income/{id}")]
     public async Task<IActionResult> DeleteIncomeAsync(Guid id)
     {
-        var income = await this.context.Incomes.FindAsync(id);
+        var income = await this.context.Incomes
+            .Include(i => i.User)
+            .FirstOrDefaultAsync(
+                i => i.IncomeId == id && i.User.ApplicationUserId == this.User.GetUserId());
+
         if (income == null)
         {
             return this.NotFound();

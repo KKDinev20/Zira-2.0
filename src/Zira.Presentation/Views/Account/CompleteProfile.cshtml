@@ -4,53 +4,53 @@
 Layout = "Shared/_AccountLayout";
 }
 
-<div class="col-xxl">
-    <div class="card mb-4">
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="card mb-4" style="width: 50%;">
         <div class="card-header d-flex align-items-center justify-content-between">
             <h5 class="mb-0">Complete Your Profile</h5>
-            <small class="text-muted float-end">Please fill in the details</small>
+            <small class="text-muted">Please fill in the details</small>
         </div>
         <div class="card-body">
             <form asp-action="CompleteProfile" method="post" enctype="multipart/form-data">
                 <div class="row mb-3">
-                    <label class="col-sm-2 col-form-label" for="basic-icon-default-firstname">First Name</label>
-                    <div class="col-sm-10">
+                    <label class="col-sm-3 col-form-label" for="basic-icon-default-firstname">First Name</label>
+                    <div class="col-sm-9">
                         <div class="input-group input-group-merge">
                             <span id="basic-icon-default-firstname2" class="input-group-text"><i class="bx bx-user"></i></span>
-                            <input type="text" class="form-control" id="basic-icon-default-firstname" name="FirstName" placeholder="John" aria-label="John" aria-describedby="basic-icon-default-firstname2" value="@Model.FirstName" />
+                            <input type="text" class="form-control" id="basic-icon-default-firstname" name="FirstName" placeholder="John" value="@Model.FirstName" />
                         </div>
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label class="col-sm-2 col-form-label" for="basic-icon-default-lastname">Last Name</label>
-                    <div class="col-sm-10">
+                    <label class="col-sm-3 col-form-label" for="basic-icon-default-lastname">Last Name</label>
+                    <div class="col-sm-9">
                         <div class="input-group input-group-merge">
                             <span id="basic-icon-default-lastname2" class="input-group-text"><i class="bx bx-user"></i></span>
-                            <input type="text" class="form-control" id="basic-icon-default-lastname" name="LastName" placeholder="Doe" aria-label="Doe" aria-describedby="basic-icon-default-lastname2" value="@Model.LastName" />
+                            <input type="text" class="form-control" id="basic-icon-default-lastname" name="LastName" placeholder="Doe" value="@Model.LastName" />
                         </div>
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label class="col-sm-2 col-form-label" for="basic-icon-default-birthdate">Birth Date</label>
-                    <div class="col-sm-10">
+                    <label class="col-sm-3 col-form-label" for="basic-icon-default-birthdate">Birth Date</label>
+                    <div class="col-sm-9">
                         <div class="input-group input-group-merge">
                             <span id="basic-icon-default-birthdate2" class="input-group-text"><i class="bx bx-calendar"></i></span>
-                            <input type="date" class="form-control" id="basic-icon-default-birthdate" name="BirthDate" aria-describedby="basic-icon-default-birthdate2" value="@Model.BirthDate.ToString("yyyy-MM-dd")" />
+                            <input type="date" class="form-control" id="basic-icon-default-birthdate" name="BirthDate" value="@Model.BirthDate.ToString("yyyy-MM-dd")" />
                         </div>
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label class="col-sm-2 col-form-label" for="basic-icon-default-avatarurl">Avatar</label>
-                    <div class="col-sm-10">
+                    <label class="col-sm-3 col-form-label" for="basic-icon-default-avatarurl">Avatar</label>
+                    <div class="col-sm-9">
                         <div class="input-group input-group-merge">
                             <span id="basic-icon-default-avatarurl2" class="input-group-text"><i class="bx bx-image"></i></span>
-                            <input class="form-control" type="file" id="formFile" name="AvatarUrl" />
+                            <input class="form-control" type="file" id="formFile" name="AvatarUrl" accept="image/*" />
                         </div>
                     </div>
                 </div>
                 <div class="row justify-content-end">
-                    <div class="col-sm-10">
-                        <button type="submit" class="btn btn-primary">Save</button>
+                    <div class="col-sm-9">
+                        <button type="submit" class="btn btn-primary w-100">Save</button>
                     </div>
                 </div>
             </form>

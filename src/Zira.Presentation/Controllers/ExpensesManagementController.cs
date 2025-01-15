@@ -33,12 +33,23 @@ public class ExpensesManagementController : Controller
     {
         if (this.ModelState.IsValid)
         {
+            var userId = this.User.GetUserId();
+
+            var user = await this.context.Users
+                .FirstOrDefaultAsync(u => u.ApplicationUserId == userId);
+
+            if (user == null)
+            {
+                this.ModelState.AddModelError(" ", "User does not exist.");
+                return this.View(expenseModel);
+            }
+
             expenseModel.ExpenseId = Guid.NewGuid();
-            expenseModel.UserId = this.User.GetUserId();
+            expenseModel.UserId = user.Id;
 
             if (expenseModel.DateSpent == default)
             {
-                expenseModel.DateSpent = DateTime.Now;
+                expenseModel.DateSpent = DateTime.UtcNow;
             }
 
             this.context.Expenses.Add(expenseModel);
@@ -47,7 +58,7 @@ public class ExpensesManagementController : Controller
             return this.RedirectToAction("ExpensesList");
         }
 
-        this.ViewBag.Categories = Enum.GetValues(typeof(Categories));
+        this.ViewBag.Sources = Enum.GetValues(typeof(Sources)).Cast<Sources>().ToList();
         return this.View(expenseModel);
     }
 
@@ -55,8 +66,17 @@ public class ExpensesManagementController : Controller
     public async Task<IActionResult> ExpensesList()
     {
         var userId = this.User.GetUserId();
+
+        var user = await this.context.Users
+            .FirstOrDefaultAsync(u => u.ApplicationUserId == userId);
+
+        if (user == null)
+        {
+            return this.NotFound("User not found.");
+        }
+
         var expenses = await this.context.Expenses
-            .Where(i => i.UserId == userId)
+            .Where(i => i.UserId == user.Id)
             .ToListAsync();
 
         return this.View(expenses);
@@ -66,6 +86,7 @@ public class ExpensesManagementController : Controller
     public async Task<IActionResult> EditExpenses(Guid id)
     {
         var expense = await this.context.Expenses
+            .AsNoTracking()
             .FirstOrDefaultAsync(i => i.ExpenseId == id && i.UserId == this.User.GetUserId());
 
         if (expense == null)
@@ -74,11 +95,10 @@ public class ExpensesManagementController : Controller
         }
 
         this.ViewBag.Categories = Enum.GetValues(typeof(Categories)).Cast<Categories>().ToList();
-
         return this.View(expense);
     }
 
-    [HttpPut("/edit-expense/{id}")]
+    [HttpPost("/edit-expense/{id}")]
     public async Task<IActionResult> EditExpenses(Guid id, Expense model)
     {
         if (id != model.ExpenseId)
@@ -96,13 +116,20 @@ public class ExpensesManagementController : Controller
                 return this.NotFound();
             }
 
+            // Update properties
             expense.Category = model.Category;
             expense.Amount = model.Amount;
             expense.DateSpent = model.DateSpent;
 
-            await this.context.SaveChangesAsync();
-
-            return this.RedirectToAction("ExpensesList");
+            try
+            {
+                await this.context.SaveChangesAsync();
+                return this.RedirectToAction("ExpensesList");
+            }
+            catch (DbUpdateException ex)
+            {
+                this.ModelState.AddModelError(" ", $"Error updating expense: {ex.Message}");
+            }
         }
 
         this.ViewBag.Categories = Enum.GetValues(typeof(Categories));
@@ -112,7 +139,10 @@ public class ExpensesManagementController : Controller
     [HttpGet("/delete-expense/{id}")]
     public async Task<IActionResult> DeleteExpense(Guid id)
     {
-        var expense = await this.context.Expenses.FindAsync(id);
+        var expense = await this.context.Expenses
+            .AsNoTracking()
+            .FirstOrDefaultAsync(i => i.ExpenseId == id && i.UserId == this.User.GetUserId());
+
         if (expense == null)
         {
             return this.NotFound();
@@ -121,18 +151,27 @@ public class ExpensesManagementController : Controller
         return this.View(expense);
     }
 
-    [HttpDelete("/delete-expense/{id}")]
+    [HttpPost("/delete-expense/{id}")]
     public async Task<IActionResult> DeleteExpenseAsync(Guid id)
     {
-        var expense = await this.context.Expenses.FindAsync(id);
+        var expense = await this.context.Expenses
+            .FirstOrDefaultAsync(i => i.ExpenseId == id && i.UserId == this.User.GetUserId());
+
         if (expense == null)
         {
             return this.NotFound();
         }
 
-        this.context.Expenses.Remove(expense);
-        await this.context.SaveChangesAsync();
-
-        return this.RedirectToAction("ExpensesList");
+        try
+        {
+            this.context.Expenses.Remove(expense);
+            await this.context.SaveChangesAsync();
+            return this.RedirectToAction("ExpensesList");
+        }
+        catch (DbUpdateException ex)
+        {
+            this.ModelState.AddModelError(" ", $"Error deleting expense: {ex.Message}");
+            return this.View(expense);
+        }
     }
 }
