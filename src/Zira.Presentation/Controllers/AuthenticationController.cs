@@ -13,6 +13,7 @@ using Zira.Data;
 using Zira.Data.Models;
 using Zira.Presentation.Extensions;
 using Zira.Presentation.Models;
+using Zira.Services.Accounts.Contracts;
 using Zira.Services.Common.Contracts;
 using Zira.Services.Identity.Constants;
 using Zira.Services.Identity.Extensions;
@@ -25,6 +26,8 @@ namespace Zira.Presentation.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly IEmailService emailService;
+        private readonly IAccountService accountService;
+        private readonly EntityContext context;
         private readonly UrlEncoder urlEncoder;
         private readonly ILogger<AuthenticationController> logger;
 
@@ -33,13 +36,17 @@ namespace Zira.Presentation.Controllers
             SignInManager<ApplicationUser> signInManager,
             IEmailService emailService,
             UrlEncoder urlEncoder,
-            ILogger<AuthenticationController> logger)
+            ILogger<AuthenticationController> logger,
+            IAccountService accountService,
+            EntityContext context)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.emailService = emailService;
             this.urlEncoder = urlEncoder;
             this.logger = logger;
+            this.accountService = accountService;
+            this.context = context;
         }
 
         [HttpGet("/login")]
@@ -82,7 +89,7 @@ namespace Zira.Presentation.Controllers
 
                 await this.SignInAsync(user, model.RememberAccess);
 
-                return this.RedirectToDefault();
+                return this.RedirectToProfile();
             }
 
             return this.View(model);
@@ -113,17 +120,27 @@ namespace Zira.Presentation.Controllers
 
             if (this.ModelState.IsValid)
             {
-                var user = new ApplicationUser
+                var applicationUser = new ApplicationUser
                 {
                     UserName = model.Email,
                     Email = model.Email,
                 };
-                var result = await this.userManager.CreateAsync(
-                    user,
-                    model.Password!);
+                var result = await this.userManager.CreateAsync(applicationUser, model.Password!);
 
                 if (result.Succeeded)
                 {
+                    var user = new User
+                    {
+                        ApplicationUserId = applicationUser.Id,
+                        FirstName = null,
+                        LastName = null,
+                        Birthday = DateTime.MinValue,
+                        ImageUrl = null,
+                    };
+
+                    this.context.Users.Add(user);
+                    await this.context.SaveChangesAsync();
+
                     this.TempData["MessageText"] = AuthenticationText.RegisterSuccessMessage;
                     this.TempData["MessageVariant"] = "success";
                     return this.RedirectToAction(nameof(this.Login));

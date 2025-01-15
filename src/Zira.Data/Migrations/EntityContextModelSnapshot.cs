@@ -174,14 +174,9 @@ namespace Zira.Data.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("UserId1")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("ExpenseId");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("Expenses");
                 });
@@ -204,14 +199,9 @@ namespace Zira.Data.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("UserId1")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("IncomeId");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("Incomes");
                 });
@@ -228,11 +218,6 @@ namespace Zira.Data.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(21)
-                        .HasColumnType("nvarchar(21)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -285,10 +270,6 @@ namespace Zira.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("ApplicationUser");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Zira.Data.Models.Budget", b =>
@@ -309,14 +290,9 @@ namespace Zira.Data.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("UserId1")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("BudgetId");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("Budgets");
                 });
@@ -342,21 +318,21 @@ namespace Zira.Data.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("UserId1")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("ReminderId");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("Reminders");
                 });
 
             modelBuilder.Entity("Zira.Data.Models.User", b =>
                 {
-                    b.HasBaseType("Zira.Data.Models.ApplicationUser");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ApplicationUserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Birthday")
                         .HasColumnType("datetime2");
@@ -370,7 +346,12 @@ namespace Zira.Data.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasDiscriminator().HasValue("User");
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId")
+                        .IsUnique();
+
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -426,62 +407,57 @@ namespace Zira.Data.Migrations
 
             modelBuilder.Entity("Zira.Data.Expense", b =>
                 {
-                    b.HasOne("Zira.Data.Models.ApplicationUser", "User")
-                        .WithMany()
+                    b.HasOne("Zira.Data.Models.User", "User")
+                        .WithMany("Expenses")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Zira.Data.Models.User", null)
-                        .WithMany("Expenses")
-                        .HasForeignKey("UserId1");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("Zira.Data.Income", b =>
                 {
-                    b.HasOne("Zira.Data.Models.ApplicationUser", "User")
-                        .WithMany()
+                    b.HasOne("Zira.Data.Models.User", "User")
+                        .WithMany("Incomes")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Zira.Data.Models.User", null)
-                        .WithMany("Incomes")
-                        .HasForeignKey("UserId1");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("Zira.Data.Models.Budget", b =>
                 {
-                    b.HasOne("Zira.Data.Models.ApplicationUser", "User")
-                        .WithMany()
+                    b.HasOne("Zira.Data.Models.User", "User")
+                        .WithMany("Budgets")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Zira.Data.Models.User", null)
-                        .WithMany("Budgets")
-                        .HasForeignKey("UserId1");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("Zira.Data.Models.Reminder", b =>
                 {
-                    b.HasOne("Zira.Data.Models.ApplicationUser", "User")
-                        .WithMany()
+                    b.HasOne("Zira.Data.Models.User", "User")
+                        .WithMany("Reminders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Zira.Data.Models.User", null)
-                        .WithMany("Reminders")
-                        .HasForeignKey("UserId1");
-
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Zira.Data.Models.User", b =>
+                {
+                    b.HasOne("Zira.Data.Models.ApplicationUser", "ApplicationUser")
+                        .WithOne()
+                        .HasForeignKey("Zira.Data.Models.User", "ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
                 });
 
             modelBuilder.Entity("Zira.Data.Models.User", b =>

@@ -22,24 +22,30 @@ namespace Zira.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<User>()
+                .HasOne(x => x.ApplicationUser)
+                .WithOne()
+                .HasForeignKey<User>(x => x.ApplicationUserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<Income>()
                 .HasOne(i => i.User)
-                .WithMany()
+                .WithMany(x => x.Incomes)
                 .HasForeignKey(i => i.UserId);
 
             modelBuilder.Entity<Expense>()
                 .HasOne(e => e.User)
-                .WithMany()
+                .WithMany(x => x.Expenses)
                 .HasForeignKey(e => e.UserId);
 
             modelBuilder.Entity<Budget>()
                 .HasOne(b => b.User)
-                .WithMany()
+                .WithMany(x => x.Budgets)
                 .HasForeignKey(b => b.UserId);
 
             modelBuilder.Entity<Reminder>()
                 .HasOne(r => r.User)
-                .WithMany()
+                .WithMany(x => x.Reminders)
                 .HasForeignKey(r => r.UserId);
         }
     }

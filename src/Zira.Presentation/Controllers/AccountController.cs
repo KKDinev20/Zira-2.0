@@ -1,10 +1,13 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.IO;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 using Zira.Common;
 using Zira.Data;
 using Zira.Data.Models;
@@ -36,21 +39,24 @@ public class AccountController : Controller
             return this.RedirectToAction(nameof(AuthenticationController.Login), "Authentication");
         }
 
-        /*var viewModel = new CompleteProfileViewModel
-        {
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-            BirthDate = user.BirthDate,
-            AvatarUrl = user.AvatarUrl,
-        };*/
+        var applicationUser = await this.context.Users
+            .Include(u => u.ApplicationUser)
+            .FirstOrDefaultAsync(u => u.ApplicationUserId == user.Id);
 
-        //return this.View(viewModel);
-        return this.View();
+        var viewModel = new CompleteProfileViewModel
+        {
+            FirstName = applicationUser?.FirstName,
+            LastName = applicationUser?.LastName,
+            BirthDate = applicationUser?.Birthday ?? DateTime.MinValue,
+            AvatarUrl = applicationUser?.ImageUrl,
+        };
+
+        return this.View(viewModel);
     }
 
     [HttpPost("/complete-profile")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> CompleteProfile(CompleteProfileViewModel model)
+    public async Task<IActionResult> CompleteProfile(CompleteProfileViewModel model, IFormFile AvatarUrl)
     {
         if (this.ModelState.IsValid)
         {
@@ -60,15 +66,36 @@ public class AccountController : Controller
                 return this.RedirectToAction(nameof(AuthenticationController.Login), "Authentication");
             }
 
-            /*user.FirstName = model.FirstName;
-            user.LastName = model.LastName;
-            user.BirthDate = model.BirthDate;
-            user.AvatarUrl = model.AvatarUrl;
+            var applicationUser = await this.context.Users
+                .Include(u => u.ApplicationUser)
+                .FirstOrDefaultAsync(u => u.ApplicationUserId == user.Id);
 
-            this.context.Users.Update(user);*/
-            await this.context.SaveChangesAsync();
+            if (applicationUser != null)
+            {
+                applicationUser.FirstName = model.FirstName;
+                applicationUser.LastName = model.LastName;
+                applicationUser.Birthday = model.BirthDate;
 
-            return this.RedirectToAction("Dashboard", "Home");
+                if (AvatarUrl.Length > 0)
+                {
+                    var filePath = Path.Combine("wwwroot\\dashboard\\assets\\img\\avatars", AvatarUrl.FileName);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await AvatarUrl.CopyToAsync(stream);
+                    }
+
+                    applicationUser.ImageUrl = $"wwwroot\\dashboard\\assets\\img\\avatars\\{AvatarUrl.FileName}";
+                }
+                else
+                {
+                    applicationUser.ImageUrl = $"wwwroot\\dashboard\\assets\\img\\avatars\\default.jpg";
+                }
+
+                this.context.Users.Update(applicationUser);
+                await this.context.SaveChangesAsync();
+            }
+
+            return this.RedirectToDefault();
         }
 
         return this.View(model);
