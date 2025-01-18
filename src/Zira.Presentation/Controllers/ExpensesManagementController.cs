@@ -116,7 +116,6 @@ public class ExpensesManagementController : Controller
                 return this.NotFound();
             }
 
-            // Update properties
             expense.Category = model.Category;
             expense.Amount = model.Amount;
             expense.DateSpent = model.DateSpent;

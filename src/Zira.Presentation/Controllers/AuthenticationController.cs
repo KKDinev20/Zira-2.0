@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Zira.Common;
 using Zira.Data;
@@ -87,9 +88,20 @@ namespace Zira.Presentation.Controllers
                     return this.View(model);
                 }
 
-                await this.SignInAsync(user, model.RememberAccess);
+                var applicationUser = await this.context.Users
+                    .FirstOrDefaultAsync(u => u.ApplicationUserId == user.Id);
 
-                return this.RedirectToProfile();
+                if (applicationUser != null &&
+                    (string.IsNullOrEmpty(applicationUser.FirstName) ||
+                     string.IsNullOrEmpty(applicationUser.LastName) ||
+                     applicationUser.Birthday == DateTime.MinValue))
+                {
+                    await this.SignInAsync(user, model.RememberAccess);
+                    return this.RedirectToAction("CompleteProfile", "Account");
+                }
+
+                await this.SignInAsync(user, model.RememberAccess);
+                return this.RedirectToDefault();
             }
 
             return this.View(model);

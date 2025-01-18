@@ -1,14 +1,14 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Zira.Common;
 using Zira.Data;
 using Zira.Data.Models;
 using Zira.Presentation.Extensions;
@@ -21,13 +21,16 @@ public class AccountController : Controller
 {
     private readonly UserManager<ApplicationUser> userManager;
     private readonly EntityContext context;
+    private readonly IWebHostEnvironment webHostEnvironment;
 
     public AccountController(
         UserManager<ApplicationUser> userManager,
-        EntityContext context)
+        EntityContext context,
+        IWebHostEnvironment webHostEnvironment)
     {
         this.userManager = userManager;
         this.context = context;
+        this.webHostEnvironment = webHostEnvironment;
     }
 
     [HttpGet("/complete-profile")]
@@ -36,7 +39,7 @@ public class AccountController : Controller
         var user = await this.userManager.GetUserAsync(this.User);
         if (user == null)
         {
-            return this.RedirectToAction(nameof(AuthenticationController.Login), "Authentication");
+            return this.RedirectToDefault();
         }
 
         var applicationUser = await this.context.Users
@@ -56,7 +59,7 @@ public class AccountController : Controller
 
     [HttpPost("/complete-profile")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> CompleteProfile(CompleteProfileViewModel model, IFormFile AvatarUrl)
+    public async Task<IActionResult> CompleteProfile(CompleteProfileViewModel model, IFormFile? avatarUrl)
     {
         if (this.ModelState.IsValid)
         {
@@ -76,105 +79,39 @@ public class AccountController : Controller
                 applicationUser.LastName = model.LastName;
                 applicationUser.Birthday = model.BirthDate;
 
-                if (AvatarUrl.Length > 0)
+                if (avatarUrl != null && avatarUrl.Length > 0)
                 {
-                    var filePath = Path.Combine("wwwroot\\dashboard\\assets\\img\\avatars", AvatarUrl.FileName);
-                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+                    var fileExtension = Path.GetExtension(avatarUrl.FileName).ToLower();
+
+                    if (!allowedExtensions.Contains(fileExtension))
                     {
-                        await AvatarUrl.CopyToAsync(stream);
+                        this.ModelState.AddModelError("AvatarUrl", "Invalid file type. Please upload an image file.");
+                        return this.View(model);
                     }
 
-                    applicationUser.ImageUrl = $"wwwroot\\dashboard\\assets\\img\\avatars\\{AvatarUrl.FileName}";
+                    var uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
+                    var uploadPath = Path.Combine(
+                        this.webHostEnvironment.WebRootPath,
+                        "dashboard/assets/img/avatars",
+                        uniqueFileName);
+                    using (var stream = new FileStream(uploadPath, FileMode.Create))
+                    {
+                        await avatarUrl.CopyToAsync(stream);
+                    }
+
+                    applicationUser.ImageUrl = $"/dashboard/assets/img/avatars/{uniqueFileName}";
                 }
-                else
+                else if (string.IsNullOrEmpty(applicationUser.ImageUrl))
                 {
-                    applicationUser.ImageUrl = $"wwwroot\\dashboard\\assets\\img\\avatars\\default.jpg";
+                    applicationUser.ImageUrl = "/dashboard/assets/img/avatars/default.jpg";
                 }
 
                 this.context.Users.Update(applicationUser);
                 await this.context.SaveChangesAsync();
-            }
 
-            return this.RedirectToDefault();
-        }
-
-        return this.View(model);
-    }
-
-    [HttpGet("/change-email")]
-    public IActionResult ChangeEmail()
-    {
-        var model = new ChangeEmailViewModel();
-        return this.View(model);
-    }
-
-    [HttpPost("/change-email")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ChangeEmail(ChangeEmailViewModel model)
-    {
-        if (this.ModelState.IsValid)
-        {
-            var user = await this.userManager.GetUserAsync(this.User);
-            if (user == null)
-            {
                 return this.RedirectToDefault();
             }
-
-            var token = await this.userManager.GenerateChangeEmailTokenAsync(user, model.NewEmail!);
-            var result = await this.userManager.ChangeEmailAsync(user, model.NewEmail!, token);
-
-            if (result.Succeeded)
-            {
-                user.UserName = model.NewEmail!;
-                var usernameUpdateResult = await this.userManager.UpdateAsync(user);
-
-                if (usernameUpdateResult.Succeeded)
-                {
-                    await this.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                    this.TempData["MessageText"] = @AuthenticationText.EmailChangeSuccess;
-                    this.TempData["MessageVariant"] = "success";
-                }
-                else
-                {
-                    await this.userManager.ChangeEmailAsync(user, user.Email!, token);
-                    this.ModelState.AddModelError(string.Empty, @AuthenticationText.UsernameChangeFailed);
-                }
-            }
-
-            this.ModelState.AddModelError(string.Empty, @AuthenticationText.EmailChangeFailed);
-        }
-
-        return this.View(model);
-    }
-
-    [HttpGet("/change-password")]
-    public IActionResult ChangePassword()
-    {
-        var model = new ChangePasswordViewModel();
-        return this.View(model);
-    }
-
-    [HttpPost("/change-password")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
-    {
-        if (this.ModelState.IsValid)
-        {
-            var user = await this.userManager.GetUserAsync(this.User);
-            if (user == null)
-            {
-                return this.RedirectToDefault();
-            }
-
-            var result = await this.userManager.ChangePasswordAsync(user, model.OldPassword!, model.NewPassword!);
-            if (result.Succeeded)
-            {
-                await this.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                this.TempData["MessageText"] = @AuthenticationText.PasswordChangeSuccess;
-                this.TempData["MessageVariant"] = "success";
-            }
-
-            this.ModelState.AddModelError(string.Empty, @AuthenticationText.PasswordChangeFailed);
         }
 
         return this.View(model);

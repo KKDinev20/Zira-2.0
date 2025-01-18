@@ -13,39 +13,27 @@ Layout = "Shared/_AccountLayout";
         <div class="card-body">
             <form asp-action="CompleteProfile" method="post" enctype="multipart/form-data">
                 <div class="row mb-3">
-                    <label class="col-sm-3 col-form-label" for="basic-icon-default-firstname">First Name</label>
+                    <label class="col-sm-3 col-form-label" for="FirstName">First Name</label>
                     <div class="col-sm-9">
-                        <div class="input-group input-group-merge">
-                            <span id="basic-icon-default-firstname2" class="input-group-text"><i class="bx bx-user"></i></span>
-                            <input type="text" class="form-control" id="basic-icon-default-firstname" name="FirstName" placeholder="John" value="@Model.FirstName" />
-                        </div>
+                        <input type="text" class="form-control" id="FirstName" name="FirstName" placeholder="John" value="@Model.FirstName" />
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label class="col-sm-3 col-form-label" for="basic-icon-default-lastname">Last Name</label>
+                    <label class="col-sm-3 col-form-label" for="LastName">Last Name</label>
                     <div class="col-sm-9">
-                        <div class="input-group input-group-merge">
-                            <span id="basic-icon-default-lastname2" class="input-group-text"><i class="bx bx-user"></i></span>
-                            <input type="text" class="form-control" id="basic-icon-default-lastname" name="LastName" placeholder="Doe" value="@Model.LastName" />
-                        </div>
+                        <input type="text" class="form-control" id="LastName" name="LastName" placeholder="Doe" value="@Model.LastName" />
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label class="col-sm-3 col-form-label" for="basic-icon-default-birthdate">Birth Date</label>
+                    <label class="col-sm-3 col-form-label" for="BirthDate">Birth Date</label>
                     <div class="col-sm-9">
-                        <div class="input-group input-group-merge">
-                            <span id="basic-icon-default-birthdate2" class="input-group-text"><i class="bx bx-calendar"></i></span>
-                            <input type="date" class="form-control" id="basic-icon-default-birthdate" name="BirthDate" value="@Model.BirthDate.ToString("yyyy-MM-dd")" />
-                        </div>
+                        <input type="date" class="form-control" id="BirthDate" name="BirthDate" value="@Model.BirthDate.ToString("yyyy-MM-dd")" />
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label class="col-sm-3 col-form-label" for="basic-icon-default-avatarurl">Avatar</label>
+                    <label class="col-sm-3 col-form-label" for="AvatarUrl">Avatar</label>
                     <div class="col-sm-9">
-                        <div class="input-group input-group-merge">
-                            <span id="basic-icon-default-avatarurl2" class="input-group-text"><i class="bx bx-image"></i></span>
-                            <input class="form-control" type="file" id="formFile" name="AvatarUrl" accept="image/*" />
-                        </div>
+                        <input class="form-control" type="file" id="AvatarUrl" name="AvatarUrl" accept="image/*" />
                     </div>
                 </div>
                 <div class="row justify-content-end">

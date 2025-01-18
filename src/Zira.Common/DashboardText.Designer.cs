@@ -339,7 +339,7 @@ namespace Zira.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Комунални услуги.
+        ///   Looks up a localized string similar to Услуги.
         /// </summary>
         public static string Utilities {
             get {
