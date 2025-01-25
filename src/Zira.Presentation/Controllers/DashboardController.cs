@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Zira.Data;
 using Zira.Data.Models;
+using Zira.Presentation.Extensions;
 using Zira.Services.Identity.Constants;
 
 namespace Zira.Presentation.Controllers;
@@ -25,22 +26,8 @@ public class DashboardController : Controller
     [Authorize(Policies.UserPolicy)]
     public async Task<IActionResult> Index()
     {
-        var user = await this.userManager.GetUserAsync(this.User); 
-        if (user != null)
-        {
-            var applicationUser = await this.context.Users
-                .FirstOrDefaultAsync(u => u.ApplicationUserId == user.Id);
+        await this.SetGlobalUserInfoAsync(userManager, context);
 
-            this.ViewBag.UserName = applicationUser != null
-                ? $"{applicationUser.FirstName} {applicationUser.LastName}"
-                : "Unknown User";
-
-            this.ViewBag.UserEmail = user.Email;
-
-            this.ViewBag.UserAvatar = string.IsNullOrEmpty(applicationUser?.ImageUrl)
-                ? "/dashboard/assets/img/avatars/default.jpg"
-                : applicationUser.ImageUrl;
-        }
 
         return this.View();
     }

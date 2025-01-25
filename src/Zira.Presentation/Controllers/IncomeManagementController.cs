@@ -2,10 +2,14 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Zira.Data;
 using Zira.Data.Enums;
+using Zira.Data.Models;
+using Zira.Presentation.Extensions;
+using Zira.Presentation.Models;
 using Zira.Services.Identity.Constants;
 using Zira.Services.Identity.Extensions;
 
@@ -15,15 +19,18 @@ namespace Zira.Presentation.Controllers;
 public class IncomeManagementController : Controller
 {
     private readonly EntityContext context;
+    private readonly UserManager<ApplicationUser> userManager;
 
-    public IncomeManagementController(EntityContext context)
+    public IncomeManagementController(EntityContext context, UserManager<ApplicationUser> userManager)
     {
         this.context = context;
+        this.userManager = userManager;
     }
 
     [HttpGet("/add-income/")]
-    public IActionResult AddIncome()
+    public async Task<IActionResult> AddIncome()
     {
+        await this.SetGlobalUserInfoAsync(userManager, context);
         this.ViewBag.Sources = Enum.GetValues(typeof(Sources)).Cast<Sources>().ToList();
         return this.View();
     }
@@ -63,10 +70,11 @@ public class IncomeManagementController : Controller
     }
 
     [HttpGet("/income-list/")]
-    public async Task<IActionResult> IncomeList()
+    public async Task<IActionResult> IncomeList(int page = 1, int pageSize = 10)
     {
-        var userId = this.User.GetUserId();
+        await this.SetGlobalUserInfoAsync(userManager, context);
 
+        var userId = this.User.GetUserId();
         var user = await this.context.Users
             .FirstOrDefaultAsync(u => u.ApplicationUserId == userId);
 
@@ -75,11 +83,27 @@ public class IncomeManagementController : Controller
             return this.NotFound("User not found.");
         }
 
+        var totalExpenses = await this.context.Expenses
+            .Where(i => i.UserId == user.Id)
+            .CountAsync();
+
+        var totalPages = (int)Math.Ceiling(totalExpenses / (double)pageSize);
+
         var incomes = await this.context.Incomes
             .Where(i => i.UserId == user.Id)
+            .OrderBy(i => i.DateReceived)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
 
-        return this.View(incomes);
+        var model = new IncomesListViewModel
+        {
+            Incomes = incomes,
+            CurrentPage = page,
+            TotalPages = totalPages,
+        };
+
+        return this.View(model);
     }
 
     [HttpGet("/edit-income/{id}")]
@@ -87,8 +111,7 @@ public class IncomeManagementController : Controller
     {
         var income = await this.context.Incomes
             .Include(i => i.User)
-            .FirstOrDefaultAsync(
-                i => i.IncomeId == id && i.User.ApplicationUserId == this.User.GetUserId());
+            .FirstOrDefaultAsync(i => i.IncomeId == id && i.User.ApplicationUserId == this.User.GetUserId());
 
         if (income == null)
         {
@@ -112,8 +135,7 @@ public class IncomeManagementController : Controller
         {
             var income = await this.context.Incomes
                 .Include(i => i.User)
-                .FirstOrDefaultAsync(
-                    i => i.IncomeId == id && i.User.ApplicationUserId == this.User.GetUserId());
+                .FirstOrDefaultAsync(i => i.IncomeId == id && i.User.ApplicationUserId == this.User.GetUserId());
 
             if (income == null)
             {
@@ -138,8 +160,7 @@ public class IncomeManagementController : Controller
     {
         var income = await this.context.Incomes
             .Include(i => i.User)
-            .FirstOrDefaultAsync(
-                i => i.IncomeId == id && i.User.ApplicationUserId == this.User.GetUserId());
+            .FirstOrDefaultAsync(i => i.IncomeId == id && i.User.ApplicationUserId == this.User.GetUserId());
 
         if (income == null)
         {
@@ -154,8 +175,7 @@ public class IncomeManagementController : Controller
     {
         var income = await this.context.Incomes
             .Include(i => i.User)
-            .FirstOrDefaultAsync(
-                i => i.IncomeId == id && i.User.ApplicationUserId == this.User.GetUserId());
+            .FirstOrDefaultAsync(i => i.IncomeId == id && i.User.ApplicationUserId == this.User.GetUserId());
 
         if (income == null)
         {

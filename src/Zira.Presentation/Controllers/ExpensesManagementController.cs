@@ -2,10 +2,14 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Zira.Data;
 using Zira.Data.Enums;
+using Zira.Data.Models;
+using Zira.Presentation.Extensions;
+using Zira.Presentation.Models;
 using Zira.Services.Identity.Constants;
 using Zira.Services.Identity.Extensions;
 
@@ -15,15 +19,19 @@ namespace Zira.Presentation.Controllers;
 public class ExpensesManagementController : Controller
 {
     private readonly EntityContext context;
+    private readonly UserManager<ApplicationUser> userManager;
 
-    public ExpensesManagementController(EntityContext context)
+    public ExpensesManagementController(EntityContext context, UserManager<ApplicationUser> userManager)
     {
         this.context = context;
+        this.userManager = userManager;
     }
 
     [HttpGet("/add-expenses/")]
-    public IActionResult AddExpenses()
+    public async Task<IActionResult> AddExpenses()
     {
+        await this.SetGlobalUserInfoAsync(userManager, context);
+
         this.ViewBag.Categories = Enum.GetValues(typeof(Categories));
         return this.View();
     }
@@ -63,10 +71,11 @@ public class ExpensesManagementController : Controller
     }
 
     [HttpGet("/expenses-list/")]
-    public async Task<IActionResult> ExpensesList()
+    public async Task<IActionResult> ExpensesList(int page = 1, int pageSize = 10)
     {
-        var userId = this.User.GetUserId();
+        await this.SetGlobalUserInfoAsync(userManager, context);
 
+        var userId = this.User.GetUserId();
         var user = await this.context.Users
             .FirstOrDefaultAsync(u => u.ApplicationUserId == userId);
 
@@ -75,19 +84,39 @@ public class ExpensesManagementController : Controller
             return this.NotFound("User not found.");
         }
 
+        var totalExpenses = await this.context.Expenses
+            .Where(i => i.UserId == user.Id)
+            .CountAsync();
+
+        var totalPages = (int)Math.Ceiling(totalExpenses / (double)pageSize);
+
         var expenses = await this.context.Expenses
             .Where(i => i.UserId == user.Id)
+            .OrderBy(i => i.DateSpent)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
 
-        return this.View(expenses);
+        var model = new ExpensesListViewModel
+        {
+            Expenses = expenses,
+            CurrentPage = page,
+            TotalPages = totalPages,
+        };
+
+        return this.View(model);
     }
 
     [HttpGet("/edit-expense/{id}")]
     public async Task<IActionResult> EditExpenses(Guid id)
     {
+        var userId = this.User.GetUserId();
+
+        var user = await this.context.Users
+            .FirstOrDefaultAsync(u => u.ApplicationUserId == userId);
+
         var expense = await this.context.Expenses
-            .AsNoTracking()
-            .FirstOrDefaultAsync(i => i.ExpenseId == id && i.UserId == this.User.GetUserId());
+            .FirstOrDefaultAsync(i => i.UserId == user.Id);
 
         if (expense == null)
         {
@@ -108,8 +137,12 @@ public class ExpensesManagementController : Controller
 
         if (this.ModelState.IsValid)
         {
+            var userId = this.User.GetUserId();
+            var user = await this.context.Users
+                .FirstOrDefaultAsync(u => u.ApplicationUserId == userId);
+
             var expense = await this.context.Expenses
-                .FirstOrDefaultAsync(i => i.ExpenseId == id && i.UserId == this.User.GetUserId());
+                .FirstOrDefaultAsync(i => i.UserId == user.Id);
 
             if (expense == null)
             {
@@ -138,9 +171,13 @@ public class ExpensesManagementController : Controller
     [HttpGet("/delete-expense/{id}")]
     public async Task<IActionResult> DeleteExpense(Guid id)
     {
+        var userId = this.User.GetUserId();
+
+        var user = await this.context.Users
+            .FirstOrDefaultAsync(u => u.ApplicationUserId == userId);
+
         var expense = await this.context.Expenses
-            .AsNoTracking()
-            .FirstOrDefaultAsync(i => i.ExpenseId == id && i.UserId == this.User.GetUserId());
+            .FirstOrDefaultAsync(i => i.UserId == user.Id);
 
         if (expense == null)
         {
@@ -153,8 +190,13 @@ public class ExpensesManagementController : Controller
     [HttpPost("/delete-expense/{id}")]
     public async Task<IActionResult> DeleteExpenseAsync(Guid id)
     {
+        var userId = this.User.GetUserId();
+
+        var user = await this.context.Users
+            .FirstOrDefaultAsync(u => u.ApplicationUserId == userId);
+
         var expense = await this.context.Expenses
-            .FirstOrDefaultAsync(i => i.ExpenseId == id && i.UserId == this.User.GetUserId());
+            .FirstOrDefaultAsync(i => i.UserId == user.Id);
 
         if (expense == null)
         {
