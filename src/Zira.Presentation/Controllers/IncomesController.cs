@@ -16,12 +16,12 @@ using Zira.Services.Identity.Extensions;
 namespace Zira.Presentation.Controllers;
 
 [Authorize(Policies.UserPolicy)]
-public class IncomeManagementController : Controller
+public class IncomesController : Controller
 {
     private readonly EntityContext context;
     private readonly UserManager<ApplicationUser> userManager;
 
-    public IncomeManagementController(EntityContext context, UserManager<ApplicationUser> userManager)
+    public IncomesController(EntityContext context, UserManager<ApplicationUser> userManager)
     {
         this.context = context;
         this.userManager = userManager;

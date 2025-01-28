@@ -1,13 +1,4 @@
-﻿@{
-    var topbarViewModel = new TopBarViewModel
-    {
-        UserName = ViewBag.UserName,
-        UserEmail = ViewBag.UserEmail,
-        UserAvatar = ViewBag.UserAvatar
-    }; 
-}
-
-@await Html.PartialAsync("~/Views/Shared/_Head.cshtml")
+﻿@await Html.PartialAsync("~/Views/Shared/_Head.cshtml")
 
 <body>
 <!-- Layout wrapper -->
@@ -20,7 +11,7 @@
         <!-- Layout container -->
         <div class="layout-page">
             <!-- Navbar -->
-            @await Html.PartialAsync("~/Views/Shared/_TopBar.cshtml", topbarViewModel, ViewData)
+            @await Html.PartialAsync("~/Views/Shared/_TopBar.cshtml")
             <!-- / Navbar -->
 
             <!-- Content -->

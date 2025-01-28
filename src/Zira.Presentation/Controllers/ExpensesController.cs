@@ -16,12 +16,12 @@ using Zira.Services.Identity.Extensions;
 namespace Zira.Presentation.Controllers;
 
 [Authorize(Policies.UserPolicy)]
-public class ExpensesManagementController : Controller
+public class ExpensesController : Controller
 {
     private readonly EntityContext context;
     private readonly UserManager<ApplicationUser> userManager;
 
-    public ExpensesManagementController(EntityContext context, UserManager<ApplicationUser> userManager)
+    public ExpensesController(EntityContext context, UserManager<ApplicationUser> userManager)
     {
         this.context = context;
         this.userManager = userManager;
@@ -107,16 +107,12 @@ public class ExpensesManagementController : Controller
         return this.View(model);
     }
 
-    [HttpGet("/edit-expense/{id}")]
+    [HttpGet("/edit-expenses/{id}")]
     public async Task<IActionResult> EditExpenses(Guid id)
     {
-        var userId = this.User.GetUserId();
-
-        var user = await this.context.Users
-            .FirstOrDefaultAsync(u => u.ApplicationUserId == userId);
-
         var expense = await this.context.Expenses
-            .FirstOrDefaultAsync(i => i.UserId == user.Id);
+            .Include(i => i.User)
+            .FirstOrDefaultAsync(i => i.ExpenseId == id && i.User.ApplicationUserId == this.User.GetUserId());
 
         if (expense == null)
         {
@@ -124,10 +120,11 @@ public class ExpensesManagementController : Controller
         }
 
         this.ViewBag.Categories = Enum.GetValues(typeof(Categories)).Cast<Categories>().ToList();
+
         return this.View(expense);
     }
 
-    [HttpPost("/edit-expense/{id}")]
+    [HttpPost("/edit-expenses/{id}")]
     public async Task<IActionResult> EditExpenses(Guid id, Expense model)
     {
         if (id != model.ExpenseId)
@@ -137,12 +134,9 @@ public class ExpensesManagementController : Controller
 
         if (this.ModelState.IsValid)
         {
-            var userId = this.User.GetUserId();
-            var user = await this.context.Users
-                .FirstOrDefaultAsync(u => u.ApplicationUserId == userId);
-
             var expense = await this.context.Expenses
-                .FirstOrDefaultAsync(i => i.UserId == user.Id);
+                .Include(i => i.User)
+                .FirstOrDefaultAsync(i => i.ExpenseId == id && i.User.ApplicationUserId == this.User.GetUserId());
 
             if (expense == null)
             {
@@ -153,31 +147,21 @@ public class ExpensesManagementController : Controller
             expense.Amount = model.Amount;
             expense.DateSpent = model.DateSpent;
 
-            try
-            {
-                await this.context.SaveChangesAsync();
-                return this.RedirectToAction("ExpensesList");
-            }
-            catch (DbUpdateException ex)
-            {
-                this.ModelState.AddModelError(" ", $"Error updating expense: {ex.Message}");
-            }
+            await this.context.SaveChangesAsync();
+
+            return this.RedirectToAction("ExpensesList");
         }
 
-        this.ViewBag.Categories = Enum.GetValues(typeof(Categories));
+        this.ViewBag.Categories = Enum.GetValues(typeof(Categories)).Cast<Categories>().ToList();
         return this.View(model);
     }
 
-    [HttpGet("/delete-expense/{id}")]
+    [HttpGet("/delete-expenses/{id}")]
     public async Task<IActionResult> DeleteExpense(Guid id)
     {
-        var userId = this.User.GetUserId();
-
-        var user = await this.context.Users
-            .FirstOrDefaultAsync(u => u.ApplicationUserId == userId);
-
         var expense = await this.context.Expenses
-            .FirstOrDefaultAsync(i => i.UserId == user.Id);
+            .Include(i => i.User)
+            .FirstOrDefaultAsync(i => i.ExpenseId == id && i.User.ApplicationUserId == this.User.GetUserId());
 
         if (expense == null)
         {
@@ -187,32 +171,54 @@ public class ExpensesManagementController : Controller
         return this.View(expense);
     }
 
-    [HttpPost("/delete-expense/{id}")]
+    [HttpPost("/delete-expenses/{id}")]
     public async Task<IActionResult> DeleteExpenseAsync(Guid id)
     {
-        var userId = this.User.GetUserId();
-
-        var user = await this.context.Users
-            .FirstOrDefaultAsync(u => u.ApplicationUserId == userId);
-
         var expense = await this.context.Expenses
-            .FirstOrDefaultAsync(i => i.UserId == user.Id);
+            .Include(i => i.User)
+            .FirstOrDefaultAsync(i => i.ExpenseId == id && i.User.ApplicationUserId == this.User.GetUserId());
 
         if (expense == null)
         {
             return this.NotFound();
         }
 
-        try
+        this.context.Expenses.Remove(expense);
+        await this.context.SaveChangesAsync();
+
+        return this.RedirectToAction("ExpensesList");
+    }
+
+    [HttpPost("/quick-add-expenses")]
+    public async Task<IActionResult> QuickAddExpenses(Expense model)
+    {
+        if (this.ModelState.IsValid)
         {
-            this.context.Expenses.Remove(expense);
+            var userId = this.User.GetUserId();
+            var user = await this.context.Users.FirstOrDefaultAsync(u => u.ApplicationUserId == userId);
+
+            if (user == null)
+            {
+                this.ModelState.AddModelError("", "User not found.");
+                return this.RedirectToAction("ExpensesList");
+            }
+
+            model.ExpenseId = Guid.NewGuid();
+            model.UserId = user.Id;
+
+            if (model.DateSpent == default)
+            {
+                model.DateSpent = DateTime.UtcNow;
+            }
+
+            this.context.Expenses.Add(model);
             await this.context.SaveChangesAsync();
+
+            this.TempData["SuccessMessage"] = "Expense added successfully!";
             return this.RedirectToAction("ExpensesList");
         }
-        catch (DbUpdateException ex)
-        {
-            this.ModelState.AddModelError(" ", $"Error deleting expense: {ex.Message}");
-            return this.View(expense);
-        }
+
+        this.TempData["ErrorMessage"] = "Failed to add expense. Please try again.";
+        return this.RedirectToAction("ExpensesList");
     }
 }

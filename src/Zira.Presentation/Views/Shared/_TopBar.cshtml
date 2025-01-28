@@ -1,4 +1,3 @@
-@model TopBarViewModel
 <nav
     class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
     id="layout-navbar">
@@ -32,11 +31,11 @@
                         <a class="dropdown-item" href="#">
                             <div class="d-flex align-items-center">
                                 <div class="avatar me-3">
-                                    <img src="@Model.UserAvatar" alt class="w-px-40 h-auto rounded-circle" />
+                                    <img src="@ViewBag.UserAvatar" alt class="w-px-40 h-auto rounded-circle" />
                                 </div>
                                 <div>
-                                    <span class="fw-semibold d-block">@Model.UserName</span>
-                                    <small class="text-muted">@Model.UserEmail</small>
+                                    <span class="fw-semibold d-block">@ViewBag.UserName</span>
+                                    <small class="text-muted">@ViewBag.UserEmail</small>
                                 </div>
                             </div>
                         </a>
