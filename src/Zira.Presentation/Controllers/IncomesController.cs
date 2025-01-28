@@ -38,35 +38,37 @@ public class IncomesController : Controller
     [HttpPost("/add-income/")]
     public async Task<IActionResult> AddIncome(Income incomeModel)
     {
-        if (this.ModelState.IsValid)
+        if (incomeModel.Amount <= 0)
         {
-            var userId = this.User.GetUserId();
-
-            var user = await this.context.Users
-                .FirstOrDefaultAsync(u => u.ApplicationUserId == userId);
-
-            if (user == null)
-            {
-                this.ModelState.AddModelError("", "User does not exist.");
-                return this.View(incomeModel);
-            }
-
-            incomeModel.IncomeId = Guid.NewGuid();
-            incomeModel.UserId = user.Id;
-
-            if (incomeModel.DateReceived == default)
-            {
-                incomeModel.DateReceived = DateTime.UtcNow;
-            }
-
-            this.context.Incomes.Add(incomeModel);
-            await this.context.SaveChangesAsync();
-
-            return this.RedirectToAction("IncomeList");
+            this.ModelState.AddModelError(nameof(incomeModel.Amount), "Amount must be greater than zero.");
         }
 
-        this.ViewBag.Sources = Enum.GetValues(typeof(Sources)).Cast<Sources>().ToList();
-        return this.View(incomeModel);
+        if (!this.ModelState.IsValid)
+        {
+            this.TempData["ErrorMessage"] = "Failed to add income. Please correct the errors and try again.";
+            this.ViewBag.Sources = Enum.GetValues(typeof(Sources)).Cast<Sources>().ToList();
+            return this.View(incomeModel);
+        }
+
+        var userId = this.User.GetUserId();
+        var user = await this.context.Users.FirstOrDefaultAsync(u => u.ApplicationUserId == userId);
+
+        if (user == null)
+        {
+            this.ModelState.AddModelError("", "User does not exist.");
+            this.TempData["ErrorMessage"] = "Failed to add income. User not found.";
+            return this.View(incomeModel);
+        }
+
+        incomeModel.IncomeId = Guid.NewGuid();
+        incomeModel.UserId = user.Id;
+        incomeModel.DateReceived = incomeModel.DateReceived == default ? DateTime.UtcNow : incomeModel.DateReceived;
+
+        this.context.Incomes.Add(incomeModel);
+        await this.context.SaveChangesAsync();
+
+        this.TempData["SuccessMessage"] = "Income added successfully!";
+        return this.RedirectToAction("IncomeList");
     }
 
     [HttpGet("/income-list/")]
@@ -131,28 +133,35 @@ public class IncomesController : Controller
             return this.BadRequest();
         }
 
-        if (this.ModelState.IsValid)
+        if (model.Amount <= 0)
         {
-            var income = await this.context.Incomes
-                .Include(i => i.User)
-                .FirstOrDefaultAsync(i => i.IncomeId == id && i.User.ApplicationUserId == this.User.GetUserId());
-
-            if (income == null)
-            {
-                return this.NotFound();
-            }
-
-            income.Source = model.Source;
-            income.Amount = model.Amount;
-            income.DateReceived = model.DateReceived;
-
-            await this.context.SaveChangesAsync();
-
-            return this.RedirectToAction("IncomeList");
+            this.ModelState.AddModelError(nameof(model.Amount), "Amount must be greater than zero.");
         }
 
-        this.ViewBag.Sources = Enum.GetValues(typeof(Sources)).Cast<Sources>().ToList();
-        return this.View(model);
+        if (!this.ModelState.IsValid)
+        {
+            this.TempData["ErrorMessage"] = "Failed to update income. Please correct the errors and try again.";
+            this.ViewBag.Sources = Enum.GetValues(typeof(Sources)).Cast<Sources>().ToList();
+            return this.View(model);
+        }
+
+        var income = await this.context.Incomes
+            .Include(i => i.User)
+            .FirstOrDefaultAsync(i => i.IncomeId == id && i.User.ApplicationUserId == this.User.GetUserId());
+
+        if (income == null)
+        {
+            this.TempData["ErrorMessage"] = "Failed to update income. Income not found.";
+            return this.NotFound();
+        }
+
+        income.Source = model.Source;
+        income.Amount = model.Amount;
+        income.DateReceived = model.DateReceived;
+
+        await this.context.SaveChangesAsync();
+        this.TempData["SuccessMessage"] = "Income updated successfully!";
+        return this.RedirectToAction("IncomeList");
     }
 
     [HttpGet("/delete-income/{id}")]

@@ -39,35 +39,38 @@ public class ExpensesController : Controller
     [HttpPost("/add-expenses")]
     public async Task<IActionResult> AddExpenses(Expense expenseModel)
     {
-        if (this.ModelState.IsValid)
+        if (expenseModel.Amount <= 0)
         {
-            var userId = this.User.GetUserId();
-
-            var user = await this.context.Users
-                .FirstOrDefaultAsync(u => u.ApplicationUserId == userId);
-
-            if (user == null)
-            {
-                this.ModelState.AddModelError(" ", "User does not exist.");
-                return this.View(expenseModel);
-            }
-
-            expenseModel.ExpenseId = Guid.NewGuid();
-            expenseModel.UserId = user.Id;
-
-            if (expenseModel.DateSpent == default)
-            {
-                expenseModel.DateSpent = DateTime.UtcNow;
-            }
-
-            this.context.Expenses.Add(expenseModel);
-            await this.context.SaveChangesAsync();
-
-            return this.RedirectToAction("ExpensesList");
+            this.ModelState.AddModelError(nameof(expenseModel.Amount), "Amount must be greater than zero.");
+            this.RedirectToAction("ExpensesList");
         }
 
-        this.ViewBag.Sources = Enum.GetValues(typeof(Sources)).Cast<Sources>().ToList();
-        return this.View(expenseModel);
+        if (!this.ModelState.IsValid)
+        {
+            this.TempData["ErrorMessage"] = "Failed to add expense. Please correct the errors and try again.";
+            this.ViewBag.Categories = Enum.GetValues(typeof(Categories)).Cast<Categories>().ToList();
+            this.RedirectToAction("ExpensesList");
+        }
+
+        var userId = this.User.GetUserId();
+        var user = await this.context.Users.FirstOrDefaultAsync(u => u.ApplicationUserId == userId);
+
+        if (user == null)
+        {
+            this.ModelState.AddModelError("", "User does not exist.");
+            this.TempData["ErrorMessage"] = "Failed to add expense. User not found.";
+            this.RedirectToAction("ExpensesList");
+        }
+
+        expenseModel.ExpenseId = Guid.NewGuid();
+        expenseModel.UserId = user.Id;
+        expenseModel.DateSpent = expenseModel.DateSpent == default ? DateTime.UtcNow : expenseModel.DateSpent;
+
+        this.context.Expenses.Add(expenseModel);
+        await this.context.SaveChangesAsync();
+
+        this.TempData["SuccessMessage"] = "Expense added successfully!";
+        return this.RedirectToAction("ExpensesList");
     }
 
     [HttpGet("/expenses-list/")]
@@ -132,28 +135,35 @@ public class ExpensesController : Controller
             return this.BadRequest();
         }
 
-        if (this.ModelState.IsValid)
+        if (model.Amount <= 0)
         {
-            var expense = await this.context.Expenses
-                .Include(i => i.User)
-                .FirstOrDefaultAsync(i => i.ExpenseId == id && i.User.ApplicationUserId == this.User.GetUserId());
-
-            if (expense == null)
-            {
-                return this.NotFound();
-            }
-
-            expense.Category = model.Category;
-            expense.Amount = model.Amount;
-            expense.DateSpent = model.DateSpent;
-
-            await this.context.SaveChangesAsync();
-
-            return this.RedirectToAction("ExpensesList");
+            this.ModelState.AddModelError(nameof(model.Amount), "Amount must be greater than zero.");
         }
 
-        this.ViewBag.Categories = Enum.GetValues(typeof(Categories)).Cast<Categories>().ToList();
-        return this.View(model);
+        if (!this.ModelState.IsValid)
+        {
+            this.TempData["ErrorMessage"] = "Failed to update expense. Please correct the errors and try again.";
+            this.ViewBag.Categories = Enum.GetValues(typeof(Categories)).Cast<Categories>().ToList();
+            this.RedirectToAction("ExpensesList");
+        }
+
+        var expense = await this.context.Expenses
+            .Include(i => i.User)
+            .FirstOrDefaultAsync(i => i.ExpenseId == id && i.User.ApplicationUserId == this.User.GetUserId());
+
+        if (expense == null)
+        {
+            this.TempData["ErrorMessage"] = "Failed to update expense. Expense not found.";
+            return this.NotFound();
+        }
+
+        expense.Category = model.Category;
+        expense.Amount = model.Amount;
+        expense.DateSpent = model.DateSpent;
+
+        await this.context.SaveChangesAsync();
+        this.TempData["SuccessMessage"] = "Expense updated successfully!";
+        return this.RedirectToAction("ExpensesList");
     }
 
     [HttpGet("/delete-expenses/{id}")]
@@ -192,33 +202,51 @@ public class ExpensesController : Controller
     [HttpPost("/quick-add-expenses")]
     public async Task<IActionResult> QuickAddExpenses(Expense model)
     {
-        if (this.ModelState.IsValid)
+        if (model.Amount <= 0)
         {
-            var userId = this.User.GetUserId();
-            var user = await this.context.Users.FirstOrDefaultAsync(u => u.ApplicationUserId == userId);
+            this.ModelState.AddModelError(nameof(model.Amount), "Amount must be greater than zero.");
+        }
 
-            if (user == null)
-            {
-                this.ModelState.AddModelError("", "User not found.");
-                return this.RedirectToAction("ExpensesList");
-            }
+        if (model.DateSpent > DateTime.UtcNow)
+        {
+            this.ModelState.AddModelError(nameof(model.DateSpent), "Date spent cannot be in the future.");
+        }
 
-            model.ExpenseId = Guid.NewGuid();
-            model.UserId = user.Id;
+        if (string.IsNullOrWhiteSpace(model.Description))
+        {
+            this.ModelState.AddModelError(nameof(model.Description), "Description is required.");
+        }
 
-            if (model.DateSpent == default)
-            {
-                model.DateSpent = DateTime.UtcNow;
-            }
-
-            this.context.Expenses.Add(model);
-            await this.context.SaveChangesAsync();
-
-            this.TempData["SuccessMessage"] = "Expense added successfully!";
+        if (!this.ModelState.IsValid)
+        {
+            this.TempData["ErrorMessage"] = "Failed to add expense. Please correct the errors and try again.";
+            this.ViewBag.Categories = Enum.GetValues(typeof(Categories)).Cast<Categories>().ToList();
             return this.RedirectToAction("ExpensesList");
         }
 
-        this.TempData["ErrorMessage"] = "Failed to add expense. Please try again.";
+        var userId = this.User.GetUserId();
+        var user = await this.context.Users.FirstOrDefaultAsync(u => u.ApplicationUserId == userId);
+
+        if (user == null)
+        {
+            this.ModelState.AddModelError("", "User not found.");
+            this.TempData["ErrorMessage"] = "Failed to add expense. Please try again.";
+            return this.RedirectToAction("ExpensesList");
+        }
+
+        model.ExpenseId = Guid.NewGuid();
+        model.UserId = user.Id;
+
+        if (model.DateSpent == default)
+        {
+            model.DateSpent = DateTime.UtcNow;
+        }
+
+        this.context.Expenses.Add(model);
+        await this.context.SaveChangesAsync();
+
+        this.TempData["SuccessMessage"] = "Expense added successfully!";
         return this.RedirectToAction("ExpensesList");
     }
+
 }
