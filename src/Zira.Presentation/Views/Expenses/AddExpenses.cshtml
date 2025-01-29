@@ -6,12 +6,12 @@
         <div class="col-xl">
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-center align-items-center">
-                    <h5 class="mb-0 text-center">Add Expense</h5>
+                    <h5 class="mb-0 text-center">@ExpensesText.AddExpense</h5>
                 </div>
                 <div class="card-body">
                     <form asp-action="AddExpenses" asp-controller="Expenses" method="post">
                         <div class="mb-3">
-                            <label class="form-label" for="expense-amount">Amount</label>
+                            <label class="form-label" for="expense-amount">@ExpensesText.Amount</label>
                             <div class="input-group input-group-merge">
                                 <span id="expense-amount-icon" class="input-group-text">
                                     <i class="bx bx-money"></i>
@@ -21,17 +21,16 @@
                                     class="form-control"
                                     id="expense-amount"
                                     name="Amount"
-                                    placeholder="Enter expense amount"
+                                    placeholder="@ExpensesText.EnterExpenseAmount"
                                     required
                                     step="0.01"
-                                    aria-label="Amount"
+                                    aria-label="@ExpensesText.Amount"
                                     aria-describedby="expense-amount-icon"/>
                             </div>
                         </div>
 
-                        <!-- Category Input -->
                         <div class="mb-3">
-                            <label class="form-label" for="expense-category">Category</label>
+                            <label class="form-label" for="expense-category">@ExpensesText.ExpenseCategory</label>
                             <div class="input-group input-group-merge">
                                 <span id="expense-category-icon" class="input-group-text">
                                     <i class="bx bx-briefcase"></i>
@@ -41,9 +40,9 @@
                                     id="expense-category"
                                     name="Category"
                                     required
-                                    aria-label="Expense Category"
+                                    aria-label="@ExpensesText.ExpenseCategory"
                                     aria-describedby="expense-category-icon">
-                                    <option value="" disabled selected>Select a category</option>
+                                    <option value="" disabled selected>@ExpensesText.SelectACategory</option>
                                     @foreach (var category in Enum.GetValues(typeof(Zira.Data.Enums.Categories)))
                                     {
                                         <option value="@category">@category</option>
@@ -52,9 +51,8 @@
                             </div>
                         </div>
 
-                        <!-- Date Spent Input -->
                         <div class="mb-3">
-                            <label class="form-label" for="expense-date">Date Spent</label>
+                            <label class="form-label" for="expense-date">@ExpensesText.DateSpent</label>
                             <div class="input-group input-group-merge">
                                 <span id="expense-date-icon" class="input-group-text">
                                     <i class="bx bx-calendar"></i>
@@ -65,12 +63,12 @@
                                     id="expense-date"
                                     name="DateSpent"
                                     required
-                                    aria-label="Date Spent"
+                                    aria-label="@ExpensesText.DateSpent"
                                     aria-describedby="expense-date-icon"/>
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Add Expense</button>
+                        <button type="submit" class="btn btn-primary">@ExpensesText.AddExpense</button>
                     </form>
                 </div>
             </div>

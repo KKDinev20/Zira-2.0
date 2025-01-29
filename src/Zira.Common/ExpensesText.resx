@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="AddExpense" xml:space="preserve">
+        <value>Добави разход</value>
+    </data>
+    <data name="Amount" xml:space="preserve">
+        <value>Сума</value>
+    </data>
+    <data name="ExpenseCategory" xml:space="preserve">
+        <value>Категория на разходите</value>
+    </data>
+    <data name="DateSpent" xml:space="preserve">
+        <value>Дата</value>
+    </data>
+    <data name="EnterExpenseAmount" xml:space="preserve">
+        <value>Въведете разходите</value>
+    </data>
+    <data name="SelectACategory" xml:space="preserve">
+        <value>Избери тип разход</value>
+    </data>
+    <data name="DeleteWarning" xml:space="preserve">
+        <value>Сигурни ли сте, че искате да изтриете следния запис на разход?</value>
+    </data>
+    <data name="DeleteExpense" xml:space="preserve">
+        <value>Изтриване на разходи</value>
+    </data>
+    <data name="Delete" xml:space="preserve">
+        <value>Изтриване</value>
+    </data>
+    <data name="Cancel" xml:space="preserve">
+        <value>Отказване</value>
+    </data>
+    <data name="ExpenseDetails" xml:space="preserve">
+        <value>Подробности за разходите</value>
+    </data>
+    <data name="Expenses" xml:space="preserve">
+        <value>Разходи</value>
+    </data>
+    <data name="QuickAdd" xml:space="preserve">
+        <value>Бързо добавяне на разходи</value>
+    </data>
+    <data name="ExpensesList" xml:space="preserve">
+        <value>Списък с разходи</value>
+    </data>
+    <data name="Actions" xml:space="preserve">
+        <value>Опции</value>
+    </data>
+    <data name="Edit" xml:space="preserve">
+        <value>Промяна</value>
+    </data>
+    <data name="Previous" xml:space="preserve">
+        <value>Предходен</value>
+    </data>
+    <data name="Next" xml:space="preserve">
+        <value>Следващ</value>
+    </data>
+    <data name="EditExpenses" xml:space="preserve">
+        <value>Промени разход</value>
+    </data>
+    <data name="SaveChanges" xml:space="preserve">
+        <value>Запази промените</value>
+    </data>
+    <data name="AmountValidation" xml:space="preserve">
+        <value>Сумата трябва да е по-голяма от нула.</value>
+    </data>
+    <data name="ExpenseError" xml:space="preserve">
+        <value>Не успяхте да добавите разходи. Моля, коригирайте грешките и опитайте отново.</value>
+    </data>
+    <data name="UserNotExists" xml:space="preserve">
+        <value>Не успяхте да добавите разход. Потребителят не е намерен.</value>
+    </data>
+    <data name="ExpenseSuccess" xml:space="preserve">
+        <value>Разходът е добавен успешно!</value>
+    </data>
+    <data name="ExpenseNotFound" xml:space="preserve">
+        <value>Не успяхте да актуализирате разходите. Разходът не е намерен.</value>
+    </data>
+    <data name="DateValidation" xml:space="preserve">
+        <value>Датата не може да бъде в бъдещето.</value>
+    </data>
+</root>

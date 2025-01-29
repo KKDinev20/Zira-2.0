@@ -168,4 +168,7 @@
   <data name="UsernameChangeFailed" xml:space="preserve">
       <value>Не успя да актуализирате потребителското име. Моля, опитайте отново.</value>
   </data>
+  <data name="UserNotExisting" xml:space="preserve">
+    <value>Потребителят не съществува.</value>
+  </data>
 </root>

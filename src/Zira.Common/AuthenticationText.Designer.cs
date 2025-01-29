@@ -514,5 +514,14 @@ namespace Zira.Common {
                 return ResourceManager.GetString("UsernameChangeFailed", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Потребителят не съществува..
+        /// </summary>
+        public static string UserNotExisting {
+            get {
+                return ResourceManager.GetString("UserNotExisting", resourceCulture);
+            }
+        }
     }
 }

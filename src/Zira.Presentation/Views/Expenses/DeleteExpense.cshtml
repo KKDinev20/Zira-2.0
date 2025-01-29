@@ -4,20 +4,20 @@ Layout = "Shared/_ExpensesLayout";
 
 <div class="container-fluid">
     <div class="card">
-        <h5 class="card-header">Delete Expense</h5>
+        <h5 class="card-header">@ExpensesText.DeleteExpense</h5>
         <div class="card-body">
-            <h6 class="card-title">Are you sure you want to delete the following expense record?</h6>
+            <h6 class="card-title">@ExpensesText.DeleteWarning</h6>
 
             <div class="table-responsive text-nowrap">
                 <table class="table">
                     <caption class="ms-4">
-                        Income Details
+                        @ExpensesText.ExpenseDetails
                     </caption>
                     <thead>
                     <tr>
-                        <th>Source</th>
-                        <th>Amount</th>
-                        <th>Date Received</th>
+                        <th>@ExpensesText.ExpenseCategory</th>
+                        <th>@ExpensesText.Amount</th>
+                        <th>@ExpensesText.DateSpent</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -35,8 +35,8 @@ Layout = "Shared/_ExpensesLayout";
             <form method="post">
                 <input type="hidden" name="id" value="@Model.ExpenseId" />
 
-                <button type="submit" class="btn btn-danger">Delete</button>
-                <a href="@Url.Action("ExpensesList", "Expenses")" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-danger">@ExpensesText.Delete</button>
+                <a href="@Url.Action("ExpensesList", "Expenses")" class="btn btn-secondary">@ExpensesText.Cancel</a>
             </form>
         </div>
     </div>

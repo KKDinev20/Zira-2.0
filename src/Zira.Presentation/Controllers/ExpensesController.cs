@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Zira.Common;
 using Zira.Data;
 using Zira.Data.Enums;
 using Zira.Data.Models;
@@ -41,13 +42,13 @@ public class ExpensesController : Controller
     {
         if (expenseModel.Amount <= 0)
         {
-            this.ModelState.AddModelError(nameof(expenseModel.Amount), "Amount must be greater than zero.");
+            this.ModelState.AddModelError(nameof(expenseModel.Amount), @ExpensesText.AmountValidation);
             this.RedirectToAction("ExpensesList");
         }
 
         if (!this.ModelState.IsValid)
         {
-            this.TempData["ErrorMessage"] = "Failed to add expense. Please correct the errors and try again.";
+            this.TempData["ErrorMessage"] = @ExpensesText.ExpenseError;
             this.ViewBag.Categories = Enum.GetValues(typeof(Categories)).Cast<Categories>().ToList();
             this.RedirectToAction("ExpensesList");
         }
@@ -57,8 +58,8 @@ public class ExpensesController : Controller
 
         if (user == null)
         {
-            this.ModelState.AddModelError("", "User does not exist.");
-            this.TempData["ErrorMessage"] = "Failed to add expense. User not found.";
+            this.ModelState.AddModelError("", @AuthenticationText.UserNotExisting);
+            this.TempData["ErrorMessage"] = @ExpensesText.UserNotExists;
             this.RedirectToAction("ExpensesList");
         }
 
@@ -69,7 +70,7 @@ public class ExpensesController : Controller
         this.context.Expenses.Add(expenseModel);
         await this.context.SaveChangesAsync();
 
-        this.TempData["SuccessMessage"] = "Expense added successfully!";
+        this.TempData["SuccessMessage"] = @ExpensesText.ExpenseSuccess;
         return this.RedirectToAction("ExpensesList");
     }
 
@@ -84,7 +85,7 @@ public class ExpensesController : Controller
 
         if (user == null)
         {
-            return this.NotFound("User not found.");
+            return this.NotFound(@AuthenticationText.UserNotExisting);
         }
 
         var totalExpenses = await this.context.Expenses
@@ -137,12 +138,12 @@ public class ExpensesController : Controller
 
         if (model.Amount <= 0)
         {
-            this.ModelState.AddModelError(nameof(model.Amount), "Amount must be greater than zero.");
+            this.ModelState.AddModelError(nameof(model.Amount), @ExpensesText.AmountValidation);
         }
 
         if (!this.ModelState.IsValid)
         {
-            this.TempData["ErrorMessage"] = "Failed to update expense. Please correct the errors and try again.";
+            this.TempData["ErrorMessage"] = @ExpensesText.ExpenseError;
             this.ViewBag.Categories = Enum.GetValues(typeof(Categories)).Cast<Categories>().ToList();
             this.RedirectToAction("ExpensesList");
         }
@@ -153,7 +154,7 @@ public class ExpensesController : Controller
 
         if (expense == null)
         {
-            this.TempData["ErrorMessage"] = "Failed to update expense. Expense not found.";
+            this.TempData["ErrorMessage"] = @ExpensesText.ExpenseNotFound;
             return this.NotFound();
         }
 
@@ -162,7 +163,7 @@ public class ExpensesController : Controller
         expense.DateSpent = model.DateSpent;
 
         await this.context.SaveChangesAsync();
-        this.TempData["SuccessMessage"] = "Expense updated successfully!";
+        this.TempData["SuccessMessage"] = @ExpensesText.ExpenseSuccess;
         return this.RedirectToAction("ExpensesList");
     }
 
@@ -204,22 +205,17 @@ public class ExpensesController : Controller
     {
         if (model.Amount <= 0)
         {
-            this.ModelState.AddModelError(nameof(model.Amount), "Amount must be greater than zero.");
+            this.ModelState.AddModelError(nameof(model.Amount), @ExpensesText.AmountValidation);
         }
 
         if (model.DateSpent > DateTime.UtcNow)
         {
-            this.ModelState.AddModelError(nameof(model.DateSpent), "Date spent cannot be in the future.");
-        }
-
-        if (string.IsNullOrWhiteSpace(model.Description))
-        {
-            this.ModelState.AddModelError(nameof(model.Description), "Description is required.");
+            this.ModelState.AddModelError(nameof(model.DateSpent), @ExpensesText.DateValidation);
         }
 
         if (!this.ModelState.IsValid)
         {
-            this.TempData["ErrorMessage"] = "Failed to add expense. Please correct the errors and try again.";
+            this.TempData["ErrorMessage"] = @ExpensesText.ExpenseError;
             this.ViewBag.Categories = Enum.GetValues(typeof(Categories)).Cast<Categories>().ToList();
             return this.RedirectToAction("ExpensesList");
         }
@@ -229,8 +225,8 @@ public class ExpensesController : Controller
 
         if (user == null)
         {
-            this.ModelState.AddModelError("", "User not found.");
-            this.TempData["ErrorMessage"] = "Failed to add expense. Please try again.";
+            this.ModelState.AddModelError("", @AuthenticationText.UserNotExisting);
+            this.TempData["ErrorMessage"] = @ExpensesText.ExpenseError;
             return this.RedirectToAction("ExpensesList");
         }
 
@@ -245,8 +241,7 @@ public class ExpensesController : Controller
         this.context.Expenses.Add(model);
         await this.context.SaveChangesAsync();
 
-        this.TempData["SuccessMessage"] = "Expense added successfully!";
+        this.TempData["SuccessMessage"] = @ExpensesText.ExpenseSuccess;
         return this.RedirectToAction("ExpensesList");
     }
-
 }

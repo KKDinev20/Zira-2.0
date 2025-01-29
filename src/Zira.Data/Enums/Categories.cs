@@ -4,7 +4,6 @@ public enum Categories
 {
     Food,
     Bills,
-    
     Utilities,
     Transportation,
     Healthcare,
