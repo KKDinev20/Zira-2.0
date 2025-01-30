@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Zira.Common;
 using Zira.Data;
 using Zira.Data.Enums;
 using Zira.Data.Models;
@@ -40,12 +41,12 @@ public class IncomesController : Controller
     {
         if (incomeModel.Amount <= 0)
         {
-            this.ModelState.AddModelError(nameof(incomeModel.Amount), "Amount must be greater than zero.");
+            this.ModelState.AddModelError(nameof(incomeModel.Amount), @IncomeText.AmountValidation);
         }
 
         if (!this.ModelState.IsValid)
         {
-            this.TempData["ErrorMessage"] = "Failed to add income. Please correct the errors and try again.";
+            this.TempData["IncomeErrorMessage"] = @IncomeText.IncomeError;
             this.ViewBag.Sources = Enum.GetValues(typeof(Sources)).Cast<Sources>().ToList();
             return this.View(incomeModel);
         }
@@ -55,8 +56,9 @@ public class IncomesController : Controller
 
         if (user == null)
         {
-            this.ModelState.AddModelError("", "User does not exist.");
-            this.TempData["ErrorMessage"] = "Failed to add income. User not found.";
+            this.ModelState.AddModelError("", @AuthenticationText.UserNotExisting);
+            this.TempData["IncomeErrorMessage"] = @IncomeText.UserNotFound;
+            this.ViewBag.Sources = Enum.GetValues(typeof(Sources)).Cast<Sources>().ToList();
             return this.View(incomeModel);
         }
 
@@ -67,7 +69,7 @@ public class IncomesController : Controller
         this.context.Incomes.Add(incomeModel);
         await this.context.SaveChangesAsync();
 
-        this.TempData["SuccessMessage"] = "Income added successfully!";
+        this.TempData["IncomeSuccessMessage"] = @IncomeText.UserSuccess;
         return this.RedirectToAction("IncomeList");
     }
 
@@ -135,12 +137,12 @@ public class IncomesController : Controller
 
         if (model.Amount <= 0)
         {
-            this.ModelState.AddModelError(nameof(model.Amount), "Amount must be greater than zero.");
+            this.ModelState.AddModelError(nameof(model.Amount), @IncomeText.AmountValidation);
         }
 
         if (!this.ModelState.IsValid)
         {
-            this.TempData["ErrorMessage"] = "Failed to update income. Please correct the errors and try again.";
+            this.TempData["ErrorMessage"] = @IncomeText.IncomeError;
             this.ViewBag.Sources = Enum.GetValues(typeof(Sources)).Cast<Sources>().ToList();
             return this.View(model);
         }
@@ -151,7 +153,7 @@ public class IncomesController : Controller
 
         if (income == null)
         {
-            this.TempData["ErrorMessage"] = "Failed to update income. Income not found.";
+            this.TempData["ErrorMessage"] = @IncomeText.IncomeNotFound;
             return this.NotFound();
         }
 
@@ -160,7 +162,7 @@ public class IncomesController : Controller
         income.DateReceived = model.DateReceived;
 
         await this.context.SaveChangesAsync();
-        this.TempData["SuccessMessage"] = "Income updated successfully!";
+        this.TempData["SuccessMessage"] = @IncomeText.IncomeSuccess;
         return this.RedirectToAction("IncomeList");
     }
 

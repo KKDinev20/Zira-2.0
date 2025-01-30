@@ -1,23 +1,23 @@
 ﻿@{
-Layout = "Shared/_IncomeLayout";
+    Layout = "Shared/_IncomeLayout";
 }
 
 <div class="container-fluid">
     <div class="card">
-        <h5 class="card-header">Delete Income</h5>
+        <h5 class="card-header">@IncomeText.DeletеIncome</h5>
         <div class="card-body">
-            <h6 class="card-title">Are you sure you want to delete the following income record?</h6>
+            <h6 class="card-title">@IncomeText.DeleteWarning</h6>
 
             <div class="table-responsive text-nowrap">
                 <table class="table">
                     <caption class="ms-4">
-                        Income Details
+                        @IncomeText.IncomeDetails
                     </caption>
                     <thead>
                     <tr>
-                        <th>Source</th>
-                        <th>Amount</th>
-                        <th>Date Received</th>
+                        <th>@IncomeText.Source</th>
+                        <th>@IncomeText.Amount</th>
+                        <th>@IncomeText.DateReceived</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -33,10 +33,10 @@ Layout = "Shared/_IncomeLayout";
             </div>
 
             <form method="post">
-                <input type="hidden" name="id" value="@Model.IncomeId" />
+                <input type="hidden" name="id" value="@Model.IncomeId"/>
 
-                <button type="submit" class="btn btn-danger">Delete</button>
-                <a href="@Url.Action("IncomeList", "Incomes")" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-danger">@IncomeText.Delete</button>
+                <a href="@Url.Action("IncomeList", "Incomes")" class="btn btn-secondary">@IncomeText.Cancel</a>
             </form>
         </div>
     </div>

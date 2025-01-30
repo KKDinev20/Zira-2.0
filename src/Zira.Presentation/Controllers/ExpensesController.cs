@@ -50,7 +50,7 @@ public class ExpensesController : Controller
         {
             this.TempData["ErrorMessage"] = @ExpensesText.ExpenseError;
             this.ViewBag.Categories = Enum.GetValues(typeof(Categories)).Cast<Categories>().ToList();
-            this.RedirectToAction("ExpensesList");
+            return this.RedirectToAction("ExpensesList");
         }
 
         var userId = this.User.GetUserId();
@@ -60,7 +60,7 @@ public class ExpensesController : Controller
         {
             this.ModelState.AddModelError("", @AuthenticationText.UserNotExisting);
             this.TempData["ErrorMessage"] = @ExpensesText.UserNotExists;
-            this.RedirectToAction("ExpensesList");
+            return this.RedirectToAction("ExpensesList");
         }
 
         expenseModel.ExpenseId = Guid.NewGuid();
@@ -145,7 +145,7 @@ public class ExpensesController : Controller
         {
             this.TempData["ErrorMessage"] = @ExpensesText.ExpenseError;
             this.ViewBag.Categories = Enum.GetValues(typeof(Categories)).Cast<Categories>().ToList();
-            this.RedirectToAction("ExpensesList");
+            return this.RedirectToAction("ExpensesList");
         }
 
         var expense = await this.context.Expenses
