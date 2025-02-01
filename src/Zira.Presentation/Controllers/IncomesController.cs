@@ -44,11 +44,21 @@ public class IncomesController : Controller
             this.ModelState.AddModelError(nameof(incomeModel.Amount), @IncomeText.AmountValidation);
         }
 
+        if (incomeModel.DateReceived > DateTime.UtcNow)
+        {
+            this.ModelState.AddModelError(nameof(incomeModel.DateReceived), @IncomeText.FutureDateValidation);
+        }
+
+        if (incomeModel.DateReceived < DateTime.UtcNow.AddYears(-10))
+        {
+            this.ModelState.AddModelError(nameof(incomeModel.DateReceived), @IncomeText.PastDateValidation);
+        }
+
         if (!this.ModelState.IsValid)
         {
             this.TempData["IncomeErrorMessage"] = @IncomeText.IncomeError;
             this.ViewBag.Sources = Enum.GetValues(typeof(Sources)).Cast<Sources>().ToList();
-            return this.View(incomeModel);
+            return this.RedirectToAction("IncomeList");
         }
 
         var userId = this.User.GetUserId();
@@ -59,7 +69,7 @@ public class IncomesController : Controller
             this.ModelState.AddModelError("", @AuthenticationText.UserNotExisting);
             this.TempData["IncomeErrorMessage"] = @IncomeText.UserNotFound;
             this.ViewBag.Sources = Enum.GetValues(typeof(Sources)).Cast<Sources>().ToList();
-            return this.View(incomeModel);
+            return this.RedirectToAction("IncomeList");
         }
 
         incomeModel.IncomeId = Guid.NewGuid();
@@ -144,7 +154,7 @@ public class IncomesController : Controller
         {
             this.TempData["ErrorMessage"] = @IncomeText.IncomeError;
             this.ViewBag.Sources = Enum.GetValues(typeof(Sources)).Cast<Sources>().ToList();
-            return this.View(model);
+            return this.RedirectToAction("IncomeList");
         }
 
         var income = await this.context.Incomes
@@ -154,7 +164,7 @@ public class IncomesController : Controller
         if (income == null)
         {
             this.TempData["ErrorMessage"] = @IncomeText.IncomeNotFound;
-            return this.NotFound();
+            return this.RedirectToAction("IncomeList");
         }
 
         income.Source = model.Source;

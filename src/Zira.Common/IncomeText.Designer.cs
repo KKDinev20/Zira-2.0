@@ -21,14 +21,14 @@ namespace Zira.Common {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class ExpensesText {
+    public class IncomeText {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal ExpensesText() {
+        internal IncomeText() {
         }
         
         /// <summary>
@@ -38,7 +38,7 @@ namespace Zira.Common {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Zira.Common.ExpensesText", typeof(ExpensesText).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Zira.Common.IncomeText", typeof(IncomeText).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -60,7 +60,7 @@ namespace Zira.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Опции.
+        ///   Looks up a localized string similar to Действия.
         /// </summary>
         public static string Actions {
             get {
@@ -69,11 +69,11 @@ namespace Zira.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Добави разход.
+        ///   Looks up a localized string similar to Добавяне на доход..
         /// </summary>
-        public static string AddExpense {
+        public static string AddIncome {
             get {
-                return ResourceManager.GetString("AddExpense", resourceCulture);
+                return ResourceManager.GetString("AddIncome", resourceCulture);
             }
         }
         
@@ -96,7 +96,7 @@ namespace Zira.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Отказване.
+        ///   Looks up a localized string similar to Откажи.
         /// </summary>
         public static string Cancel {
             get {
@@ -105,25 +105,16 @@ namespace Zira.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Дата.
+        ///   Looks up a localized string similar to Дата на получаване.
         /// </summary>
-        public static string DateSpent {
+        public static string DateReceived {
             get {
-                return ResourceManager.GetString("DateSpent", resourceCulture);
+                return ResourceManager.GetString("DateReceived", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Датата не може да бъде в бъдещето..
-        /// </summary>
-        public static string DateValidation {
-            get {
-                return ResourceManager.GetString("DateValidation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Изтриване.
+        ///   Looks up a localized string similar to Изтрий.
         /// </summary>
         public static string Delete {
             get {
@@ -132,16 +123,7 @@ namespace Zira.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Изтриване на разходи.
-        /// </summary>
-        public static string DeleteExpense {
-            get {
-                return ResourceManager.GetString("DeleteExpense", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Сигурни ли сте, че искате да изтриете следния запис на разход?.
+        ///   Looks up a localized string similar to Сигурни ли сте, че искате да изтриете следния доход?.
         /// </summary>
         public static string DeleteWarning {
             get {
@@ -150,7 +132,16 @@ namespace Zira.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Промяна.
+        ///   Looks up a localized string similar to Изтриване на доход.
+        /// </summary>
+        public static string DeletеIncome {
+            get {
+                return ResourceManager.GetString("DeletеIncome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Промени.
         /// </summary>
         public static string Edit {
             get {
@@ -159,83 +150,11 @@ namespace Zira.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Промени разход.
+        ///   Looks up a localized string similar to Промяна на дохода.
         /// </summary>
-        public static string EditExpenses {
+        public static string EditIncome {
             get {
-                return ResourceManager.GetString("EditExpenses", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Въведете разходите.
-        /// </summary>
-        public static string EnterExpenseAmount {
-            get {
-                return ResourceManager.GetString("EnterExpenseAmount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Категория на разходите.
-        /// </summary>
-        public static string ExpenseCategory {
-            get {
-                return ResourceManager.GetString("ExpenseCategory", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Подробности за разходите.
-        /// </summary>
-        public static string ExpenseDetails {
-            get {
-                return ResourceManager.GetString("ExpenseDetails", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Не успяхте да добавите разходи. Моля, коригирайте грешките и опитайте отново..
-        /// </summary>
-        public static string ExpenseError {
-            get {
-                return ResourceManager.GetString("ExpenseError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Не успяхте да актуализирате разходите. Разходът не е намерен..
-        /// </summary>
-        public static string ExpenseNotFound {
-            get {
-                return ResourceManager.GetString("ExpenseNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Разходи.
-        /// </summary>
-        public static string Expenses {
-            get {
-                return ResourceManager.GetString("Expenses", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Списък с разходи.
-        /// </summary>
-        public static string ExpensesList {
-            get {
-                return ResourceManager.GetString("ExpensesList", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Разходът е добавен успешно!.
-        /// </summary>
-        public static string ExpenseSuccess {
-            get {
-                return ResourceManager.GetString("ExpenseSuccess", resourceCulture);
+                return ResourceManager.GetString("EditIncome", resourceCulture);
             }
         }
         
@@ -245,6 +164,60 @@ namespace Zira.Common {
         public static string FutureDateValidation {
             get {
                 return ResourceManager.GetString("FutureDateValidation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Детайли за дохода.
+        /// </summary>
+        public static string IncomeDetails {
+            get {
+                return ResourceManager.GetString("IncomeDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Не е добавен доход. Моля, коригирайте грешките и опитайте отново..
+        /// </summary>
+        public static string IncomeError {
+            get {
+                return ResourceManager.GetString("IncomeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Доходът не е намерен..
+        /// </summary>
+        public static string IncomeNotFound {
+            get {
+                return ResourceManager.GetString("IncomeNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Доходи.
+        /// </summary>
+        public static string Incomes {
+            get {
+                return ResourceManager.GetString("Incomes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Доходът е добаввен успешно!.
+        /// </summary>
+        public static string IncomeSuccess {
+            get {
+                return ResourceManager.GetString("IncomeSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Списък с доходите.
+        /// </summary>
+        public static string ListOfIncomes {
+            get {
+                return ResourceManager.GetString("ListOfIncomes", resourceCulture);
             }
         }
         
@@ -276,16 +249,7 @@ namespace Zira.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Бързо добавяне на разходи.
-        /// </summary>
-        public static string QuickAdd {
-            get {
-                return ResourceManager.GetString("QuickAdd", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Запази промените.
+        ///   Looks up a localized string similar to Запази.
         /// </summary>
         public static string SaveChanges {
             get {
@@ -294,20 +258,29 @@ namespace Zira.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Избери тип разход.
+        ///   Looks up a localized string similar to Източник.
         /// </summary>
-        public static string SelectACategory {
+        public static string Source {
             get {
-                return ResourceManager.GetString("SelectACategory", resourceCulture);
+                return ResourceManager.GetString("Source", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Не успяхте да добавите разход. Потребителят не е намерен..
+        ///   Looks up a localized string similar to Потребителят не съществува..
         /// </summary>
-        public static string UserNotExists {
+        public static string UserNotFound {
             get {
-                return ResourceManager.GetString("UserNotExists", resourceCulture);
+                return ResourceManager.GetString("UserNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Доходът е актуализиран успешно!.
+        /// </summary>
+        public static string UserSuccess {
+            get {
+                return ResourceManager.GetString("UserSuccess", resourceCulture);
             }
         }
     }

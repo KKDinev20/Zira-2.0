@@ -11,7 +11,7 @@
                 <input type="hidden" asp-for="IncomeId"/>
 
                 <div class="mb-3">
-                    <label asp-for="Source" class="form-label">@IncomeText.IncomeSource</label>
+                    <label asp-for="Source" class="form-label">@IncomeText.Source</label>
                     <select asp-for="Source" class="form-control">
                         @foreach (var source in ViewBag.Sources)
                         {

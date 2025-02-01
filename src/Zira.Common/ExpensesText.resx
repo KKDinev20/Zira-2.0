@@ -96,4 +96,10 @@
     <data name="DateValidation" xml:space="preserve">
         <value>Датата не може да бъде в бъдещето.</value>
     </data>
+    <data name="FutureDateValidation" xml:space="preserve">
+        <value>Датата не може да бъде в бъдещето.</value>
+    </data>
+    <data name="PastDateValidation" xml:space="preserve">
+        <value>Датата не може да бъде повече от 10 години назад във времето.</value>
+    </data>
 </root>

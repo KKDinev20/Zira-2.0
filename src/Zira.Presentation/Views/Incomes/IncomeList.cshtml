@@ -4,17 +4,18 @@
     Layout = "Shared/_IncomeLayout";
 }
 
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
-}
-@if (TempData["ErrorMessage"] != null)
-{
-    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
-}
 
 <div class="container-xxl flex-grow-1 container-p-y">
     <h4 class="fw-bold py-3 mb-4">@IncomeText.Incomes</h4>
+
+    @if (TempData["IncomeSuccessMessage"] != null)
+    {
+    <div class="alert alert-success">@TempData["IncomeSuccessMessage"]</div>
+    }
+    @if (TempData["IncomeErrorMessage"] != null)
+    {
+    <div class="alert alert-danger">@TempData["IncomeErrorMessage"]</div>
+    }
 
     <div class="card">
         <div class="table-responsive text-nowrap">

@@ -43,7 +43,11 @@ public class ExpensesController : Controller
         if (expenseModel.Amount <= 0)
         {
             this.ModelState.AddModelError(nameof(expenseModel.Amount), @ExpensesText.AmountValidation);
-            this.RedirectToAction("ExpensesList");
+        }
+
+        if (expenseModel.DateSpent > DateTime.UtcNow)
+        {
+            this.ModelState.AddModelError(nameof(expenseModel.DateSpent), @ExpensesText.DateValidation);
         }
 
         if (!this.ModelState.IsValid)
