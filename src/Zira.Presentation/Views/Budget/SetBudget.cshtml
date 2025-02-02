@@ -1,0 +1,54 @@
+﻿@model Zira.Data.Models.Budget
+@{
+ViewData["Title"] = "Set Budget";
+Layout = "Shared/_BudgetLayout";
+}
+
+<div class="content-wrapper">
+    <div class="container-fluid d-flex justify-content-center align-items-center" style="height: 80vh;">
+        <div class="col-xl">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-center align-items-center">
+                    <h5 class="mb-0 text-center">Set Budget</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="SetBudget" method="post">
+                        @* Category Dropdown *@
+                        <div class="mb-3">
+                            <label class="form-label" for="Category">Category</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bx bx-briefcase"></i></span>
+                                <select id="Category" asp-for="Category" asp-items="Html.GetEnumSelectList<Zira.Data.Enums.Categories>()" class="form-select" required>
+                                    <option value="" disabled selected>Select a Category</option>
+                                </select>
+                            </div>
+                            <span class="text-danger" asp-validation-for="Category"></span>
+                        </div>
+
+                        @* Amount Input *@
+                        <div class="mb-3">
+                            <label class="form-label" for="Amount">Amount</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bx bx-wallet"></i></span>
+                                <input type="number" asp-for="Amount" class="form-control" step="0.01" placeholder="Enter amount" required min="0.01"/>
+                            </div>
+                            <span class="text-danger" asp-validation-for="Amount"></span>
+                        </div>
+
+                        @* Month Input *@
+                        <div class="mb-3">
+                            <label class="form-label" for="Month">Month</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bx bx-calendar"></i></span>
+                                <input type="month" asp-for="Month" class="form-control" required/>
+                            </div>
+                            <span class="text-danger" asp-validation-for="Month"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">Save Budget</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
