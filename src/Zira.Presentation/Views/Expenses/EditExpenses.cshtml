@@ -1,6 +1,7 @@
 ﻿@model Zira.Data.Expense
 @{
-Layout = "Shared/_ExpensesLayout";
+    ViewData["Title"] = "Edit Expense";
+    Layout = "Shared/_ExpensesLayout";
 }
 
 <div class="container-xxl flex-grow-1 container-p-y">
@@ -15,9 +16,9 @@ Layout = "Shared/_ExpensesLayout";
                     <select asp-for="Category" class="form-control">
                         @foreach (var category in ViewBag.Categories)
                         {
-                        <!option value="@category" @(category == Model.Category ? "selected" : "")>
-                            @category
-                        </!option>
+                            <!option value="@category" @(category == Model.Category ? "selected" : "")>
+                                @category
+                            </!option>
                         }
                     </select>
                 </div>

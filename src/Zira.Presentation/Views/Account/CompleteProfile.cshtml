@@ -1,7 +1,8 @@
 @model CompleteProfileViewModel
 
 @{
-Layout = "Shared/_AccountLayout";
+    ViewData["Title"] = "Complete your profile";
+    Layout = "Shared/_AccountLayout";
 }
 
 <div class="d-flex justify-content-center align-items-center vh-100">
@@ -15,25 +16,25 @@ Layout = "Shared/_AccountLayout";
                 <div class="row mb-3">
                     <label class="col-sm-3 col-form-label" for="FirstName">First Name</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="FirstName" name="FirstName" placeholder="John" value="@Model.FirstName" />
+                        <input type="text" class="form-control" id="FirstName" name="FirstName" placeholder="John" value="@Model.FirstName"/>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label class="col-sm-3 col-form-label" for="LastName">Last Name</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="LastName" name="LastName" placeholder="Doe" value="@Model.LastName" />
+                        <input type="text" class="form-control" id="LastName" name="LastName" placeholder="Doe" value="@Model.LastName"/>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label class="col-sm-3 col-form-label" for="BirthDate">Birth Date</label>
                     <div class="col-sm-9">
-                        <input type="date" class="form-control" id="BirthDate" name="BirthDate" value="@Model.BirthDate.ToString("yyyy-MM-dd")" />
+                        <input type="date" class="form-control" id="BirthDate" name="BirthDate" value="@Model.BirthDate.ToString("yyyy-MM-dd")"/>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label class="col-sm-3 col-form-label" for="AvatarUrl">Avatar</label>
                     <div class="col-sm-9">
-                        <input class="form-control" type="file" id="AvatarUrl" name="AvatarUrl" accept="image/*" />
+                        <input class="form-control" type="file" id="AvatarUrl" name="AvatarUrl" accept="image/*"/>
                     </div>
                 </div>
                 <div class="row justify-content-end">

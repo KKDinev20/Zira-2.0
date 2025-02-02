@@ -6,34 +6,37 @@
 
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="card">
-        <h5 class="card-header">@ExpensesText.EditExpenses</h5>
+        <h5 class="card-header">Edit Budget</h5>
         <div class="card-body">
-            <form method="post">
+            <form asp-action="EditBudget" asp-controller="Budget" method="post">
                 <input type="hidden" asp-for="BudgetId"/>
 
                 <div class="mb-3">
-                    <label asp-for="Category" class="form-label">@ExpensesText.ExpenseCategory</label>
-                    <select asp-for="Category" class="form-control">
+                    <label asp-for="Category" class="form-label">Category</label>
+                    <select asp-for="Category" class="form-control" required>
                         @foreach (var category in ViewBag.Categories)
                         {
-                        <!option value="@category" @(category == Model.Category ? "selected" : "")>
-                            @category
-                        </!option>
+                            <option value="@category" selected="@(category.Equals(Model.Category) ? "selected" : null)">
+                                @category
+                            </option>
                         }
                     </select>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="Amount" class="form-label">@ExpensesText.Amount</label>
-                    <input type="number" step="0.01" asp-for="Amount" class="form-control"/>
+                    <label asp-for="Amount" class="form-label">Amount</label>
+                    <input type="number" step="0.01" asp-for="Amount" class="form-control" required/>
+                    <span asp-validation-for="Amount" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="Month" class="form-label">@ExpensesText.DateSpent</label>
-                    <input type="date" asp-for="Month" class="form-control"/>
+                    <label asp-for="Month" class="form-label">Month</label>
+                    <input type="month" asp-for="Month" class="form-control" required/>
+                    <span asp-validation-for="Month" class="text-danger"></span>
                 </div>
 
-                <button type="submit" class="btn btn-primary">@ExpensesText.SaveChanges</button>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <a href="@Url.Action("ViewBudgets", "Budget")" class="btn btn-secondary">Cancel</a>
             </form>
         </div>
     </div>

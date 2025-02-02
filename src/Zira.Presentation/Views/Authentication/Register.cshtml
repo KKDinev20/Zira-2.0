@@ -4,10 +4,9 @@
 @model Zira.Presentation.Models.RegisterViewModel
 
 @{
+    ViewData["Title"] = @AuthenticationText.RegisterTitle;
     Layout = "Shared/_AuthenticationLayout";
 }
-
-<title>@AuthenticationText.RegisterTitle</title>
 
 <div class="container-xxl">
     <div class="authentication-wrapper authentication-basic container-p-y">

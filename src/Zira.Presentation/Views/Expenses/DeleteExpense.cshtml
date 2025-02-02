@@ -1,5 +1,6 @@
 ﻿@{
-Layout = "Shared/_ExpensesLayout";
+    ViewData["Title"] = "Delete Expense";
+    Layout = "Shared/_ExpensesLayout";
 }
 
 <div class="container-fluid">
@@ -33,7 +34,7 @@ Layout = "Shared/_ExpensesLayout";
             </div>
 
             <form method="post">
-                <input type="hidden" name="id" value="@Model.ExpenseId" />
+                <input type="hidden" name="id" value="@Model.ExpenseId"/>
 
                 <button type="submit" class="btn btn-danger">@ExpensesText.Delete</button>
                 <a href="@Url.Action("ExpensesList", "Expenses")" class="btn btn-secondary">@ExpensesText.Cancel</a>

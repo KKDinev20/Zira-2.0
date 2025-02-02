@@ -2,9 +2,10 @@
 @using Zira.Presentation.Extensions
 @model LoginViewModel
 @{
+    ViewData["Title"] = @AuthenticationText.LoginSubtitle;
+
     Layout = "Shared/_AuthenticationLayout";
 }
-<title>Login</title>
 <div class="container-xxl">
     <div class="authentication-wrapper authentication-basic container-p-y">
         <div class="authentication-inner">
@@ -72,15 +73,7 @@
                                 }
                             </div>
                         </div>
-
-                        <div class="mb-3 form-check">
-                            <input
-                                type="checkbox"
-                                class="form-check-input"
-                                asp-for="RememberAccess"
-                                id="rememberMe"/>
-                        </div>
-
+                        
                         <div class="mb-3">
                             <button class="btn btn-primary d-grid w-100" type="submit">@AuthenticationText.SignInButton</button>
                         </div>
