@@ -11,6 +11,7 @@ using Zira.Data.Enums;
 using Zira.Data.Models;
 using Zira.Presentation.Extensions;
 using Zira.Presentation.Models;
+using Zira.Presentation.Validations;
 using Zira.Services.Identity.Constants;
 using Zira.Services.Identity.Extensions;
 
@@ -31,7 +32,7 @@ public class ExpensesController : Controller
     [HttpGet("/add-expenses/")]
     public async Task<IActionResult> AddExpenses()
     {
-        await this.SetGlobalUserInfoAsync(userManager, context);
+        await this.SetGlobalUserInfoAsync(this.userManager, this.context);
 
         this.ViewBag.Categories = Enum.GetValues(typeof(Categories));
         return this.View();
@@ -40,15 +41,7 @@ public class ExpensesController : Controller
     [HttpPost("/add-expenses")]
     public async Task<IActionResult> AddExpenses(Expense expenseModel)
     {
-        if (expenseModel.Amount <= 0)
-        {
-            this.ModelState.AddModelError(nameof(expenseModel.Amount), @ExpensesText.AmountValidation);
-        }
-
-        if (expenseModel.DateSpent > DateTime.UtcNow)
-        {
-            this.ModelState.AddModelError(nameof(expenseModel.DateSpent), @ExpensesText.DateValidation);
-        }
+        ExpenseValidations.ValidateExpense(expenseModel, this.ModelState);
 
         if (!this.ModelState.IsValid)
         {
@@ -71,6 +64,26 @@ public class ExpensesController : Controller
         expenseModel.UserId = user.Id;
         expenseModel.DateSpent = expenseModel.DateSpent == default ? DateTime.UtcNow : expenseModel.DateSpent;
 
+        var budget = await this.context.Budgets
+            .FirstOrDefaultAsync(
+                b => b.UserId == user.Id
+                     && b.Category == expenseModel.Category
+                     && b.Month.Year == expenseModel.DateSpent.Year
+                     && b.Month.Month == expenseModel.DateSpent.Month);
+
+        if (budget != null)
+        {
+            budget.Amount -= expenseModel.Amount;
+
+            if (budget.Amount < 0)
+            {
+                this.TempData["ErrorMessage"] = "This expense exceeds the available budget!";
+                return this.RedirectToAction("ExpensesList");
+            }
+
+            this.context.Budgets.Update(budget);
+        }
+
         this.context.Expenses.Add(expenseModel);
         await this.context.SaveChangesAsync();
 
@@ -81,7 +94,7 @@ public class ExpensesController : Controller
     [HttpGet("/expenses-list/")]
     public async Task<IActionResult> ExpensesList(int page = 1, int pageSize = 10)
     {
-        await this.SetGlobalUserInfoAsync(userManager, context);
+        await this.SetGlobalUserInfoAsync(this.userManager, this.context);
 
         var userId = this.User.GetUserId();
         var user = await this.context.Users
@@ -140,10 +153,7 @@ public class ExpensesController : Controller
             return this.BadRequest();
         }
 
-        if (model.Amount <= 0)
-        {
-            this.ModelState.AddModelError(nameof(model.Amount), @ExpensesText.AmountValidation);
-        }
+        ExpenseValidations.ValidateExpense(model, this.ModelState);
 
         if (!this.ModelState.IsValid)
         {
@@ -207,15 +217,7 @@ public class ExpensesController : Controller
     [HttpPost("/quick-add-expenses")]
     public async Task<IActionResult> QuickAddExpenses(Expense model)
     {
-        if (model.Amount <= 0)
-        {
-            this.ModelState.AddModelError(nameof(model.Amount), @ExpensesText.AmountValidation);
-        }
-
-        if (model.DateSpent > DateTime.UtcNow)
-        {
-            this.ModelState.AddModelError(nameof(model.DateSpent), @ExpensesText.DateValidation);
-        }
+        ExpenseValidations.ValidateExpense(model, this.ModelState);
 
         if (!this.ModelState.IsValid)
         {

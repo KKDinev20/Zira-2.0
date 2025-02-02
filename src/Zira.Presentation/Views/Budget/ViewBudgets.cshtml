@@ -9,11 +9,11 @@
 
     @if (TempData["SuccessMessage"] != null)
     {
-    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
     }
     @if (TempData["ErrorMessage"] != null)
     {
-    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
     }
 
     <div class="card">
@@ -31,28 +31,28 @@
                 <tbody>
                 @foreach (var expense in Model.Budgets)
                 {
-                <tr>
-                    <td>
-                        <i class="bx bx-wallet-alt me-3"></i> <strong>@expense.Category</strong>
-                    </td>
-                    <td>@expense.Amount.ToString("C")</td>
-                    <td>@expense.Month.ToString("dd-MM-yyyy")</td>
-                    <td>
-                        <div class="dropdown">
-                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                <i class="bx bx-dots-vertical-rounded"></i>
-                            </button>
-                            @*<div class="dropdown-menu">
-                                <a class="dropdown-item" href="@Url.Action("EditExpenses", "Expenses", new { id = expense.BudgetId })">
+                    <tr>
+                        <td>
+                            <i class="bx bx-wallet-alt me-3"></i> <strong>@expense.Category</strong>
+                        </td>
+                        <td>@expense.Amount.ToString("C")</td>
+                        <td>@expense.Month.ToString("dd-MM-yyyy")</td>
+                        <td>
+                            <div class="dropdown">
+                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+                                <div class="dropdown-menu">
+                                <a class="dropdown-item" href="@Url.Action("EditBudget", "Budget", new { id = expense.BudgetId })">
                                     <i class="bx bx-edit-alt me-1"></i> @ExpensesText.Edit
                                 </a>
-                                <a class="dropdown-item" href="@Url.Action("DeleteExpense", "Expenses", new { id = expense.BudgetId })">
+                                <a class="dropdown-item" href="@Url.Action("DeleteBudget", "Budget", new { id = expense.BudgetId })">
                                     <i class="bx bx-trash me-1"></i> @ExpensesText.Delete
                                 </a>
-                            </div>*@
-                        </div>
-                    </td>
-                </tr>
+                            </div>
+                            </div>
+                        </td>
+                    </tr>
                 }
                 </tbody>
             </table>
@@ -61,14 +61,14 @@
         <div class="d-flex justify-content-center mt-4">
             @if (Model.CurrentPage > 1)
             {
-            <a href="@Url.Action("ExpensesList", "Expenses", new { page = Model.CurrentPage - 1 })" class="btn btn-link">@ExpensesText.Previous</a>
+                <a href="@Url.Action("ExpensesList", "Expenses", new { page = Model.CurrentPage - 1 })" class="btn btn-link">@ExpensesText.Previous</a>
             }
 
             <span class="mx-3">Page @Model.CurrentPage of @Model.TotalPages</span>
 
             @if (Model.CurrentPage < Model.TotalPages)
             {
-            <a href="@Url.Action("ExpensesList", "Expenses", new { page = Model.CurrentPage + 1 })" class="btn btn-link">@ExpensesText.Next</a>
+                <a href="@Url.Action("ExpensesList", "Expenses", new { page = Model.CurrentPage + 1 })" class="btn btn-link">@ExpensesText.Next</a>
             }
         </div>
     </div>
