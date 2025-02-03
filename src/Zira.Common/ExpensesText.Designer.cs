@@ -177,6 +177,15 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Тези разходи надхвърлят наличния бюджет!.
+        /// </summary>
+        public static string ExceedingExpenses {
+            get {
+                return ResourceManager.GetString("ExceedingExpenses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Категория на разходите.
         /// </summary>
         public static string ExpenseCategory {

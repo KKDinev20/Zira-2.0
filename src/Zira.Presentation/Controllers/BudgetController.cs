@@ -53,7 +53,7 @@ namespace Zira.Presentation.Controllers
             var user = await this.context.Users.FirstOrDefaultAsync(u => u.ApplicationUserId == userId);
             if (user == null)
             {
-                this.ModelState.AddModelError("", "User not found.");
+                this.ModelState.AddModelError("", @AuthenticationText.UserNotExisting);
                 this.ViewBag.Categories = Enum.GetValues(typeof(Categories)).Cast<Categories>().ToList();
                 return this.View(model);
             }
@@ -69,7 +69,7 @@ namespace Zira.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                this.TempData["ErrorMessage"] = "An error occurred while saving the budget.";
+                this.TempData["ErrorMessage"] = @BudgetText.BudgetError;
                 return this.View(model);
             }
 
@@ -140,7 +140,7 @@ namespace Zira.Presentation.Controllers
 
             if (!this.ModelState.IsValid)
             {
-                this.TempData["ErrorMessage"] = @ExpensesText.ExpenseError;
+                this.TempData["ErrorMessage"] = @BudgetText.BudgetError;
                 this.ViewBag.Categories = Enum.GetValues(typeof(Categories)).Cast<Categories>().ToList();
                 return this.RedirectToAction("ViewBudgets");
             }
@@ -151,7 +151,7 @@ namespace Zira.Presentation.Controllers
 
             if (budget == null)
             {
-                this.TempData["ErrorMessage"] = @ExpensesText.ExpenseNotFound;
+                this.TempData["ErrorMessage"] = @BudgetText.BudgetNotFound;
                 return this.NotFound();
             }
 
@@ -160,7 +160,7 @@ namespace Zira.Presentation.Controllers
             budget.Month = budgetModel.Month;
 
             await this.context.SaveChangesAsync();
-            this.TempData["SuccessMessage"] = @ExpensesText.ExpenseSuccess;
+            this.TempData["SuccessMessage"] = @BudgetText.BudgetSuccess;
             return this.RedirectToAction("ViewBudgets");
         }
 

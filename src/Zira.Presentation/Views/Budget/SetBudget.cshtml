@@ -1,6 +1,6 @@
 ﻿@model Zira.Data.Models.Budget
 @{
-    ViewData["Title"] = "Set Budget";
+    ViewData["Title"] = @BudgetText.SetBudget;
     Layout = "Shared/_BudgetLayout";
 }
 
@@ -9,12 +9,12 @@
         <div class="col-xl">
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-center align-items-center">
-                    <h5 class="mb-0 text-center">Set Budget</h5>
+                    <h5 class="mb-0 text-center">@BudgetText.SetBudget</h5>
                 </div>
                 <div class="card-body">
                     <form asp-action="SetBudget" method="post">
                         <div class="mb-3">
-                            <label class="form-label" for="Category">Category</label>
+                            <label class="form-label" for="Category">@BudgetText.BudgetCategory</label>
                             <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="bx bx-briefcase"></i>
@@ -27,7 +27,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label" for="Amount">Amount</label>
+                            <label class="form-label" for="Amount">@BudgetText.BudgetAmount</label>
                             <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="bx bx-wallet"></i>
@@ -38,7 +38,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label" for="Month">Month</label>
+                            <label class="form-label" for="Month">@BudgetText.BudgetMonth</label>
                             <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="bx bx-calendar"></i>
@@ -48,7 +48,7 @@
                             <span class="text-danger" asp-validation-for="Month"></span>
                         </div>
 
-                        <button type="submit" class="btn btn-primary w-100">Save Budget</button>
+                        <button type="submit" class="btn btn-primary w-100">@BudgetText.SaveBudget</button>
                     </form>
                 </div>
             </div>

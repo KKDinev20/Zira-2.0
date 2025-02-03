@@ -77,7 +77,7 @@ public class ExpensesController : Controller
 
             if (budget.Amount < 0)
             {
-                this.TempData["ErrorMessage"] = "This expense exceeds the available budget!";
+                this.TempData["ErrorMessage"] = @ExpensesText.ExceedingExpenses;
                 return this.RedirectToAction("ExpensesList");
             }
 
@@ -215,9 +215,9 @@ public class ExpensesController : Controller
     }
 
     [HttpPost("/quick-add-expenses")]
-    public async Task<IActionResult> QuickAddExpenses(Expense model)
+    public async Task<IActionResult> QuickAddExpenses(Expense expenseModel)
     {
-        ExpenseValidations.ValidateExpense(model, this.ModelState);
+        ExpenseValidations.ValidateExpense(expenseModel, this.ModelState);
 
         if (!this.ModelState.IsValid)
         {
@@ -236,15 +236,35 @@ public class ExpensesController : Controller
             return this.RedirectToAction("ExpensesList");
         }
 
-        model.ExpenseId = Guid.NewGuid();
-        model.UserId = user.Id;
+        expenseModel.ExpenseId = Guid.NewGuid();
+        expenseModel.UserId = user.Id;
 
-        if (model.DateSpent == default)
+        if (expenseModel.DateSpent == default)
         {
-            model.DateSpent = DateTime.UtcNow;
+            expenseModel.DateSpent = DateTime.UtcNow;
         }
 
-        this.context.Expenses.Add(model);
+        var budget = await this.context.Budgets
+            .FirstOrDefaultAsync(
+                b => b.UserId == user.Id
+                     && b.Category == expenseModel.Category
+                     && b.Month.Year == expenseModel.DateSpent.Year
+                     && b.Month.Month == expenseModel.DateSpent.Month);
+
+        if (budget != null)
+        {
+            budget.Amount -= expenseModel.Amount;
+
+            if (budget.Amount < 0)
+            {
+                this.TempData["ErrorMessage"] = @ExpensesText.ExceedingExpenses;
+                return this.RedirectToAction("ExpensesList");
+            }
+
+            this.context.Budgets.Update(budget);
+        }
+
+        this.context.Expenses.Add(expenseModel);
         await this.context.SaveChangesAsync();
 
         this.TempData["SuccessMessage"] = @ExpensesText.ExpenseSuccess;

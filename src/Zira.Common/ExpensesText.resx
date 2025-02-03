@@ -102,4 +102,7 @@
     <data name="PastDateValidation" xml:space="preserve">
         <value>Датата не може да бъде повече от 10 години назад във времето.</value>
     </data>
+    <data name="ExceedingExpenses" xml:space="preserve">
+        <value>Тези разходи надхвърлят наличния бюджет!</value>
+    </data>
 </root>
