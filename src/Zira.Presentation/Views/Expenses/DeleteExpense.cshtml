@@ -1,5 +1,8 @@
-﻿@{
-    ViewData["Title"] = "Delete Expense";
+﻿@*
+@inject Microsoft.Extensions.Localization.IStringLocalizer<ExpenseCategories> Localizer
+*@
+@{
+    ViewData["Title"] = @ExpensesText.DeleteExpense;
     Layout = "Shared/_ExpensesLayout";
 }
 
@@ -23,9 +26,10 @@
                     </thead>
                     <tbody>
                     <tr>
-                        <td>
-                            <i class="bx bx-briefcase fa-lg text-primary me-3"></i> <strong>@Model.Category</strong>
-                        </td>
+                        @*<td>
+                            <i class="bx bx-briefcase fa-lg text-primary me-3"></i> <strong>@Localizer[Model.Category.ToString()]</strong>
+
+                        </td>*@
                         <td>@Model.Amount.ToString("C")</td>
                         <td>@Model.DateSpent.ToString("dd-MM-yyyy")</td>
                     </tr>

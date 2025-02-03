@@ -41,4 +41,43 @@
     <data name="SaveBudget" xml:space="preserve">
         <value>Запази бюджет</value>
     </data>
+    <data name="DeleteBudget" xml:space="preserve">
+        <value>Изтриване на бюджет</value>
+    </data>
+    <data name="Warning" xml:space="preserve">
+        <value>Сигурни ли сте, че искате да изтриете този бюджет?</value>
+    </data>
+    <data name="BudgetDetails" xml:space="preserve">
+        <value>Детайли за бюджета</value>
+    </data>
+    <data name="Delete" xml:space="preserve">
+        <value>Изтрий</value>
+    </data>
+    <data name="Cancel" xml:space="preserve">
+        <value>Откажи</value>
+    </data>
+    <data name="EditBudget" xml:space="preserve">
+        <value>Промени бюджет</value>
+    </data>
+    <data name="SaveChanges" xml:space="preserve">
+        <value>Запази промените</value>
+    </data>
+    <data name="Actions" xml:space="preserve">
+        <value>Действия</value>
+    </data>
+    <data name="Budgets" xml:space="preserve">
+        <value>Бюджети</value>
+    </data>
+    <data name="Edit" xml:space="preserve">
+        <value>Промени</value>
+    </data>
+    <data name="BudgetList" xml:space="preserve">
+        <value>Списък от бюджети</value>
+    </data>
+    <data name="Previous" xml:space="preserve">
+        <value>Предходен</value>
+    </data>
+    <data name="Next" xml:space="preserve">
+        <value>Следващ</value>
+    </data>
 </root>

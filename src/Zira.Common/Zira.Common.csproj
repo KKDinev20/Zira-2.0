@@ -52,6 +52,10 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>BudgetText.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="ExpenseCategories.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Categories.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -89,6 +93,11 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>BudgetText.resx</DependentUpon>
+      </Compile>
+      <Compile Update="ExpenseCategories.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>ExpenseCategories.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

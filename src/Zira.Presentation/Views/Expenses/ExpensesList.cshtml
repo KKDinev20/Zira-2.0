@@ -1,7 +1,10 @@
 ﻿@model ExpensesListViewModel
+@*
+@inject Microsoft.Extensions.Localization.IStringLocalizer<ExpenseCategories> Localizer
+*@
 
 @{
-    ViewData["Title"] = "Expenses List";
+    ViewData["Title"] = @ExpensesText.Expenses;
     Layout = "Shared/_ExpensesLayout";
 }
 
@@ -17,12 +20,12 @@
                 <div class="row">
                     <div class="col-md-4">
                         <label for="Category" class="form-label">@ExpensesText.ExpenseCategory</label>
-                        <select id="Category" name="Category" class="form-select">
-                            @foreach (var category in Enum.GetValues(typeof(Zira.Data.Enums.Categories)))
+                        @*<select id="Category" name="Category" class="form-select">
+                            @foreach (Zira.Data.Enums.Categories category in Enum.GetValues(typeof(Zira.Data.Enums.Categories)))
                             {
-                                <option value="@category">@category</option>
+                            <option value="@category">@Localizer[category.ToString()]</option>
                             }
-                        </select>
+                        </select>*@
                     </div>
                     <div class="col-md-4">
                         <label for="Amount" class="form-label">@ExpensesText.Amount</label>

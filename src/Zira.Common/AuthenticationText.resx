@@ -42,6 +42,9 @@
     <data name="LoginSubtitle" xml:space="preserve">
     <value>Влезте в акаунта си, за да започнете приключението</value>
   </data>
+    <data name="LoginTitle" xml:space="preserve">
+    <value>Вход</value>
+  </data>
     <data name="NewUser" xml:space="preserve">
     <value>Нов ли сте на платформата?</value>
   </data>
@@ -170,5 +173,14 @@
   </data>
   <data name="UserNotExisting" xml:space="preserve">
     <value>Потребителят не съществува.</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Изход</value>
+  </data>
+  <data name="ForgotPassword" xml:space="preserve">
+    <value>Забравена парола</value>
+  </data>
+  <data name="AccessDenied" xml:space="preserve">
+    <value>Достъпът е отказан</value>
   </data>
 </root>

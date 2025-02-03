@@ -1,22 +1,22 @@
 ﻿@model Zira.Data.Models.Budget
 @{
-    ViewData["Title"] = "Delete Budget";
+    ViewData["Title"] = @BudgetText.DeleteBudget;
     Layout = "Shared/_BudgetLayout";
 }
 <div class="container-fluid">
     <div class="card">
-        <h5 class="card-header">Delete Budget</h5>
+        <h5 class="card-header">@BudgetText.DeleteBudget</h5>
         <div class="card-body">
-            <h6 class="card-title">Are you sure you want to delete this budget?</h6>
+            <h6 class="card-title">@BudgetText.Warning</h6>
 
             <div class="table-responsive text-nowrap">
                 <table class="table">
-                    <caption class="ms-4">Budget Details</caption>
+                    <caption class="ms-4">@BudgetText.BudgetDetails</caption>
                     <thead>
                     <tr>
-                        <th>Category</th>
-                        <th>Amount</th>
-                        <th>Month</th>
+                        <th>@BudgetText.BudgetCategory</th>
+                        <th>@BudgetText.BudgetAmount</th>
+                        <th>@BudgetText.BudgetMonth</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -34,8 +34,8 @@
             <form asp-action="DeleteBudget" asp-controller="Budget" method="post">
                 <input type="hidden" name="id" value="@Model.BudgetId"/>
 
-                <button type="submit" class="btn btn-danger">Delete</button>
-                <a href="@Url.Action("ViewBudgets", "Budget")" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-danger">@BudgetText.Delete</button>
+                <a href="@Url.Action("ViewBudgets", "Budget")" class="btn btn-secondary">@BudgetText.Cancel</a>
             </form>
         </div>
     </div>

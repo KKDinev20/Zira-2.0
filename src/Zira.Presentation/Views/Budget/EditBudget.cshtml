@@ -1,18 +1,18 @@
 ﻿@model Zira.Data.Models.Budget
 @{
-    ViewData["Title"] = "Edit Budget";
+    ViewData["Title"] = @BudgetText.EditBudget;
     Layout = "Shared/_BudgetLayout";
 }
 
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="card">
-        <h5 class="card-header">Edit Budget</h5>
+        <h5 class="card-header">@BudgetText.EditBudget</h5>
         <div class="card-body">
             <form asp-action="EditBudget" asp-controller="Budget" method="post">
                 <input type="hidden" asp-for="BudgetId"/>
 
                 <div class="mb-3">
-                    <label asp-for="Category" class="form-label">Category</label>
+                    <label asp-for="Category" class="form-label">@BudgetText.BudgetCategory</label>
                     <select asp-for="Category" class="form-control" required>
                         @foreach (var category in ViewBag.Categories)
                         {
@@ -24,19 +24,19 @@
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="Amount" class="form-label">Amount</label>
+                    <label asp-for="Amount" class="form-label">@BudgetText.BudgetAmount</label>
                     <input type="number" step="0.01" asp-for="Amount" class="form-control" required/>
                     <span asp-validation-for="Amount" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="Month" class="form-label">Month</label>
+                    <label asp-for="Month" class="form-label">@BudgetText.BudgetMonth</label>
                     <input type="month" asp-for="Month" class="form-control" required/>
                     <span asp-validation-for="Month" class="text-danger"></span>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Save Changes</button>
-                <a href="@Url.Action("ViewBudgets", "Budget")" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">@BudgetText.SaveChanges</button>
+                <a href="@Url.Action("ViewBudgets", "Budget")" class="btn btn-secondary">@BudgetText.Cancel</a>
             </form>
         </div>
     </div>
