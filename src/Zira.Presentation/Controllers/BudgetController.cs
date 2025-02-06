@@ -77,7 +77,7 @@ namespace Zira.Presentation.Controllers
         }
 
         [HttpGet("/view-budgets/")]
-        public async Task<IActionResult> ViewBudgets(int page = 1, int pageSize = 10)
+        public async Task<IActionResult> ViewBudgets(int page = 1, int pageSize = 5)
         {
             await this.SetGlobalUserInfoAsync(this.userManager, this.context);
 

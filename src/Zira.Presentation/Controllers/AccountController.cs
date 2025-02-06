@@ -33,6 +33,13 @@ public class AccountController : Controller
         this.webHostEnvironment = webHostEnvironment;
     }
 
+    [HttpGet("/profile")]
+    public async Task<IActionResult> Profile()
+    {
+        await this.SetGlobalUserInfoAsync(this.userManager, this.context);
+        return this.View();
+    }
+
     [HttpGet("/complete-profile")]
     public async Task<IActionResult> CompleteProfile()
     {

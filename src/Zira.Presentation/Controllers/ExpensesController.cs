@@ -92,7 +92,7 @@ public class ExpensesController : Controller
     }
 
     [HttpGet("/expenses-list/")]
-    public async Task<IActionResult> ExpensesList(int page = 1, int pageSize = 10)
+    public async Task<IActionResult> ExpensesList(int page = 1, int pageSize = 5)
     {
         await this.SetGlobalUserInfoAsync(this.userManager, this.context);
 

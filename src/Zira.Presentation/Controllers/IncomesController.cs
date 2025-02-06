@@ -84,7 +84,7 @@ public class IncomesController : Controller
     }
 
     [HttpGet("/income-list/")]
-    public async Task<IActionResult> IncomeList(int page = 1, int pageSize = 10)
+    public async Task<IActionResult> IncomeList(int page = 1, int pageSize = 5)
     {
         await this.SetGlobalUserInfoAsync(userManager, context);
 
