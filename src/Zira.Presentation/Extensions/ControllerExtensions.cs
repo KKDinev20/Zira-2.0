@@ -18,6 +18,9 @@ public static class ControllerExtensions
     public static IActionResult RedirectToProfile(this Controller controller) =>
         controller.RedirectToAction("CompleteProfile", "Account");
 
+    public static IActionResult RedirectToLogin(this Controller controller) =>
+        controller.RedirectToAction("Login", "Authentication");
+
     public static async Task SetGlobalUserInfoAsync(
         this Controller controller,
         UserManager<ApplicationUser> userManager,
@@ -32,6 +35,10 @@ public static class ControllerExtensions
             controller.ViewBag.UserName = applicationUser != null
                 ? $"{applicationUser.FirstName} {applicationUser.LastName}"
                 : "Unknown User";
+
+            controller.ViewBag.FirstName = applicationUser.FirstName;
+            controller.ViewBag.LastName = applicationUser.LastName;
+            controller.ViewBag.BirthDate = applicationUser.Birthday;
 
             controller.ViewBag.UserEmail = user.Email;
 

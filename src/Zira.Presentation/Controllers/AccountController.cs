@@ -37,6 +37,7 @@ public class AccountController : Controller
     public async Task<IActionResult> Profile()
     {
         await this.SetGlobalUserInfoAsync(this.userManager, this.context);
+
         return this.View();
     }
 
