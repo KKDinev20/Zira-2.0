@@ -54,7 +54,7 @@
       </EmbeddedResource>
       <EmbeddedResource Update="ExpenseCategories.resx">
         <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>Categories.Designer.cs</LastGenOutput>
+        <LastGenOutput>ExpenseCategories.Designer.cs</LastGenOutput>
       </EmbeddedResource>
     </ItemGroup>
 

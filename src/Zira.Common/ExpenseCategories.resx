@@ -1,11 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
 <root>
-    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <xsd:element name="root" msdata:IsDataSet="true">
-            
-        </xsd:element>
-    </xsd:schema>
     <resheader name="resmimetype">
         <value>text/microsoft-resx</value>
     </resheader>
@@ -18,46 +12,47 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="Food" xml:space="preserve">
-        <value>Храна</value>
-    </data>
-    <data name="Bills " xml:space="preserve">
+
+    <data name="Bills" xml:space="preserve">
         <value>Сметки</value>
-    </data>
-    <data name="Utilities " xml:space="preserve">
-        <value>Услуги</value>
-    </data>
-    <data name="Transportation " xml:space="preserve">
-        <value>Транспорт</value>
-    </data>
-    <data name="Healthcare " xml:space="preserve">
-        <value>Здравеопазване</value>
-    </data>
-    <data name="Insurance " xml:space="preserve">
-        <value>Застраховки</value>
-    </data>
-    <data name="Education " xml:space="preserve">
-        <value>Образование</value>
     </data>
     <data name="Childcare" xml:space="preserve">
         <value>Деца</value>
     </data>
-    <data name="Entertainment " xml:space="preserve">
-        <value>Забавления</value>
-    </data>
-    <data name="Clothing " xml:space="preserve">
+    <data name="Clothing" xml:space="preserve">
         <value>Дрехи</value>
     </data>
-    <data name="Savings" xml:space="preserve">
-        <value>Спестявания</value>
+    <data name="Education" xml:space="preserve">
+        <value>Образование</value>
+    </data>
+    <data name="Entertainment" xml:space="preserve">
+        <value>Забавления</value>
+    </data>
+    <data name="Food" xml:space="preserve">
+        <value>Храна</value>
+    </data>
+    <data name="Healthcare" xml:space="preserve">
+        <value>Здравеопазване</value>
     </data>
     <data name="Household Utilities" xml:space="preserve">
         <value>Домакински консумативи</value>
     </data>
-    <data name="Travels" xml:space="preserve">
-        <value>Пътувания</value>
+    <data name="Insurance" xml:space="preserve">
+        <value>Застраховки</value>
     </data>
     <data name="Other" xml:space="preserve">
         <value>Друго</value>
+    </data>
+    <data name="Savings" xml:space="preserve">
+        <value>Спестявания</value>
+    </data>
+    <data name="Transportation" xml:space="preserve">
+        <value>Транспорт</value>
+    </data>
+    <data name="Travels" xml:space="preserve">
+        <value>Пътувания</value>
+    </data>
+    <data name="Utilities" xml:space="preserve">
+        <value>Услуги</value>
     </data>
 </root>

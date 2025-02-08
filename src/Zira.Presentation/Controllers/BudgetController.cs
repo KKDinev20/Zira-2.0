@@ -94,8 +94,7 @@ namespace Zira.Presentation.Controllers
                 .Where(i => i.UserId == user.Id)
                 .CountAsync();
 
-            var totalPages = (int)Math.Ceiling(totalBudgets / (double)pageSize);
-
+            var totalPages = (int)Math.Ceiling((double)totalBudgets / pageSize);
             var budgets = await this.context.Budgets
                 .Where(i => i.UserId == user.Id)
                 .OrderBy(i => i.Month)

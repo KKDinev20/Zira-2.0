@@ -97,12 +97,11 @@ public class IncomesController : Controller
             return this.NotFound("User not found.");
         }
 
-        var totalExpenses = await this.context.Expenses
+        var totalRecords = await this.context.Incomes
             .Where(i => i.UserId == user.Id)
             .CountAsync();
 
-        var totalPages = (int)Math.Ceiling(totalExpenses / (double)pageSize);
-
+        var totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
         var incomes = await this.context.Incomes
             .Where(i => i.UserId == user.Id)
             .OrderBy(i => i.DateReceived)

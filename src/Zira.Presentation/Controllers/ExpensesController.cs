@@ -109,14 +109,18 @@ public class ExpensesController : Controller
             .Where(i => i.UserId == user.Id)
             .CountAsync();
 
-        var totalPages = (int)Math.Ceiling(totalExpenses / (double)pageSize);
+        var totalRecords = await this.context.Expenses
+            .Where(i => i.UserId == user.Id)
+            .CountAsync();
 
+        var totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
         var expenses = await this.context.Expenses
             .Where(i => i.UserId == user.Id)
             .OrderBy(i => i.DateSpent)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
+
 
         var model = new ExpensesListViewModel
         {

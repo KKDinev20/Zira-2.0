@@ -60,12 +60,128 @@ namespace Zira.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Сметки.
         /// </summary>
-        public static string Food_Bills_Utilities_Transportation_Healthcare_Insurance_Education_Childcare_Entertainment_Clothing_Savings_HouseholdSupplies_Travel_Other_ {
+        public static string Bills {
             get {
-                return ResourceManager.GetString("Food Bills Utilities Transportation Healthcare Insurance Education Childcare Ente" +
-                        "rtainment Clothing Savings HouseholdSupplies Travel Other ", resourceCulture);
+                return ResourceManager.GetString("Bills", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Деца.
+        /// </summary>
+        public static string Childcare {
+            get {
+                return ResourceManager.GetString("Childcare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Дрехи.
+        /// </summary>
+        public static string Clothing {
+            get {
+                return ResourceManager.GetString("Clothing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Образование.
+        /// </summary>
+        public static string Education {
+            get {
+                return ResourceManager.GetString("Education", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Забавления.
+        /// </summary>
+        public static string Entertainment {
+            get {
+                return ResourceManager.GetString("Entertainment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Храна.
+        /// </summary>
+        public static string Food {
+            get {
+                return ResourceManager.GetString("Food", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Здравеопазване.
+        /// </summary>
+        public static string Healthcare {
+            get {
+                return ResourceManager.GetString("Healthcare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Домакински консумативи.
+        /// </summary>
+        public static string Household_Utilities {
+            get {
+                return ResourceManager.GetString("Household Utilities", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Застраховки.
+        /// </summary>
+        public static string Insurance {
+            get {
+                return ResourceManager.GetString("Insurance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Друго.
+        /// </summary>
+        public static string Other {
+            get {
+                return ResourceManager.GetString("Other", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Спестявания.
+        /// </summary>
+        public static string Savings {
+            get {
+                return ResourceManager.GetString("Savings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Транспорт.
+        /// </summary>
+        public static string Transportation {
+            get {
+                return ResourceManager.GetString("Transportation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Пътувания.
+        /// </summary>
+        public static string Travels {
+            get {
+                return ResourceManager.GetString("Travels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Услуги.
+        /// </summary>
+        public static string Utilities {
+            get {
+                return ResourceManager.GetString("Utilities", resourceCulture);
             }
         }
     }
