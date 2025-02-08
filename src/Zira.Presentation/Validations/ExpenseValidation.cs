@@ -11,12 +11,12 @@ namespace Zira.Presentation.Validations
         {
             if (expense.Amount <= 0)
             {
-                modelState.AddModelError(nameof(expense.Amount), @ExpensesText.AmountValidation);
+                modelState.AddModelError("Amount", @ExpensesText.AmountValidation);
             }
 
             if (expense.DateSpent > DateTime.UtcNow)
             {
-                modelState.AddModelError(nameof(expense.DateSpent), @ExpensesText.DateValidation);
+                modelState.AddModelError("DateSpent", @ExpensesText.DateValidation);
             }
         }
     }

@@ -80,4 +80,10 @@
     <data name="Next" xml:space="preserve">
         <value>Следващ</value>
     </data>
+    <data name="AmountNegative" xml:space="preserve">
+        <value>Сумата не може да бъде отрицателна</value>
+    </data>
+    <data name="MonthFuture" xml:space="preserve">
+        <value>Месечният бюджет не може да бъде в бъдеще </value>
+    </data>
 </root>

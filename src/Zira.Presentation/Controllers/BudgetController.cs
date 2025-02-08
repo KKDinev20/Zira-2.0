@@ -49,17 +49,30 @@ namespace Zira.Presentation.Controllers
         public async Task<IActionResult> SetBudget(Budget model)
         {
             var userId = this.User.GetUserId();
-
             var user = await this.context.Users.FirstOrDefaultAsync(u => u.ApplicationUserId == userId);
+
             if (user == null)
             {
                 this.ModelState.AddModelError("", @AuthenticationText.UserNotExisting);
+            }
+
+            if (model.Amount < 0)
+            {
+                this.ModelState.AddModelError("Amount", "Budget amount cannot be negative.");
+            }
+
+            if (model.Month > DateTime.UtcNow)
+            {
+                this.ModelState.AddModelError("Month", "Budget month cannot be in the future.");
+            }
+
+            if (!this.ModelState.IsValid)
+            {
                 this.ViewBag.Categories = Enum.GetValues(typeof(Categories)).Cast<Categories>().ToList();
                 return this.View(model);
             }
 
             model.UserId = user.Id;
-
             model.Month = model.Month == default ? DateTime.UtcNow : model.Month;
 
             try
@@ -67,7 +80,7 @@ namespace Zira.Presentation.Controllers
                 this.context.Budgets.Add(model);
                 await this.context.SaveChangesAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 this.TempData["ErrorMessage"] = @BudgetText.BudgetError;
                 return this.View(model);
@@ -137,11 +150,21 @@ namespace Zira.Presentation.Controllers
                 return this.BadRequest();
             }
 
+            if (budgetModel.Amount < 0)
+            {
+                this.ModelState.AddModelError("Amount", @BudgetText.AmountNegative);
+            }
+
+            if (budgetModel.Month > DateTime.UtcNow)
+            {
+                this.ModelState.AddModelError("Month", @BudgetText.MonthFuture);
+            }
+
             if (!this.ModelState.IsValid)
             {
                 this.TempData["ErrorMessage"] = @BudgetText.BudgetError;
                 this.ViewBag.Categories = Enum.GetValues(typeof(Categories)).Cast<Categories>().ToList();
-                return this.RedirectToAction("ViewBudgets");
+                return this.View(budgetModel);
             }
 
             var budget = await this.context.Budgets

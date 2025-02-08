@@ -69,6 +69,15 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Сумата не може да бъде отрицателна.
+        /// </summary>
+        public static string AmountNegative {
+            get {
+                return ResourceManager.GetString("AmountNegative", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Сума.
         /// </summary>
         public static string BudgetAmount {
@@ -191,6 +200,15 @@ namespace Zira.Common {
         public static string EditBudget {
             get {
                 return ResourceManager.GetString("EditBudget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Месечният бюджет не може да бъде в бъдеще .
+        /// </summary>
+        public static string MonthFuture {
+            get {
+                return ResourceManager.GetString("MonthFuture", resourceCulture);
             }
         }
         
