@@ -1,4 +1,7 @@
-﻿@model ExpensesListViewModel
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Zira.Data.Enums
+@using Zira.Presentation.Extensions
+@model ExpensesListViewModel
 @*
 @inject Microsoft.Extensions.Localization.IStringLocalizer<ExpenseCategories> Localizer
 *@
@@ -20,12 +23,12 @@
                 <div class="row">
                     <div class="col-md-4">
                         <label for="Category" class="form-label">@ExpensesText.ExpenseCategory</label>
-                        @*<select id="Category" name="Category" class="form-select">
-                            @foreach (Zira.Data.Enums.Categories category in Enum.GetValues(typeof(Zira.Data.Enums.Categories)))
+                        <select id="Category" name="Category" class="form-select">
+                            @foreach (var category in Enum.GetValues(typeof(Categories)).Cast<Categories>())
                             {
-                            <option value="@category">@Localizer[category.ToString()]</option>
+                                <option value="@category">@category.GetLocalizedName()</option>
                             }
-                        </select>*@
+                        </select>
                     </div>
                     <div class="col-md-4">
                         <label for="Amount" class="form-label">@ExpensesText.Amount</label>
@@ -69,7 +72,7 @@
                 {
                     <tr>
                         <td>
-                            <i class="bx bx-wallet-alt me-3"></i> <strong>@expense.Category</strong>
+                            <i class="bx bx-wallet-alt me-3"></i> <strong>@expense.Category.GetLocalizedName()</strong>
                         </td>
                         <td>@expense.Amount.ToString("C")</td>
                         <td>@expense.DateSpent.ToString("dd-MM-yyyy")</td>

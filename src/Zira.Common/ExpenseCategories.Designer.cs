@@ -125,9 +125,9 @@ namespace Zira.Common {
         /// <summary>
         ///   Looks up a localized string similar to Домакински консумативи.
         /// </summary>
-        public static string Household_Utilities {
+        public static string HouseholdSupplies {
             get {
-                return ResourceManager.GetString("Household Utilities", resourceCulture);
+                return ResourceManager.GetString("HouseholdSupplies", resourceCulture);
             }
         }
         
@@ -170,9 +170,9 @@ namespace Zira.Common {
         /// <summary>
         ///   Looks up a localized string similar to Пътувания.
         /// </summary>
-        public static string Travels {
+        public static string Travel {
             get {
-                return ResourceManager.GetString("Travels", resourceCulture);
+                return ResourceManager.GetString("Travel", resourceCulture);
             }
         }
         

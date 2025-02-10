@@ -34,7 +34,7 @@
     <data name="Healthcare" xml:space="preserve">
         <value>Здравеопазване</value>
     </data>
-    <data name="Household Utilities" xml:space="preserve">
+    <data name="HouseholdSupplies" xml:space="preserve">
         <value>Домакински консумативи</value>
     </data>
     <data name="Insurance" xml:space="preserve">
@@ -49,7 +49,7 @@
     <data name="Transportation" xml:space="preserve">
         <value>Транспорт</value>
     </data>
-    <data name="Travels" xml:space="preserve">
+    <data name="Travel" xml:space="preserve">
         <value>Пътувания</value>
     </data>
     <data name="Utilities" xml:space="preserve">
