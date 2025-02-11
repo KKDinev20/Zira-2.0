@@ -11,6 +11,7 @@ using Zira.Data.Enums;
 using Zira.Data.Models;
 using Zira.Presentation.Extensions;
 using Zira.Presentation.Models;
+using Zira.Presentation.Validations;
 using Zira.Services.Identity.Constants;
 using Zira.Services.Identity.Extensions;
 
@@ -39,20 +40,8 @@ public class IncomesController : Controller
     [HttpPost("/add-income/")]
     public async Task<IActionResult> AddIncome(Income incomeModel)
     {
-        if (incomeModel.Amount <= 0)
-        {
-            this.ModelState.AddModelError(nameof(incomeModel.Amount), @IncomeText.AmountValidation);
-        }
-
-        if (incomeModel.DateReceived > DateTime.UtcNow)
-        {
-            this.ModelState.AddModelError(nameof(incomeModel.DateReceived), @IncomeText.FutureDateValidation);
-        }
-
-        if (incomeModel.DateReceived < DateTime.UtcNow.AddYears(-10))
-        {
-            this.ModelState.AddModelError(nameof(incomeModel.DateReceived), @IncomeText.PastDateValidation);
-        }
+        IncomeValidations.ValidateAmount(this.ModelState, incomeModel.Amount);
+        IncomeValidations.ValidateDateReceived(this.ModelState, incomeModel.DateReceived);
 
         if (!this.ModelState.IsValid)
         {
@@ -138,17 +127,15 @@ public class IncomesController : Controller
     }
 
     [HttpPost("/edit-income/{id}")]
-    public async Task<IActionResult> EditIncome(Guid id, Income model)
+    public async Task<IActionResult> EditIncome(Guid id, Income incomeModel)
     {
-        if (id != model.IncomeId)
+        if (id != incomeModel.IncomeId)
         {
             return this.BadRequest();
         }
 
-        if (model.Amount <= 0)
-        {
-            this.ModelState.AddModelError(nameof(model.Amount), @IncomeText.AmountValidation);
-        }
+        IncomeValidations.ValidateAmount(this.ModelState, incomeModel.Amount);
+        IncomeValidations.ValidateDateReceived(this.ModelState, incomeModel.DateReceived);
 
         if (!this.ModelState.IsValid)
         {
@@ -167,9 +154,9 @@ public class IncomesController : Controller
             return this.RedirectToAction("IncomeList");
         }
 
-        income.Source = model.Source;
-        income.Amount = model.Amount;
-        income.DateReceived = model.DateReceived;
+        income.Source = incomeModel.Source;
+        income.Amount = incomeModel.Amount;
+        income.DateReceived = incomeModel.DateReceived;
 
         await this.context.SaveChangesAsync();
         this.TempData["SuccessMessage"] = @IncomeText.IncomeSuccess;

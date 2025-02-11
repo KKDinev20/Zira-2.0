@@ -11,6 +11,7 @@ using Zira.Data.Enums;
 using Zira.Data.Models;
 using Zira.Presentation.Extensions;
 using Zira.Presentation.Models;
+using Zira.Presentation.Validations;
 using Zira.Services.Identity.Constants;
 using Zira.Services.Identity.Extensions;
 
@@ -46,7 +47,7 @@ namespace Zira.Presentation.Controllers
         }
 
         [HttpPost("/set-budget/")]
-        public async Task<IActionResult> SetBudget(Budget model)
+        public async Task<IActionResult> SetBudget(Budget budgetModel)
         {
             var userId = this.User.GetUserId();
             var user = await this.context.Users.FirstOrDefaultAsync(u => u.ApplicationUserId == userId);
@@ -56,34 +57,27 @@ namespace Zira.Presentation.Controllers
                 this.ModelState.AddModelError("", @AuthenticationText.UserNotExisting);
             }
 
-            if (model.Amount < 0)
-            {
-                this.ModelState.AddModelError("Amount", "Budget amount cannot be negative.");
-            }
-
-            if (model.Month > DateTime.UtcNow)
-            {
-                this.ModelState.AddModelError("Month", "Budget month cannot be in the future.");
-            }
+            BudgetValidations.ValidateAmount(ModelState, budgetModel.Amount);
+            BudgetValidations.ValidateMonth(ModelState, budgetModel.Month);
 
             if (!this.ModelState.IsValid)
             {
                 this.ViewBag.Categories = Enum.GetValues(typeof(Categories)).Cast<Categories>().ToList();
-                return this.View(model);
+                return this.View(budgetModel);
             }
 
-            model.UserId = user.Id;
-            model.Month = model.Month == default ? DateTime.UtcNow : model.Month;
+            budgetModel.UserId = user.Id;
+            budgetModel.Month = budgetModel.Month == default ? DateTime.UtcNow : budgetModel.Month;
 
             try
             {
-                this.context.Budgets.Add(model);
+                this.context.Budgets.Add(budgetModel);
                 await this.context.SaveChangesAsync();
             }
             catch (Exception)
             {
                 this.TempData["ErrorMessage"] = @BudgetText.BudgetError;
-                return this.View(model);
+                return this.View(budgetModel);
             }
 
             return this.RedirectToAction("ViewBudgets");
@@ -151,15 +145,8 @@ namespace Zira.Presentation.Controllers
                 return this.BadRequest();
             }
 
-            if (budgetModel.Amount < 0)
-            {
-                this.ModelState.AddModelError("Amount", @BudgetText.AmountNegative);
-            }
-
-            if (budgetModel.Month > DateTime.UtcNow)
-            {
-                this.ModelState.AddModelError("Month", @BudgetText.MonthFuture);
-            }
+            BudgetValidations.ValidateAmount(ModelState, budgetModel.Amount);
+            BudgetValidations.ValidateMonth(ModelState, budgetModel.Month);
 
             if (!this.ModelState.IsValid)
             {

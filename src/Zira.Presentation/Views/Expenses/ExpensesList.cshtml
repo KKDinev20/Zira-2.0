@@ -2,13 +2,10 @@
 @using Zira.Data.Enums
 @using Zira.Presentation.Extensions
 @model ExpensesListViewModel
-@*
-@inject Microsoft.Extensions.Localization.IStringLocalizer<ExpenseCategories> Localizer
-*@
 
 @{
-    ViewData["Title"] = @ExpensesText.Expenses;
-    Layout = "Shared/_ExpensesLayout";
+ViewData["Title"] = @ExpensesText.Expenses;
+Layout = "Shared/_ExpensesLayout";
 }
 
 <div class="container-xxl flex-grow-1 container-p-y">
@@ -20,39 +17,39 @@
         <div class="card-body">
             @using (Html.BeginForm("QuickAddExpenses", "Expenses", FormMethod.Post))
             {
-                <div class="row">
-                    <div class="col-md-4">
-                        <label for="Category" class="form-label">@ExpensesText.ExpenseCategory</label>
-                        <select id="Category" name="Category" class="form-select">
-                            @foreach (var category in Enum.GetValues(typeof(Categories)).Cast<Categories>())
-                            {
-                                <option value="@category">@category.GetLocalizedExpenseCategory()</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="col-md-4">
-                        <label for="Amount" class="form-label">@ExpensesText.Amount</label>
-                        <input type="number" id="Amount" name="Amount" class="form-control" placeholder="0.00" step="0.01" required/>
-                    </div>
-                    <div class="col-md-4">
-                        <label for="DateSpent" class="form-label">@ExpensesText.DateSpent</label>
-                        <input type="date" id="DateSpent" name="DateSpent" class="form-control" value="@DateTime.UtcNow.ToString("yyyy-MM-dd")"/>
-                    </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="Category" class="form-label">@ExpensesText.ExpenseCategory</label>
+                    <select id="Category" name="Category" class="form-select">
+                        @foreach (var category in Enum.GetValues(typeof(Categories)).Cast<Categories>())
+                        {
+                        <option value="@category">@category.GetLocalizedExpenseCategory()</option>
+                        }
+                    </select>
                 </div>
-                <div class="mt-3">
-                    <button type="submit" class="btn btn-primary">@ExpensesText.QuickAdd</button>
+                <div class="col-md-4">
+                    <label for="Amount" class="form-label">@ExpensesText.Amount</label>
+                    <input type="number" id="Amount" name="Amount" class="form-control" placeholder="0.00" step="0.01" required/>
                 </div>
+                <div class="col-md-4">
+                    <label for="DateSpent" class="form-label">@ExpensesText.DateSpent</label>
+                    <input type="date" id="DateSpent" name="DateSpent" class="form-control" value="@DateTime.UtcNow.ToString("yyyy-MM-dd")"/>
+                </div>
+            </div>
+            <div class="mt-3">
+                <button type="submit" class="btn btn-primary">@ExpensesText.QuickAdd</button>
+            </div>
             }
         </div>
     </div>
 
     @if (TempData["SuccessMessage"] != null)
     {
-        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
     }
     @if (TempData["ErrorMessage"] != null)
     {
-        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
     }
 
     <div class="card">
@@ -70,28 +67,28 @@
                 <tbody>
                 @foreach (var expense in Model.Expenses)
                 {
-                    <tr>
-                        <td>
-                            <i class="bx bx-wallet-alt me-3"></i> <strong>@expense.Category.GetLocalizedExpenseCategory()</strong>
-                        </td>
-                        <td>@expense.Amount.ToString("C")</td>
-                        <td>@expense.DateSpent.ToString("dd-MM-yyyy")</td>
-                        <td>
-                            <div class="dropdown">
-                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                    <i class="bx bx-dots-vertical-rounded"></i>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="@Url.Action("EditExpenses", "Expenses", new { id = expense.ExpenseId })">
-                                        <i class="bx bx-edit-alt me-1"></i> @ExpensesText.Edit
-                                    </a>
-                                    <a class="dropdown-item" href="@Url.Action("DeleteExpense", "Expenses", new { id = expense.ExpenseId })">
-                                        <i class="bx bx-trash me-1"></i> @ExpensesText.Delete
-                                    </a>
-                                </div>
+                <tr>
+                    <td>
+                        <i class="bx bx-wallet-alt me-3"></i> <strong>@expense.Category.GetLocalizedExpenseCategory()</strong>
+                    </td>
+                    <td>@expense.Amount.ToString("C")</td>
+                    <td>@expense.DateSpent.ToString("dd-MM-yyyy")</td>
+                    <td>
+                        <div class="dropdown">
+                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                <i class="bx bx-dots-vertical-rounded"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="@Url.Action("EditExpenses", "Expenses", new { id = expense.ExpenseId })">
+                                    <i class="bx bx-edit-alt me-1"></i> @ExpensesText.Edit
+                                </a>
+                                <a class="dropdown-item" href="@Url.Action("DeleteExpense", "Expenses", new { id = expense.ExpenseId })">
+                                    <i class="bx bx-trash me-1"></i> @ExpensesText.Delete
+                                </a>
                             </div>
-                        </td>
-                    </tr>
+                        </div>
+                    </td>
+                </tr>
                 }
                 </tbody>
             </table>
@@ -114,9 +111,9 @@
 
                     @for (int i = 1; i <= Model.TotalPages; i++)
                     {
-                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                            <a class="page-link" href="@Url.Action("ExpensesList", "Expenses", new { page = i })">@i</a>
-                        </li>
+                    <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                        <a class="page-link" href="@Url.Action("ExpensesList", "Expenses", new { page = i })">@i</a>
+                    </li>
                     }
 
                     <li class="page-item @(Model.CurrentPage == Model.TotalPages || Model.TotalPages == 0 ? "disabled" : "")">
