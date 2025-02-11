@@ -1,4 +1,5 @@
-﻿@model IncomesListViewModel
+﻿@using Zira.Presentation.Extensions
+@model IncomesListViewModel
 
 @{
     ViewData["Title"] = @IncomeText.ListOfIncomes;
@@ -35,7 +36,7 @@
                 {
                     <tr>
                         <td>
-                            <i class="bx bx-wallet-alt me-3"></i> <strong>@income.Source</strong>
+                            <i class="bx bx-wallet-alt me-3"></i> <strong>@income.Source.GetLocalizedIncomeSource()</strong>
                         </td>
                         <td>@income.Amount.ToString("C")</td>
                         <td>@income.DateReceived.ToString("dd-MM-yyyy")</td>

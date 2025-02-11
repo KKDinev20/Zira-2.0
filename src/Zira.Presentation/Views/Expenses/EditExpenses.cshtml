@@ -19,7 +19,7 @@
                     <select asp-for="Category" class="form-control">
                         @foreach (var category in Enum.GetValues(typeof(Categories)).Cast<Categories>())
                         {
-                            <option value="@category">@category.GetLocalizedName()</option>
+                            <option value="@category">@category.GetLocalizedExpenseCategory()</option>
                         }
                     </select>
                 </div>

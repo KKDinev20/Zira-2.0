@@ -26,7 +26,7 @@
                         <select id="Category" name="Category" class="form-select">
                             @foreach (var category in Enum.GetValues(typeof(Categories)).Cast<Categories>())
                             {
-                                <option value="@category">@category.GetLocalizedName()</option>
+                                <option value="@category">@category.GetLocalizedExpenseCategory()</option>
                             }
                         </select>
                     </div>
@@ -72,7 +72,7 @@
                 {
                     <tr>
                         <td>
-                            <i class="bx bx-wallet-alt me-3"></i> <strong>@expense.Category.GetLocalizedName()</strong>
+                            <i class="bx bx-wallet-alt me-3"></i> <strong>@expense.Category.GetLocalizedExpenseCategory()</strong>
                         </td>
                         <td>@expense.Amount.ToString("C")</td>
                         <td>@expense.DateSpent.ToString("dd-MM-yyyy")</td>

@@ -1,4 +1,6 @@
-﻿@model Zira.Data.Income
+﻿@using Zira.Data.Enums
+@using Zira.Presentation.Extensions
+@model Zira.Data.Income
 @{
     ViewData["Title"] = @IncomeText.EditIncome;
     Layout = "Shared/_IncomeLayout";
@@ -14,11 +16,9 @@
                 <div class="mb-3">
                     <label asp-for="Source" class="form-label">@IncomeText.Source</label>
                     <select asp-for="Source" class="form-control">
-                        @foreach (var source in ViewBag.Sources)
+                        @foreach (var source in Enum.GetValues(typeof(Sources)).Cast<Sources>())
                         {
-                            <!option value="@source" @(source == Model.Source ? "selected" : "")>
-                                @source
-                            </!option>
+                        <option value="@source">@source.GetLocalizedIncomeSource()</option>
                         }
                     </select>
                 </div>

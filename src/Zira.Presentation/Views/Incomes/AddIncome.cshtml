@@ -1,4 +1,6 @@
-﻿@{
+﻿@using Zira.Data.Enums
+@using Zira.Presentation.Extensions
+@{
     ViewData["Title"] = @IncomeText.AddIncome;
     Layout = "Shared/_IncomeLayout";
 }
@@ -44,10 +46,10 @@
                                     aria-label="@IncomeText.Source"
                                     aria-describedby="income-source-icon">
                                     <option value="" disabled selected>@IncomeText.Source</option>
-                                    <option value="0">Salary</option>
-                                    <option value="1">Freelance</option>
-                                    <option value="2">Investments</option>
-                                    <option value="3">Other</option>
+                                    @foreach (var source in Enum.GetValues(typeof(Sources)).Cast<Sources>())
+                                    {
+                                    <option value="@source">@source.GetLocalizedIncomeSource()</option>
+                                    }
                                 </select>
                             </div>
                         </div>
