@@ -1,4 +1,7 @@
-﻿@model Zira.Data.Models.Budget
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Zira.Data.Enums
+@using Zira.Presentation.Extensions
+@model Zira.Data.Models.Budget
 @{
     ViewData["Title"] = @BudgetText.EditBudget;
     Layout = "Shared/_BudgetLayout";
@@ -13,12 +16,10 @@
 
                 <div class="mb-3">
                     <label asp-for="Category" class="form-label">@BudgetText.BudgetCategory</label>
-                    <select asp-for="Category" class="form-control" required>
-                        @foreach (var category in ViewBag.Categories)
+                    <select asp-for="Category" class="form-control">
+                        @foreach (var category in Enum.GetValues(typeof(Categories)).Cast<Categories>())
                         {
-                            <option value="@category" selected="@(category.Equals(Model.Category) ? "selected" : null)">
-                                @category
-                            </option>
+                        <option value="@category">@category.GetLocalizedExpenseCategory()</option>
                         }
                     </select>
                 </div>

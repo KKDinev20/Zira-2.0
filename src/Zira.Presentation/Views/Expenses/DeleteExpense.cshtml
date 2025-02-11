@@ -1,12 +1,11 @@
-﻿@*
-@inject Microsoft.Extensions.Localization.IStringLocalizer<ExpenseCategories> Localizer
-*@
+﻿@using Zira.Presentation.Extensions
+@model Zira.Data.Models.Expense
 @{
-    ViewData["Title"] = @ExpensesText.DeleteExpense;
+    ViewData["Title"] = @BudgetText.DeleteBudget;
     Layout = "Shared/_ExpensesLayout";
 }
 
-<div class="container-fluid">
+<div class="container-xxl flex-grow-1 container-p-y">
     <div class="card">
         <h5 class="card-header">@ExpensesText.DeleteExpense</h5>
         <div class="card-body">
@@ -14,9 +13,6 @@
 
             <div class="table-responsive text-nowrap">
                 <table class="table">
-                    <caption class="ms-4">
-                        @ExpensesText.ExpenseDetails
-                    </caption>
                     <thead>
                     <tr>
                         <th>@ExpensesText.ExpenseCategory</th>
@@ -26,10 +22,9 @@
                     </thead>
                     <tbody>
                     <tr>
-                        @*<td>
-                            <i class="bx bx-briefcase fa-lg text-primary me-3"></i> <strong>@Localizer[Model.Category.ToString()]</strong>
-
-                        </td>*@
+                        <td>
+                            <i class="bx bx-briefcase fa-lg text-primary me-3"></i> <strong>@Model.Category.GetLocalizedExpenseCategory()</strong>
+                        </td>
                         <td>@Model.Amount.ToString("C")</td>
                         <td>@Model.DateSpent.ToString("dd-MM-yyyy")</td>
                     </tr>

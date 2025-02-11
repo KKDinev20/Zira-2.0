@@ -26,7 +26,7 @@ public class DashboardController : Controller
     [Authorize(Policies.UserPolicy)]
     public async Task<IActionResult> Index()
     {
-        await this.SetGlobalUserInfoAsync(userManager, context);
+        await this.SetGlobalUserInfoAsync(this.userManager, this.context);
 
 
         return this.View();

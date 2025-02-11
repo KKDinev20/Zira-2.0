@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Zira.Common;
-using Zira.Data;
+using Zira.Data.Models;
 
 namespace Zira.Presentation.Validations
 {

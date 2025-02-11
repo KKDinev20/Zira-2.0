@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Zira.Data;
+using Zira.Data.Models;
 
 namespace Zira.Presentation.Models;
 

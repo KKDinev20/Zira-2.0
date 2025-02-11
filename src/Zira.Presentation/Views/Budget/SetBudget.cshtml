@@ -1,4 +1,7 @@
-﻿@model Zira.Data.Models.Budget
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Zira.Data.Enums
+@using Zira.Presentation.Extensions
+@model Zira.Data.Models.Budget
 @{
     ViewData["Title"] = @BudgetText.SetBudget;
     Layout = "Shared/_BudgetLayout";
@@ -19,8 +22,18 @@
                                 <span class="input-group-text">
                                     <i class="bx bx-briefcase"></i>
                                 </span>
-                                <select id="Category" asp-for="Category" asp-items="Html.GetEnumSelectList<Zira.Data.Enums.Categories>()" class="form-select" required>
-                                    <option value="" disabled selected>Select a Category</option>
+                                <select
+                                    class="form-control"
+                                    id="expense-category"
+                                    name="Category"
+                                    required
+                                    aria-label="@ExpensesText.ExpenseCategory"
+                                    aria-describedby="expense-category-icon">
+                                    <option value="" disabled selected>@ExpensesText.SelectACategory</option>
+                                    @foreach (var category in Enum.GetValues(typeof(Categories)).Cast<Categories>())
+                                    {
+                                    <option value="@category">@category.GetLocalizedExpenseCategory()</option>
+                                    }
                                 </select>
                             </div>
                             <span class="text-danger" asp-validation-for="Category"></span>

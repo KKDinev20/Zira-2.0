@@ -135,6 +135,7 @@ public class ExpensesController : Controller
     [HttpGet("/edit-expenses/{id}")]
     public async Task<IActionResult> EditExpenses(Guid id)
     {
+        await this.SetGlobalUserInfoAsync(this.userManager, this.context);
         var expense = await this.context.Expenses
             .Include(i => i.User)
             .FirstOrDefaultAsync(i => i.ExpenseId == id && i.User.ApplicationUserId == this.User.GetUserId());
@@ -188,6 +189,7 @@ public class ExpensesController : Controller
     [HttpGet("/delete-expenses/{id}")]
     public async Task<IActionResult> DeleteExpense(Guid id)
     {
+        await this.SetGlobalUserInfoAsync(this.userManager, this.context);
         var expense = await this.context.Expenses
             .Include(i => i.User)
             .FirstOrDefaultAsync(i => i.ExpenseId == id && i.User.ApplicationUserId == this.User.GetUserId());

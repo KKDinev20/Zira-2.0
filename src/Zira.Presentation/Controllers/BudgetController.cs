@@ -128,6 +128,7 @@ namespace Zira.Presentation.Controllers
         [HttpGet("/edit-budget/{id}")]
         public async Task<IActionResult> EditBudget(Guid id)
         {
+            await this.SetGlobalUserInfoAsync(this.userManager, this.context);
             var budget = await this.context.Budgets
                 .Include(i => i.User)
                 .FirstOrDefaultAsync(i => i.BudgetId == id && i.User.ApplicationUserId == this.User.GetUserId());
@@ -189,6 +190,7 @@ namespace Zira.Presentation.Controllers
         [HttpGet("/delete-budget/{id}")]
         public async Task<IActionResult> DeleteBudget(Guid id)
         {
+            await this.SetGlobalUserInfoAsync(this.userManager, this.context);
             var budget = await this.context.Budgets
                 .Include(i => i.User)
                 .FirstOrDefaultAsync(i => i.BudgetId == id && i.User.ApplicationUserId == this.User.GetUserId());

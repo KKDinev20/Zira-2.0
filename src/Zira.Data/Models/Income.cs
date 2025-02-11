@@ -2,7 +2,7 @@
 using Zira.Data.Enums;
 using Zira.Data.Models;
 
-namespace Zira.Data;
+namespace Zira.Data.Models;
 
 public class Income
 {

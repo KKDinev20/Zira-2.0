@@ -31,7 +31,7 @@ public class IncomesController : Controller
     [HttpGet("/add-income/")]
     public async Task<IActionResult> AddIncome()
     {
-        await this.SetGlobalUserInfoAsync(userManager, context);
+        await this.SetGlobalUserInfoAsync(this.userManager, this.context);
         this.ViewBag.Sources = Enum.GetValues(typeof(Sources)).Cast<Sources>().ToList();
         return this.View();
     }
@@ -86,7 +86,7 @@ public class IncomesController : Controller
     [HttpGet("/income-list/")]
     public async Task<IActionResult> IncomeList(int page = 1, int pageSize = 5)
     {
-        await this.SetGlobalUserInfoAsync(userManager, context);
+        await this.SetGlobalUserInfoAsync(this.userManager, this.context);
 
         var userId = this.User.GetUserId();
         var user = await this.context.Users
@@ -122,6 +122,7 @@ public class IncomesController : Controller
     [HttpGet("/edit-income/{id}")]
     public async Task<IActionResult> EditIncome(Guid id)
     {
+        await this.SetGlobalUserInfoAsync(this.userManager, this.context);
         var income = await this.context.Incomes
             .Include(i => i.User)
             .FirstOrDefaultAsync(i => i.IncomeId == id && i.User.ApplicationUserId == this.User.GetUserId());
@@ -178,6 +179,7 @@ public class IncomesController : Controller
     [HttpGet("/delete-income/{id}")]
     public async Task<IActionResult> DeleteIncome(Guid id)
     {
+        await this.SetGlobalUserInfoAsync(this.userManager, this.context);
         var income = await this.context.Incomes
             .Include(i => i.User)
             .FirstOrDefaultAsync(i => i.IncomeId == id && i.User.ApplicationUserId == this.User.GetUserId());
