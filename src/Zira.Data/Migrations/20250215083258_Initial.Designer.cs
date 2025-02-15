@@ -12,7 +12,7 @@ using Zira.Data;
 namespace Zira.Data.Migrations
 {
     [DbContext(typeof(EntityContext))]
-    [Migration("20250215074659_Initial")]
+    [Migration("20250215083258_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -236,14 +236,14 @@ namespace Zira.Data.Migrations
 
             modelBuilder.Entity("Zira.Data.Models.Budget", b =>
                 {
-                    b.Property<Guid>("BudgetId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Category")
+                    b.Property<int?>("Category")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Month")
@@ -252,69 +252,16 @@ namespace Zira.Data.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("BudgetId");
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("Budgets");
                 });
 
-            modelBuilder.Entity("Zira.Data.Models.Expense", b =>
-                {
-                    b.Property<Guid>("ExpenseId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Category")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DateSpent")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("ExpenseId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Expenses");
-                });
-
-            modelBuilder.Entity("Zira.Data.Models.Income", b =>
-                {
-                    b.Property<Guid>("IncomeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("DateReceived")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Source")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("IncomeId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Incomes");
-                });
-
             modelBuilder.Entity("Zira.Data.Models.Reminder", b =>
                 {
-                    b.Property<Guid>("ReminderId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -327,17 +274,60 @@ namespace Zira.Data.Migrations
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("ReminderId");
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("Reminders");
+                });
+
+            modelBuilder.Entity("Zira.Data.Models.Transaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("Category")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsRecurring")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("Recurrence")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Source")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Transactions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -402,28 +392,6 @@ namespace Zira.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Zira.Data.Models.Expense", b =>
-                {
-                    b.HasOne("Zira.Data.Models.ApplicationUser", "User")
-                        .WithMany("Expenses")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Zira.Data.Models.Income", b =>
-                {
-                    b.HasOne("Zira.Data.Models.ApplicationUser", "User")
-                        .WithMany("Incomes")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Zira.Data.Models.Reminder", b =>
                 {
                     b.HasOne("Zira.Data.Models.ApplicationUser", "User")
@@ -435,15 +403,24 @@ namespace Zira.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Zira.Data.Models.Transaction", b =>
+                {
+                    b.HasOne("Zira.Data.Models.ApplicationUser", "User")
+                        .WithMany("Transactions")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Zira.Data.Models.ApplicationUser", b =>
                 {
                     b.Navigation("Budgets");
 
-                    b.Navigation("Expenses");
-
-                    b.Navigation("Incomes");
-
                     b.Navigation("Reminders");
+
+                    b.Navigation("Transactions");
                 });
 #pragma warning restore 612, 618
         }

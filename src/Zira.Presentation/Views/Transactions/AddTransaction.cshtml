@@ -1,0 +1,117 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Zira.Data.Enums
+@model Zira.Data.Models.Transaction
+
+@{
+    ViewData["Title"] = "Add Transaction";
+    Layout = "Shared/_TransactionsLayout";
+}
+
+<div class="content-wrapper">
+    <div class="container-fluid d-flex justify-content-center align-items-center" style="height: 80vh;">
+        <div class="col-xl">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-center align-items-center">
+                    <h5 class="mb-0 text-center">Add Transaction</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="AddTransaction" asp-controller="Transactions" method="post">
+                        @if (TempData["ErrorMessage"] != null)
+                        {
+                            <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+                        }
+                        @if (TempData["SuccessMessage"] != null)
+                        {
+                            <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+                        }
+
+                        <div class="mb-3">
+                            <label class="form-label">Transaction Type</label>
+                            <div class="form-check">
+                                <input asp-for="Type" type="radio" class="form-check-input" value="Income" id="type-income" onclick="toggleTransactionFields()">
+                                <label class="form-check-label" for="type-income">Income</label>
+                            </div>
+                            <div class="form-check">
+                                <input asp-for="Type" type="radio" class="form-check-input" value="Expense" id="type-expense" onclick="toggleTransactionFields()">
+                                <label class="form-check-label" for="type-expense">Expense</label>
+                            </div>
+                            <span asp-validation-for="Type" class="text-danger"></span>
+                        </div>
+
+                        <div id="income-fields" class="transaction-fields d-none">
+                            <div class="mb-3">
+                                <label class="form-label" for="transaction-source">Source</label>
+                                <div class="input-group input-group-merge">
+                                    <span id="transaction-source-icon" class="input-group-text">
+                                        <i class="bx bx-credit-card"></i>
+                                    </span>
+                                    <select asp-for="Source" class="form-control" id="transaction-source">
+                                        <option value="" disabled selected>Select a Source</option>
+                                        @foreach (var source in ViewBag.Sources as Sources[])
+                                        {
+                                            <option value="@source">@source.GetLocalizedIncomeSource()</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="Source" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="expense-fields" class="transaction-fields d-none">
+                            <div class="mb-3">
+                                <label class="form-label" for="transaction-category">Category</label>
+                                <div class="input-group input-group-merge">
+                                    <span id="transaction-category-icon" class="input-group-text">
+                                        <i class="bx bx-briefcase"></i>
+                                    </span>
+                                    <select asp-for="Category" class="form-control" id="transaction-category">
+                                        <option value="" disabled selected>Select a Category</option>
+                                        @foreach (var category in ViewBag.Categories as Categories[])
+                                        {
+                                            <option value="@category">@category.GetLocalizedExpenseCategory()</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="Category" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="transaction-amount">Amount</label>
+                            <div class="input-group input-group-merge">
+                                <span id="transaction-amount-icon" class="input-group-text">
+                                    <i class="bx bx-money"></i>
+                                </span>
+                                <input asp-for="Amount" type="number" class="form-control" id="transaction-amount" placeholder="Enter Transaction Amount" required step="0.01"/>
+                                <span asp-validation-for="Amount" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="transaction-date">Transaction Date</label>
+                            <div class="input-group input-group-merge">
+                                <span id="transaction-date-icon" class="input-group-text">
+                                    <i class="bx bx-calendar"></i>
+                                </span>
+                                <input asp-for="Date" type="date" class="form-control" id="transaction-date" required/>
+                                <span asp-validation-for="Date" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Add Transaction</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+        function toggleTransactionFields() {
+            let isIncome = document.getElementById("type-income").checked;
+            let isExpense = document.getElementById("type-expense").checked;
+
+            document.getElementById("income-fields").classList.toggle("d-none", !isIncome);
+            document.getElementById("expense-fields").classList.toggle("d-none", !isExpense);
+        }
+</script>

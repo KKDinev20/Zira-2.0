@@ -7,10 +7,9 @@ namespace Zira.Data
 {
     public class EntityContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
     {
-        public DbSet<ApplicationUser> Users { get; set; } 
+        public DbSet<ApplicationUser> Users { get; set; }
 
-        public DbSet<Income> Incomes { get; set; }
-        public DbSet<Expense> Expenses { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Budget> Budgets { get; set; }
         public DbSet<Reminder> Reminders { get; set; }
 
@@ -23,15 +22,10 @@ namespace Zira.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Income>()
+            modelBuilder.Entity<Transaction>()
                 .HasOne(i => i.User)
-                .WithMany(x => x.Incomes)
+                .WithMany(x => x.Transactions)
                 .HasForeignKey(i => i.UserId);
-
-            modelBuilder.Entity<Expense>()
-                .HasOne(e => e.User)
-                .WithMany(x => x.Expenses)
-                .HasForeignKey(e => e.UserId);
 
             modelBuilder.Entity<Budget>()
                 .HasOne(b => b.User)

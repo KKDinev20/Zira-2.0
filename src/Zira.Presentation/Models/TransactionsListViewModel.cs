@@ -3,9 +3,9 @@ using Zira.Data.Models;
 
 namespace Zira.Presentation.Models;
 
-public class ExpensesListViewModel
+public class TransactionsListViewModel
 {
-    public List<Expense> Expenses { get; set; }
+    public List<Transaction> Transactions { get; set; }
     public int CurrentPage { get; set; }
     public int TotalPages { get; set; }
 }

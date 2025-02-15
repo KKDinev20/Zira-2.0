@@ -92,6 +92,11 @@
         <_ContentIncludedByDefault Remove="Views\ExpensesManagement\Shared\_Sidebar.cshtml" />
         <_ContentIncludedByDefault Remove="Views\ExpensesManagement\Shared\_Styles.cshtml" />
         <_ContentIncludedByDefault Remove="Views\ExpensesManagement\Shared\_TopBar.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Incomes\AddIncome.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Incomes\DeleteIncome.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Incomes\EditIncome.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Incomes\IncomeList.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Incomes\Shared\_IncomeLayout.cshtml" />
     </ItemGroup>
 
 
