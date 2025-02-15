@@ -101,11 +101,16 @@ public class TransactionsController : Controller
             return this.NotFound();
         }
 
+        bool isIncome = transaction.Type == TransactionType.Income;
+
+        this.ViewBag.IsIncome = isIncome;
+
         this.ViewBag.Categories = Enum.GetValues(typeof(Categories));
         this.ViewBag.Sources = Enum.GetValues(typeof(Sources));
 
         return this.View(transaction);
     }
+
 
     [HttpPost("/edit-transaction/{id}")]
     public async Task<IActionResult> EditTransaction(Guid id, Transaction model)
@@ -118,15 +123,16 @@ public class TransactionsController : Controller
         try
         {
             await this.transactionService.UpdateTransactionAsync(model);
-            this.TempData["SuccessMessage"] = "Transactions updated successfully!";
+            this.TempData["SuccessMessage"] = "Transaction updated successfully!";
         }
         catch (KeyNotFoundException)
         {
-            this.TempData["ErrorMessage"] = "Transactions not found.";
+            this.TempData["ErrorMessage"] = "Transaction not found.";
         }
 
         return this.RedirectToAction("TransactionList");
     }
+
 
     [HttpGet("/delete-transaction/{id}")]
     public async Task<IActionResult> DeleteTransaction(Guid id)

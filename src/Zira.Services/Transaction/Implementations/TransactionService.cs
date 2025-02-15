@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Zira.Common;
 using Zira.Data;
+using Zira.Data.Enums;
 using Zira.Services.Transaction.Contracts;
 
 namespace Zira.Services.Transaction.Implementations;
@@ -56,6 +58,15 @@ public class TransactionService : ITransactionService
             existingTransaction.Description = transactionModel.Description;
             existingTransaction.Amount = transactionModel.Amount;
             existingTransaction.Date = transactionModel.Date;
+
+            if (transactionModel.Type == TransactionType.Expense && transactionModel.Category != null)
+            {
+                existingTransaction.Category = transactionModel.Category;
+            }
+            else
+            {
+                existingTransaction.Source = transactionModel.Source;
+            }
 
             await this.context.SaveChangesAsync();
         }
