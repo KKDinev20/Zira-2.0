@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Zira.Services.Accounts;
+using Zira.Services.Budget;
 using Zira.Services.Common;
 using Zira.Services.Identity;
 using Zira.Services.Transaction;
@@ -17,6 +18,7 @@ public static class DependencyInjection
         services.AddIdentityServices();
         services.AddAccountsService();
         services.AddTransactionService();
+        services.AddBudgetServices();
 
         return services;
     }

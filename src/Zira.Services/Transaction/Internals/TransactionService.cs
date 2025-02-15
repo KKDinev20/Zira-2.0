@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Zira.Common;
 using Zira.Data;
 using Zira.Data.Enums;
 using Zira.Services.Transaction.Contracts;
 
-namespace Zira.Services.Transaction.Implementations;
+namespace Zira.Services.Transaction.Internals;
 
 public class TransactionService : ITransactionService
 {

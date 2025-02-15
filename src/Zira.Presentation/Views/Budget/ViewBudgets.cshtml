@@ -1,23 +1,31 @@
-﻿@*@using Zira.Presentation.Extensions
+﻿@using Zira.Presentation.Extensions
 @model BudgetListViewModel
+
 @{
     ViewData["Title"] = @BudgetText.Budgets;
     Layout = "Shared/_BudgetLayout";
 }
 
 <div class="container-xxl flex-grow-1 container-p-y">
-    <h4 class="fw-bold py-3 mb-4">@BudgetText.Budgets</h4>
+    <h4 class="fw-bold py-3 mb-4">
+        <i class="bx bx-money"></i> @BudgetText.Budgets
+    </h4>
 
+    <!-- Success/Error Messages -->
     @if (TempData["SuccessMessage"] != null)
     {
-        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+        <div class="alert alert-success">
+            <i class="bx bx-check-circle"></i> @TempData["SuccessMessage"]
+        </div>
     }
     @if (TempData["ErrorMessage"] != null)
     {
-        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+        <div class="alert alert-danger">
+            <i class="bx bx-error-circle"></i> @TempData["ErrorMessage"]
+        </div>
     }
 
-    <div class="card">
+    <div class="card shadow-sm">
         <h5 class="card-header">@BudgetText.BudgetList</h5>
         <div class="table-responsive text-nowrap">
             <table class="table">
@@ -25,6 +33,7 @@
                 <tr>
                     <th>@BudgetText.BudgetCategory</th>
                     <th>@BudgetText.BudgetAmount</th>
+                    <th>@BudgetText.WarningThreshold</th>
                     <th>@BudgetText.BudgetMonth</th>
                     <th>@BudgetText.Actions</th>
                 </tr>
@@ -32,12 +41,15 @@
                 <tbody>
                 @foreach (var budget in Model.Budgets)
                 {
-                    <tr>
+                    var isWarningExceeded = budget.Amount >= budget.WarningThreshold;
+
+                    <tr class="@(isWarningExceeded ? "table-warning" : "")">
                         <td>
-                            <i class="bx bx-wallet-alt me-3"></i> <strong>@budget.Category.GetLocalizedExpenseCategory() </strong>
+                            <i class="bx bx-wallet-alt me-2"></i> <strong>@budget.Category?.GetLocalizedExpenseCategory()</strong>
                         </td>
                         <td>@budget.Amount.ToString("C")</td>
-                        <td>@budget.Month.ToString("dd-MM-yyyy")</td>
+                        <td>@budget.WarningThreshold.ToString("C")</td>
+                        <td>@budget.Month.ToString("MMMM yyyy")</td>
                         <td>
                             <div class="dropdown">
                                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
@@ -45,14 +57,17 @@
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a class="dropdown-item" href="@Url.Action("EditBudget", "Budget", new { id = budget.BudgetId })">
+                                        <a class="dropdown-item" href="@Url.Action("EditBudget", "Budget", new { id = budget.Id })">
                                             <i class="bx bx-edit-alt me-1"></i> @BudgetText.Edit
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="@Url.Action("DeleteBudget", "Budget", new { id = budget.BudgetId })">
-                                            <i class="bx bx-trash me-1"></i> @BudgetText.Delete
-                                        </a>
+                                        <form asp-action="DeleteBudget" method="post">
+                                            <input type="hidden" name="id" value="@budget.Id"/>
+                                            <button type="submit" class="dropdown-item text-danger">
+                                                <i class="bx bx-trash me-1"></i> @BudgetText.Delete
+                                            </button>
+                                        </form>
                                     </li>
                                 </ul>
                             </div>
@@ -63,18 +78,19 @@
             </table>
         </div>
 
+        <!-- Pagination -->
         <div class="d-flex justify-content-center mt-4">
             <nav aria-label="Page navigation">
                 <ul class="pagination">
                     <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
                         <a class="page-link" href="@Url.Action("ViewBudgets", "Budget", new { page = 1 })">
-                            <i class="tf-icon bx bx-chevrons-left"></i>
+                            <i class="bx bx-chevrons-left"></i>
                         </a>
                     </li>
 
                     <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
                         <a class="page-link" href="@Url.Action("ViewBudgets", "Budget", new { page = Model.CurrentPage - 1 })">
-                            <i class="tf-icon bx bx-chevron-left"></i>
+                            <i class="bx bx-chevron-left"></i>
                         </a>
                     </li>
 
@@ -85,19 +101,13 @@
                         </li>
                     }
 
-                    <li class="page-item @(Model.CurrentPage == Model.TotalPages || Model.TotalPages == 0 ? "disabled" : "")">
+                    <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">
                         <a class="page-link" href="@Url.Action("ViewBudgets", "Budget", new { page = Model.CurrentPage + 1 })">
-                            <i class="tf-icon bx bx-chevron-right"></i>
-                        </a>
-                    </li>
-
-                    <li class="page-item @(Model.CurrentPage == Model.TotalPages || Model.TotalPages == 0 ? "disabled" : "")">
-                        <a class="page-link" href="@Url.Action("ViewBudgets", "Budget", new { page = Model.TotalPages })">
-                            <i class="tf-icon bx bx-chevrons-right"></i>
+                            <i class="bx bx-chevron-right"></i>
                         </a>
                     </li>
                 </ul>
             </nav>
         </div>
     </div>
-</div>*@
+</div>

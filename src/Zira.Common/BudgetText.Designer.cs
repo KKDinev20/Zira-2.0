@@ -265,5 +265,14 @@ namespace Zira.Common {
                 return ResourceManager.GetString("Warning", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Праг на предпреждение.
+        /// </summary>
+        public static string WarningThreshold {
+            get {
+                return ResourceManager.GetString("WarningThreshold", resourceCulture);
+            }
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿@*@using Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Zira.Data.Enums
 @using Zira.Presentation.Extensions
 @model Zira.Data.Models.Budget
@@ -12,7 +12,7 @@
         <h5 class="card-header">@BudgetText.EditBudget</h5>
         <div class="card-body">
             <form asp-action="EditBudget" asp-controller="Budget" method="post">
-                <input type="hidden" asp-for="BudgetId"/>
+                <input type="hidden" asp-for="Id"/>
 
                 <div class="mb-3">
                     <label asp-for="Category" class="form-label">@BudgetText.BudgetCategory</label>
@@ -41,4 +41,4 @@
             </form>
         </div>
     </div>
-</div>*@
+</div>

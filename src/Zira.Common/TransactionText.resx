@@ -18,4 +18,64 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
+    <data name="AddTransaction" xml:space="preserve">
+        <value>Добавяне на транзакция</value>
+    </data>
+    <data name="TransactionType" xml:space="preserve">
+        <value>Вид на транзакция</value>
+    </data>
+    <data name="SelectASource" xml:space="preserve">
+        <value>Иабиране на източник</value>
+    </data>
+    <data name="SelectACategory" xml:space="preserve">
+        <value>Избиране на категория</value>
+    </data>
+    <data name="Source" xml:space="preserve">
+        <value>Източник</value>
+    </data>
+    <data name="Category" xml:space="preserve">
+        <value>Категория</value>
+    </data>
+    <data name="Amount" xml:space="preserve">
+        <value>Сума</value>
+    </data>
+    <data name="TransactionDate" xml:space="preserve">
+        <value>Дата на транзакцията</value>
+    </data>
+    <data name="Transactions" xml:space="preserve">
+        <value>Транзакции</value>
+    </data>
+    <data name="QuickAdd" xml:space="preserve">
+        <value>Бързо добавяне</value>
+    </data>
+    <data name="Type" xml:space="preserve">
+        <value>Вид</value>
+    </data>
+    <data name="Actions" xml:space="preserve">
+        <value>Действия</value>
+    </data>
+    <data name="QuickAddExpense" xml:space="preserve">
+        <value>Бързо добавяне на разходи</value>
+    </data>
+    <data name="Edit" xml:space="preserve">
+        <value>Обработване</value>
+    </data>
+    <data name="Delete" xml:space="preserve">
+        <value>Изтриване</value>
+    </data>
+    <data name="EditTransaction" xml:space="preserve">
+        <value>Промяна на транзакция</value>
+    </data>
+    <data name="SaveChanges" xml:space="preserve">
+        <value>Запази промените</value>
+    </data>
+    <data name="DeleteTransaction" xml:space="preserve">
+        <value>Изтриване на транзакция</value>
+    </data>
+    <data name="Cancel" xml:space="preserve">
+        <value>Откажи</value>
+    </data>
+    <data name="Warning" xml:space="preserve">
+        <value>Сигурни ли сте, че искате да изтриете тази транзакция?</value>
+    </data>
 </root>

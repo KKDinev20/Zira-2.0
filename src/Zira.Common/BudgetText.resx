@@ -86,4 +86,7 @@
     <data name="MonthFuture" xml:space="preserve">
         <value>Месечният бюджет не може да бъде в бъдеще </value>
     </data>
+    <data name="WarningThreshold" xml:space="preserve">
+        <value>Праг на предпреждение</value>
+    </data>
 </root>

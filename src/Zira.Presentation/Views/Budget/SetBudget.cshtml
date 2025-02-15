@@ -1,70 +1,78 @@
-﻿@*@using Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Zira.Data.Enums
 @using Zira.Presentation.Extensions
 @model Zira.Data.Models.Budget
+
 @{
-    ViewData["Title"] = @BudgetText.SetBudget;
-    Layout = "Shared/_BudgetLayout";
+ViewData["Title"] = @BudgetText.SetBudget;
+Layout = "Shared/_BudgetLayout";
 }
 
 <div class="content-wrapper">
     <div class="container-fluid d-flex justify-content-center align-items-center" style="height: 80vh;">
         <div class="col-xl">
-            <div class="card mb-4">
-                <div class="card-header d-flex justify-content-center align-items-center">
-                    <h5 class="mb-0 text-center">@BudgetText.SetBudget</h5>
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header text-center text-dark">
+                    <h5 class="mb-0">@BudgetText.SetBudget</h5>
                 </div>
                 <div class="card-body">
                     <form asp-action="SetBudget" method="post">
+                        <!-- Category -->
                         <div class="mb-3">
                             <label class="form-label" for="Category">@BudgetText.BudgetCategory</label>
                             <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="bx bx-briefcase"></i>
                                 </span>
-                                <select
-                                    class="form-control"
-                                    id="expense-category"
-                                    name="Category"
-                                    required
-                                    aria-label="@ExpensesText.ExpenseCategory"
-                                    aria-describedby="expense-category-icon">
-                                    <option value="" disabled selected>@ExpensesText.SelectACategory</option>
+                                <select class="form-control" id="expense-category" name="Category" required>
+                                    <option value="" disabled selected>@TransactionText.SelectACategory</option>
                                     @foreach (var category in Enum.GetValues(typeof(Categories)).Cast<Categories>())
                                     {
-                                    <option value="@category">@category.GetLocalizedExpenseCategory()</option>
+                                    <option value="@category" selected="@(Model.Category == category ? "selected" : null)">
+                                        @category.GetLocalizedExpenseCategory()
+                                    </option>
                                     }
                                 </select>
                             </div>
                             <span class="text-danger" asp-validation-for="Category"></span>
                         </div>
 
+                        <!-- Amount -->
                         <div class="mb-3">
-                            <label class="form-label" for="Amount">@BudgetText.BudgetAmount</label>
+                            <label class="form-label" asp-forfor="Amount">@BudgetText.BudgetAmount</label>
                             <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="bx bx-wallet"></i>
-                                </span>
-                                <input type="number" asp-for="Amount" class="form-control" step="0.01" placeholder="Enter amount" min="0.01"/>
+                                <span class="input-group-text"><i class="bx bx-wallet"></i></span>
+                                <input type="number" asp-for="Amount" class="form-control" step="0.01" placeholder="Enter amount" min="0.01" required/>
                             </div>
                             <span class="text-danger" asp-validation-for="Amount"></span>
                         </div>
 
+                        <!-- Warning Threshold -->
+                        <div class="mb-3">
+                            <label class="form-label" for="WarningThreshold">@BudgetText.WarningThreshold</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bx bx-bell"></i></span>
+                                <input type="number" asp-for="WarningThreshold" class="form-control" step="0.01" placeholder="Set warning threshold" min="0.01" required/>
+                            </div>
+                            <span class="text-danger" asp-validation-for="WarningThreshold"></span>
+                        </div>
+
+                        <!-- Month -->
                         <div class="mb-3">
                             <label class="form-label" for="Month">@BudgetText.BudgetMonth</label>
                             <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="bx bx-calendar"></i>
-                                </span>
+                                <span class="input-group-text"><i class="bx bx-calendar"></i></span>
                                 <input type="month" asp-for="Month" class="form-control" required/>
                             </div>
                             <span class="text-danger" asp-validation-for="Month"></span>
                         </div>
 
-                        <button type="submit" class="btn btn-primary w-100">@BudgetText.SaveBudget</button>
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bx bx-save"></i> @BudgetText.SaveBudget
+                        </button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-</div>*@
+</div>

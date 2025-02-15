@@ -3,7 +3,7 @@
 @model Zira.Data.Models.Transaction
 
 @{
-    ViewData["Title"] = "Add Transaction";
+    ViewData["Title"] = @TransactionText.AddTransaction;
     Layout = "Shared/_TransactionsLayout";
 }
 
@@ -12,7 +12,7 @@
         <div class="col-xl">
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-center align-items-center">
-                    <h5 class="mb-0 text-center">Add Transaction</h5>
+                    <h5 class="mb-0 text-center">@TransactionText.AddTransaction</h5>
                 </div>
                 <div class="card-body">
                     <form asp-action="AddTransaction" asp-controller="Transactions" method="post">
@@ -26,7 +26,7 @@
                         }
 
                         <div class="mb-3">
-                            <label class="form-label">Transaction Type</label>
+                            <label class="form-label">@TransactionText.TransactionType</label>
                             <div class="form-check">
                                 <input asp-for="@TransactionTypes.Income" type="radio" class="form-check-input" value="Income" id="type-income" onclick="toggleTransactionFields()">
                                 <label class="form-check-label" for="type-income">@TransactionTypes.Income</label>
@@ -40,13 +40,13 @@
 
                         <div id="income-fields" class="transaction-fields d-none">
                             <div class="mb-3">
-                                <label class="form-label" for="transaction-source">Source</label>
+                                <label class="form-label" for="transaction-source">@TransactionText.Source</label>
                                 <div class="input-group input-group-merge">
                                     <span id="transaction-source-icon" class="input-group-text">
                                         <i class="bx bx-credit-card"></i>
                                     </span>
                                     <select asp-for="Source" class="form-control" id="transaction-source">
-                                        <option value="" disabled selected>Select a Source</option>
+                                        <option value="" disabled selected>@TransactionText.SelectASource</option>
                                         @foreach (var source in ViewBag.Sources as Sources[])
                                         {
                                             <option value="@source">@source.GetLocalizedIncomeSource()</option>
@@ -59,13 +59,13 @@
 
                         <div id="expense-fields" class="transaction-fields d-none">
                             <div class="mb-3">
-                                <label class="form-label" for="transaction-category">Category</label>
+                                <label class="form-label" for="transaction-category">@TransactionText.Category</label>
                                 <div class="input-group input-group-merge">
                                     <span id="transaction-category-icon" class="input-group-text">
                                         <i class="bx bx-briefcase"></i>
                                     </span>
                                     <select asp-for="Category" class="form-control" id="transaction-category">
-                                        <option value="" disabled selected>Select a Category</option>
+                                        <option value="" disabled selected>@TransactionText.SelectACategory</option>
                                         @foreach (var category in ViewBag.Categories as Categories[])
                                         {
                                             <option value="@category">@category.GetLocalizedExpenseCategory()</option>
@@ -77,18 +77,18 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label" for="transaction-amount">Amount</label>
+                            <label class="form-label" for="transaction-amount">@TransactionText.Amount</label>
                             <div class="input-group input-group-merge">
                                 <span id="transaction-amount-icon" class="input-group-text">
                                     <i class="bx bx-money"></i>
                                 </span>
-                                <input asp-for="Amount" type="number" class="form-control" id="transaction-amount" placeholder="Enter Transaction Amount" required step="0.01"/>
+                                <input asp-for="Amount" type="number" class="form-control" id="transaction-amount" placeholder="@TransactionText.Amount" required step="0.01"/>
                                 <span asp-validation-for="Amount" class="text-danger"></span>
                             </div>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label" for="transaction-date">Transaction Date</label>
+                            <label class="form-label" for="transaction-date">@TransactionText.TransactionDate</label>
                             <div class="input-group input-group-merge">
                                 <span id="transaction-date-icon" class="input-group-text">
                                     <i class="bx bx-calendar"></i>
@@ -98,7 +98,7 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Add Transaction</button>
+                        <button type="submit" class="btn btn-primary">@TransactionText.AddTransaction</button>
                     </form>
                 </div>
             </div>

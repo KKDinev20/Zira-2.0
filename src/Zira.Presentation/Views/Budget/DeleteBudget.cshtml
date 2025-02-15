@@ -1,14 +1,16 @@
-﻿@*@using Zira.Presentation.Extensions
+﻿@using Zira.Presentation.Extensions
 @model Zira.Data.Models.Budget
+
 @{
-    ViewData["Title"] = @BudgetText.DeleteBudget;
-    Layout = "Shared/_BudgetLayout";
+ViewData["Title"] = @BudgetText.DeleteBudget;
+Layout = "Shared/_BudgetLayout";
 }
+
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="card">
-        <h5 class="card-header">@BudgetText.DeleteBudget</h5>
+        <h5 class="card-header bg-danger text-white">@BudgetText.DeleteBudget</h5>
         <div class="card-body">
-            <h6 class="card-title">@BudgetText.Warning</h6>
+            <h6 class="card-title text-danger"><i class="bx bx-error-circle"></i> @BudgetText.Warning</h6>
 
             <div class="table-responsive text-nowrap">
                 <table class="table">
@@ -23,7 +25,7 @@
                     <tbody>
                     <tr>
                         <td>
-                            <i class="bx bx-briefcase fa-lg text-primary me-3"></i> <strong>@Model.Category.GetLocalizedExpenseCategory()</strong>
+                            <i class="bx bx-briefcase fa-lg text-primary me-3"></i> <strong>@Model.Category?.GetLocalizedExpenseCategory()</strong>
                         </td>
                         <td>@Model.Amount.ToString("C")</td>
                         <td>@Model.Month.ToString("MMMM yyyy")</td>
@@ -32,12 +34,18 @@
                 </table>
             </div>
 
-            <form asp-action="DeleteBudget" asp-controller="Budget" method="post">
-                <input type="hidden" name="id" value="@Model.BudgetId"/>
+            <!-- Fixing the form to call DeleteBudgetConfirmed -->
+            <form asp-action="DeleteBudgetConfirmed" asp-controller="Budget" method="post">
+                <input type="hidden" name="id" value="@Model.Id" />
+                @Html.AntiForgeryToken() <!-- Prevent CSRF attacks -->
 
-                <button type="submit" class="btn btn-danger">@BudgetText.Delete</button>
-                <a href="@Url.Action("ViewBudgets", "Budget")" class="btn btn-secondary">@BudgetText.Cancel</a>
+                <button type="submit" class="btn btn-danger">
+                    <i class="bx bx-trash"></i> @BudgetText.Delete
+                </button>
+                <a href="@Url.Action("ViewBudgets", "Budget")" class="btn btn-secondary">
+                    <i class="bx bx-x-circle"></i> @BudgetText.Cancel
+                </a>
             </form>
         </div>
     </div>
-</div>*@
+</div>
