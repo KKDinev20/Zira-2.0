@@ -78,20 +78,11 @@ namespace Zira.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Добавяне на разходи.
+        ///   Looks up a localized string similar to Добавяне на транзакция.
         /// </summary>
         public static string AddExpenses {
             get {
                 return ResourceManager.GetString("AddExpenses", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Добавяне на доход.
-        /// </summary>
-        public static string AddIncome {
-            get {
-                return ResourceManager.GetString("AddIncome", resourceCulture);
             }
         }
         
@@ -186,20 +177,11 @@ namespace Zira.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Списък на разходите.
+        ///   Looks up a localized string similar to Списък на транзакциите.
         /// </summary>
         public static string ExpenseList {
             get {
                 return ResourceManager.GetString("ExpenseList", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Управление на разходите.
-        /// </summary>
-        public static string ExpenseManagement {
-            get {
-                return ResourceManager.GetString("ExpenseManagement", resourceCulture);
             }
         }
         
@@ -236,24 +218,6 @@ namespace Zira.Common {
         public static string Groceries {
             get {
                 return ResourceManager.GetString("Groceries", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Списък на доходите.
-        /// </summary>
-        public static string IncomeList {
-            get {
-                return ResourceManager.GetString("IncomeList", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Управление на доходите.
-        /// </summary>
-        public static string IncomeManagement {
-            get {
-                return ResourceManager.GetString("IncomeManagement", resourceCulture);
             }
         }
         
@@ -335,6 +299,15 @@ namespace Zira.Common {
         public static string TotalBalance {
             get {
                 return ResourceManager.GetString("TotalBalance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Управление на транзакциите.
+        /// </summary>
+        public static string TransactionManagement {
+            get {
+                return ResourceManager.GetString("TransactionManagement", resourceCulture);
             }
         }
         

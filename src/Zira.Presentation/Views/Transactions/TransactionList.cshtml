@@ -10,33 +10,22 @@
 <div class="container-xxl flex-grow-1 container-p-y">
     <h4 class="fw-bold py-3 mb-4">Transactions</h4>
 
-    <!-- Quick Add Form -->
+    <!-- Quick Add Form (Only for Expenses) -->
     <div class="card mb-4">
         <div class="card-header">
-            <h5>Quick Add Expenses</h5>
+            <h5>Quick Add Expense</h5>
         </div>
         <div class="card-body">
             @using (Html.BeginForm("QuickAddTransaction", "Transactions", FormMethod.Post))
             {
                 <div class="row">
-                    <div class="col-md-4" id="category-field" style="display:none;">
+                    <div class="col-md-4" id="category-field">
                         <label for="Category" class="form-label">Expense Category</label>
-                        <select id="Category" name="Category" class="form-select">
+                        <select id="Category" name="Category" class="form-select" required>
                             <option value="" disabled selected>Select Category</option>
                             @foreach (var category in Enum.GetValues(typeof(Categories)).Cast<Categories>())
                             {
                                 <option value="@category">@category.GetLocalizedExpenseCategory()</option>
-                            }
-                        </select>
-                    </div>
-
-                    <div class="col-md-4" id="source-field" style="display:none;">
-                        <label for="Source" class="form-label">Income Source</label>
-                        <select id="Source" name="Source" class="form-select">
-                            <option value="" disabled selected>Select Source</option>
-                            @foreach (var source in Enum.GetValues(typeof(Sources)).Cast<Sources>())
-                            {
-                                <option value="@source">@source.GetLocalizedIncomeSource()</option>
                             }
                         </select>
                     </div>
@@ -73,10 +62,11 @@
     <div class="card">
         <h5 class="card-header">Transaction List</h5>
         <div class="table-responsive text-nowrap">
-            <table class="table">
+            <table class="table table-sm">
                 <thead>
                 <tr>
-                    <th>Transaction Type</th>
+                    <th>Type</th>
+                    <th>Category</th>
                     <th>Amount</th>
                     <th>Date</th>
                     <th>Actions</th>
@@ -87,7 +77,17 @@
                 {
                     <tr>
                         <td>
-                            <strong>@transaction.Type</strong>
+                            <strong>@transaction.Type.GetLocalizedTransactionType()</strong>
+                        </td>
+                        <td>
+                           @if (transaction.Type == TransactionType.Expense)
+                           {
+                               <strong>@transaction.Category?.GetLocalizedExpenseCategory()</strong>
+                           }
+                           else
+                           {
+                               <strong>@transaction.Source?.GetLocalizedIncomeSource()</strong>
+                           }
                         </td>
                         <td>@transaction.Amount.ToString("C")</td>
                         <td>@transaction.Date.ToString("dd-MM-yyyy")</td>
@@ -112,7 +112,6 @@
             </table>
         </div>
 
-        <!-- Pagination -->
         <div class="d-flex justify-content-center mt-4">
             <nav aria-label="Page navigation">
                 <ul class="pagination">
@@ -152,18 +151,4 @@
     </div>
 </div>
 
-<script>
-    document.getElementById('Type').addEventListener('change', function () {
-        const transactionType = this.value;
-        if (transactionType === 'Expense') {
-            document.getElementById('category-field').style.display = 'block';
-            document.getElementById('source-field').style.display = 'none';
-        } else if (transactionType === 'Income') {
-            document.getElementById('category-field').style.display = 'none';
-            document.getElementById('source-field').style.display = 'block';
-        }
-    })
-</script>
-
 <partial name="_ValidationScriptsPartial"/>
-}

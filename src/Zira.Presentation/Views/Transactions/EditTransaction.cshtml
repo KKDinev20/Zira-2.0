@@ -12,7 +12,8 @@
         <div class="card-body">
             <form method="post">
                 <input type="hidden" asp-for="Id"/>
-
+                <div class="mb-3">
+                <label asp-for="Amount" class="form-label">Source</label>
                 @if (ViewBag.IsIncome)
                 {
                     <select asp-for="Source" class="form-control" id="transaction-source">
@@ -27,7 +28,7 @@
                 else
                 {
                     <select asp-for="Category" class="form-control" id="transaction-source">
-                        <option value="" disabled selected>Select a Source</option>
+                        <option value="" disabled selected>Select a Category</option>
                         @foreach (var category in ViewBag.Categories as Categories[])
                         {
                             <option value="@category">@category.GetLocalizedExpenseCategory()</option>
@@ -35,7 +36,7 @@
                     </select>
                     <span asp-validation-for="Source" class="text-danger"></span>
                 }
-
+                </div>
 
                 <div class="mb-3">
                     <label asp-for="Amount" class="form-label">Amount</label>

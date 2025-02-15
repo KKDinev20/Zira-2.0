@@ -40,14 +40,6 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>AuthenticationText.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <EmbeddedResource Update="ExpensesText.resx">
-          <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>ExpensesText.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="IncomeText.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>IncomeText.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
       <EmbeddedResource Update="BudgetText.resx">
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>BudgetText.Designer.cs</LastGenOutput>
@@ -59,6 +51,14 @@
       <EmbeddedResource Update="IncomeSources.resx">
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>IncomeSources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="TransactionTypes.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>TransactionType.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="TransactionText.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>TransactionText.Designer.cs</LastGenOutput>
       </EmbeddedResource>
     </ItemGroup>
 
@@ -83,16 +83,6 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>AuthenticationText.resx</DependentUpon>
       </Compile>
-      <Compile Update="ExpensesText.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>ExpensesText.resx</DependentUpon>
-      </Compile>
-      <Compile Update="IncomeText.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>IncomeText.resx</DependentUpon>
-      </Compile>
       <Compile Update="BudgetText.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
@@ -107,6 +97,16 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>IncomeSources.resx</DependentUpon>
+      </Compile>
+      <Compile Update="TransactionTypes.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>TransactionTypes.resx</DependentUpon>
+      </Compile>
+      <Compile Update="TransactionText.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>TransactionText.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

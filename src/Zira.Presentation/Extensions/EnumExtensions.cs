@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using Zira.Common;
 using Zira.Data.Enums;
 
@@ -22,5 +23,14 @@ public static class EnumExtensions
         var localizedValue = resourceManager.GetString(sources.ToString(), culture);
 
         return localizedValue ?? sources.ToString();
+    }
+
+    public static string GetLocalizedTransactionType(this TransactionType type)
+    {
+        var resourceManager = TransactionTypes.ResourceManager;
+        var culture = CultureInfo.CurrentUICulture;
+        var localizedValue = resourceManager.GetString(type.ToString(), culture);
+
+        return localizedValue ?? type.ToString();
     }
 }

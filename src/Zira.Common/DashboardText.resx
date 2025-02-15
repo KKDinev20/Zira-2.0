@@ -19,23 +19,14 @@
     <data name="Dashboard" xml:space="preserve">
         <value>Табло</value>
     </data>
-    <data name="ExpenseManagement" xml:space="preserve">
-        <value>Управление на разходите</value>
+    <data name="TransactionManagement" xml:space="preserve">
+        <value>Управление на транзакциите</value>
     </data>
     <data name="AddExpenses" xml:space="preserve">
-        <value>Добавяне на разходи</value>
+        <value>Добавяне на транзакция</value>
     </data>
     <data name="ExpenseList" xml:space="preserve">
-        <value>Списък на разходите</value>
-    </data>
-    <data name="IncomeManagement" xml:space="preserve">
-        <value>Управление на доходите</value>
-    </data>
-    <data name="AddIncome" xml:space="preserve">
-        <value>Добавяне на доход</value>
-    </data>
-    <data name="IncomeList" xml:space="preserve">
-        <value>Списък на доходите</value>
+        <value>Списък на транзакциите</value>
     </data>
     <data name="Budgeting" xml:space="preserve">
         <value>Бюджетиране</value>

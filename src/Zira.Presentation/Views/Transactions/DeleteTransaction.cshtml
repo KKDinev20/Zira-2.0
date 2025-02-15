@@ -1,8 +1,9 @@
-﻿@using Zira.Presentation.Extensions
+﻿@using Zira.Data.Enums
+@using Zira.Presentation.Extensions
 @model Zira.Data.Models.Transaction
 @{
-ViewData["Title"] = "Delete Transaction";
-Layout = "Shared/_TransactionsLayout";
+    ViewData["Title"] = "Delete Transaction";
+    Layout = "Shared/_TransactionsLayout";
 }
 
 <div class="container-xxl flex-grow-1 container-p-y">
@@ -22,9 +23,14 @@ Layout = "Shared/_TransactionsLayout";
                     </thead>
                     <tbody>
                     <tr>
-                        @*<td>
-                            <i class="bx bx-wallet-alt fa-lg text-primary me-3"></i> <strong>@Model.Category.GetLocalizedExpenseCategory()</strong>
-                        </td>*@
+                        @if (Model.Type == TransactionType.Income)
+                        {
+                            <td>@Model.Source?.GetLocalizedIncomeSource()</td>
+                        }
+                        else
+                        {
+                            <td>@Model.Category?.GetLocalizedExpenseCategory()</td>
+                        }
                         <td>@Model.Amount.ToString("C")</td>
                         <td>@Model.Date.ToString("dd-MM-yyyy")</td>
                     </tr>
