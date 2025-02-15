@@ -50,7 +50,7 @@ namespace Zira.Presentation.Controllers
         public async Task<IActionResult> SetBudget(Budget budgetModel)
         {
             var userId = this.User.GetUserId();
-            var user = await this.context.Users.FirstOrDefaultAsync(u => u.ApplicationUserId == userId);
+            var user = await this.context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
             if (user == null)
             {
@@ -90,7 +90,7 @@ namespace Zira.Presentation.Controllers
 
             var userId = this.User.GetUserId();
             var user = await this.context.Users
-                .FirstOrDefaultAsync(u => u.ApplicationUserId == userId);
+                .FirstOrDefaultAsync(u => u.Id == userId);
 
             if (user == null)
             {
@@ -125,7 +125,7 @@ namespace Zira.Presentation.Controllers
             await this.SetGlobalUserInfoAsync(this.userManager, this.context);
             var budget = await this.context.Budgets
                 .Include(i => i.User)
-                .FirstOrDefaultAsync(i => i.BudgetId == id && i.User.ApplicationUserId == this.User.GetUserId());
+                .FirstOrDefaultAsync(i => i.BudgetId == id && i.User.Id == this.User.GetUserId());
 
             if (budget == null)
             {
@@ -157,7 +157,7 @@ namespace Zira.Presentation.Controllers
 
             var budget = await this.context.Budgets
                 .Include(i => i.User)
-                .FirstOrDefaultAsync(i => i.BudgetId == id && i.User.ApplicationUserId == this.User.GetUserId());
+                .FirstOrDefaultAsync(i => i.BudgetId == id && i.User.Id == this.User.GetUserId());
 
             if (budget == null)
             {
@@ -180,7 +180,7 @@ namespace Zira.Presentation.Controllers
             await this.SetGlobalUserInfoAsync(this.userManager, this.context);
             var budget = await this.context.Budgets
                 .Include(i => i.User)
-                .FirstOrDefaultAsync(i => i.BudgetId == id && i.User.ApplicationUserId == this.User.GetUserId());
+                .FirstOrDefaultAsync(i => i.BudgetId == id && i.User.Id == this.User.GetUserId());
 
             if (budget == null)
             {
@@ -195,7 +195,7 @@ namespace Zira.Presentation.Controllers
         {
             var budget = await this.context.Budgets
                 .Include(i => i.User)
-                .FirstOrDefaultAsync(i => i.BudgetId == id && i.User.ApplicationUserId == this.User.GetUserId());
+                .FirstOrDefaultAsync(i => i.BudgetId == id && i.User.Id == this.User.GetUserId());
 
             if (budget == null)
             {

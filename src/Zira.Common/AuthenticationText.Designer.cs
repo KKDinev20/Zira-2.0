@@ -217,7 +217,7 @@ namespace Zira.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Имейл или потребителско име.
+        ///   Looks up a localized string similar to Имейл .
         /// </summary>
         public static string EmailLabel {
             get {

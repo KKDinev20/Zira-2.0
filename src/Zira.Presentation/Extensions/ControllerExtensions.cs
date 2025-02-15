@@ -30,18 +30,15 @@ public static class ControllerExtensions
         if (user != null)
         {
             var applicationUser = await context.Users
-                .FirstOrDefaultAsync(u => u.ApplicationUserId == user.Id);
+                .FirstOrDefaultAsync(u => u.Id == user.Id);
 
             controller.ViewBag.UserName = applicationUser != null
                 ? $"{applicationUser.FirstName} {applicationUser.LastName}"
                 : "Unknown User";
-
             controller.ViewBag.FirstName = applicationUser.FirstName;
             controller.ViewBag.LastName = applicationUser.LastName;
             controller.ViewBag.BirthDate = applicationUser.Birthday;
-
             controller.ViewBag.UserEmail = user.Email;
-
             controller.ViewBag.UserAvatar = string.IsNullOrEmpty(applicationUser?.ImageUrl)
                 ? "/dashboard/assets/img/avatars/default.jpg"
                 : applicationUser.ImageUrl;

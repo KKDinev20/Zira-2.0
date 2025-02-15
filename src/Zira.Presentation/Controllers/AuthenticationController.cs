@@ -89,7 +89,7 @@ namespace Zira.Presentation.Controllers
                 }
 
                 var applicationUser = await this.context.Users
-                    .FirstOrDefaultAsync(u => u.ApplicationUserId == user.Id);
+                    .FirstOrDefaultAsync(u => u.Id == user.Id);
 
                 if (applicationUser != null &&
                     (string.IsNullOrEmpty(applicationUser.FirstName) ||
@@ -134,28 +134,23 @@ namespace Zira.Presentation.Controllers
             {
                 var applicationUser = new ApplicationUser
                 {
+                    Id = Guid.NewGuid(),
                     UserName = model.Email,
                     Email = model.Email,
+                    FirstName = null,
+                    LastName = null,
+                    Birthday = DateTime.MinValue,
+                    ImageUrl = null,
                 };
+
                 var result = await this.userManager.CreateAsync(applicationUser, model.Password!);
 
                 if (result.Succeeded)
                 {
-                    var user = new User
-                    {
-                        ApplicationUserId = applicationUser.Id,
-                        FirstName = null,
-                        LastName = null,
-                        Birthday = DateTime.MinValue,
-                        ImageUrl = null,
-                    };
-
-                    this.context.Users.Add(user);
                     await this.context.SaveChangesAsync();
-
                     this.TempData["MessageText"] = AuthenticationText.RegisterSuccessMessage;
                     this.TempData["MessageVariant"] = "success";
-                    return this.RedirectToAction(nameof(this.Login));
+                    return this.RedirectToAction("Login");
                 }
 
                 this.ModelState.AssignIdentityErrors(result.Errors);
@@ -163,6 +158,7 @@ namespace Zira.Presentation.Controllers
 
             return this.View(model);
         }
+
 
         [HttpGet("/forgot-password")]
         [AllowAnonymous]

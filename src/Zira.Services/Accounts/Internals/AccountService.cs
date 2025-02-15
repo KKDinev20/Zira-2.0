@@ -24,7 +24,7 @@ public class AccountService : IAccountService
     {
         try
         {
-            this.context.Users.Add(new User
+            this.context.Users.Add(new ApplicationUser
             {
                 Id = identityUserId,
             });

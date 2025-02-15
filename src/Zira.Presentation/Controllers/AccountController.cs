@@ -51,8 +51,7 @@ public class AccountController : Controller
         }
 
         var applicationUser = await this.context.Users
-            .Include(u => u.ApplicationUser)
-            .FirstOrDefaultAsync(u => u.ApplicationUserId == user.Id);
+            .FirstOrDefaultAsync(u => u.Id == user.Id);
 
         var viewModel = new CompleteProfileViewModel
         {
@@ -78,8 +77,7 @@ public class AccountController : Controller
             }
 
             var applicationUser = await this.context.Users
-                .Include(u => u.ApplicationUser)
-                .FirstOrDefaultAsync(u => u.ApplicationUserId == user.Id);
+                .FirstOrDefaultAsync(u => u.Id == user.Id);
 
             if (applicationUser != null)
             {

@@ -24,8 +24,8 @@
     <data name="EmailIsRequiredErrorMessage" xml:space="preserve">
     <value>Имейлът е задължително поле</value>
   </data>
-    <data name="EmailLabel" xml:space="preserve">
-    <value>Имейл или потребителско име</value>
+  <data name="EmailLabel" xml:space="preserve">
+    <value>Имейл </value>
   </data>
     <data name="ForgotPasswordButton" xml:space="preserve">
     <value>Забравена парола?</value>

@@ -13,5 +13,5 @@ public class Expense
     public string? Description { get; set; }
     public DateTime DateSpent { get; set; }
 
-    public User? User { get; set; }
+    public ApplicationUser? User { get; set; }
 }

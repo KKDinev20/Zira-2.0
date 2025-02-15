@@ -51,7 +51,7 @@ public class IncomesController : Controller
         }
 
         var userId = this.User.GetUserId();
-        var user = await this.context.Users.FirstOrDefaultAsync(u => u.ApplicationUserId == userId);
+        var user = await this.context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
         if (user == null)
         {
@@ -79,7 +79,7 @@ public class IncomesController : Controller
 
         var userId = this.User.GetUserId();
         var user = await this.context.Users
-            .FirstOrDefaultAsync(u => u.ApplicationUserId == userId);
+            .FirstOrDefaultAsync(u => u.Id == userId);
 
         if (user == null)
         {
@@ -114,7 +114,7 @@ public class IncomesController : Controller
         await this.SetGlobalUserInfoAsync(this.userManager, this.context);
         var income = await this.context.Incomes
             .Include(i => i.User)
-            .FirstOrDefaultAsync(i => i.IncomeId == id && i.User.ApplicationUserId == this.User.GetUserId());
+            .FirstOrDefaultAsync(i => i.IncomeId == id && i.User.Id == this.User.GetUserId());
 
         if (income == null)
         {
@@ -146,7 +146,7 @@ public class IncomesController : Controller
 
         var income = await this.context.Incomes
             .Include(i => i.User)
-            .FirstOrDefaultAsync(i => i.IncomeId == id && i.User.ApplicationUserId == this.User.GetUserId());
+            .FirstOrDefaultAsync(i => i.IncomeId == id && i.User.Id == this.User.GetUserId());
 
         if (income == null)
         {
@@ -169,7 +169,7 @@ public class IncomesController : Controller
         await this.SetGlobalUserInfoAsync(this.userManager, this.context);
         var income = await this.context.Incomes
             .Include(i => i.User)
-            .FirstOrDefaultAsync(i => i.IncomeId == id && i.User.ApplicationUserId == this.User.GetUserId());
+            .FirstOrDefaultAsync(i => i.IncomeId == id && i.User.Id == this.User.GetUserId());
 
         if (income == null)
         {
@@ -184,7 +184,7 @@ public class IncomesController : Controller
     {
         var income = await this.context.Incomes
             .Include(i => i.User)
-            .FirstOrDefaultAsync(i => i.IncomeId == id && i.User.ApplicationUserId == this.User.GetUserId());
+            .FirstOrDefaultAsync(i => i.IncomeId == id && i.User.Id == this.User.GetUserId());
 
         if (income == null)
         {

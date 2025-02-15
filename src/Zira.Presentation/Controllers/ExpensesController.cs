@@ -51,7 +51,7 @@ public class ExpensesController : Controller
         }
 
         var userId = this.User.GetUserId();
-        var user = await this.context.Users.FirstOrDefaultAsync(u => u.ApplicationUserId == userId);
+        var user = await this.context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
         if (user == null)
         {
@@ -98,7 +98,7 @@ public class ExpensesController : Controller
 
         var userId = this.User.GetUserId();
         var user = await this.context.Users
-            .FirstOrDefaultAsync(u => u.ApplicationUserId == userId);
+            .FirstOrDefaultAsync(u => u.Id == userId);
 
         if (user == null)
         {
@@ -137,7 +137,7 @@ public class ExpensesController : Controller
     {
         var expense = await this.context.Expenses
             .Include(i => i.User)
-            .FirstOrDefaultAsync(i => i.ExpenseId == id && i.User.ApplicationUserId == this.User.GetUserId());
+            .FirstOrDefaultAsync(i => i.ExpenseId == id && i.User.Id == this.User.GetUserId());
 
         if (expense == null)
         {
@@ -168,7 +168,7 @@ public class ExpensesController : Controller
 
         var expense = await this.context.Expenses
             .Include(i => i.User)
-            .FirstOrDefaultAsync(i => i.ExpenseId == id && i.User.ApplicationUserId == this.User.GetUserId());
+            .FirstOrDefaultAsync(i => i.ExpenseId == id && i.User.Id == this.User.GetUserId());
 
         if (expense == null)
         {
@@ -190,7 +190,7 @@ public class ExpensesController : Controller
     {
         var expense = await this.context.Expenses
             .Include(i => i.User)
-            .FirstOrDefaultAsync(i => i.ExpenseId == id && i.User.ApplicationUserId == this.User.GetUserId());
+            .FirstOrDefaultAsync(i => i.ExpenseId == id && i.User.Id == this.User.GetUserId());
 
         if (expense == null)
         {
@@ -205,7 +205,7 @@ public class ExpensesController : Controller
     {
         var expense = await this.context.Expenses
             .Include(i => i.User)
-            .FirstOrDefaultAsync(i => i.ExpenseId == id && i.User.ApplicationUserId == this.User.GetUserId());
+            .FirstOrDefaultAsync(i => i.ExpenseId == id && i.User.Id == this.User.GetUserId());
 
         if (expense == null)
         {
@@ -231,7 +231,7 @@ public class ExpensesController : Controller
         }
 
         var userId = this.User.GetUserId();
-        var user = await this.context.Users.FirstOrDefaultAsync(u => u.ApplicationUserId == userId);
+        var user = await this.context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
         if (user == null)
         {

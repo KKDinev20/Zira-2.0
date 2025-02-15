@@ -20,7 +20,7 @@ public class ExpenseService : IExpenseService
 
     public async Task AddExpenseAsync(Expense expenseModel, Guid userId)
     {
-        var user = await this.context.Users.FirstOrDefaultAsync(u => u.ApplicationUserId == userId);
+        var user = await this.context.Users.FirstOrDefaultAsync(u => u.Id == userId);
         if (user == null)
         {
             throw new Exception("User not found");
@@ -64,14 +64,14 @@ public class ExpenseService : IExpenseService
     {
         return await this.context.Expenses
             .Include(i => i.User)
-            .FirstOrDefaultAsync(i => i.ExpenseId == id && i.User.ApplicationUserId == userId);
+            .FirstOrDefaultAsync(i => i.ExpenseId == id && i.User.Id == userId);
     }
 
     public async Task UpdateExpenseAsync(Expense expenseModel, Guid userId)
     {
         var expense = await this.context.Expenses
             .Include(i => i.User)
-            .FirstOrDefaultAsync(i => i.ExpenseId == expenseModel.ExpenseId && i.User.ApplicationUserId == userId);
+            .FirstOrDefaultAsync(i => i.ExpenseId == expenseModel.ExpenseId && i.User.Id == userId);
 
         if (expense == null)
         {
@@ -89,7 +89,7 @@ public class ExpenseService : IExpenseService
     {
         var expense = await this.context.Expenses
             .Include(i => i.User)
-            .FirstOrDefaultAsync(i => i.ExpenseId == id && i.User.ApplicationUserId == userId);
+            .FirstOrDefaultAsync(i => i.ExpenseId == id && i.User.Id == userId);
 
         if (expense == null)
         {
