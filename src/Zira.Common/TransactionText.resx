@@ -25,7 +25,7 @@
         <value>Вид на транзакция</value>
     </data>
     <data name="SelectASource" xml:space="preserve">
-        <value>Иабиране на източник</value>
+        <value>Избиране на източник</value>
     </data>
     <data name="SelectACategory" xml:space="preserve">
         <value>Избиране на категория</value>

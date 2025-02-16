@@ -50,6 +50,11 @@ public class TransactionsController : Controller
             this.ModelState.AddModelError("Amount", "Amount must be positive.");
         }
 
+        if (model.Type == null)
+        {
+            this.ModelState.AddModelError("Type", "Please select a transaction type.");
+        }
+
         if (!this.ModelState.IsValid)
         {
             this.TempData["ErrorMessage"] = "Invalid transaction details.";
@@ -60,7 +65,7 @@ public class TransactionsController : Controller
         try
         {
             await this.transactionService.AddTransactionAsync(model, userId);
-            this.TempData["SuccessMessage"] = "Transactions successfully added!";
+            this.TempData["SuccessMessage"] = "Transaction successfully added!";
         }
         catch (InvalidOperationException ex)
         {

@@ -177,7 +177,7 @@ namespace Zira.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Иабиране на източник.
+        ///   Looks up a localized string similar to Избиране на източник.
         /// </summary>
         public static string SelectASource {
             get {
