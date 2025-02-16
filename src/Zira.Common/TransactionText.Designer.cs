@@ -78,6 +78,15 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Всички категории.
+        /// </summary>
+        public static string AllCategories {
+            get {
+                return ResourceManager.GetString("AllCategories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Сума.
         /// </summary>
         public static string Amount {
@@ -137,6 +146,15 @@ namespace Zira.Common {
         public static string EditTransaction {
             get {
                 return ResourceManager.GetString("EditTransaction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Филтриране на категории.
+        /// </summary>
+        public static string FilterByCategory {
+            get {
+                return ResourceManager.GetString("FilterByCategory", resourceCulture);
             }
         }
         

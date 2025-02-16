@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Zira.Data;
 using Zira.Data.Enums;
 using Zira.Data.Models;
@@ -69,20 +68,22 @@ public class TransactionsController : Controller
     }
 
     [HttpGet("/transactions/")]
-    public async Task<IActionResult> TransactionList(int page = 1, int pageSize = 5)
+    public async Task<IActionResult> TransactionList(int page = 1, int pageSize = 5, Categories? category = null)
     {
         await this.SetGlobalUserInfoAsync(this.userManager, this.entityContext);
         var userId = this.User.GetUserId();
 
+        var transactions = await this.transactionService.GetTransactionsAsync(userId, page, pageSize, category);
         var totalRecords = await this.transactionService.GetTotalTransactionRecordsAsync(userId);
-        var totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
-        var transactions = await this.transactionService.GetTransactionsAsync(userId, page, pageSize);
+
+        this.ViewBag.SelectedCategory = category?.ToString() ?? "All";
 
         var model = new TransactionsListViewModel
         {
             Transactions = transactions,
             CurrentPage = page,
-            TotalPages = totalPages,
+            TotalPages = (int)Math.Ceiling((double)totalRecords / pageSize),
+            SelectedCategory = category,
         };
 
         return this.View(model);
@@ -109,7 +110,6 @@ public class TransactionsController : Controller
         return this.View(transaction);
     }
 
-
     [HttpPost("/edit-transaction/{id}")]
     public async Task<IActionResult> EditTransaction(Guid id, Transaction model)
     {
@@ -130,7 +130,6 @@ public class TransactionsController : Controller
 
         return this.RedirectToAction("TransactionList");
     }
-
 
     [HttpGet("/delete-transaction/{id}")]
     public async Task<IActionResult> DeleteTransaction(Guid id)

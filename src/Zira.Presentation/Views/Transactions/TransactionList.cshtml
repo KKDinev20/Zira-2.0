@@ -55,6 +55,27 @@
         <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
     }
 
+    <form method="get" asp-action="TransactionList">
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label for="categoryFilter" class="form-label">@TransactionText.FilterByCategory</label>
+                <select id="categoryFilter" name="category" class="form-select" onchange="this.form.submit()">
+                    <option value="" selected="@(ViewBag.SelectedCategory == "All" ? "selected" : null)">
+                        @TransactionText.AllCategories
+                    </option>
+                    @foreach (var category in Enum.GetValues(typeof(Categories)).Cast<Categories>())
+                    {
+                    <option value="@category" selected="@(category.ToString() == ViewBag.SelectedCategory ? "selected" : null)">
+                        @category.GetLocalizedExpenseCategory()
+                    </option>
+                    }
+                </select>
+            </div>
+        </div>
+    </form>
+
+
+
     <div class="card">
         <h5 class="card-header">@TransactionText.Transactions</h5>
         <div class="table-responsive text-nowrap">

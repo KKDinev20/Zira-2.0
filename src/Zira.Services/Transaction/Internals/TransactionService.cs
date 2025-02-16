@@ -18,10 +18,20 @@ public class TransactionService : ITransactionService
         this.context = context;
     }
 
-    public async Task<List<Data.Models.Transaction>> GetTransactionsAsync(Guid userId, int page, int pageSize)
+    public async Task<List<Data.Models.Transaction>> GetTransactionsAsync(
+        Guid userId,
+        int page,
+        int pageSize,
+        Categories? category = null)
     {
-        return await this.context.Transactions
-            .Where(t => t.UserId == userId)
+        var query = this.context.Transactions.Where(t => t.UserId == userId);
+
+        if (category.HasValue)
+        {
+            query = query.Where(t => t.Type == TransactionType.Expense && t.Category == category.Value);
+        }
+
+        return await query
             .OrderByDescending(t => t.Date)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
