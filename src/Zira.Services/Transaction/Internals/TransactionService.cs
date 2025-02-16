@@ -45,6 +45,25 @@ public class TransactionService : ITransactionService
         transactionModel.UserId = userId;
         transactionModel.Date = transactionModel.Date == default ? DateTime.UtcNow : transactionModel.Date;
 
+        var budget = await this.context.Budgets
+            .FirstOrDefaultAsync(
+                b => b.UserId == userId
+                     && b.Category == transactionModel.Category
+                     && b.Month.Year == transactionModel.Date.Year
+                     && b.Month.Month == transactionModel.Date.Month);
+
+        if (budget != null)
+        {
+            budget.Amount -= transactionModel.Amount;
+
+            if (budget.Amount < 0)
+            {
+                throw new InvalidOperationException("Expense exceeds budget!");
+            }
+
+            this.context.Budgets.Update(budget);
+        }
+
         this.context.Transactions.Add(transactionModel);
         await this.context.SaveChangesAsync();
     }
@@ -79,5 +98,41 @@ public class TransactionService : ITransactionService
             this.context.Transactions.Remove(transaction);
             await this.context.SaveChangesAsync();
         }
+    }
+
+    public async Task QuickAddTransactionAsync(Data.Models.Transaction transaction, Guid userId)
+    {
+        var user = await this.context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+        if (user == null)
+        {
+            throw new InvalidOperationException("User not found.");
+        }
+
+        transaction.Id = Guid.NewGuid();
+        transaction.UserId = userId;
+        transaction.Date = transaction.Date == default ? DateTime.UtcNow : transaction.Date;
+        transaction.Type = TransactionType.Expense;
+
+        var budget = await this.context.Budgets
+            .FirstOrDefaultAsync(
+                b => b.UserId == userId
+                     && b.Category == transaction.Category
+                     && b.Month.Year == transaction.Date.Year
+                     && b.Month.Month == transaction.Date.Month);
+
+        if (budget != null)
+        {
+            budget.Amount -= transaction.Amount;
+
+            if (budget.Amount < 0)
+            {
+                throw new InvalidOperationException("Expense exceeds budget!");
+            }
+
+            this.context.Budgets.Update(budget);
+        }
+
+        this.context.Transactions.Add(transaction);
+        await this.context.SaveChangesAsync();
     }
 }

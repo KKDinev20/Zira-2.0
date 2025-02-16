@@ -12,4 +12,6 @@ public interface ITransactionService
     Task AddTransactionAsync(Data.Models.Transaction transactionModel, Guid userId);
     Task UpdateTransactionAsync(Data.Models.Transaction transactionModel);
     Task DeleteTransactionAsync(Guid id, Guid userId);
+    Task QuickAddTransactionAsync(Data.Models.Transaction transaction, Guid userId);
+
 }

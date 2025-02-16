@@ -10,6 +10,7 @@ using Zira.Data.Enums;
 using Zira.Data.Models;
 using Zira.Presentation.Extensions;
 using Zira.Presentation.Models;
+using Zira.Presentation.Validations;
 using Zira.Services.Identity.Constants;
 using Zira.Services.Identity.Extensions;
 using Zira.Services.Transaction.Contracts;
@@ -45,15 +46,7 @@ public class TransactionsController : Controller
     [HttpPost("/add-transaction/")]
     public async Task<IActionResult> AddTransaction(Transaction model)
     {
-        if (model.Amount <= 0)
-        {
-            this.ModelState.AddModelError("Amount", "Amount must be positive.");
-        }
-
-        if (model.Type == null)
-        {
-            this.ModelState.AddModelError("Type", "Please select a transaction type.");
-        }
+        TransactionValidator.ValidateTransaction(model, this.ModelState);
 
         if (!this.ModelState.IsValid)
         {
@@ -165,10 +158,7 @@ public class TransactionsController : Controller
     [HttpPost("/quick-add-transaction")]
     public async Task<IActionResult> QuickAddTransaction(Transaction transactionModel)
     {
-        if (transactionModel.Amount <= 0)
-        {
-            this.ModelState.AddModelError("Amount", "Amount must be positive.");
-        }
+        TransactionValidator.ValidateTransaction(transactionModel, this.ModelState);
 
         if (!this.ModelState.IsValid)
         {
@@ -177,44 +167,17 @@ public class TransactionsController : Controller
         }
 
         var userId = this.User.GetUserId();
-        var user = await this.entityContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
-        if (user == null)
+        try
         {
-            this.ModelState.AddModelError("", "User not found.");
-            this.TempData["ErrorMessage"] = "Transaction error.";
-            return this.RedirectToAction("TransactionList");
+            await this.transactionService.QuickAddTransactionAsync(transactionModel, userId);
+            this.TempData["SuccessMessage"] = "Transaction successfully added!";
+        }
+        catch (InvalidOperationException ex)
+        {
+            this.TempData["ErrorMessage"] = ex.Message;
         }
 
-        transactionModel.Id = Guid.NewGuid();
-        transactionModel.UserId = user.Id;
-        transactionModel.Date = transactionModel.Date == default ? DateTime.UtcNow : transactionModel.Date;
-        transactionModel.Type = TransactionType.Expense;
-
-        var budget = await this.entityContext.Budgets
-            .FirstOrDefaultAsync(
-                b => b.UserId == user.Id
-                     && b.Category == transactionModel.Category
-                     && b.Month.Year == transactionModel.Date.Year
-                     && b.Month.Month == transactionModel.Date.Month);
-
-        if (budget != null)
-        {
-            budget.Amount -= transactionModel.Amount;
-
-            if (budget.Amount < 0)
-            {
-                this.TempData["ErrorMessage"] = "Expense exceeds budget!";
-                return this.RedirectToAction("TransactionList");
-            }
-
-            this.entityContext.Budgets.Update(budget);
-        }
-
-        this.entityContext.Transactions.Add(transactionModel);
-        await this.entityContext.SaveChangesAsync();
-
-        this.TempData["SuccessMessage"] = "Transaction successfully added!";
         return this.RedirectToAction("TransactionList");
     }
 }
