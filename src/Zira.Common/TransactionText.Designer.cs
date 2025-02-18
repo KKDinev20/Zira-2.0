@@ -150,7 +150,7 @@ namespace Zira.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Филтриране на категории.
+        ///   Looks up a localized string similar to Филтриране на разходи.
         /// </summary>
         public static string FilterByCategory {
             get {

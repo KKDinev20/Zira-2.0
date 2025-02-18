@@ -145,4 +145,26 @@ public class TransactionService : ITransactionService
         this.context.Transactions.Add(transaction);
         await this.context.SaveChangesAsync();
     }
+
+    public async Task<decimal> GetCurrentMonthIncomeAsync(Guid userId)
+    {
+        var startDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1);
+        var endDate = startDate.AddMonths(1).AddTicks(-1);
+
+        return await this.context.Transactions
+            .Where(t => t.UserId == userId && t.Type == TransactionType.Income && t.Date >= startDate &&
+                        t.Date <= endDate)
+            .SumAsync(t => t.Amount);
+    }
+
+    public async Task<decimal> GetCurrentMonthExpensesAsync(Guid userId)
+    {
+        var startDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1);
+        var endDate = startDate.AddMonths(1).AddTicks(-1);
+
+        return await this.context.Transactions
+            .Where(t => t.UserId == userId && t.Type == TransactionType.Expense && t.Date >= startDate &&
+                        t.Date <= endDate)
+            .SumAsync(t => t.Amount);
+    }
 }

@@ -54,21 +54,15 @@
                                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                                     <i class="bx bx-dots-vertical-rounded"></i>
                                 </button>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a class="dropdown-item" href="@Url.Action("EditBudget", "Budget", new { id = budget.Id })">
-                                            <i class="bx bx-edit-alt me-1"></i> @BudgetText.Edit
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <form asp-action="DeleteBudget" method="post">
-                                            <input type="hidden" name="id" value="@budget.Id"/>
-                                            <button type="submit" class="dropdown-item text-danger">
-                                                <i class="bx bx-trash me-1"></i> @BudgetText.Delete
-                                            </button>
-                                        </form>
-                                    </li>
-                                </ul>
+
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="@Url.Action("EditBudget", "Budget", new { id = budget.Id })">
+                                        <i class="bx bx-edit-alt me-1"></i> @TransactionText.Edit
+                                    </a>
+                                    <a class="dropdown-item" href="@Url.Action("DeleteBudget", "Budget", new { id = budget.Id })">
+                                        <i class="bx bx-trash me-1"></i> @TransactionText.Delete
+                                    </a>
+                                </div>
                             </div>
                         </td>
                     </tr>
@@ -94,9 +88,9 @@
 
                     @for (int i = 1; i <= Model.TotalPages; i++)
                     {
-                    <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                        <a class="page-link" href="@Url.Action("ViewBudgets", "Budget", new { page = i })">@i</a>
-                    </li>
+                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("ViewBudgets", "Budget", new { page = i })">@i</a>
+                        </li>
                     }
 
                     <li class="page-item @(Model.CurrentPage == Model.TotalPages || Model.TotalPages == 0 ? "disabled" : "")">

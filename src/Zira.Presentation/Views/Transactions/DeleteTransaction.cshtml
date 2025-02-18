@@ -41,8 +41,8 @@
                 <form method="post">
                     <input type="hidden" name="id" value="@Model.Id"/>
 
-                    <button type="submit" class="btn btn-danger">@TransactionText.Delete</button>
-                    <a href="@Url.Action("TransactionList", "Transactions")" class="btn btn-secondary">@TransactionText.Cancel</a>
+                    <button type="submit" class="btn btn-danger"> <i class="bx bx-trash"></i> @TransactionText.Delete</button>
+                    <a href="@Url.Action("TransactionList", "Transactions")" class="btn btn-secondary">  <i class="bx bx-x-circle"></i> @TransactionText.Cancel</a>
                 </form>
             </div>
         </div>

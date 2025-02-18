@@ -79,7 +79,7 @@
         <value>Сигурни ли сте, че искате да изтриете тази транзакция?</value>
     </data>
     <data name="FilterByCategory" xml:space="preserve">
-        <value>Филтриране на категории</value>
+        <value>Филтриране на разходи</value>
     </data>
     <data name="AllCategories" xml:space="preserve">
         <value>Всички категории</value>

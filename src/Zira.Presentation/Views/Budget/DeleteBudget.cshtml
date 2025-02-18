@@ -8,7 +8,7 @@ Layout = "Shared/_BudgetLayout";
 
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="card">
-        <h5 class="card-header bg-danger text-white">@BudgetText.DeleteBudget</h5>
+        <h5 class="card-header">@BudgetText.DeleteBudget</h5>
         <div class="card-body">
             <h6 class="card-title text-danger"><i class="bx bx-error-circle"></i> @BudgetText.Warning</h6>
 
@@ -34,10 +34,9 @@ Layout = "Shared/_BudgetLayout";
                 </table>
             </div>
 
-            <!-- Fixing the form to call DeleteBudgetConfirmed -->
             <form asp-action="DeleteBudgetConfirmed" asp-controller="Budget" method="post">
                 <input type="hidden" name="id" value="@Model.Id" />
-                @Html.AntiForgeryToken() <!-- Prevent CSRF attacks -->
+                @Html.AntiForgeryToken()
 
                 <button type="submit" class="btn btn-danger">
                     <i class="bx bx-trash"></i> @BudgetText.Delete
