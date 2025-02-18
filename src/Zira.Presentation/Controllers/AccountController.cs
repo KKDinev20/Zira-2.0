@@ -61,17 +61,17 @@ public class AccountController : Controller
     [HttpPost("/profile/update")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> UpdateProfile(
-        string firstName, 
-        string lastName, 
-        string email, 
-        DateTime birthDate, 
-        IFormFile? avatarFile, 
+        string firstName,
+        string lastName,
+        string email,
+        DateTime birthDate,
+        IFormFile? avatarFile,
         bool resetAvatar = false)
     {
-        var user = await userManager.GetUserAsync(User);
+        var user = await this.userManager.GetUserAsync(this.User);
         if (user == null)
         {
-            return RedirectToAction("Login", "Authentication");
+            return this.RedirectToAction("Login", "Authentication");
         }
 
         user.FirstName = firstName;
@@ -80,12 +80,10 @@ public class AccountController : Controller
         user.NormalizedEmail = email.ToUpper();
         user.Birthday = birthDate;
 
-        // Handle Avatar Reset
         if (resetAvatar)
         {
             user.ImageUrl = "/dashboard/assets/img/avatars/default.jpg";
         }
-        // Handle Avatar Upload
         else if (avatarFile != null && avatarFile.Length > 0)
         {
             var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
@@ -93,12 +91,12 @@ public class AccountController : Controller
 
             if (!allowedExtensions.Contains(fileExtension))
             {
-                ModelState.AddModelError("AvatarFile", "Invalid file type. Allowed: JPG, PNG, GIF.");
-                return View("Profile");
+                this.ModelState.AddModelError("AvatarFile", "Invalid file type. Allowed: JPG, PNG, GIF.");
+                return this.View("Profile");
             }
 
             var uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
-            var uploadPath = Path.Combine(webHostEnvironment.WebRootPath, "dashboard/assets/img/avatars", uniqueFileName);
+            var uploadPath = Path.Combine(this.webHostEnvironment.WebRootPath, "dashboard/assets/img/avatars", uniqueFileName);
 
             using (var stream = new FileStream(uploadPath, FileMode.Create))
             {
@@ -108,17 +106,16 @@ public class AccountController : Controller
             user.ImageUrl = $"/dashboard/assets/img/avatars/{uniqueFileName}";
         }
 
-        var result = await userManager.UpdateAsync(user);
+        var result = await this.userManager.UpdateAsync(user);
         if (!result.Succeeded)
         {
-            ModelState.AddModelError("", "Failed to update profile.");
-            return View("Profile");
+            this.ModelState.AddModelError("", "Failed to update profile.");
+            return this.View("Profile");
         }
 
-        TempData["SuccessMessage"] = "Profile updated successfully!";
-        return RedirectToAction("Profile");
+        this.TempData["SuccessMessage"] = "Profile updated successfully!";
+        return this.RedirectToAction("Profile");
     }
-
 
     [HttpGet("/complete-profile")]
     public async Task<IActionResult> CompleteProfile()
@@ -200,5 +197,41 @@ public class AccountController : Controller
         }
 
         return this.View(model);
+    }
+
+    [HttpGet("/profile/change-password")]
+    public IActionResult ChangePassword(ChangePasswordViewModel model)
+    {
+        return this.View(model);
+    }
+
+    [HttpPost("/profile/change-password")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ChangePasswordAsync(ChangePasswordViewModel model)
+    {
+        if (!this.ModelState.IsValid)
+        {
+            return this.View(model);
+        }
+
+        var user = await this.userManager.GetUserAsync(this.User);
+        if (user == null)
+        {
+            return this.RedirectToAction("Login", "Authentication");
+        }
+
+        var result = await this.userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+        if (!result.Succeeded)
+        {
+            foreach (var error in result.Errors)
+            {
+                this.ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return this.View(model);
+        }
+
+        this.TempData["SuccessMessage"] = "Password changed successfully!";
+        return this.RedirectToAction("Profile");
     }
 }
