@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -45,6 +46,12 @@ public class DashboardController : Controller
         var food = await this.transactionService.GetCurrentMonthFoodExpense(user.Id);
         var utilities = await this.transactionService.GetCurrentMonthUtilitiesExpense(user.Id);
         var recentTransactions = await this.transactionService.GetLastSixRecentTransactions(user.Id);
+        var (monthlyIncomes, monthlyExpenses) = await this.transactionService.GetMonthlyIncomeAndExpensesAsync(user.Id, DateTime.UtcNow.Year);
+
+        this.ViewBag.MonthlyIncomes = monthlyIncomes;
+        this.ViewBag.MonthlyExpenses = monthlyExpenses;
+        this.ViewBag.RecentTransactions = recentTransactions;
+
 
         var viewModel = new DashboardViewModel
         {
@@ -54,7 +61,6 @@ public class DashboardController : Controller
             MonthlyUtilities = utilities,
         };
 
-        this.ViewBag.RecentTransactions = recentTransactions;
 
         return this.View(viewModel);
     }

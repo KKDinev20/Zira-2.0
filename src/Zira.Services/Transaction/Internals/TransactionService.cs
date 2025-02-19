@@ -202,4 +202,31 @@ public class TransactionService : ITransactionService
             .Take(6)
             .ToListAsync();
     }
+
+    public async Task<(List<decimal> Incomes, List<decimal> Expenses)> GetMonthlyIncomeAndExpensesAsync(
+        Guid userId,
+        int year)
+    {
+        var transactions = await this.context.Transactions
+            .Where(t => t.UserId == userId && t.Date.Year == year)
+            .ToListAsync();
+
+        var incomes = new List<decimal>(new decimal[12]);
+        var expenses = new List<decimal>(new decimal[12]);
+
+        foreach (var t in transactions)
+        {
+            int monthIndex = t.Date.Month - 1;
+            if (t.Type == TransactionType.Income)
+            {
+                incomes[monthIndex] += t.Amount;
+            }
+            else if (t.Type == TransactionType.Expense)
+            {
+                expenses[monthIndex] += t.Amount;
+            }
+        }
+
+        return (incomes, expenses);
+    }
 }

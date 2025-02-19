@@ -1,23 +1,144 @@
-﻿<div class="col-12 col-lg-8 order-2 order-md-3 order-lg-2 mb-4">
+﻿@{
+    var monthlyIncomes = ViewBag.MonthlyIncomes as List<decimal> ?? new List<decimal>(new decimal[12]);
+    var monthlyExpenses = ViewBag.MonthlyExpenses as List<decimal> ?? new List<decimal>(new decimal[12]);
+}
+
+<div class="col-12 col-lg-8 order-2 order-md-3 order-lg-2 mb-4">
     <div class="card">
         <div class="row row-bordered g-0">
             <div class="col-md-8">
                 <h5 class="card-header m-0 me-2 pb-3">Income vs Expenses</h5>
-                <div id="incomeVsExpensesChart" class="px-2"></div>
+                <div id="incomeVsExpensesChartContainer" class="px-2">
+                    <div id="incomeVsExpensesChart"></div>
+                </div>
             </div>
             <div class="col-md-4">
                 <div class="card-body">
                     <div class="text-center">
                         <div class="dropdown">
-                            <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button">
-                                Current Month
+                            <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="yearSelector">
+                                @DateTime.UtcNow.Year
                             </button>
                         </div>
                     </div>
                 </div>
                 <div id="growthChart"></div>
-                <div class="text-center fw-semibold pt-3 mb-2">Savings Growth</div>
+                <div class="text-center fw-semibold pt-3 mb-2">Financial Growth</div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const incomeVsExpensesChartEl = document.querySelector('#incomeVsExpensesChart');
+
+        const monthlyIncome = @Html.Raw(Json.Serialize(monthlyIncomes));
+        const monthlyExpenses = @Html.Raw(Json.Serialize(monthlyExpenses));
+
+        const incomeVsExpensesChartOptions = {
+            series: [
+                {
+                    name: 'Income',
+                    data: monthlyIncome
+                },
+                {
+                    name: 'Expenses',
+                    data: monthlyExpenses
+                }
+            ],
+            chart: {
+                height: 300,
+                stacked: true,
+                type: 'bar',
+                toolbar: { show: false }
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '40%', // Make bars slightly thicker
+                    borderRadius: 8, // Ensures proper rounded corners
+                    borderRadiusApplication: 'end', // Fixes the "candy" effect
+                    borderRadiusWhenStacked: 'all' // Ensures smooth edges when stacked
+                }
+            },
+            colors: [config.colors.primary, config.colors.info],
+            dataLabels: { enabled: false },
+            stroke: {
+                show: false // Disable stroke to avoid the white border effect
+            },
+            legend: {
+                show: true,
+                horizontalAlign: 'left',
+                position: 'top',
+                markers: {
+                    height: 8,
+                    width: 8,
+                    radius: 12,
+                    offsetX: -3
+                },
+                labels: {
+                    colors: config.colors.axisColor
+                },
+                itemMargin: {
+                    horizontal: 10
+                }
+            },
+            grid: {
+                borderColor: config.colors.borderColor,
+                padding: {
+                    top: 0,
+                    bottom: -8,
+                    left: 20,
+                    right: 20
+                }
+            },
+            xaxis: {
+                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                labels: {
+                    style: {
+                        fontSize: '13px',
+                        colors: config.colors.axisColor
+                    }
+                },
+                axisTicks: { show: false },
+                axisBorder: { show: false }
+            },
+            yaxis: {
+                labels: {
+                    style: {
+                        fontSize: '13px',
+                        colors: config.colors.axisColor
+                    }
+                }
+            },
+            tooltip: {
+                theme: 'dark',
+                y: {
+                    formatter: function (val) {
+                        return "$" + val.toLocaleString();
+                    }
+                }
+            },
+            states: {
+                hover: {
+                    filter: {
+                        type: 'lighten',
+                        value: 0.15
+                    }
+                },
+                active: {
+                    filter: {
+                        type: 'none'
+                    }
+                }
+            }
+        };
+
+        if (incomeVsExpensesChartEl !== null) {
+            const incomeVsExpensesChart = new ApexCharts(incomeVsExpensesChartEl, incomeVsExpensesChartOptions);
+            incomeVsExpensesChart.render();
+        }
+    });
+
+</script>

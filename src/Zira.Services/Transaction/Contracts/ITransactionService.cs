@@ -19,4 +19,5 @@ public interface ITransactionService
     Task<decimal> GetCurrentMonthFoodExpense(Guid userId);
     Task<decimal> GetCurrentMonthUtilitiesExpense(Guid userId);
     Task<List<Data.Models.Transaction>> GetLastSixRecentTransactions(Guid userId);
+    Task<(List<decimal> Incomes, List<decimal> Expenses)> GetMonthlyIncomeAndExpensesAsync(Guid userId, int year);
 }

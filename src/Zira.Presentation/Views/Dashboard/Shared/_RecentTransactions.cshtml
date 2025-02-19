@@ -21,19 +21,25 @@
                 {
                     <li class="d-flex mb-4 pb-1">
                         <div class="avatar flex-shrink-0 me-3">
-                            <img src="dashboard/assets/img/icons/unicons/wallet.png" alt="User" class="rounded"/>
+                            @if (transaction.Type == TransactionType.Expense)
+                            {
+                                <img src="dashboard/assets/img/icons/unicons/cc-warning.png" alt="User" class="rounded"/>
+                            }
+                            else
+                            {
+                                <img src="dashboard/assets/img/icons/unicons/wallet.png" alt="User" class="rounded"/>
+                            }
                         </div>
                         <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                             <div class="me-2">
                                 @if (transaction.Type == TransactionType.Expense)
                                 {
-                                    <small class="text-muted d-block mb-1">@transaction.Category</small>
+                                    <h6 class="mb-0">@transaction.Category</h6>
                                 }
                                 else
                                 {
-                                    <small class="text-muted d-block mb-1">@transaction.Source</small>
+                                    <h6 class="mb-0">@transaction.Source</h6>
                                 }
-                                <h6 class="mb-0">@transaction.Description</h6>
                             </div>
                             <div class="user-progress d-flex align-items-center gap-1">
                                 <h6 class="mb-0 @(transaction.Type == TransactionType.Expense ? "text-danger" : "text-success")">
