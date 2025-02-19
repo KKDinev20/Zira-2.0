@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Zira.Data;
+using Zira.Data.Enums;
 using Zira.Data.Models;
 using Zira.Presentation.Extensions;
 using Zira.Presentation.Models;
@@ -46,12 +49,22 @@ public class DashboardController : Controller
         var food = await this.transactionService.GetCurrentMonthFoodExpense(user.Id);
         var utilities = await this.transactionService.GetCurrentMonthUtilitiesExpense(user.Id);
         var recentTransactions = await this.transactionService.GetLastSixRecentTransactions(user.Id);
-        var (monthlyIncomes, monthlyExpenses) = await this.transactionService.GetMonthlyIncomeAndExpensesAsync(user.Id, DateTime.UtcNow.Year);
+        var (monthlyIncomes, monthlyExpenses) =
+            await this.transactionService.GetMonthlyIncomeAndExpensesAsync(user.Id, DateTime.UtcNow.Year);
+        var totalIncome = await this.context.Transactions
+            .Where(t => t.UserId == user.Id && t.Type == TransactionType.Income)
+            .SumAsync(t => t.Amount);
+
+        var totalExpenses = await this.context.Transactions
+            .Where(t => t.UserId == user.Id && t.Type == TransactionType.Expense)
+            .SumAsync(t => t.Amount);
+
+        this.ViewBag.TotalIncome = totalIncome;
+        this.ViewBag.TotalExpenses = totalExpenses;
 
         this.ViewBag.MonthlyIncomes = monthlyIncomes;
         this.ViewBag.MonthlyExpenses = monthlyExpenses;
         this.ViewBag.RecentTransactions = recentTransactions;
-
 
         var viewModel = new DashboardViewModel
         {
@@ -60,7 +73,6 @@ public class DashboardController : Controller
             MonthlyFood = food,
             MonthlyUtilities = utilities,
         };
-
 
         return this.View(viewModel);
     }

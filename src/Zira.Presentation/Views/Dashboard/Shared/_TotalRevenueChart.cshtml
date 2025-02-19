@@ -56,16 +56,16 @@
             plotOptions: {
                 bar: {
                     horizontal: false,
-                    columnWidth: '40%', // Make bars slightly thicker
-                    borderRadius: 8, // Ensures proper rounded corners
-                    borderRadiusApplication: 'end', // Fixes the "candy" effect
-                    borderRadiusWhenStacked: 'all' // Ensures smooth edges when stacked
+                    columnWidth: '40%',
+                    borderRadius: 8,
+                    borderRadiusApplication: 'end',
+                    borderRadiusWhenStacked: 'all'
                 }
             },
             colors: [config.colors.primary, config.colors.info],
             dataLabels: { enabled: false },
             stroke: {
-                show: false // Disable stroke to avoid the white border effect
+                show: false
             },
             legend: {
                 show: true,
@@ -139,6 +139,97 @@
             const incomeVsExpensesChart = new ApexCharts(incomeVsExpensesChartEl, incomeVsExpensesChartOptions);
             incomeVsExpensesChart.render();
         }
+
+        const growthChartEl = document.querySelector('#growthChart');
+
+        const totalIncome = Number(@Html.Raw(Json.Serialize(ViewBag.TotalIncome ?? 0)));
+        const totalExpenses = Number(@Html.Raw(Json.Serialize(ViewBag.TotalExpenses ?? 0)));
+
+
+        const savingsGrowth = totalIncome > 0 ? ((totalIncome - totalExpenses) / totalIncome) * 100 : 0;
+
+        const growthChartOptions = {
+            series: [savingsGrowth.toFixed(2)],
+            labels: ['Growth'],
+            chart: {
+                height: 240,
+                type: 'radialBar'
+            },
+            plotOptions: {
+                radialBar: {
+                    size: 150,
+                    offsetY: 10,
+                    startAngle: -150,
+                    endAngle: 150,
+                    hollow: {
+                        size: '55%'
+                    },
+                    track: {
+                        background:  config.colors.white,
+                        strokeWidth: '100%'
+                    },
+                    dataLabels: {
+                        name: {
+                            offsetY: 15,
+                            color:  config.colors.headingColor,
+                            fontSize: '15px',
+                            fontWeight: '600',
+                            fontFamily: 'Public Sans'
+                        },
+                        value: {
+                            offsetY: -25,
+                            color: config.colors.headingColor,
+                            fontSize: '22px',
+                            fontWeight: '500',
+                            fontFamily: 'Public Sans',
+                            formatter: function (val) {
+                                return val + "%";
+                            }
+                        }
+                    }
+                }
+            },
+            colors: [config.colors.primary],
+            fill: {
+                type: 'gradient',
+                gradient: {
+                    shade: 'dark',
+                    shadeIntensity: 0.5,
+                    gradientToColors: [config.colors.primary],
+                    inverseColors: true,
+                    opacityFrom: 1,
+                    opacityTo: 0.6,
+                    stops: [30, 70, 100]
+                }
+            },
+            stroke: {
+                dashArray: 5
+            },
+            grid: {
+                padding: {
+                    top: -35,
+                    bottom: -10
+                }
+            },
+            states: {
+                hover: {
+                    filter: {
+                        type: 'none'
+                    }
+                },
+                active: {
+                    filter: {
+                        type: 'none'
+                    }
+                }
+            }
+        };
+
+        if (growthChartEl !== null) {
+            const growthChart = new ApexCharts(growthChartEl, growthChartOptions);
+            growthChart.render();
+        }
     });
+
 
 </script>
