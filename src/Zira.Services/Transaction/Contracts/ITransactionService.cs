@@ -14,7 +14,9 @@ public interface ITransactionService
     Task UpdateTransactionAsync(Data.Models.Transaction transactionModel);
     Task DeleteTransactionAsync(Guid id, Guid userId);
     Task QuickAddTransactionAsync(Data.Models.Transaction transaction, Guid userId);
-
     Task<decimal> GetCurrentMonthIncomeAsync(Guid userId);
     Task<decimal> GetCurrentMonthExpensesAsync(Guid userId);
+    Task<decimal> GetCurrentMonthFoodExpense(Guid userId);
+    Task<decimal> GetCurrentMonthUtilitiesExpense(Guid userId);
+    Task<List<Data.Models.Transaction>> GetLastSixRecentTransactions(Guid userId);
 }

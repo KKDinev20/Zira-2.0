@@ -152,8 +152,9 @@ public class TransactionService : ITransactionService
         var endDate = startDate.AddMonths(1).AddTicks(-1);
 
         return await this.context.Transactions
-            .Where(t => t.UserId == userId && t.Type == TransactionType.Income && t.Date >= startDate &&
-                        t.Date <= endDate)
+            .Where(
+                t => t.UserId == userId && t.Type == TransactionType.Income && t.Date >= startDate &&
+                     t.Date <= endDate)
             .SumAsync(t => t.Amount);
     }
 
@@ -163,8 +164,42 @@ public class TransactionService : ITransactionService
         var endDate = startDate.AddMonths(1).AddTicks(-1);
 
         return await this.context.Transactions
-            .Where(t => t.UserId == userId && t.Type == TransactionType.Expense && t.Date >= startDate &&
-                        t.Date <= endDate)
+            .Where(
+                t => t.UserId == userId && t.Type == TransactionType.Expense && t.Date >= startDate &&
+                     t.Date <= endDate)
             .SumAsync(t => t.Amount);
+    }
+
+    public async Task<decimal> GetCurrentMonthFoodExpense(Guid userId)
+    {
+        var startDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1);
+        var endDate = startDate.AddMonths(1).AddTicks(-1);
+
+        return await this.context.Transactions
+            .Where(
+                t => t.UserId == userId && t.Type == TransactionType.Expense && t.Date >= startDate &&
+                     t.Date <= endDate && t.Category == Categories.Food)
+            .SumAsync(t => t.Amount);
+    }
+
+    public async Task<decimal> GetCurrentMonthUtilitiesExpense(Guid userId)
+    {
+        var startDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1);
+        var endDate = startDate.AddMonths(1).AddTicks(-1);
+
+        return await this.context.Transactions
+            .Where(
+                t => t.UserId == userId && t.Type == TransactionType.Expense && t.Date >= startDate &&
+                     t.Date <= endDate && t.Category == Categories.Utilities)
+            .SumAsync(t => t.Amount);
+    }
+
+    public async Task<List<Data.Models.Transaction>> GetLastSixRecentTransactions(Guid userId)
+    {
+        return await this.context.Transactions
+            .Where(t => t.UserId == userId)
+            .OrderByDescending(t => t.Date)
+            .Take(6)
+            .ToListAsync();
     }
 }

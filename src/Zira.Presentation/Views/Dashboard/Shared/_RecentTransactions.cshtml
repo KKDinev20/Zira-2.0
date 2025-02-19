@@ -1,4 +1,5 @@
-﻿<div class="card h-100">
+﻿@using Zira.Data.Enums
+<div class="card h-100">
     <div class="card-header d-flex align-items-center justify-content-between">
         <h5 class="card-title m-0 me-2">Recent Transactions</h5>
         <div class="dropdown">
@@ -14,37 +15,39 @@
     </div>
     <div class="card-body">
         <ul class="p-0 m-0">
-            <li class="d-flex mb-4 pb-1">
-                <div class="avatar flex-shrink-0 me-3">
-                    <img src="dashboard/assets/img/icons/unicons/paypal.png" alt="User" class="rounded"/>
-                </div>
-                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                    <div class="me-2">
-                        <small class="text-muted d-block mb-1">Paypal</small>
-                        <h6 class="mb-0">Send Money</h6>
-                    </div>
-                    <div class="user-progress d-flex align-items-center gap-1">
-                        <h6 class="mb-0">+82.6</h6>
-                        <span class="text-muted">USD</span>
-                    </div>
-                </div>
-            </li>
-            <li class="d-flex mb-4 pb-1">
-                <div class="avatar flex-shrink-0 me-3">
-                    <img src="dashboard/assets/img/icons/unicons/wallet.png" alt="User" class="rounded"/>
-                </div>
-                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                    <div class="me-2">
-                        <small class="text-muted d-block mb-1">Wallet</small>
-                        <h6 class="mb-0">Mac'D</h6>
-                    </div>
-                    <div class="user-progress d-flex align-items-center gap-1">
-                        <h6 class="mb-0">+270.69</h6>
-                        <span class="text-muted">USD</span>
-                    </div>
-                </div>
-            </li>
-            <!-- Add more transactions as needed -->
+            @if (ViewBag.RecentTransactions != null && ViewBag.RecentTransactions.Count > 0)
+            {
+                @foreach (var transaction in ViewBag.RecentTransactions)
+                {
+                    <li class="d-flex mb-4 pb-1">
+                        <div class="avatar flex-shrink-0 me-3">
+                            <img src="dashboard/assets/img/icons/unicons/wallet.png" alt="User" class="rounded"/>
+                        </div>
+                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                            <div class="me-2">
+                                @if (transaction.Type == TransactionType.Expense)
+                                {
+                                    <small class="text-muted d-block mb-1">@transaction.Category</small>
+                                }
+                                else
+                                {
+                                    <small class="text-muted d-block mb-1">@transaction.Source</small>
+                                }
+                                <h6 class="mb-0">@transaction.Description</h6>
+                            </div>
+                            <div class="user-progress d-flex align-items-center gap-1">
+                                <h6 class="mb-0 @(transaction.Type == TransactionType.Expense ? "text-danger" : "text-success")">
+                                    @(transaction.Type == TransactionType.Expense ? "-" : "+") @transaction.Amount.ToString("C")
+                                </h6>
+                            </div>
+                        </div>
+                    </li>
+                }
+            }
+            else
+            {
+                <li class="text-center text-muted">No recent transactions</li>
+            }
         </ul>
     </div>
 </div>

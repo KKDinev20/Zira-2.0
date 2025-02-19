@@ -213,7 +213,7 @@ namespace Zira.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Хранителни стоки.
+        ///   Looks up a localized string similar to Храна.
         /// </summary>
         public static string Groceries {
             get {

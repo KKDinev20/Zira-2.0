@@ -1,8 +1,9 @@
-namespace Zira.Presentation.Models
+namespace Zira.Presentation.Models;
+
+public class DashboardViewModel
 {
-    public class DashboardViewModel
-    {
-        public decimal MonthlyIncome { get; set; }
-        public decimal MonthlyExpenses { get; set; }
-    }
+    public decimal MonthlyIncome { get; set; }
+    public decimal MonthlyExpenses { get; set; }
+    public decimal MonthlyFood { get; set; }
+    public decimal MonthlyUtilities { get; set; }
 }

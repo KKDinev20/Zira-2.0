@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Zira.Data;
 using Zira.Data.Models;
 using Zira.Presentation.Extensions;
@@ -19,15 +18,15 @@ public class DashboardController : Controller
     private readonly EntityContext context;
     private readonly ITransactionService transactionService;
 
-
-    public DashboardController(EntityContext context, UserManager<ApplicationUser> userManager,
+    public DashboardController(
+        EntityContext context,
+        UserManager<ApplicationUser> userManager,
         ITransactionService transactionService)
     {
         this.context = context;
         this.userManager = userManager;
         this.transactionService = transactionService;
     }
-
 
     [HttpGet("")]
     [Authorize(Policies.UserPolicy)]
@@ -43,12 +42,19 @@ public class DashboardController : Controller
 
         var income = await this.transactionService.GetCurrentMonthIncomeAsync(user.Id);
         var expenses = await this.transactionService.GetCurrentMonthExpensesAsync(user.Id);
+        var food = await this.transactionService.GetCurrentMonthFoodExpense(user.Id);
+        var utilities = await this.transactionService.GetCurrentMonthUtilitiesExpense(user.Id);
+        var recentTransactions = await this.transactionService.GetLastSixRecentTransactions(user.Id);
 
         var viewModel = new DashboardViewModel
         {
             MonthlyIncome = income,
             MonthlyExpenses = expenses,
+            MonthlyFood = food,
+            MonthlyUtilities = utilities,
         };
+
+        this.ViewBag.RecentTransactions = recentTransactions;
 
         return this.View(viewModel);
     }
