@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Zira.Data;
-using Zira.Data.Enums;
 using Zira.Data.Models;
 using Zira.Presentation.Extensions;
 using Zira.Presentation.Models;
@@ -51,16 +48,7 @@ public class DashboardController : Controller
         var recentTransactions = await this.transactionService.GetLastSixRecentTransactions(user.Id);
         var (monthlyIncomes, monthlyExpenses) =
             await this.transactionService.GetMonthlyIncomeAndExpensesAsync(user.Id, DateTime.UtcNow.Year);
-        var totalIncome = await this.context.Transactions
-            .Where(t => t.UserId == user.Id && t.Type == TransactionType.Income)
-            .SumAsync(t => t.Amount);
 
-        var totalExpenses = await this.context.Transactions
-            .Where(t => t.UserId == user.Id && t.Type == TransactionType.Expense)
-            .SumAsync(t => t.Amount);
-
-        this.ViewBag.TotalIncome = totalIncome;
-        this.ViewBag.TotalExpenses = totalExpenses;
 
         this.ViewBag.MonthlyIncomes = monthlyIncomes;
         this.ViewBag.MonthlyExpenses = monthlyExpenses;
