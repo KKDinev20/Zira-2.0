@@ -45,7 +45,7 @@ public class DashboardController : Controller
         var expenses = await this.transactionService.GetCurrentMonthExpensesAsync(user.Id);
         var food = await this.transactionService.GetCurrentMonthFoodExpense(user.Id);
         var utilities = await this.transactionService.GetCurrentMonthUtilitiesExpense(user.Id);
-        var recentTransactions = await this.transactionService.GetLastSixRecentTransactions(user.Id);
+        var recentTransactions = await this.transactionService.GetRecentTransactions(user.Id);
         var (monthlyIncomes, monthlyExpenses) =
             await this.transactionService.GetMonthlyIncomeAndExpensesAsync(user.Id, DateTime.UtcNow.Year);
 

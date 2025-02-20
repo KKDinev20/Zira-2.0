@@ -194,7 +194,7 @@ public class TransactionService : ITransactionService
             .SumAsync(t => t.Amount);
     }
 
-    public async Task<List<Data.Models.Transaction>> GetLastSixRecentTransactions(Guid userId)
+    public async Task<List<Data.Models.Transaction>> GetRecentTransactions(Guid userId)
     {
         return await this.context.Transactions
             .Where(t => t.UserId == userId)
