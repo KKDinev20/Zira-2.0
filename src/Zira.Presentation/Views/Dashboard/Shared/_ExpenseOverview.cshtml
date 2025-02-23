@@ -1,19 +1,28 @@
-﻿<div class="card h-100">
+﻿@{
+    var monthlyTotals = ViewBag.MonthlyTotals as List<decimal> ?? new List<decimal> { 0, 0, 0, 0, 0, 0 };
+    var monthLabels = ViewBag.MonthLabels as List<string> ?? new List<string> { "Jan", "Feb", "Mar", "Apr", "May", "Jun" };
+    var weeklyTotal = (decimal)(ViewBag.WeeklyTotal ?? 0);
+    var selectedType = ViewBag.SelectedType as string ?? "Income";
+}
+
+<div class="card h-100">
     <div class="card-header">
         <ul class="nav nav-pills" role="tablist">
             <li class="nav-item">
-                <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-tabs-line-card-income">
+                <a class="nav-link @(selectedType == "Income" ? "active" : "")" href="@Url.Action("Index", "Dashboard", new { type = "Income" })">
                     Income
-                </button>
+                </a>
             </li>
             <li class="nav-item">
-                <button type="button" class="nav-link" role="tab">Expenses</button>
+                <a class="nav-link @(selectedType == "Expense" ? "active" : "")" href="@Url.Action("Index", "Dashboard", new { type = "Expense" })">
+                    Expenses
+                </a>
             </li>
         </ul>
     </div>
     <div class="card-body px-0">
         <div class="tab-content p-0">
-            <div class="tab-pane fade show active" id="navs-tabs-line-card-income" role="tabpanel">
+            <div class="tab-pane fade show active" role="tabpanel">
                 <div class="d-flex p-4 pt-3">
                     <div class="avatar flex-shrink-0 me-3">
                         <img src="/dashboard/assets/img/icons/unicons/wallet.png" alt="User"/>
@@ -21,25 +30,122 @@
                     <div>
                         <small class="text-muted d-block">Total Balance</small>
                         <div class="d-flex align-items-center">
-                            <h6 class="mb-0 me-1">$1,500</h6>
+                            <h6 class="mb-0 me-1">$@monthlyTotals.Sum().ToString("N0")</h6>
                             <small class="text-success fw-semibold">
-                                <i class="bx bx-chevron-up"></i>
-                                20%
+                                <i class="bx bx-chevron-up"></i> 20%
                             </small>
                         </div>
                     </div>
                 </div>
-                <div id="balanceChart"></div>
+                <div id="balancesChart"></div>
                 <div class="d-flex justify-content-center pt-4 gap-2">
                     <div class="flex-shrink-0">
-                        <div id="expensesOfWeek"></div>
+                        <div id="expensesOfTheWeek"></div>
                     </div>
                     <div>
-                        <p class="mb-n1 mt-1">Expenses This Week</p>
-                        <small class="text-muted">$39 less than last week</small>
+                        <p class="mb-n1 mt-1">
+                            @(selectedType == "Expense" ? "Expenses This Week" : "Income This Week")
+                        </p>
+                        <small class="text-muted">
+                            $@weeklyTotal.ToString("N0") this week
+                        </small>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const balanceChartEl = document.querySelector('#balancesChart');
+        const balanceChartOptions = {
+            series: [
+                {
+                    name: '@selectedType',
+                    data: @Html.Raw(Json.Serialize(monthlyTotals))
+                }
+            ],
+            chart: {
+                height: 215,
+                type: 'area',
+                toolbar: { show: false }
+            },
+            stroke: { width: 2, curve: 'smooth' },
+            dataLabels: { enabled: false },
+            markers: { size: 6 },
+            colors: [config.colors.primary],
+            fill: {
+                type: 'gradient',
+                gradient: {
+                    shade: config.colors.white,
+                    shadeIntensity: 0.6,
+                    opacityFrom: 0.5,
+                    opacityTo: 0.25,
+                    stops: [0, 95, 100]
+                }
+            },
+            grid: {
+                borderColor: config.colors.borderColor,
+                strokeDashArray: 3,
+                padding: { top: -20, bottom: -8, left: -10, right: 8 }
+            },
+            xaxis: {
+                categories: @Html.Raw(Json.Serialize(monthLabels)),
+                labels: { style: { fontSize: '13px', colors: config.colors.axisColor } },
+                axisTicks: { show: false },
+                axisBorder: { show: false }
+            },
+            yaxis: {
+                min: 0,
+                labels: { style: { fontSize: '13px', colors: config.colors.axisColor } }
+            },
+            tooltip: {
+                theme: 'dark',
+                y: { formatter: function(val) { return "$" + val.toLocaleString(); } }
+            }
+        };
+
+        if (balanceChartEl !== null) {
+            const balanceChart = new ApexCharts(balanceChartEl, balanceChartOptions);
+            balanceChart.render();
+        }
+
+        const weeklyChartEl = document.querySelector('#expensesOfTheWeek');
+        const weeklyChartConfig = {
+            series: [@weeklyTotal],
+            chart: { width: 60, height: 60, type: 'radialBar' },
+            plotOptions: {
+                radialBar: {
+                    startAngle: 0,
+                    endAngle: 360,
+                    strokeWidth: '8',
+                    hollow: { margin: 2, size: '45%' },
+                    track: { strokeWidth: '50%', background: config.colors.borderColor },
+                    dataLabels: {
+                        show: true,
+                        name: { show: false },
+                        value: {
+                            formatter: function (val) { return "$" + parseInt(val); },
+                            offsetY: 5,
+                            color: '#697a8d',
+                            fontSize: '13px'
+                        }
+                    }
+                }
+            },
+            fill: { type: 'solid', colors: config.colors.primary },
+            stroke: { lineCap: 'round' },
+            grid: { padding: { top: -10, bottom: -15, left: -10, right: -10 } },
+            states: {
+                hover: { filter: { type: 'none' } },
+                active: { filter: { type: 'none' } }
+            }
+        };
+
+        if (weeklyChartEl !== undefined && weeklyChartEl !== null) {
+            const weeklyChart = new ApexCharts(weeklyChartEl, weeklyChartConfig);
+            weeklyChart.render();
+        }
+    });
+</script>

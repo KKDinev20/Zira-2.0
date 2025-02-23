@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Zira.Data;
 using Zira.Data.Enums;
+using Zira.Data.Models;
 using Zira.Services.Transaction.Contracts;
 
 namespace Zira.Services.Transaction.Internals;
@@ -148,50 +149,36 @@ public class TransactionService : ITransactionService
 
     public async Task<decimal> GetCurrentMonthIncomeAsync(Guid userId)
     {
-        var startDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1);
-        var endDate = startDate.AddMonths(1).AddTicks(-1);
-
+        var now = DateTime.UtcNow;
         return await this.context.Transactions
             .Where(
-                t => t.UserId == userId && t.Type == TransactionType.Income && t.Date >= startDate &&
-                     t.Date <= endDate)
+                t => t.UserId == userId
+                     && t.Type == TransactionType.Income
+                     && t.Date.Year == now.Year
+                     && t.Date.Month == now.Month)
             .SumAsync(t => t.Amount);
     }
 
     public async Task<decimal> GetCurrentMonthExpensesAsync(Guid userId)
     {
-        var startDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1);
-        var endDate = startDate.AddMonths(1).AddTicks(-1);
-
+        var now = DateTime.UtcNow;
         return await this.context.Transactions
             .Where(
-                t => t.UserId == userId && t.Type == TransactionType.Expense && t.Date >= startDate &&
-                     t.Date <= endDate)
+                t => t.UserId == userId
+                     && t.Type == TransactionType.Expense
+                     && t.Date.Year == now.Year
+                     && t.Date.Month == now.Month)
             .SumAsync(t => t.Amount);
     }
 
     public async Task<decimal> GetCurrentMonthFoodExpense(Guid userId)
     {
-        var startDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1);
-        var endDate = startDate.AddMonths(1).AddTicks(-1);
-
-        return await this.context.Transactions
-            .Where(
-                t => t.UserId == userId && t.Type == TransactionType.Expense && t.Date >= startDate &&
-                     t.Date <= endDate && t.Category == Categories.Food)
-            .SumAsync(t => t.Amount);
+        return await this.GetCurrentMonthExpenseByCategoryAsync(userId, Categories.Food);
     }
 
     public async Task<decimal> GetCurrentMonthUtilitiesExpense(Guid userId)
     {
-        var startDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1);
-        var endDate = startDate.AddMonths(1).AddTicks(-1);
-
-        return await this.context.Transactions
-            .Where(
-                t => t.UserId == userId && t.Type == TransactionType.Expense && t.Date >= startDate &&
-                     t.Date <= endDate && t.Category == Categories.Utilities)
-            .SumAsync(t => t.Amount);
+        return await this.GetCurrentMonthExpenseByCategoryAsync(userId, Categories.Utilities);
     }
 
     public async Task<List<Data.Models.Transaction>> GetRecentTransactions(Guid userId)
@@ -228,5 +215,97 @@ public class TransactionService : ITransactionService
         }
 
         return (incomes, expenses);
+    }
+
+    public async Task<(List<decimal> MonthlyTotals, List<string> MonthLabels)> GetLastSixMonthsDataAsync(
+        Guid userId,
+        TransactionType type)
+    {
+        var today = DateTime.UtcNow;
+        var startMonth = new DateTime(today.Year, today.Month, 1).AddMonths(-5);
+        List<decimal> totals = new List<decimal>();
+        List<string> labels = new List<string>();
+
+        for (int i = 0; i < 6; i++)
+        {
+            var month = startMonth.AddMonths(i);
+            labels.Add(month.ToString("MMM"));
+
+            decimal total = type switch
+            {
+                TransactionType.Income => await this.context.Transactions.Where(
+                        t => t.UserId == userId && t.Type == TransactionType.Income && t.Date.Year == month.Year &&
+                             t.Date.Month == month.Month)
+                    .SumAsync(t => t.Amount),
+                TransactionType.Expense => await this.context.Transactions.Where(
+                        t => t.UserId == userId && t.Type == TransactionType.Expense && t.Date.Year == month.Year &&
+                             t.Date.Month == month.Month)
+                    .SumAsync(t => t.Amount),
+                _ => 0,
+            };
+
+            totals.Add(total);
+        }
+
+        return (totals, labels);
+    }
+
+    public async Task<decimal> GetCurrentWeekTotalAsync(Guid userId, TransactionType type)
+    {
+        var today = DateTime.UtcNow;
+        int diff = (7 + (today.DayOfWeek - DayOfWeek.Monday)) % 7;
+        var monday = today.AddDays(-1 * diff).Date;
+        var sunday = monday.AddDays(7);
+
+        decimal total = 0;
+        if (type == TransactionType.Income)
+        {
+            total = await this.context.Transactions
+                .Where(
+                    t => t.UserId == userId &&
+                         t.Type == TransactionType.Income &&
+                         t.Date >= monday &&
+                         t.Date < sunday)
+                .SumAsync(t => t.Amount);
+        }
+        else if (type == TransactionType.Expense)
+        {
+            total = await this.context.Transactions
+                .Where(
+                    t => t.UserId == userId &&
+                         t.Type == TransactionType.Expense &&
+                         t.Date >= monday &&
+                         t.Date < sunday)
+                .SumAsync(t => t.Amount);
+        }
+
+        return total;
+    }
+
+    public async Task<decimal> GetTotalIncome(ApplicationUser user)
+    {
+        return await this.context.Transactions
+            .Where(t => t.UserId == user.Id && t.Type == TransactionType.Income)
+            .SumAsync(t => t.Amount);
+    }
+
+    public async Task<decimal> GetTotalExpenses(ApplicationUser user)
+    {
+        return await this.context.Transactions
+            .Where(t => t.UserId == user.Id && t.Type == TransactionType.Expense)
+            .SumAsync(t => t.Amount);
+    }
+
+    private async Task<decimal> GetCurrentMonthExpenseByCategoryAsync(Guid userId, Categories category)
+    {
+        var now = DateTime.UtcNow;
+        return await this.context.Transactions
+            .Where(
+                t => t.UserId == userId
+                     && t.Type == TransactionType.Expense
+                     && t.Category == category
+                     && t.Date.Year == now.Year
+                     && t.Date.Month == now.Month)
+            .SumAsync(t => t.Amount);
     }
 }

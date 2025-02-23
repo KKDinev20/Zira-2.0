@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Zira.Data;
+using Zira.Data.Enums;
 using Zira.Data.Models;
 using Zira.Presentation.Extensions;
 using Zira.Presentation.Models;
@@ -31,7 +34,7 @@ public class DashboardController : Controller
 
     [HttpGet("")]
     [Authorize(Policies.UserPolicy)]
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string type = "Income")
     {
         await this.SetGlobalUserInfoAsync(this.userManager, this.context);
 
@@ -41,6 +44,34 @@ public class DashboardController : Controller
             return this.RedirectToAction("Login", "Authentication");
         }
 
+        TransactionType selectedType;
+        if (!Enum.TryParse(type, true, out selectedType))
+        {
+            selectedType = TransactionType.Income;
+        }
+
+        var (monthlyTotals, monthLabels) =
+            await this.transactionService.GetLastSixMonthsDataAsync(user.Id, selectedType);
+        this.ViewBag.MonthlyTotals = monthlyTotals;
+        this.ViewBag.MonthLabels = monthLabels;
+
+        var weeklyTotal = await this.transactionService.GetCurrentWeekTotalAsync(user.Id, selectedType);
+        this.ViewBag.WeeklyTotal = weeklyTotal;
+
+        decimal currentMonthIncome = 0;
+        decimal currentMonthExpenses = 0;
+        if (selectedType == TransactionType.Income)
+        {
+            currentMonthIncome = await this.transactionService.GetCurrentMonthIncomeAsync(user.Id);
+        }
+        else if (selectedType == TransactionType.Expense)
+        {
+            currentMonthExpenses = await this.transactionService.GetCurrentMonthExpensesAsync(user.Id);
+        }
+
+        this.ViewBag.CurrentMonthIncome = currentMonthIncome;
+        this.ViewBag.CurrentMonthExpenses = currentMonthExpenses;
+
         var income = await this.transactionService.GetCurrentMonthIncomeAsync(user.Id);
         var expenses = await this.transactionService.GetCurrentMonthExpensesAsync(user.Id);
         var food = await this.transactionService.GetCurrentMonthFoodExpense(user.Id);
@@ -48,7 +79,16 @@ public class DashboardController : Controller
         var recentTransactions = await this.transactionService.GetRecentTransactions(user.Id);
         var (monthlyIncomes, monthlyExpenses) =
             await this.transactionService.GetMonthlyIncomeAndExpensesAsync(user.Id, DateTime.UtcNow.Year);
+        var totalIncome = await this.context.Transactions
+            .Where(t => t.UserId == user.Id && t.Type == TransactionType.Income)
+            .SumAsync(t => t.Amount);
 
+        var totalExpenses = await this.context.Transactions
+            .Where(t => t.UserId == user.Id && t.Type == TransactionType.Expense)
+            .SumAsync(t => t.Amount);
+
+        this.ViewBag.TotalIncome = totalIncome;
+        this.ViewBag.TotalExpenses = totalExpenses;
 
         this.ViewBag.MonthlyIncomes = monthlyIncomes;
         this.ViewBag.MonthlyExpenses = monthlyExpenses;
@@ -61,6 +101,8 @@ public class DashboardController : Controller
             MonthlyFood = food,
             MonthlyUtilities = utilities,
         };
+
+        this.ViewBag.SelectedType = selectedType.ToString();
 
         return this.View(viewModel);
     }

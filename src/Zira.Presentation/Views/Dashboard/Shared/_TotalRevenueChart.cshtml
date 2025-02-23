@@ -6,11 +6,24 @@
 <div class="col-12 col-lg-8 order-2 order-md-3 order-lg-2 mb-4">
     <div class="card">
         <div class="row row-bordered g-0">
-            <div class="col-md-12">
+            <div class="col-md-8">
                 <h5 class="card-header m-0 me-2 pb-3">Income vs Expenses</h5>
                 <div id="incomeVsExpensesChartContainer" class="px-2">
                     <div id="incomeVsExpensesChart"></div>
                 </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card-body">
+                    <div class="text-center">
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="yearSelector">
+                                @DateTime.UtcNow.Year
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div id="growthsChart"></div>
+                <div class="text-center fw-semibold pt-3 mb-2">Financial Growth</div>
             </div>
         </div>
     </div>
@@ -43,10 +56,10 @@
             plotOptions: {
                 bar: {
                     horizontal: false,
-                    columnWidth: 20,
-                    barSpacing: 10,
-                    startingShape: '',
-                    endingShape: 'all'
+                    columnWidth: '40%',
+                    borderRadius: 8,
+                    borderRadiusApplication: 'end',
+                    borderRadiusWhenStacked: 'all'
                 }
             },
             colors: [config.colors.primary, config.colors.info],
@@ -127,6 +140,96 @@
             incomeVsExpensesChart.render();
         }
 
-    
+        const growthChartEl = document.querySelector('#growthsChart');
+
+        const totalIncome = Number(@Html.Raw(Json.Serialize(ViewBag.TotalIncome ?? 0)));
+        const totalExpenses = Number(@Html.Raw(Json.Serialize(ViewBag.TotalExpenses ?? 0)));
+
+
+        const savingsGrowth = totalIncome > 0 ? ((totalIncome - totalExpenses) / totalIncome) * 100 : 0;
+
+        const growthChartOptions = {
+            series: [savingsGrowth.toFixed(2)],
+            labels: ['Growth'],
+            chart: {
+                height: 240,
+                type: 'radialBar'
+            },
+            plotOptions: {
+                radialBar: {
+                    size: 150,
+                    offsetY: 10,
+                    startAngle: -150,
+                    endAngle: 150,
+                    hollow: {
+                        size: '55%'
+                    },
+                    track: {
+                        background:  config.colors.white,
+                        strokeWidth: '100%'
+                    },
+                    dataLabels: {
+                        name: {
+                            offsetY: 15,
+                            color:  config.colors.headingColor,
+                            fontSize: '15px',
+                            fontWeight: '600',
+                            fontFamily: 'Public Sans'
+                        },
+                        value: {
+                            offsetY: -25,
+                            color: config.colors.headingColor,
+                            fontSize: '22px',
+                            fontWeight: '500',
+                            fontFamily: 'Public Sans',
+                            formatter: function (val) {
+                                return val + "%";
+                            }
+                        }
+                    }
+                }
+            },
+            colors: [config.colors.primary],
+            fill: {
+                type: 'gradient',
+                gradient: {
+                    shade: 'dark',
+                    shadeIntensity: 0.5,
+                    gradientToColors: [config.colors.primary],
+                    inverseColors: true,
+                    opacityFrom: 1,
+                    opacityTo: 0.6,
+                    stops: [30, 70, 100]
+                }
+            },
+            stroke: {
+                dashArray: 5
+            },
+            grid: {
+                padding: {
+                    top: -35,
+                    bottom: -10
+                }
+            },
+            states: {
+                hover: {
+                    filter: {
+                        type: 'none'
+                    }
+                },
+                active: {
+                    filter: {
+                        type: 'none'
+                    }
+                }
+            }
+        };
+
+        if (growthChartEl !== null) {
+            const growthChart = new ApexCharts(growthChartEl, growthChartOptions);
+            growthChart.render();
+        }
     });
+
+
 </script>
