@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Zira.Data.Enums;
 using Zira.Data.Models;
+using Zira.Services.Transaction.Models;
 
 namespace Zira.Services.Transaction.Contracts;
 
@@ -39,6 +40,8 @@ public interface ITransactionService
     Task<(List<decimal> MonthlyTotals, List<string> MonthLabels)> GetLastSixMonthsDataAsync(Guid userId, TransactionType type);
 
     Task<decimal> GetCurrentWeekTotalAsync(Guid userId, TransactionType type);
+
+    Task<List<CategoryExpenseSummary>> GetTopExpenseCategoriesAsync(Guid userId, int top = 5);
 
     Task<(List<decimal> Incomes, List<decimal> Expenses)> GetMonthlyIncomeAndExpensesAsync(Guid userId, int year);
 }

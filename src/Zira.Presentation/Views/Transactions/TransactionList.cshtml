@@ -65,15 +65,14 @@
                     </option>
                     @foreach (var category in Enum.GetValues(typeof(Categories)).Cast<Categories>())
                     {
-                    <option value="@category" selected="@(category.ToString() == ViewBag.SelectedCategory ? "selected" : null)">
-                        @category.GetLocalizedExpenseCategory()
-                    </option>
+                        <option value="@category" selected="@(category.ToString() == ViewBag.SelectedCategory ? "selected" : null)">
+                            @category.GetLocalizedExpenseCategory()
+                        </option>
                     }
                 </select>
             </div>
         </div>
     </form>
-
 
 
     <div class="card">

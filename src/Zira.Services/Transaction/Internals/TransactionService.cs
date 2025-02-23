@@ -7,6 +7,7 @@ using Zira.Data;
 using Zira.Data.Enums;
 using Zira.Data.Models;
 using Zira.Services.Transaction.Contracts;
+using Zira.Services.Transaction.Models;
 
 namespace Zira.Services.Transaction.Internals;
 
@@ -294,6 +295,48 @@ public class TransactionService : ITransactionService
         return await this.context.Transactions
             .Where(t => t.UserId == user.Id && t.Type == TransactionType.Expense)
             .SumAsync(t => t.Amount);
+    }
+
+    public async Task<List<CategoryExpenseSummary>> GetTopExpenseCategoriesAsync(Guid userId, int top = 5)
+    {
+        var summaries = await this.context.Transactions
+            .Where(t => t.UserId == userId && t.Type == TransactionType.Expense && t.Category != null)
+            .GroupBy(t => t.Category.Value)
+            .Select(
+                g => new CategoryExpenseSummary
+                {
+                    Category = g.Key,
+                    TotalAmount = g.Sum(t => t.Amount),
+                })
+            .ToListAsync();
+
+        summaries.Sort((a, b) => b.TotalAmount.CompareTo(a.TotalAmount));
+
+        if (summaries.Count <= top)
+        {
+            return summaries;
+        }
+
+        decimal kthValue = summaries[top - 1].TotalAmount;
+
+        int low = 0, high = summaries.Count - 1;
+        int split = summaries.Count;
+        while (low <= high)
+        {
+            int mid = low + (high - low) / 2;
+            if (summaries[mid].TotalAmount < kthValue)
+            {
+                split = mid;
+                high = mid - 1;
+            }
+            else
+            {
+                low = mid + 1;
+            }
+        }
+
+        var topSummaries = summaries.Take(top).ToList();
+        return topSummaries;
     }
 
     private async Task<decimal> GetCurrentMonthExpenseByCategoryAsync(Guid userId, Categories category)

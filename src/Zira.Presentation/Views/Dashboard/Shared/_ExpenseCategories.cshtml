@@ -1,103 +1,128 @@
-﻿<div class="card h-100">
+﻿@using Zira.Data.Enums
+@using Zira.Services.Transaction.Models
+@{
+    var topCategories = ViewBag.TopExpenseCategories as List<CategoryExpenseSummary> ?? new List<CategoryExpenseSummary>();
+    var labels = topCategories.Select(s => s.Category.GetLocalizedExpenseCategory()).ToList();
+    var series = topCategories.Select(s => s.TotalAmount).ToList();
+}
+<div class="card h-100">
     <div class="card-header d-flex align-items-center justify-content-between pb-0">
         <div class="card-title mb-0">
-            <h5 class="m-0 me-2">Order Statistics</h5>
-            <small class="text-muted">42.82k Total Sales</small>
-        </div>
-        <div class="dropdown">
-            <button
-                class="btn p-0"
-                type="button"
-                id="orderStatistics"
-                data-bs-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false">
-                <i class="bx bx-dots-vertical-rounded"></i>
-            </button>
-            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="orderStatistics">
-                <a class="dropdown-item" href="javascript:void(0);">Select All</a>
-                <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
-                <a class="dropdown-item" href="javascript:void(0);">Share</a>
-            </div>
+            <h5 class="m-0 me-2">Top Expense Categories</h5>
+            <small class="text-muted">Based on current spending</small>
         </div>
     </div>
     <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <div class="d-flex flex-column align-items-center gap-1">
-                <h2 class="mb-2">8,258</h2>
-                <span>Total Orders</span>
-            </div>
-            <div id="orderStatisticsChart"></div>
+        <div class="d-flex justify-content-center align-items-center mb-3">
+            <div id="topExpenseCategoriesChart"></div>
         </div>
         <ul class="p-0 m-0">
-            <li class="d-flex mb-4 pb-1">
-                <div class="avatar flex-shrink-0 me-3">
-                    <span class="avatar-initial rounded bg-label-primary">
-                        <i class="bx bx-mobile-alt">
-                        </i
-                        >
-                    </span>
-                </div>
-                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                    <div class="me-2">
-                        <h6 class="mb-0">Electronic</h6>
-                        <small class="text-muted">Mobile, Earbuds, TV</small>
+            @foreach (var summary in topCategories)
+            {
+                string iconClass = "";
+                switch (summary.Category)
+                {
+                    case Categories.Food:
+                        iconClass = "bx bx-food-menu";
+                        break;
+                    case Categories.Utilities:
+                        iconClass = "bx bx-bulb";
+                        break;
+                    case Categories.Transportation:
+                        iconClass = "bx bx-car";
+                        break;
+                    case Categories.Healthcare:
+                        iconClass = "bx bx-heart";
+                        break;
+                    case Categories.Bills:
+                        iconClass = "bx bx-receipt";
+                        break;
+
+                    // Add more cases as needed.
+                    default:
+                        iconClass = "bx bx-folder";
+                        break;
+                }
+
+                <li class="d-flex mb-4 pb-1">
+                    <div class="avatar flex-shrink-0 me-3">
+                        <span class="avatar-initial rounded bg-label-primary">
+                            <i class="@iconClass"></i>
+                        </span>
                     </div>
-                    <div class="user-progress">
-                        <small class="fw-semibold">82.5k</small>
+                    <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                        <div class="me-2">
+                            <h6 class="mb-0">@summary.Category.GetLocalizedExpenseCategory()</h6>
+                            <small class="text-muted">Spent this month</small>
+                        </div>
+                        <div class="user-progress">
+                            <small class="fw-semibold">@summary.TotalAmount.ToString("C")</small>
+                        </div>
                     </div>
-                </div>
-            </li>
-            <li class="d-flex mb-4 pb-1">
-                <div class="avatar flex-shrink-0 me-3">
-                    <span class="avatar-initial rounded bg-label-success">
-                        <i class="bx bx-closet"></i>
-                    </span>
-                </div>
-                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                    <div class="me-2">
-                        <h6 class="mb-0">Fashion</h6>
-                        <small class="text-muted">T-shirt, Jeans, Shoes</small>
-                    </div>
-                    <div class="user-progress">
-                        <small class="fw-semibold">23.8k</small>
-                    </div>
-                </div>
-            </li>
-            <li class="d-flex mb-4 pb-1">
-                <div class="avatar flex-shrink-0 me-3">
-                    <span class="avatar-initial rounded bg-label-info">
-                        <i class="bx bx-home-alt"></i>
-                    </span>
-                </div>
-                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                    <div class="me-2">
-                        <h6 class="mb-0">Decor</h6>
-                        <small class="text-muted">Fine Art, Dining</small>
-                    </div>
-                    <div class="user-progress">
-                        <small class="fw-semibold">849k</small>
-                    </div>
-                </div>
-            </li>
-            <li class="d-flex">
-                <div class="avatar flex-shrink-0 me-3">
-                    <span class="avatar-initial rounded bg-label-secondary">
-                        <i class="bx bx-football">
-                        </i
-                        >
-                    </span>
-                </div>
-                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                    <div class="me-2">
-                        <h6 class="mb-0">Sports</h6>
-                        <small class="text-muted">Football, Cricket Kit</small>
-                    </div>
-                    <div class="user-progress">
-                        <small class="fw-semibold">99</small>
-                    </div>
-                </div>
-            </li>
+                </li>
+            }
         </ul>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const chartEl = document.querySelector('#topExpenseCategoriesChart');
+        const chartOptions = {
+            chart: {
+                type: 'donut',
+                height: 240,
+                width: 240
+            },
+            series: @Html.Raw(Json.Serialize(series)),
+            labels: @Html.Raw(Json.Serialize(labels)),
+            colors: [config.colors.primary, config.colors.secondary, config.colors.info, config.colors.success, config.colors.warning],
+            stroke: {
+                width: 5,
+                colors: [config.colors.white]
+            },
+            dataLabels: {
+                enabled: false,
+                formatter: function (val) {
+                    return parseInt(val) + '%';
+                }
+            },
+            legend: {
+                show: false
+            },
+            grid: {
+                padding: {
+                    top: 0,
+                    bottom: 0,
+                    right: 15
+                }
+            },
+            plotOptions: {
+                pie: {
+                    donut: {
+                        size: '75%',
+                        labels: {
+                            show: true,
+                            name: {
+                                fontFamily: 'Public Sans'
+                            },
+                            total: {
+                                show: true, 
+                                label: 'Total',
+                                formatter: function (w) {
+                                    const total = w.globals.seriesTotals.reduce((a, b) => a + b, 0);
+                                    return total.toLocaleString('bg-BG', { style: 'currency',currency: 'LEV' });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        if (chartEl !== null) {
+            const expenseChart = new ApexCharts(chartEl, chartOptions);
+            expenseChart.render();
+        }
+    });
+</script>

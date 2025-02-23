@@ -1,4 +1,4 @@
-namespace Zira.Presentation.Models;
+﻿namespace Zira.Presentation.Models;
 
 public class DashboardViewModel
 {

@@ -86,7 +86,9 @@ public class DashboardController : Controller
         var totalExpenses = await this.context.Transactions
             .Where(t => t.UserId == user.Id && t.Type == TransactionType.Expense)
             .SumAsync(t => t.Amount);
+        var topCategories = await this.transactionService.GetTopExpenseCategoriesAsync(user.Id, 5);
 
+        this.ViewBag.TopExpenseCategories = topCategories;
         this.ViewBag.TotalIncome = totalIncome;
         this.ViewBag.TotalExpenses = totalExpenses;
 
