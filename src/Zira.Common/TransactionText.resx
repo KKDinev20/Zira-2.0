@@ -84,4 +84,43 @@
     <data name="AllCategories" xml:space="preserve">
         <value>Всички категории</value>
     </data>
+    <data name="Expense" xml:space="preserve">
+        <value>Разходи</value>
+    </data>
+    <data name="Income" xml:space="preserve">
+        <value>Приход</value>
+    </data>
+    <data name="IncomeVsExpenses" xml:space="preserve">
+        <value>Отношение приходи-разходи</value>
+    </data>
+    <data name="FinancialGrowth" xml:space="preserve">
+        <value>Финансов ръст</value>
+    </data>
+    <data name="Growth" xml:space="preserve">
+        <value>ръст</value>
+    </data>
+    <data name="TopExpenseCategories" xml:space="preserve">
+        <value>Най-големите разходи по категории</value>
+    </data>
+    <data name="BasedOnCurrentSpending" xml:space="preserve">
+        <value>въз основа на текущите разходи</value>
+    </data>
+    <data name="SpentThisMonth" xml:space="preserve">
+        <value>Изхарчени през този месец</value>
+    </data>
+    <data name="RecentTransactions" xml:space="preserve">
+        <value>Скорошни транзакции</value>
+    </data>
+    <data name="TotalBalance" xml:space="preserve">
+        <value>Общо салдо</value>
+    </data>
+    <data name="ExpensesThisWeek" xml:space="preserve">
+        <value>Седмични разходи</value>
+    </data>
+    <data name="IncomeThisWeek" xml:space="preserve">
+        <value>Седмични приходи</value>
+    </data>
+    <data name="thisWeek" xml:space="preserve">
+        <value>тази седмица</value>
+    </data>
 </root>

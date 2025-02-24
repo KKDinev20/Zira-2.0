@@ -7,7 +7,7 @@
     <div class="card">
         <div class="row row-bordered g-0">
             <div class="col-md-8">
-                <h5 class="card-header m-0 me-2 pb-3">Income vs Expenses</h5>
+                <h5 class="card-header m-0 me-2 pb-3">@TransactionText.IncomeVsExpenses</h5>
                 <div id="incomeVsExpensesChartContainer" class="px-2">
                     <div id="incomeVsExpensesChart"></div>
                 </div>
@@ -16,14 +16,14 @@
                 <div class="card-body">
                     <div class="text-center">
                         <div class="dropdown">
-                            <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="yearSelector">
+                            <button class="btn btn-sm btn-outline-primary" id="yearSelector">
                                 @DateTime.UtcNow.Year
                             </button>
                         </div>
                     </div>
                 </div>
                 <div id="growthsChart"></div>
-                <div class="text-center fw-semibold pt-3 mb-2">Financial Growth</div>
+                <div class="text-center fw-semibold pt-3 mb-2">@TransactionText.FinancialGrowth</div>
             </div>
         </div>
     </div>
@@ -39,11 +39,11 @@
         const incomeVsExpensesChartOptions = {
             series: [
                 {
-                    name: 'Income',
+                    name: '@TransactionText.Income',
                     data: monthlyIncome
                 },
                 {
-                    name: 'Expenses',
+                    name: '@TransactionText.Expense',
                     data: monthlyExpenses
                 }
             ],
@@ -150,7 +150,7 @@
 
         const growthChartOptions = {
             series: [savingsGrowth.toFixed(2)],
-            labels: ['Growth'],
+            labels: [''],
             chart: {
                 height: 240,
                 type: 'radialBar'

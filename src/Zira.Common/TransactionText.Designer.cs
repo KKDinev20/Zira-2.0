@@ -96,6 +96,15 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to въз основа на текущите разходи.
+        /// </summary>
+        public static string BasedOnCurrentSpending {
+            get {
+                return ResourceManager.GetString("BasedOnCurrentSpending", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Откажи.
         /// </summary>
         public static string Cancel {
@@ -150,11 +159,74 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Разходи.
+        /// </summary>
+        public static string Expense {
+            get {
+                return ResourceManager.GetString("Expense", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Седмични разходи.
+        /// </summary>
+        public static string ExpensesThisWeek {
+            get {
+                return ResourceManager.GetString("ExpensesThisWeek", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Филтриране на разходи.
         /// </summary>
         public static string FilterByCategory {
             get {
                 return ResourceManager.GetString("FilterByCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Финансов ръст.
+        /// </summary>
+        public static string FinancialGrowth {
+            get {
+                return ResourceManager.GetString("FinancialGrowth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ръст.
+        /// </summary>
+        public static string Growth {
+            get {
+                return ResourceManager.GetString("Growth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Приход.
+        /// </summary>
+        public static string Income {
+            get {
+                return ResourceManager.GetString("Income", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Седмични приходи.
+        /// </summary>
+        public static string IncomeThisWeek {
+            get {
+                return ResourceManager.GetString("IncomeThisWeek", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Отношение приходи-разходи.
+        /// </summary>
+        public static string IncomeVsExpenses {
+            get {
+                return ResourceManager.GetString("IncomeVsExpenses", resourceCulture);
             }
         }
         
@@ -173,6 +245,15 @@ namespace Zira.Common {
         public static string QuickAddExpense {
             get {
                 return ResourceManager.GetString("QuickAddExpense", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Скорошни транзакции.
+        /// </summary>
+        public static string RecentTransactions {
+            get {
+                return ResourceManager.GetString("RecentTransactions", resourceCulture);
             }
         }
         
@@ -209,6 +290,42 @@ namespace Zira.Common {
         public static string Source {
             get {
                 return ResourceManager.GetString("Source", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Изхарчени през този месец.
+        /// </summary>
+        public static string SpentThisMonth {
+            get {
+                return ResourceManager.GetString("SpentThisMonth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to тази седмица.
+        /// </summary>
+        public static string thisWeek {
+            get {
+                return ResourceManager.GetString("thisWeek", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Най-големите разходи по категории.
+        /// </summary>
+        public static string TopExpenseCategories {
+            get {
+                return ResourceManager.GetString("TopExpenseCategories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Общо салдо.
+        /// </summary>
+        public static string TotalBalance {
+            get {
+                return ResourceManager.GetString("TotalBalance", resourceCulture);
             }
         }
         

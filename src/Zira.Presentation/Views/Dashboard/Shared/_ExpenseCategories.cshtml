@@ -8,8 +8,8 @@
 <div class="card h-100">
     <div class="card-header d-flex align-items-center justify-content-between pb-0">
         <div class="card-title mb-0">
-            <h5 class="m-0 me-2">Top Expense Categories</h5>
-            <small class="text-muted">Based on current spending</small>
+            <h5 class="m-0 me-2">@TransactionText.TopExpenseCategories</h5>
+            <small class="text-muted">@TransactionText.BasedOnCurrentSpending</small>
         </div>
     </div>
     <div class="card-body">
@@ -37,8 +37,6 @@
                     case Categories.Bills:
                         iconClass = "bx bx-receipt";
                         break;
-
-                    // Add more cases as needed.
                     default:
                         iconClass = "bx bx-folder";
                         break;
@@ -53,7 +51,7 @@
                     <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                         <div class="me-2">
                             <h6 class="mb-0">@summary.Category.GetLocalizedExpenseCategory()</h6>
-                            <small class="text-muted">Spent this month</small>
+                            <small class="text-muted">@TransactionText.SpentThisMonth</small>
                         </div>
                         <div class="user-progress">
                             <small class="fw-semibold">@summary.TotalAmount.ToString("C")</small>

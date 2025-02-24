@@ -10,12 +10,12 @@
         <ul class="nav nav-pills" role="tablist">
             <li class="nav-item">
                 <a class="nav-link @(selectedType == "Income" ? "active" : "")" href="@Url.Action("Index", "Dashboard", new { type = "Income" })">
-                    Income
+                    @TransactionText.Income
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link @(selectedType == "Expense" ? "active" : "")" href="@Url.Action("Index", "Dashboard", new { type = "Expense" })">
-                    Expenses
+                    @TransactionText.Expense
                 </a>
             </li>
         </ul>
@@ -28,12 +28,9 @@
                         <img src="/dashboard/assets/img/icons/unicons/wallet.png" alt="User"/>
                     </div>
                     <div>
-                        <small class="text-muted d-block">Total Balance</small>
+                        <small class="text-muted d-block">@TransactionText.TotalBalance</small>
                         <div class="d-flex align-items-center">
                             <h6 class="mb-0 me-1">$@monthlyTotals.Sum().ToString("N0")</h6>
-                            <small class="text-success fw-semibold">
-                                <i class="bx bx-chevron-up"></i> 20%
-                            </small>
                         </div>
                     </div>
                 </div>
@@ -44,10 +41,10 @@
                     </div>
                     <div>
                         <p class="mb-n1 mt-1">
-                            @(selectedType == "Expense" ? "Expenses This Week" : "Income This Week")
+                            @(selectedType == "Expense" ? $"{@TransactionText.ExpensesThisWeek}" : $"{@TransactionText.IncomeThisWeek}")
                         </p>
                         <small class="text-muted">
-                            $@weeklyTotal.ToString("N0") this week
+                            $@weeklyTotal.ToString("N0") @TransactionText.thisWeek
                         </small>
                     </div>
                 </div>
