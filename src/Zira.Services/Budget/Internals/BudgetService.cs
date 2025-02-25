@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Zira.Data;
-using Zira.Data.Models;
 using Zira.Services.Budget.Contracts;
 
 namespace Zira.Services
@@ -88,11 +87,6 @@ namespace Zira.Services
         public async Task<int> GetTotalBudgetsAsync(Guid userId)
         {
             return await this.context.Budgets.CountAsync(b => b.UserId == userId);
-        }
-
-        public bool IsWarningThresholdExceeded(Data.Models.Budget budget, decimal totalSpent)
-        {
-            return totalSpent >= budget.WarningThreshold;
         }
     }
 }

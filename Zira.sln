@@ -16,6 +16,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zira.Services", "src\Zira.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zira.Presentation", "src\Zira.Presentation\Zira.Presentation.csproj", "{F7932E29-69BE-4B3D-A351-7DB7D318A99D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zira.Services.Tests", "test\Zira.Services.Tests\Zira.Services.Tests.csproj", "{0DC6EF0C-F458-4B51-8489-E4DD4EA9201C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,5 +40,9 @@ Global
 		{F7932E29-69BE-4B3D-A351-7DB7D318A99D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7932E29-69BE-4B3D-A351-7DB7D318A99D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7932E29-69BE-4B3D-A351-7DB7D318A99D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DC6EF0C-F458-4B51-8489-E4DD4EA9201C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DC6EF0C-F458-4B51-8489-E4DD4EA9201C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DC6EF0C-F458-4B51-8489-E4DD4EA9201C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DC6EF0C-F458-4B51-8489-E4DD4EA9201C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

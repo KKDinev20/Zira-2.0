@@ -52,25 +52,20 @@ public class DashboardController : Controller
 
         var (monthlyTotals, monthLabels) =
             await this.transactionService.GetLastSixMonthsDataAsync(user.Id, selectedType);
-        this.ViewBag.MonthlyTotals = monthlyTotals;
-        this.ViewBag.MonthLabels = monthLabels;
 
         var weeklyTotal = await this.transactionService.GetCurrentWeekTotalAsync(user.Id, selectedType);
-        this.ViewBag.WeeklyTotal = weeklyTotal;
 
         decimal currentMonthIncome = 0;
         decimal currentMonthExpenses = 0;
-        if (selectedType == TransactionType.Income)
+        switch (selectedType)
         {
-            currentMonthIncome = await this.transactionService.GetCurrentMonthIncomeAsync(user.Id);
+            case TransactionType.Income:
+                currentMonthIncome = await this.transactionService.GetCurrentMonthIncomeAsync(user.Id);
+                break;
+            case TransactionType.Expense:
+                currentMonthExpenses = await this.transactionService.GetCurrentMonthExpensesAsync(user.Id);
+                break;
         }
-        else if (selectedType == TransactionType.Expense)
-        {
-            currentMonthExpenses = await this.transactionService.GetCurrentMonthExpensesAsync(user.Id);
-        }
-
-        this.ViewBag.CurrentMonthIncome = currentMonthIncome;
-        this.ViewBag.CurrentMonthExpenses = currentMonthExpenses;
 
         var income = await this.transactionService.GetCurrentMonthIncomeAsync(user.Id);
         var expenses = await this.transactionService.GetCurrentMonthExpensesAsync(user.Id);
@@ -82,19 +77,23 @@ public class DashboardController : Controller
         var totalIncome = await this.context.Transactions
             .Where(t => t.UserId == user.Id && t.Type == TransactionType.Income)
             .SumAsync(t => t.Amount);
-
         var totalExpenses = await this.context.Transactions
             .Where(t => t.UserId == user.Id && t.Type == TransactionType.Expense)
             .SumAsync(t => t.Amount);
         var topCategories = await this.transactionService.GetTopExpenseCategoriesAsync(user.Id, 5);
 
+        this.ViewBag.WeeklyTotal = weeklyTotal;
+        this.ViewBag.MonthlyTotals = monthlyTotals;
+        this.ViewBag.MonthLabels = monthLabels;
+        this.ViewBag.CurrentMonthIncome = currentMonthIncome;
+        this.ViewBag.CurrentMonthExpenses = currentMonthExpenses;
         this.ViewBag.TopExpenseCategories = topCategories;
         this.ViewBag.TotalIncome = totalIncome;
         this.ViewBag.TotalExpenses = totalExpenses;
-
         this.ViewBag.MonthlyIncomes = monthlyIncomes;
         this.ViewBag.MonthlyExpenses = monthlyExpenses;
         this.ViewBag.RecentTransactions = recentTransactions;
+        this.ViewBag.SelectedType = selectedType.ToString();
 
         var viewModel = new DashboardViewModel
         {
@@ -103,8 +102,6 @@ public class DashboardController : Controller
             MonthlyFood = food,
             MonthlyUtilities = utilities,
         };
-
-        this.ViewBag.SelectedType = selectedType.ToString();
 
         return this.View(viewModel);
     }

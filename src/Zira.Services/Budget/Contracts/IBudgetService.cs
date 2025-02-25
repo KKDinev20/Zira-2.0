@@ -12,6 +12,5 @@ namespace Zira.Services.Budget.Contracts
         Task<Data.Models.Budget?> GetBudgetByIdAsync(Guid budgetId, Guid userId);
         Task<List<Data.Models.Budget>> GetUserBudgetsAsync(Guid userId, int page, int pageSize);
         Task<int> GetTotalBudgetsAsync(Guid userId);
-        bool IsWarningThresholdExceeded(Data.Models.Budget budget, decimal totalSpent);
     }
 }
