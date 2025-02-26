@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Zira.Data;
 using Zira.Services.Budget.Contracts;
 
-namespace Zira.Services
+namespace Zira.Services.Budget.Internals
 {
     public class BudgetService : IBudgetService
     {

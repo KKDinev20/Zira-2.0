@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Zira.Services.Budget.Contracts;
+using Zira.Services.Budget.Internals;
 
 namespace Zira.Services.Budget;
 
