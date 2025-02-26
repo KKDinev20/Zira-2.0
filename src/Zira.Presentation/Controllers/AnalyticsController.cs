@@ -25,7 +25,6 @@ public class AnalyticsController : Controller
         this.context = context;
     }
 
-    [Authorize(Policies.UserPolicy)]
     [HttpGet("/financial-summary")]
     public async Task<IActionResult> FinancialSummary()
     {

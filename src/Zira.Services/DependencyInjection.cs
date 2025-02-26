@@ -5,6 +5,7 @@ using Zira.Services.Analytics;
 using Zira.Services.Budget;
 using Zira.Services.Common;
 using Zira.Services.Identity;
+using Zira.Services.SavingsGoal;
 using Zira.Services.Transaction;
 
 namespace Zira.Services;
@@ -21,6 +22,7 @@ public static class DependencyInjection
         services.AddTransactionService();
         services.AddBudgetServices();
         services.AddAnalyticsService();
+        services.AddSavingsGoalServices();
 
         return services;
     }

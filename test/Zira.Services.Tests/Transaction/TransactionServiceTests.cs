@@ -1,0 +1,12 @@
+﻿using System.Threading.Tasks;
+
+namespace Zira.Services.Tests.Transaction;
+
+public class TransactionServiceTests
+{
+    [Fact]
+    public async Task GetTotalExpenses_OnValidUser_ShouldReturnExpenses()
+    {
+        
+    }
+}
