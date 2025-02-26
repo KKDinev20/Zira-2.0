@@ -5,33 +5,63 @@
     ViewData["Title"] = "Financial Overview";
 }
 
-<div class="container">
-    <h2>Financial Overview</h2>
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4">
+        <i class="bx bx-pie-chart-alt"></i> Financial Overview
+    </h4>
 
-    <h3>Top Expenses by Category</h3>
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th>Category</th>
-            <th>Amount</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var expense in Model.TopExpenses)
-        {
-            <tr>
-                <td>@expense.Category</td>
-                <td>@expense.TotalAmount.ToString("C")</td>
-            </tr>
-        }
-        </tbody>
-    </table>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <h5 class="card-header">
+                    <i class="bx bx-bar-chart-alt"></i> Top Expenses by Category
+                </h5>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Amount</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var expense in Model.TopExpenses)
+                        {
+                            <tr>
+                                <td>
+                                    <i class="bx bx-wallet me-2"></i>
+                                    <strong>@expense.Category</strong>
+                                </td>
+                                <td>
+                                    <span class="badge bg-danger text-white">
+                                        @expense.TotalAmount.ToString("C")
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
-    <h3>Cost Saving Tips</h3>
-    <ul>
-        @foreach (var tip in Model.CostSavingTips)
-        {
-            <li>@tip</li>
-        }
-    </ul>
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <h5 class="card-header">
+                    <i class="bx bx-bulb"></i> Cost Saving Tips
+                </h5>
+                <div class="card-body">
+                    <ul class="list-group">
+                        @foreach (var tip in Model.CostSavingTips)
+                        {
+                            <li class="list-group-item">
+                                <i class="bx bx-chevron-right"></i>
+                                <strong>@tip.Key:</strong> @tip.Value
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

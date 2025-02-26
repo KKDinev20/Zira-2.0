@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Zira.Data;
 using Zira.Data.Models;
+using Zira.Presentation.Extensions;
 using Zira.Presentation.Models;
 using Zira.Services.Analytics.Contracts;
 using Zira.Services.Identity.Constants;
@@ -14,17 +16,21 @@ public class AnalyticsController : Controller
 {
     private readonly UserManager<ApplicationUser> userManager;
     private readonly IAnalyticsService expenseAnalyticsService;
+    private readonly EntityContext context;
 
-    public AnalyticsController(UserManager<ApplicationUser> userManager, IAnalyticsService expenseAnalyticsService)
+    public AnalyticsController(UserManager<ApplicationUser> userManager, IAnalyticsService expenseAnalyticsService, EntityContext context)
     {
         this.userManager = userManager;
         this.expenseAnalyticsService = expenseAnalyticsService;
+        this.context = context;
     }
 
     [Authorize(Policies.UserPolicy)]
     [HttpGet("/financial-summary")]
     public async Task<IActionResult> FinancialSummary()
     {
+        await this.SetGlobalUserInfoAsync(this.userManager, this.context);
+
         var user = await this.userManager.GetUserAsync(this.User);
         if (user == null)
         {
