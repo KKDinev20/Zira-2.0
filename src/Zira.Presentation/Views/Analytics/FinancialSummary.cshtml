@@ -2,26 +2,26 @@
 
 @{
     Layout = "Shared/_AnalyticsLayout";
-    ViewData["Title"] = "Financial Overview";
+    ViewData["Title"] = @AnalyticsText.FinancialOverview;
 }
 
 <div class="container-xxl flex-grow-1 container-p-y">
     <h4 class="fw-bold py-3 mb-4">
-        <i class="bx bx-pie-chart-alt"></i> Financial Overview
+        <i class="bx bx-pie-chart-alt"></i> @AnalyticsText.FinancialOverview
     </h4>
 
     <div class="row">
         <div class="col-lg-6">
             <div class="card shadow-sm">
                 <h5 class="card-header">
-                    <i class="bx bx-bar-chart-alt"></i> Top Expenses by Category
+                    <i class="bx bx-bar-chart-alt"></i> @AnalyticsText.TopExpenses
                 </h5>
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
                         <tr>
-                            <th>Category</th>
-                            <th>Amount</th>
+                            <th>@TransactionText.Category</th>
+                            <th>@TransactionText.Amount</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -30,7 +30,7 @@
                             <tr>
                                 <td>
                                     <i class="bx bx-wallet me-2"></i>
-                                    <strong>@expense.Category</strong>
+                                    <strong>@expense.Category.GetLocalizedExpenseCategory()</strong>
                                 </td>
                                 <td>
                                     <span class="badge bg-danger text-white">
@@ -48,20 +48,74 @@
         <div class="col-lg-6">
             <div class="card shadow-sm">
                 <h5 class="card-header">
-                    <i class="bx bx-bulb"></i> Cost Saving Tips
+                    <i class="bx bx-bulb"></i>@AnalyticsText.CostSavingTips 
                 </h5>
                 <div class="card-body">
-                    <ul class="list-group">
-                        @foreach (var tip in Model.CostSavingTips)
+                    <div class="accordion" id="tipsAccordion">
+                        @foreach (var category in Model.TopExpenses)
                         {
-                            <li class="list-group-item">
-                                <i class="bx bx-chevron-right"></i>
-                                <strong>@tip.Key:</strong> @tip.Value
-                            </li>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="heading-@category.Category">
+                                    <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse"
+                                            data-bs-target="#collapse-@category.Category"
+                                            aria-expanded="false"
+                                            aria-controls="collapse-@category.Category">
+                                        <i class="bx bx-category me-1"></i>
+                                        <strong>@category.Category.GetLocalizedExpenseCategory()</strong>
+                                    </button>
+                                </h2>
+                                <div id="collapse-@category.Category"
+                                     class="accordion-collapse collapse"
+                                     aria-labelledby="heading-@category.Category"
+                                     data-bs-parent="#tipsAccordion">
+                                    <div class="accordion-body">
+                                        <ul class="list-group">
+                                            @if (Model.CostSavingTips.ContainsKey(category.Category))
+                                            {
+                                                foreach (var tip in Model.CostSavingTips[category.Category])
+                                                {
+                                                    <li class="list-group-item text-muted">
+                                                        <i class="bx bx-chevron-right me-1"></i> @tip
+                                                    </li>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <li class="list-group-item text-muted">
+                                                    <i class="bx bx-info-circle me-1"></i> @AnalyticsText.NoTips
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
                         }
-                    </ul>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const accordion = document.getElementById('tipsAccordion');
+                
+                accordion.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('accordion-button')) {
+                        const button = e.target;
+                        const content = document.querySelector(button.getAttribute('data-bs-target'));
+
+                        if (content.classList.contains('show')) {
+                            content.classList.remove('show');
+                            button.classList.remove('active');
+                        } else {
+                            content.classList.add('show');
+                            button.classList.add('active');
+                        }
+                    }
+                });
+            });
+        </script>
+
     </div>
 </div>

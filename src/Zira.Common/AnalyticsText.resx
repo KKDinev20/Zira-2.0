@@ -1,0 +1,245 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="FinancialOverview" xml:space="preserve">
+        <value>Финансов отчет</value>
+    </data>
+    <data name="TopExpenses" xml:space="preserve">
+        <value>Най-големи разходи по категории</value>
+    </data>
+    <data name="CostSavingTips" xml:space="preserve">
+        <value>Съвети за спестяване на разходи</value>
+    </data>
+    <data name="NoTips" xml:space="preserve">
+        <value>Няма конкретни съвети.</value>
+    </data>
+    <data name="FoodTipOne" xml:space="preserve">
+        <value>Планирайте храната предварително и намалете броя на вечерите навън.</value>
+    </data>
+    <data name="FoodTipTwo" xml:space="preserve">
+        <value>Купувайте съставки в насипно състояние, когато е възможно.</value>
+    </data>
+    <data name="FoodTipThree" xml:space="preserve">
+        <value>Гответе у дома, вместо да поръчвате храна за вкъщи.</value>
+    </data>
+    <data name="FoodTipFour" xml:space="preserve">
+        <value>Пазарувайте по време на периоди на разпродажби.</value>
+    </data>
+    <data name="FoodTipFive" xml:space="preserve">
+        <value>Използвайте купони и приложения за отстъпки за хранителни стоки.</value>
+    </data>
+    <data name="BillsTipOne" xml:space="preserve">
+        <value>Преговаряйте с доставчиците на услуги или преминете към по-бюджетни планове.</value>
+    </data>
+    <data name="BillsTipTwo" xml:space="preserve">
+        <value>Обмислете възможността за обединяване на услугите.</value>
+    </data>
+    <data name="BillsTipThree" xml:space="preserve">
+        <value>Преглеждайте и коригирайте абонаментните услуги ежемесечно.</value>
+    </data>
+    <data name="BillsTipFour" xml:space="preserve">
+        <value>Потърсете промоционални цени и отстъпки.</value>
+    </data>
+    <data name="BillsTipFive" xml:space="preserve">
+        <value>Автоматизирайте плащанията по сметките, за да избегнете такси за забавяне.</value>
+    </data>
+    <data name="UtilitiesTipOne" xml:space="preserve">
+        <value>Използвайте енергийно ефективни уреди и изключвайте неизползваната електроника.</value>
+    </data>
+    <data name="UtilitiesTipTwo" xml:space="preserve">
+        <value>Инсталирайте интелигентни термостати за управление на температурата.</value>
+    </data>
+    <data name="UtilitiesTipThree" xml:space="preserve">
+        <value>Отстранявайте своевременно течовете на вода, за да предотвратите разхищението им.</value>
+    </data>
+    <data name="UtilitiesTipFour" xml:space="preserve">
+        <value>Преминете към LED осветление в цялото си пространство.</value>
+    </data>
+    <data name="UtilitiesTipFive" xml:space="preserve">
+        <value>Планирайте одити на комуналните услуги, за да установите неефективността.</value>
+    </data>
+
+    <data name="TransportationTipOne" xml:space="preserve">
+        <value>Помислете за обществен транспорт, съвместно пътуване с кола или маршрути с по-нисък разход на гориво.</value>
+    </data>
+    <data name="TransportationTipTwo" xml:space="preserve">
+        <value>Редовно поддържайте автомобила си за по-добър пробег.</value>
+    </data>
+    <data name="TransportationTipThree" xml:space="preserve">
+        <value>Проучете алтернативни методи за транспорт.</value>
+    </data>
+    <data name="TransportationTipFour" xml:space="preserve">
+        <value>Комбинирайте поръчките, за да намалите пътуванията.</value>
+    </data>
+    <data name="TransportationTipFive" xml:space="preserve">
+        <value>Проследявайте горивната ефективност и оптимизирайте навиците си на шофиране.</value>
+    </data>
+
+    <data name="HealthcareTipOne" xml:space="preserve">
+        <value>Избирайте универсални лекарства, когато има такива.</value>
+    </data>
+    <data name="HealthcareTipTwo" xml:space="preserve">
+        <value>Посещавайте прегледи за профилактика.</value>
+    </data>
+    <data name="HealthcareTipThree" xml:space="preserve">
+        <value>Следете медицинските разходи за приспадане на данъци.</value>
+    </data>
+    <data name="HealthcareTipFour" xml:space="preserve">
+        <value>Обмислете възможността за здравни спестовни сметки (HSA).</value>
+    </data>
+    <data name="HealthcareTipFive" xml:space="preserve">
+        <value>Сравнявайте цените на различните доставчици на здравни услуги.</value>
+    </data>
+    <data name="InsuranceTipOne" xml:space="preserve">
+        <value>Когато е възможно, комбинирайте застрахователни полици.</value>
+    </data>
+    <data name="InsuranceTipTwo" xml:space="preserve">
+        <value>Преглеждайте застраховките си всяка година, за да се уверите, че то е правилно защитено.</value>
+    </data>
+    <data name="InsuranceTipThree" xml:space="preserve">
+        <value>Увеличете удръжките за по-ниски премии.</value>
+    </data>
+    <data name="InsuranceTipFour" xml:space="preserve">
+        <value>Обмислете възможности за групово застраховане чрез работодателите.</value>
+    </data>
+    <data name="InsuranceTipFive" xml:space="preserve">
+        <value>Търсете оферти от няколко доставчици.</value>
+    </data>
+    <data name="EducationTipOne" xml:space="preserve">
+        <value>Използвайте безплатни онлайн образователни ресурси.</value>
+    </data>
+    <data name="EducationTipTwo" xml:space="preserve">
+        <value>Кандидатствайте за стипендии и безвъзмездни средства.</value>
+    </data>
+    <data name="EducationTipThree" xml:space="preserve">
+        <value>Обмислете употребявани учебници или цифрови версии.</value>
+    </data>
+    <data name="EducationTipFour" xml:space="preserve">
+        <value>Възползвайте се от образователните придобивки на работодателя.</value>
+    </data>
+    <data name="EducationTipFive" xml:space="preserve">
+        <value>Планирайте разходите за образование предварително.</value>
+    </data>
+    <data name="ChildcareTipOne" xml:space="preserve">
+        <value>Проучете местните програми за подпомагане на грижите за деца.</value>
+    </data>
+    <data name="ChildcareTipTwo" xml:space="preserve">
+        <value>Помислете за споделяне на разходите с други семейства.</value>
+    </data>
+    <data name="ChildcareTipThree" xml:space="preserve">
+        <value>Разгледайте предоставяните от работодателя обезщетения за грижи за деца.</value>
+    </data>
+    <data name="ChildcareTipFour" xml:space="preserve">
+        <value>Планирайте предварително летните лагери и дейности.</value>
+    </data>
+    <data name="ChildcareTipFive" xml:space="preserve">
+        <value>Проверете за данъчни облекчения, свързани с разходите за грижи за деца.</value>
+    </data>
+    <data name="EntertainmentTipOne" xml:space="preserve">
+        <value>Потърсете безплатни събития или алтернативи с абонамент.</value>
+    </data>
+    <data name="EntertainmentTipTwo" xml:space="preserve">
+        <value>Създавайте развлечения у дома.</value>
+    </data>
+    <data name="EntertainmentTipThree" xml:space="preserve">
+        <value>Споделяйте стрийминг услуги с членовете на семейството.</value>
+    </data>
+    <data name="EntertainmentTipFour" xml:space="preserve">
+        <value>Възползвайте се от обществените съоръжения.</value>
+    </data>
+    <data name="EntertainmentTipFive" xml:space="preserve">
+        <value>Планирайте дейности в часовете извън пиковия период.</value>
+    </data>
+    <data name="ClothingTipOne" xml:space="preserve">
+        <value>Купувайте сезонни дрехи по време на разпродажби.</value>
+    </data>
+    <data name="ClothingTipTwo" xml:space="preserve">
+        <value>Приложете стратегия за капсулен гардероб.</value>
+    </data>
+    <data name="ClothingTipThree" xml:space="preserve">
+        <value>Пазарувайте по време на разпродажбите в края на сезона.</value>
+    </data>
+    <data name="ClothingTipFour" xml:space="preserve">
+        <value>Обмислете размяна на дрехи с приятели.</value>
+    </data>
+    <data name="ClothingTipFive" xml:space="preserve">
+        <value>Инвестирайте в качествени артикули, които издържат по-дълго.</value>
+    </data>
+    <data name="SavingsTipOne" xml:space="preserve">
+        <value>Настройте автоматичен трансфер към спестовни сметки.</value>
+    </data>
+    <data name="SavingsTipTwo" xml:space="preserve">
+        <value>Използвайте отделни сметки за различни цели.</value>
+    </data>
+    <data name="SavingsTipThree" xml:space="preserve">
+        <value>Възползвайте се от високодоходни спестовни сметки.</value>
+    </data>
+    <data name="SavingsTipFour" xml:space="preserve">
+        <value>Помислете за депозитни сертификати (CD).</value>
+    </data>
+    <data name="SavingsTipFive" xml:space="preserve">
+        <value>Преглеждайте и коригирайте целите за спестяване на тримесечие.</value>
+    </data>
+    <data name="HouseholdSuppliesTipOne" xml:space="preserve">
+        <value>Натрупайте средства по време на големи разпродажби.</value>
+    </data>
+    <data name="HouseholdSuppliesTipTwo" xml:space="preserve">
+        <value>Купувайте консумативи в големи количества, когато е практично.</value>
+    </data>
+    <data name="HouseholdSuppliesTipThree" xml:space="preserve">
+        <value>Използвайте продукти за многократна употреба, когато е възможно.</value>
+    </data>
+    <data name="HouseholdSuppliesTipFour" xml:space="preserve">
+        <value>Поддържайте инвентар, за да избегнете ненужни покупки.</value>
+    </data>
+    <data name="HouseholdSuppliesTipFive" xml:space="preserve">
+        <value>Пазарувайте в магазините с намаления за основни стоки.</value>
+    </data>
+    <data name="TravelTipOne" xml:space="preserve">
+        <value>Резервирайте полети и хотели предварително</value>
+    </data>
+    <data name="TravelTipTwo" xml:space="preserve">
+        <value>Обмислете дати за пътуване извън сезона.</value>
+    </data>
+    <data name="TravelTipThree" xml:space="preserve">
+        <value>Използвайте стратегически кредитни карти с награди за пътуване.</value>
+    </data>
+    <data name="TravelTipFour" xml:space="preserve">
+        <value>Опаковайте ефективно, за да избегнете такси за багаж.</value>
+    </data>
+    <data name="TravelTipFive" xml:space="preserve">
+        <value>Проучете безплатните атракции в дестинациите.</value>
+    </data>
+    <data name="OtherTipOne" xml:space="preserve">
+        <value>Документирайте неочакваните разходи за бъдещо планиране.</value>
+    </data>
+    <data name="OtherTipTwo" xml:space="preserve">
+        <value>Създайте фонд за непредвидени разходи.</value>
+    </data>
+    <data name="OtherTipThree" xml:space="preserve">
+        <value>Редовно преглеждайте и категоризирайте некатегоризираните разходи.</value>
+    </data>
+    <data name="OtherTipFour" xml:space="preserve">
+        <value>Съхранявайте разписки за евентуални връщания или гаранции.</value>
+    </data>
+    <data name="OtherTipFive" xml:space="preserve">
+        <value>Обмислете въвеждането на „период на изчакване“ за импулсивни покупки.</value>
+    </data>
+</root>

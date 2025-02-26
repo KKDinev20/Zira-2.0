@@ -106,4 +106,7 @@
     <data name="MonthlyExpenses" xml:space="preserve">
     <value>Месечни разходи</value>
 </data>
+    <data name="NoRecentTransactions" xml:space="preserve">
+        <value>Няма скорошни транзакции</value>
+    </data>
 </root>

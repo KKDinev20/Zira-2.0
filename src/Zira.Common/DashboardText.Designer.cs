@@ -249,6 +249,15 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Няма скорошни транзакции.
+        /// </summary>
+        public static string NoRecentTransactions {
+            get {
+                return ResourceManager.GetString("NoRecentTransactions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Конфигурация на известията.
         /// </summary>
         public static string NotificationConfig {

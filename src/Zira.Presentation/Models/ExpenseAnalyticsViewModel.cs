@@ -6,6 +6,6 @@ namespace Zira.Presentation.Models;
 
 public class ExpenseAnalyticsViewModel
 {
-    public List<CategoryExpenseSummary> TopExpenses { get; set; }
-    public Dictionary<Categories, string> CostSavingTips { get; set; }
+    public List<CategoryExpenseSummary> TopExpenses { get; set; } = new();
+    public Dictionary<Categories, List<string>> CostSavingTips { get; set; } = new();
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Zira.Common;
 using Zira.Data;
 using Zira.Data.Enums;
 using Zira.Services.Analytics.Contracts;
@@ -29,55 +30,154 @@ namespace Zira.Services.Analytics.Internals
                 Categories.Food,
                 new[]
                 {
-                    "Plan meals ahead and reduce dining out.",
-                    "Buy ingredients in bulk when possible.",
-                    "Cook at home instead of ordering takeout.",
-                    "Shop during sales periods.",
-                    "Use coupons and discount apps for groceries.",
+                    @AnalyticsText.FoodTipOne,
+                    @AnalyticsText.FoodTipTwo,
+                    @AnalyticsText.FoodTipThree,
+                    @AnalyticsText.FoodTipFour,
+                    @AnalyticsText.FoodTipFive,
                 });
 
             this.AddTips(
                 Categories.Bills,
                 new[]
                 {
-                    "Negotiate with service providers or switch to budget-friendly plans.",
-                    "Consider bundling services together.",
-                    "Review and adjust subscription services monthly.",
-                    "Look for promotional rates and discounts.",
-                    "Automate bill payments to avoid late fees.",
+                    @AnalyticsText.BillsTipOne,
+                    @AnalyticsText.BillsTipTwo,
+                    @AnalyticsText.BillsTipThree,
+                    @AnalyticsText.BillsTipFour,
+                    @AnalyticsText.BillsTipFive,
                 });
 
             this.AddTips(
                 Categories.Utilities,
                 new[]
                 {
-                    "Use energy-efficient appliances and turn off unused electronics.",
-                    "Install smart thermostats for temperature management.",
-                    "Fix water leaks promptly to prevent waste.",
-                    "Upgrade to LED lighting throughout your space.",
-                    "Schedule utility audits to identify inefficiencies.",
+                    @AnalyticsText.UtilitiesTipOne,
+                    @AnalyticsText.UtilitiesTipTwo,
+                    @AnalyticsText.UtilitiesTipThree,
+                    @AnalyticsText.UtilitiesTipFour,
+                    @AnalyticsText.UtilitiesTipFive,
                 });
 
             this.AddTips(
                 Categories.Transportation,
                 new[]
                 {
-                    "Consider public transport, carpooling, or fuel-efficient routes.",
-                    "Maintain your vehicle regularly for better mileage.",
-                    "Research alternative transportation methods.",
-                    "Combine errands to reduce trips.",
-                    "Track fuel efficiency and optimize driving habits.",
+                    @AnalyticsText.TransportationTipOne,
+                    @AnalyticsText.TransportationTipTwo,
+                    @AnalyticsText.TransportationTipThree,
+                    @AnalyticsText.TransportationTipFour,
+                    @AnalyticsText.TransportationTipFive,
+                });
+
+            this.AddTips(
+                Categories.Healthcare,
+                new[]
+                {
+                    @AnalyticsText.HealthcareTipOne,
+                    @AnalyticsText.HealthcareTipTwo,
+                    @AnalyticsText.HealthcareTipThree,
+                    @AnalyticsText.HealthcareTipFour,
+                    @AnalyticsText.HealthcareTipFive,
+                });
+
+            this.AddTips(
+                Categories.Insurance,
+                new[]
+                {
+                    @AnalyticsText.InsuranceTipOne,
+                    @AnalyticsText.InsuranceTipTwo,
+                    @AnalyticsText.InsuranceTipThree,
+                    @AnalyticsText.InsuranceTipFour,
+                    @AnalyticsText.InsuranceTipFive,
+                });
+
+            this.AddTips(
+                Categories.Education,
+                new[]
+                {
+                    @AnalyticsText.EducationTipOne,
+                    @AnalyticsText.EducationTipTwo,
+                    @AnalyticsText.EducationTipThree,
+                    @AnalyticsText.EducationTipFour,
+                    @AnalyticsText.EducationTipFive,
+                });
+
+            this.AddTips(
+                Categories.Childcare,
+                new[]
+                {
+                    @AnalyticsText.ChildcareTipOne,
+                    @AnalyticsText.ChildcareTipTwo,
+                    @AnalyticsText.ChildcareTipThree,
+                    @AnalyticsText.ChildcareTipFour,
+                    @AnalyticsText.ChildcareTipFive,
                 });
 
             this.AddTips(
                 Categories.Entertainment,
                 new[]
                 {
-                    "Look for free events or subscription alternatives.",
-                    "Create entertainment at home.",
-                    "Share streaming services with family members.",
-                    "Take advantage of public facilities.",
-                    "Plan activities during off-peak hours.",
+                    @AnalyticsText.EntertainmentTipOne,
+                    @AnalyticsText.EntertainmentTipTwo,
+                    @AnalyticsText.EntertainmentTipThree,
+                    @AnalyticsText.EntertainmentTipFour,
+                    @AnalyticsText.EntertainmentTipFive,
+                });
+
+            this.AddTips(
+                Categories.Clothing,
+                new[]
+                {
+                    @AnalyticsText.ClothingTipOne,
+                    @AnalyticsText.ClothingTipTwo,
+                    @AnalyticsText.ClothingTipThree,
+                    @AnalyticsText.ClothingTipFour,
+                    @AnalyticsText.ClothingTipFive,
+                });
+
+            this.AddTips(
+                Categories.Savings,
+                new[]
+                {
+                    @AnalyticsText.SavingsTipOne,
+                    @AnalyticsText.SavingsTipTwo,
+                    @AnalyticsText.SavingsTipThree,
+                    @AnalyticsText.SavingsTipFour,
+                    @AnalyticsText.SavingsTipFive,
+                });
+
+            this.AddTips(
+                Categories.HouseholdSupplies,
+                new[]
+                {
+                    @AnalyticsText.HouseholdSuppliesTipOne,
+                    @AnalyticsText.HouseholdSuppliesTipTwo,
+                    @AnalyticsText.HouseholdSuppliesTipThree,
+                    @AnalyticsText.HouseholdSuppliesTipFour,
+                    @AnalyticsText.HouseholdSuppliesTipFive,
+                });
+
+            this.AddTips(
+                Categories.Travel,
+                new[]
+                {
+                    @AnalyticsText.TravelTipOne,
+                    @AnalyticsText.TravelTipTwo,
+                    @AnalyticsText.TravelTipThree,
+                    @AnalyticsText.TravelTipFour,
+                    @AnalyticsText.TravelTipFive,
+                });
+
+            this.AddTips(
+                Categories.Other,
+                new[]
+                {
+                    @AnalyticsText.OtherTipOne,
+                    @AnalyticsText.OtherTipTwo,
+                    @AnalyticsText.OtherTipThree,
+                    @AnalyticsText.OtherTipFour,
+                    @AnalyticsText.OtherTipFive,
                 });
         }
 
@@ -99,27 +199,19 @@ namespace Zira.Services.Analytics.Internals
             return expenses;
         }
 
-        public Dictionary<Categories, string> GetCostSavingTips(List<CategoryExpenseSummary> expenseCategories)
+        public Dictionary<Categories, List<string>> GetCostSavingTips(List<CategoryExpenseSummary> expenseCategories)
         {
-            var tips = new Dictionary<Categories, string>();
+            var tips = new Dictionary<Categories, List<string>>();
 
             foreach (var summary in expenseCategories)
             {
-                if (this.tips.ContainsKey(summary.Category))
+                if (this.tips.ContainsKey(summary.Category) && this.tips[summary.Category].Any())
                 {
-                    var categoryTips = this.tips[summary.Category];
-                    if (categoryTips.Any())
-                    {
-                        tips[summary.Category] = categoryTips[0];
-                    }
-                    else
-                    {
-                        tips[summary.Category] = "Monitor and budget wisely.";
-                    }
+                    tips[summary.Category] = this.tips[summary.Category];
                 }
                 else
                 {
-                    tips[summary.Category] = "Monitor and budget wisely.";
+                    tips[summary.Category] = new List<string> { "Monitor and budget wisely." };
                 }
             }
 
