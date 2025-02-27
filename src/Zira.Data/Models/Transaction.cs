@@ -7,6 +7,7 @@ public class Transaction
 {
     public Guid Id { get; set; }
     public Guid UserId { get; set; }
+    public Guid? SavingsGoalId { get; set; }
     public decimal Amount { get; set; }
     public TransactionType Type { get; set; }
     public Categories? Category { get; set; }
@@ -17,4 +18,5 @@ public class Transaction
     public RecurrenceType? Recurrence { get; set; }
 
     public ApplicationUser? User { get; set; }
+    public SavingsGoal SavingsGoal { get; set; }
 }

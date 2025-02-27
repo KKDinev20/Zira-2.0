@@ -51,34 +51,24 @@ public class TransactionService : ITransactionService
             .FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
     }
 
-    public async Task AddTransactionAsync(Data.Models.Transaction transactionModel, Guid userId)
+    public async Task AddTransactionAsync(Data.Models.Transaction transaction, Guid userId)
     {
-        transactionModel.Id = Guid.NewGuid();
-        transactionModel.UserId = userId;
-        transactionModel.Date = transactionModel.Date == default ? DateTime.UtcNow : transactionModel.Date;
+        transaction.UserId = userId;
+        context.Transactions.Add(transaction);
 
-        var budget = await this.context.Budgets
-            .FirstOrDefaultAsync(
-                b => b.UserId == userId
-                     && b.Category == transactionModel.Category
-                     && b.Month.Year == transactionModel.Date.Year
-                     && b.Month.Month == transactionModel.Date.Month);
-
-        if (budget != null)
+        if (transaction.Type == TransactionType.Income && transaction.SavingsGoalId.HasValue)
         {
-            budget.Amount -= transactionModel.Amount;
-
-            if (budget.Amount < 0)
+            var goal = await context.SavingsGoals.FindAsync(transaction.SavingsGoalId.Value);
+            if (goal != null && goal.TargetDate.HasValue && goal.TargetDate.Value.Month == transaction.Date.Month)
             {
-                throw new InvalidOperationException("Expense exceeds budget!");
+                goal.CurrentAmount += transaction.Amount;
+                context.SavingsGoals.Update(goal);
             }
-
-            this.context.Budgets.Update(budget);
         }
 
-        this.context.Transactions.Add(transactionModel);
-        await this.context.SaveChangesAsync();
+        await context.SaveChangesAsync();
     }
+
 
     public async Task UpdateTransactionAsync(Data.Models.Transaction transactionModel)
     {

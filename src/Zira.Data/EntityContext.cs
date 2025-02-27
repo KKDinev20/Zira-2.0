@@ -28,6 +28,11 @@ namespace Zira.Data
                 .WithMany(x => x.Transactions)
                 .HasForeignKey(i => i.UserId);
 
+            modelBuilder.Entity<Transaction>()
+                .HasOne(i => i.SavingsGoal)
+                .WithMany(x => x.RelatedTransactions)
+                .HasForeignKey(i => i.SavingsGoalId);
+
             modelBuilder.Entity<Budget>()
                 .HasOne(b => b.User)
                 .WithMany(x => x.Budgets)
