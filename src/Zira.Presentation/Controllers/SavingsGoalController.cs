@@ -92,6 +92,7 @@ namespace Zira.Presentation.Controllers
         [HttpGet("/edit-savings-goal/{id}")]
         public async Task<IActionResult> EditSavingsGoal(Guid id)
         {
+            await this.SetGlobalUserInfoAsync(this.userManager, this.context);
             var user = await this.userManager.GetUserAsync(this.User);
             if (user == null)
             {
@@ -154,6 +155,7 @@ namespace Zira.Presentation.Controllers
         [HttpGet("/delete-savings-goal/{id}")]
         public async Task<IActionResult> DeleteSavingsGoal(Guid id)
         {
+            await this.SetGlobalUserInfoAsync(this.userManager, this.context);
             var user = await this.userManager.GetUserAsync(this.User);
             if (user == null)
             {

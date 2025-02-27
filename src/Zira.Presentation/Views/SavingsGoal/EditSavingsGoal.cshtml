@@ -1,0 +1,38 @@
+﻿@model Zira.Presentation.Models.SavingsGoalViewModel
+
+@{
+    ViewData["Title"] = "Edit Savings Goal";
+    Layout = "Shared/_SavingsGoalLayout";
+}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4">
+        <i class="bx bx-wallet"></i> Edit Savings Goal
+    </h4>
+
+    <div class="card shadow-sm">
+        <h5 class="card-header">Edit Savings Goal</h5>
+        <div class="card-body">
+            <form method="post" asp-action="EditSavingsGoal">
+                <input type="hidden" name="Id" value="@Model.Id"/>
+                <div class="mb-3">
+                    <label for="Name" class="form-label">Goal Name</label>
+                    <input type="text" class="form-control" id="Name" name="Name" value="@Model.Name" required/>
+                </div>
+                <div class="mb-3">
+                    <label for="TargetAmount" class="form-label">Target Amount</label>
+                    <input type="number" class="form-control" id="TargetAmount" name="TargetAmount" value="@Model.TargetAmount" required min="1"/>
+                </div>
+                <div class="mb-3">
+                    <label for="CurrentAmount" class="form-label">Current Amount</label>
+                    <input type="number" class="form-control" id="CurrentAmount" name="CurrentAmount" value="@Model.CurrentAmount" min="0"/>
+                </div>
+                <div class="mb-3">
+                    <label for="TargetDate" class="form-label">Target Date</label>
+                    <input type="date" class="form-control" id="TargetDate" name="TargetDate" value="@Model.TargetDate?.ToString("yyyy-MM-dd")"/>
+                </div>
+                <button type="submit" class="btn btn-success">Save Changes</button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,28 @@
+﻿@model Zira.Data.Models.SavingsGoal
+
+@{
+    Layout = "Shared/_SavingsGoalLayout";
+    ViewData["Title"] = "Delete Savings Goal";
+}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4">
+        <i class="bx bx-wallet"></i> Delete Savings Goal
+    </h4>
+
+    <div class="card shadow-sm">
+        <h5 class="card-header">Confirm Deletion</h5>
+        <div class="card-body">
+            <p>Are you sure you want to delete the savings goal: <strong>@Model.Name</strong>?</p>
+            <p>Target Amount: @Model.TargetAmount.ToString("C")</p>
+            <p>Current Amount: @Model.CurrentAmount.ToString("C")</p>
+            <p>Target Date: @Model.TargetDate?.ToString("MMMM dd, yyyy")</p>
+
+            <form method="post" asp-action="DeleteSavingsGoalConfirmed">
+                <input type="hidden" name="Id" value="@Model.Id"/>
+                <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                <a href="@Url.Action("ViewSavingsGoals", "SavingsGoal")" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
