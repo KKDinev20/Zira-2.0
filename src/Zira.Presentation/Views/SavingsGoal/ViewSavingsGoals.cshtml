@@ -1,6 +1,6 @@
 ﻿@model Zira.Presentation.Models.SavingsGoalListViewModel
 @{
-    ViewData["Title"] = "Savings Goals";
+    ViewData["Title"] = @SavingsGoalText.SavingsGoals;
     Layout = "Shared/_SavingsGoalLayout";
 }
 
@@ -10,7 +10,7 @@
             <div class="col-xl-8">
                 <div class="card mb-4 shadow-sm">
                     <div class="card-header text-center text-dark d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Savings Goals</h5>
+                        <h5 class="mb-0">@SavingsGoalText.SavingsGoals</h5>
                         <a asp-action="CreateSavingsGoal" asp-controller="SavingsGoal" class="btn btn-success">
                             <i class="bx bx-plus"></i> Add New Goal
                         </a>
@@ -48,8 +48,8 @@
                                         <td>$@goal.TargetAmount.ToString("0.00")</td>
                                         <td>@goal.TargetDate?.ToString("MMMM dd, yyyy")</td>
                                         <td>
-                                            <a href="@Url.Action("EditSavingsGoal", "SavingsGoal", new { id = goal.Id })" class="btn btn-primary btn-sm">Edit</a>
-                                            <a href="@Url.Action("DeleteSavingsGoal", "SavingsGoal", new { id = goal.Id })" class="btn btn-danger btn-sm">Delete</a>
+                                            <a href="@Url.Action("EditSavingsGoal", "SavingsGoal", new { id = goal.Id })" class="btn btn-primary btn-sm">@SavingsGoalText.Edit</a>
+                                            <a href="@Url.Action("DeleteSavingsGoal", "SavingsGoal", new { id = goal.Id })" class="btn btn-danger btn-sm">@SavingsGoalText.Delete</a>
                                         </td>
                                     </tr>
                                 }

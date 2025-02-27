@@ -64,6 +64,14 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>AnalyticsText.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="AccountText.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>AccountText.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="SavingsGoalText.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>SavingsGoalText.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -116,6 +124,16 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>AnalyticsText.resx</DependentUpon>
+      </Compile>
+      <Compile Update="AccountText.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>AccountText.resx</DependentUpon>
+      </Compile>
+      <Compile Update="SavingsGoalText.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>SavingsGoalText.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

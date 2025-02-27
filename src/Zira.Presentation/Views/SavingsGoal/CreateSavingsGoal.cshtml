@@ -1,32 +1,32 @@
 ﻿@model Zira.Presentation.Models.SavingsGoalViewModel
 
 @{
-    ViewData["Title"] = "Create Savings Goal";
+    ViewData["Title"] = @SavingsGoalText.CreateSavingsGoal;
     Layout = "Shared/_SavingsGoalLayout";
 }
 
 <div class="container-xxl flex-grow-1 container-p-y">
     <h4 class="fw-bold py-3 mb-4">
-        <i class="bx bx-wallet"></i> Create Savings Goal
+        <i class="bx bx-wallet"></i> @SavingsGoalText.CreateSavingsGoal
     </h4>
 
     <div class="card shadow-sm">
-        <h5 class="card-header">New Savings Goal</h5>
+        <h5 class="card-header">@SavingsGoalText.NewSavingsGoal</h5>
         <div class="card-body">
             <form method="post" asp-action="CreateSavingsGoal">
                 <div class="mb-3">
-                    <label for="Name" class="form-label">Goal Name</label>
+                    <label for="Name" class="form-label">@SavingsGoalText.GoalName</label>
                     <input type="text" class="form-control" id="Name" name="Name" required/>
                 </div>
                 <div class="mb-3">
-                    <label for="TargetAmount" class="form-label">Target Amount</label>
+                    <label for="TargetAmount" class="form-label">@SavingsGoalText.TargetAmount</label>
                     <input type="number" class="form-control" id="TargetAmount" name="TargetAmount" required min="1"/>
                 </div>
                 <div class="mb-3">
-                    <label for="TargetDate" class="form-label">Target Date</label>
+                    <label for="TargetDate" class="form-label">@SavingsGoalText.TargetDate</label>
                     <input type="date" class="form-control" id="TargetDate" name="TargetDate"/>
                 </div>
-                <button type="submit" class="btn btn-success">Create Goal</button>
+                <button type="submit" class="btn btn-success">@SavingsGoalText.CreateGoal</button>
             </form>
         </div>
     </div>

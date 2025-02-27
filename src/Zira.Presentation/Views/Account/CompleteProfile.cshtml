@@ -1,45 +1,53 @@
 @model CompleteProfileViewModel
 
 @{
-    ViewData["Title"] = "Complete your profile";
+    ViewData["Title"] = @AccountText.CompleteProfile;
     Layout = "Shared/_AccountLayout";
 }
 
 <div class="d-flex justify-content-center align-items-center vh-100">
     <div class="card mb-4" style="width: 50%;">
         <div class="card-header d-flex align-items-center justify-content-between">
-            <h5 class="mb-0">Complete Your Profile</h5>
-            <small class="text-muted">Please fill in the details</small>
+            <h5 class="mb-0">@AccountText.CompleteProfile</h5>
+            <small class="text-muted">@AccountText.CompleteProfilePrompt</small>
         </div>
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+        }
         <div class="card-body">
             <form asp-action="CompleteProfile" method="post" enctype="multipart/form-data">
                 <div class="row mb-3">
-                    <label class="col-sm-3 col-form-label" for="FirstName">First Name</label>
+                    <label class="col-sm-3 col-form-label" for="FirstName">@AccountText.FirstName</label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control" id="FirstName" name="FirstName" placeholder="John" value="@Model.FirstName"/>
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label class="col-sm-3 col-form-label" for="LastName">Last Name</label>
+                    <label class="col-sm-3 col-form-label" for="LastName">@AccountText.LastName</label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control" id="LastName" name="LastName" placeholder="Doe" value="@Model.LastName"/>
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label class="col-sm-3 col-form-label" for="BirthDate">Birth Date</label>
+                    <label class="col-sm-3 col-form-label" for="BirthDate">@AccountText.BirthDate</label>
                     <div class="col-sm-9">
                         <input type="date" class="form-control" id="BirthDate" name="BirthDate" value="@Model.BirthDate.ToString("yyyy-MM-dd")"/>
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label class="col-sm-3 col-form-label" for="AvatarUrl">Avatar</label>
+                    <label class="col-sm-3 col-form-label" for="AvatarUrl">@AccountText.Avatar</label>
                     <div class="col-sm-9">
                         <input class="form-control" type="file" id="AvatarUrl" name="AvatarUrl" accept="image/*"/>
                     </div>
                 </div>
                 <div class="row justify-content-end">
                     <div class="col-sm-9">
-                        <button type="submit" class="btn btn-primary w-100">Save</button>
+                        <button type="submit" class="btn btn-primary w-100">@AccountText.Save</button>
                     </div>
                 </div>
             </form>

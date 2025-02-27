@@ -109,4 +109,13 @@
     <data name="NoRecentTransactions" xml:space="preserve">
         <value>Няма скорошни транзакции</value>
     </data>
+    <data name="Settings" xml:space="preserve">
+        <value>Настройки</value>
+    </data>
+    <data name="MyProfile" xml:space="preserve">
+        <value>Моят профил</value>
+    </data>
+    <data name="Savings" xml:space="preserve">
+        <value>Спестявания</value>
+    </data>
 </root>

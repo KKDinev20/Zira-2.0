@@ -2,7 +2,7 @@
     class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
     id="layout-navbar">
     <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
-        <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+        <a class="nav-item nav-link px-0 me-xl-4" asp-controller="Account" asp-action="Profile">
             <i class="bx bx-menu bx-sm"></i>
         </a>
     </div>
@@ -21,14 +21,14 @@
 
         <ul class="navbar-nav flex-row align-items-center ms-auto">
             <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                <a class="nav-link dropdown-toggle hide-arrow" asp-controller="Account" asp-action="Profile" data-bs-toggle="dropdown">
                     <div class="avatar">
                         <img src="@ViewBag.UserAvatar" alt class="w-px-40 h-px-40 rounded-circle" />
                     </div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li>
-                        <a class="dropdown-item" href="#">
+                        <a class="dropdown-item" asp-controller="Account" asp-action="Profile">
                             <div class="d-flex align-items-center">
                                 <div class="avatar me-3">
                                     <img src="@ViewBag.UserAvatar" alt class="w-px-40 h-px-40 rounded-circle" />
@@ -41,9 +41,9 @@
                         </a>
                     </li>
                     <li><div class="dropdown-divider"></div></li>
-                    <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile"><i class="bx bx-user me-2"></i> My Profile</a></li>
-                    <li><a class="dropdown-item" href="#"><i class="bx bx-cog me-2"></i> Settings</a></li>
-                    <li><a class="dropdown-item" asp-controller="SavingsGoal" asp-action="ViewSavingsGoals"><i class="bx bx-credit-card me-2"></i> Savings</a></li>
+                    <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile"><i class="bx bx-user me-2"></i> @DashboardText.MyProfile</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="bx bx-cog me-2"></i> @DashboardText.Settings</a></li>
+                    <li><a class="dropdown-item" asp-controller="SavingsGoal" asp-action="ViewSavingsGoals"><i class="bx bx-credit-card me-2"></i> @DashboardText.Savings</a></li>
                     <li><div class="dropdown-divider"></div></li>
                     <li>
                         <form method="post" asp-controller="Authentication" asp-action="Logout">

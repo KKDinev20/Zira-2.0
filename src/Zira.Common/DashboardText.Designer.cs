@@ -249,6 +249,15 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Моят профил.
+        /// </summary>
+        public static string MyProfile {
+            get {
+                return ResourceManager.GetString("MyProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Няма скорошни транзакции.
         /// </summary>
         public static string NoRecentTransactions {
@@ -285,11 +294,29 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Спестявания.
+        /// </summary>
+        public static string Savings {
+            get {
+                return ResourceManager.GetString("Savings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Задаване на бюджет.
         /// </summary>
         public static string SetBudget {
             get {
                 return ResourceManager.GetString("SetBudget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Настройки.
+        /// </summary>
+        public static string Settings {
+            get {
+                return ResourceManager.GetString("Settings", resourceCulture);
             }
         }
         
