@@ -12,7 +12,7 @@ using Zira.Data;
 namespace Zira.Data.Migrations
 {
     [DbContext(typeof(EntityContext))]
-    [Migration("20250215083258_Initial")]
+    [Migration("20250302093813_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -252,6 +252,9 @@ namespace Zira.Data.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<decimal>("WarningThreshold")
+                        .HasColumnType("decimal(18,2)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
@@ -288,6 +291,38 @@ namespace Zira.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Reminders");
+                });
+
+            modelBuilder.Entity("Zira.Data.Models.SavingsGoal", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("CurrentAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TargetAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("TargetDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("SavingsGoals");
                 });
 
             modelBuilder.Entity("Zira.Data.Models.Transaction", b =>
@@ -403,6 +438,17 @@ namespace Zira.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Zira.Data.Models.SavingsGoal", b =>
+                {
+                    b.HasOne("Zira.Data.Models.ApplicationUser", "User")
+                        .WithMany("SavingsGoals")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Zira.Data.Models.Transaction", b =>
                 {
                     b.HasOne("Zira.Data.Models.ApplicationUser", "User")
@@ -419,6 +465,8 @@ namespace Zira.Data.Migrations
                     b.Navigation("Budgets");
 
                     b.Navigation("Reminders");
+
+                    b.Navigation("SavingsGoals");
 
                     b.Navigation("Transactions");
                 });

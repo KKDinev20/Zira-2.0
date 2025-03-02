@@ -33,11 +33,9 @@ public interface ITransactionService
 
     Task<List<Data.Models.Transaction>> GetRecentTransactions(Guid userId);
 
-    Task<decimal> GetTotalIncome(ApplicationUser user);
-
-    Task<decimal> GetTotalExpenses(ApplicationUser user);
-
-    Task<(List<decimal> MonthlyTotals, List<string> MonthLabels)> GetLastSixMonthsDataAsync(Guid userId, TransactionType type);
+    Task<(List<decimal> MonthlyTotals, List<string> MonthLabels)> GetLastSixMonthsDataAsync(
+        Guid userId,
+        TransactionType type);
 
     Task<decimal> GetCurrentWeekTotalAsync(Guid userId, TransactionType type);
 

@@ -75,4 +75,13 @@
     <data name="Profile" xml:space="preserve">
         <value>Потребителски профил</value>
     </data>
+    <data name="FieldIsRequired" xml:space="preserve">
+        <value>Полето е задължително</value>
+    </data>
+    <data name="PasswordSuccess" xml:space="preserve">
+        <value>Паролата беше променена успешно.</value>
+    </data>
+    <data name="ProfileSuccess" xml:space="preserve">
+        <value>Потребителските данни бяха променени успешно.</value>
+    </data>
 </root>

@@ -13,4 +13,5 @@ public interface ISavingsGoalService
     Task<bool> UpdateSavingsGoalsAsync(Data.Models.SavingsGoal goal);
     Task<int> GetTotalSavingsGoalsAsync(Guid userId);
     Task<bool> DeleteSavingsGoalsAsync(Data.Models.SavingsGoal goal);
+    Task<List<Data.Models.SavingsGoal>> SetAsideForSavingsGoalsAsync(Data.Models.Transaction transaction);
 }

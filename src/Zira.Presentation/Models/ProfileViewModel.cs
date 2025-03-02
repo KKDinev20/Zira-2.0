@@ -6,13 +6,25 @@ namespace Zira.Presentation.Models
 {
     public class ProfileViewModel
     {
-        public required string FirstName { get; set; }
+        [Required(
+            ErrorMessageResourceType = typeof(Common.AccountText),
+            ErrorMessageResourceName = "FieldIsRequired")]
+        public string FirstName { get; set; }
 
-        public required string LastName { get; set; }
+        [Required(
+            ErrorMessageResourceType = typeof(Common.AccountText),
+            ErrorMessageResourceName = "FieldIsRequired")]
+        public string LastName { get; set; }
 
         [EmailAddress]
+        [Required(
+            ErrorMessageResourceType = typeof(Common.AccountText),
+            ErrorMessageResourceName = "FieldIsRequired")]
         public required string Email { get; set; }
 
+        [Required(
+            ErrorMessageResourceType = typeof(Common.AccountText),
+            ErrorMessageResourceName = "FieldIsRequired")]
         public required DateTime BirthDate { get; set; }
 
         public string AvatarUrl { get; set; }

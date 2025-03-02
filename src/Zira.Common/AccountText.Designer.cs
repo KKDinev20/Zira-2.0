@@ -159,6 +159,15 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Полето е задължително.
+        /// </summary>
+        public static string FieldIsRequired {
+            get {
+                return ResourceManager.GetString("FieldIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Име.
         /// </summary>
         public static string FirstName {
@@ -186,6 +195,15 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Паролата беше променена успешно..
+        /// </summary>
+        public static string PasswordSuccess {
+            get {
+                return ResourceManager.GetString("PasswordSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Потребителски профил.
         /// </summary>
         public static string Profile {
@@ -200,6 +218,15 @@ namespace Zira.Common {
         public static string ProfileDetails {
             get {
                 return ResourceManager.GetString("ProfileDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Потребителските данни бяха променени успешно..
+        /// </summary>
+        public static string ProfileSuccess {
+            get {
+                return ResourceManager.GetString("ProfileSuccess", resourceCulture);
             }
         }
         

@@ -22,7 +22,8 @@ namespace Zira.Presentation.Extensions
 
                 if (AuthenticationText.ResourceManager != null)
                 {
-                    string errorMessage = AuthenticationText.ResourceManager.GetStringOrDefault($"{error.Code}ErrorMessage");
+                    string errorMessage =
+                        AuthenticationText.ResourceManager.GetStringOrDefault($"{error.Code}ErrorMessage");
                     modelState.AddModelError(key, errorMessage);
                 }
                 else

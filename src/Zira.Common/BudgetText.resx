@@ -89,4 +89,16 @@
     <data name="WarningThreshold" xml:space="preserve">
         <value>Праг на предпреждение</value>
     </data>
+    <data name="BudgetExists" xml:space="preserve">
+        <value>Вече съществува бюджет за тази категория в избрания месец.</value>
+    </data>
+    <data name="BudgetUpdateSuccess" xml:space="preserve">
+        <value>Бюджетът беше обновен успешно!</value>
+    </data>
+    <data name="BudgetDeleteSuccess" xml:space="preserve">
+        <value>Бюджетът беше изтрит успешно!</value>
+    </data>
+    <data name="BudgetUpdateFail" xml:space="preserve">
+        <value>Промяната на бюджета е неуспешна.</value>
+    </data>
 </root>

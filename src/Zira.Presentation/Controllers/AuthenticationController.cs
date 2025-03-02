@@ -14,9 +14,7 @@ using Zira.Data;
 using Zira.Data.Models;
 using Zira.Presentation.Extensions;
 using Zira.Presentation.Models;
-using Zira.Services.Accounts.Contracts;
 using Zira.Services.Common.Contracts;
-using Zira.Services.Identity.Constants;
 using Zira.Services.Identity.Extensions;
 
 namespace Zira.Presentation.Controllers
@@ -27,26 +25,20 @@ namespace Zira.Presentation.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly IEmailService emailService;
-        private readonly IAccountService accountService;
         private readonly EntityContext context;
-        private readonly UrlEncoder urlEncoder;
         private readonly ILogger<AuthenticationController> logger;
 
         public AuthenticationController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailService emailService,
-            UrlEncoder urlEncoder,
             ILogger<AuthenticationController> logger,
-            IAccountService accountService,
             EntityContext context)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.emailService = emailService;
-            this.urlEncoder = urlEncoder;
             this.logger = logger;
-            this.accountService = accountService;
             this.context = context;
         }
 
@@ -78,13 +70,13 @@ namespace Zira.Presentation.Controllers
                 var user = await this.userManager.FindByEmailAsync(model.Email!);
                 if (user == null || !(await this.userManager.CheckPasswordAsync(user, model.Password!)))
                 {
-                    this.ModelState.AddModelError(string.Empty, Common.AuthenticationText.InvalidLoginErrorMessage);
+                    this.ModelState.AddModelError(string.Empty, AuthenticationText.InvalidLoginErrorMessage);
                     return this.View(model);
                 }
 
                 if (await this.userManager.IsLockedOutAsync(user))
                 {
-                    this.ModelState.AddModelError(string.Empty, Common.AuthenticationText.UserLockedOutErrorMessage);
+                    this.ModelState.AddModelError(string.Empty, AuthenticationText.UserLockedOutErrorMessage);
                     return this.View(model);
                 }
 
@@ -158,7 +150,6 @@ namespace Zira.Presentation.Controllers
 
             return this.View(model);
         }
-
 
         [HttpGet("/forgot-password")]
         [AllowAnonymous]

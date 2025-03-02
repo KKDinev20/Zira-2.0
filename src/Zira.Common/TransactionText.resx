@@ -123,4 +123,19 @@
     <data name="thisWeek" xml:space="preserve">
         <value>тази седмица</value>
     </data>
+    <data name="InvalidDetails" xml:space="preserve">
+        <value>Невалидни данни за транзакцията</value>
+    </data>
+    <data name="TransactionSuccess" xml:space="preserve">
+        <value>Транзакцията е добавена успешно!</value>
+    </data>
+    <data name="DeleteSuccess" xml:space="preserve">
+        <value>Транзакциите са изтрити успешно!</value>
+    </data>
+    <data name="UpdateSuccess" xml:space="preserve">
+        <value>Транзакцията е актуализирана успешно!</value>
+    </data>
+    <data name="NotFound" xml:space="preserve">
+        <value>Транзакцията не е намерена.</value>
+    </data>
 </root>

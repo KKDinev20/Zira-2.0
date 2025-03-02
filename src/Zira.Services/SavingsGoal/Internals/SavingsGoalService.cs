@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Zira.Data;
+using Zira.Data.Enums;
 using Zira.Services.SavingsGoal.Contracts;
 
 namespace Zira.Services.SavingsGoal.Internals
@@ -78,7 +79,48 @@ namespace Zira.Services.SavingsGoal.Internals
             await this.context.SaveChangesAsync();
             return true;
         }
-        
+
+        public async Task<List<Data.Models.SavingsGoal>> SetAsideForSavingsGoalsAsync(
+            Data.Models.Transaction transactionModel)
+        {
+            if (transactionModel.Type != TransactionType.Income)
+            {
+                return new List<Data.Models.SavingsGoal>();
+            }
+
+            decimal goalAmount = transactionModel.Amount * 0.10m;
+            Guid userId = transactionModel.UserId;
+            var month = transactionModel.Date.Month;
+            var year = transactionModel.Date.Year;
+
+            var savingsGoals = await this.context.SavingsGoals
+                .Where(sg => sg.UserId == userId && sg.CreatedAt.Month == month && sg.CreatedAt.Year == year)
+                .ToListAsync();
+
+            if (!savingsGoals.Any())
+            {
+                return new List<Data.Models.SavingsGoal>();
+            }
+
+            if (savingsGoals.Count == 1)
+            {
+                var goal = savingsGoals.First();
+                goal.CurrentAmount += goalAmount;
+
+                if (goal.CurrentAmount > goal.TargetAmount)
+                {
+                    goal.CurrentAmount = goal.TargetAmount;
+                }
+
+                transactionModel.Amount -= goalAmount;
+
+                await this.context.SaveChangesAsync();
+                return new List<Data.Models.SavingsGoal> { goal };
+            }
+
+            return savingsGoals;
+        }
+
         public async Task<int> GetTotalSavingsGoalsAsync(Guid userId)
         {
             return await this.context.SavingsGoals.CountAsync(b => b.UserId == userId);

@@ -121,6 +121,13 @@
                                         <i class="bx bx-trash me-1"></i> @TransactionText.Delete
                                     </a>
                                 </div>
+                                @if (transaction.Type == TransactionType.Income)
+                                {
+                                    <a href="@Url.Action("SetAsideForSavings", "Transactions", new { transactionId = transaction.Id })"
+                                       class="btn btn-primary btn-sm">
+                                        Set Aside for savings goals
+                                    </a>
+                                }
                             </div>
                         </td>
                     </tr>

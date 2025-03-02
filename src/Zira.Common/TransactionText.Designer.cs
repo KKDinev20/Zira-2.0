@@ -132,6 +132,15 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Транзакциите са изтрити успешно!.
+        /// </summary>
+        public static string DeleteSuccess {
+            get {
+                return ResourceManager.GetString("DeleteSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Изтриване на транзакция.
         /// </summary>
         public static string DeleteTransaction {
@@ -227,6 +236,24 @@ namespace Zira.Common {
         public static string IncomeVsExpenses {
             get {
                 return ResourceManager.GetString("IncomeVsExpenses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Невалидни данни за транзакцията.
+        /// </summary>
+        public static string InvalidDetails {
+            get {
+                return ResourceManager.GetString("InvalidDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Транзакцията не е намерена..
+        /// </summary>
+        public static string NotFound {
+            get {
+                return ResourceManager.GetString("NotFound", resourceCulture);
             }
         }
         
@@ -348,6 +375,15 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Транзакцията е добавена успешно!.
+        /// </summary>
+        public static string TransactionSuccess {
+            get {
+                return ResourceManager.GetString("TransactionSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Вид на транзакция.
         /// </summary>
         public static string TransactionType {
@@ -362,6 +398,15 @@ namespace Zira.Common {
         public static string Type {
             get {
                 return ResourceManager.GetString("Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Транзакцията е актуализирана успешно!.
+        /// </summary>
+        public static string UpdateSuccess {
+            get {
+                return ResourceManager.GetString("UpdateSuccess", resourceCulture);
             }
         }
         

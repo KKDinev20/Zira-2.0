@@ -13,6 +13,5 @@ namespace Zira.Data.Models
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? TargetDate { get; set; }
         public ApplicationUser User { get; set; }
-        public ICollection<Transaction> RelatedTransactions { get; set; }
     }
 }

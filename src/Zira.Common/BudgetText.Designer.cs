@@ -96,6 +96,15 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Бюджетът беше изтрит успешно!.
+        /// </summary>
+        public static string BudgetDeleteSuccess {
+            get {
+                return ResourceManager.GetString("BudgetDeleteSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Детайли за бюджета.
         /// </summary>
         public static string BudgetDetails {
@@ -110,6 +119,15 @@ namespace Zira.Common {
         public static string BudgetError {
             get {
                 return ResourceManager.GetString("BudgetError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Вече съществува бюджет за тази категория в избрания месец..
+        /// </summary>
+        public static string BudgetExists {
+            get {
+                return ResourceManager.GetString("BudgetExists", resourceCulture);
             }
         }
         
@@ -155,6 +173,24 @@ namespace Zira.Common {
         public static string BudgetSuccess {
             get {
                 return ResourceManager.GetString("BudgetSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Промяната на бюджета е неуспешна..
+        /// </summary>
+        public static string BudgetUpdateFail {
+            get {
+                return ResourceManager.GetString("BudgetUpdateFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Бюджетът беше обновен успешно!.
+        /// </summary>
+        public static string BudgetUpdateSuccess {
+            get {
+                return ResourceManager.GetString("BudgetUpdateSuccess", resourceCulture);
             }
         }
         

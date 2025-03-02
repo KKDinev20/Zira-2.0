@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Zira.Common;
 using Zira.Data;
 using Zira.Data.Enums;
 using Zira.Data.Models;
@@ -12,6 +14,7 @@ using Zira.Presentation.Models;
 using Zira.Presentation.Validations;
 using Zira.Services.Identity.Constants;
 using Zira.Services.Identity.Extensions;
+using Zira.Services.SavingsGoal.Contracts;
 using Zira.Services.Transaction.Contracts;
 
 namespace Zira.Presentation.Controllers;
@@ -20,17 +23,20 @@ namespace Zira.Presentation.Controllers;
 public class TransactionsController : Controller
 {
     private readonly ITransactionService transactionService;
+    private readonly ISavingsGoalService savingsGoalService;
     private readonly UserManager<ApplicationUser> userManager;
     private readonly EntityContext entityContext;
 
     public TransactionsController(
         ITransactionService transactionService,
         UserManager<ApplicationUser> userManager,
-        EntityContext entityContext)
+        EntityContext entityContext,
+        ISavingsGoalService savingsGoalService)
     {
         this.transactionService = transactionService;
         this.userManager = userManager;
         this.entityContext = entityContext;
+        this.savingsGoalService = savingsGoalService;
     }
 
     [HttpGet("/add-transaction/")]
@@ -49,7 +55,7 @@ public class TransactionsController : Controller
 
         if (!this.ModelState.IsValid)
         {
-            this.TempData["ErrorMessage"] = "Invalid transaction details.";
+            this.TempData["ErrorMessage"] = @TransactionText.IncomeVsExpenses;
             return this.RedirectToAction("TransactionList");
         }
 
@@ -57,7 +63,7 @@ public class TransactionsController : Controller
         try
         {
             await this.transactionService.AddTransactionAsync(model, userId);
-            this.TempData["SuccessMessage"] = "Transaction successfully added!";
+            this.TempData["SuccessMessage"] = @TransactionText.TransactionSuccess;
         }
         catch (InvalidOperationException ex)
         {
@@ -121,11 +127,11 @@ public class TransactionsController : Controller
         try
         {
             await this.transactionService.UpdateTransactionAsync(model);
-            this.TempData["SuccessMessage"] = "Transaction updated successfully!";
+            this.TempData["SuccessMessage"] = @TransactionText.UpdateSuccess;
         }
         catch (KeyNotFoundException)
         {
-            this.TempData["ErrorMessage"] = "Transaction not found.";
+            this.TempData["ErrorMessage"] = @TransactionText.NotFound;
         }
 
         return this.RedirectToAction("TransactionList");
@@ -150,7 +156,7 @@ public class TransactionsController : Controller
     {
         await this.transactionService.DeleteTransactionAsync(id, this.User.GetUserId());
 
-        this.TempData["SuccessMessage"] = "Transactions deleted successfully!";
+        this.TempData["SuccessMessage"] = @TransactionText.DeleteSuccess;
         return this.RedirectToAction("TransactionList");
     }
 
@@ -161,7 +167,7 @@ public class TransactionsController : Controller
 
         if (!this.ModelState.IsValid)
         {
-            this.TempData["ErrorMessage"] = "Invalid transaction details.";
+            this.TempData["ErrorMessage"] = @TransactionText.InvalidDetails;
             return this.RedirectToAction("TransactionList");
         }
 
@@ -170,13 +176,123 @@ public class TransactionsController : Controller
         try
         {
             await this.transactionService.QuickAddTransactionAsync(transactionModel, userId);
-            this.TempData["SuccessMessage"] = "Transaction successfully added!";
+            this.TempData["SuccessMessage"] = @TransactionText.TransactionSuccess;
         }
         catch (InvalidOperationException ex)
         {
             this.TempData["ErrorMessage"] = ex.Message;
         }
 
+        return this.RedirectToAction("TransactionList");
+    }
+
+    [HttpGet("/set-aside-savings/{transactionId}")]
+    public async Task<IActionResult> SetAsideForSavings(Guid transactionId)
+    {
+        var user = await this.userManager.GetUserAsync(this.User);
+        if (user == null)
+        {
+            return this.RedirectToAction("Login", "Authentication");
+        }
+
+        var transaction = await this.transactionService.GetTransactionByIdAsync(transactionId, user.Id);
+        if (transaction == null || transaction.Type != TransactionType.Income)
+        {
+            this.TempData["ErrorMessage"] = "Invalid transaction.";
+            return this.RedirectToAction("TransactionList");
+        }
+
+        var savingsGoals = await this.savingsGoalService.SetAsideForSavingsGoalsAsync(transaction);
+
+        if (!savingsGoals.Any())
+        {
+            this.TempData["ErrorMessage"] = "No savings goals available for this month.";
+            return this.RedirectToAction("TransactionList");
+        }
+
+        if (savingsGoals.Count == 1)
+        {
+            this.TempData["SuccessMessage"] =
+                $"10% of {transaction.Amount:C} was set aside for '{savingsGoals[0].Name}'.";
+            return this.RedirectToAction("TransactionList");
+        }
+
+        return this.RedirectToAction("ChooseSavingsGoal", new { transactionId });
+    }
+
+    [HttpGet("/choose-savings-goal/{transactionId}")]
+    public async Task<IActionResult> ChooseSavingsGoal(Guid transactionId)
+    {
+        var user = await this.userManager.GetUserAsync(this.User);
+        if (user == null)
+        {
+            return this.RedirectToAction("Login", "Authentication");
+        }
+
+        var transaction = await this.transactionService.GetTransactionByIdAsync(transactionId, user.Id);
+        if (transaction == null || transaction.Type != TransactionType.Income)
+        {
+            this.TempData["ErrorMessage"] = "Invalid transaction.";
+            return this.RedirectToAction("TransactionList");
+        }
+
+        var savingsGoals = await this.savingsGoalService.SetAsideForSavingsGoalsAsync(transaction);
+
+        if (!savingsGoals.Any())
+        {
+            this.TempData["ErrorMessage"] = "No savings goals available for this month.";
+            return this.RedirectToAction("TransactionList");
+        }
+
+        var model = new ChooseSavingsGoalViewModel
+        {
+            TransactionId = transactionId,
+            AmountToSetAside = transaction.Amount * 0.10m,
+            SavingsGoals = savingsGoals,
+        };
+
+        return this.View(model);
+    }
+
+    [HttpPost("/set-aside-savings-manual")]
+    public async Task<IActionResult> SetAsideForSavingsManual(Guid transactionId, Guid goalId)
+    {
+        var user = await this.userManager.GetUserAsync(this.User);
+        if (user == null)
+        {
+            return this.RedirectToAction("Login", "Authentication");
+        }
+
+        var transaction = await this.transactionService.GetTransactionByIdAsync(transactionId, user.Id);
+        var goal = await this.savingsGoalService.GetSavingsGoalByIdAsync(user.Id, goalId);
+
+        if (transaction == null || goal == null)
+        {
+            this.TempData["ErrorMessage"] = "Invalid selection.";
+            return this.RedirectToAction("TransactionList");
+        }
+
+        decimal amountToSetAside = transaction.Amount * 0.10m;
+
+        if (transaction.Amount < amountToSetAside)
+        {
+            this.TempData["ErrorMessage"] = "Insufficient funds to set aside.";
+            return this.RedirectToAction("TransactionList");
+        }
+
+        transaction.Amount -= amountToSetAside;
+
+        goal.CurrentAmount += amountToSetAside;
+
+        if (goal.CurrentAmount > goal.TargetAmount)
+        {
+            goal.CurrentAmount = goal.TargetAmount;
+        }
+
+        await this.entityContext.SaveChangesAsync();
+
+        this.TempData["SuccessMessage"] =
+            $"10% of {transaction.Amount + amountToSetAside:C} was set aside for '{goal.Name}'.";
         return this.RedirectToAction("TransactionList");
     }
 }

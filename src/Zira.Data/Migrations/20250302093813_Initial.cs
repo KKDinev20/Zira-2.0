@@ -168,6 +168,7 @@ namespace Zira.Data.Migrations
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Category = table.Column<int>(type: "int", nullable: true),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    WarningThreshold = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Month = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -198,6 +199,29 @@ namespace Zira.Data.Migrations
                     table.PrimaryKey("PK_Reminders", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Reminders_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SavingsGoals",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TargetAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    CurrentAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TargetDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SavingsGoals", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SavingsGoals_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -280,6 +304,11 @@ namespace Zira.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SavingsGoals_UserId",
+                table: "SavingsGoals",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Transactions_UserId",
                 table: "Transactions",
                 column: "UserId");
@@ -308,6 +337,9 @@ namespace Zira.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Reminders");
+
+            migrationBuilder.DropTable(
+                name: "SavingsGoals");
 
             migrationBuilder.DropTable(
                 name: "Transactions");

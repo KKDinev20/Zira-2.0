@@ -19,6 +19,10 @@ public static class DependencyInjection
                 options.SignIn.RequireConfirmedAccount = false;
                 options.SignIn.RequireConfirmedEmail = false;
                 options.Password.RequiredLength = 6;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireDigit = true;
+                options.Password.RequireNonAlphanumeric = true;
             })
             .AddEntityFrameworkStores<EntityContext>()
             .AddDefaultTokenProviders();

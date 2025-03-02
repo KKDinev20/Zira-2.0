@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Zira.Common;
 using Zira.Data;
 using Zira.Data.Enums;
 using Zira.Data.Models;
@@ -47,12 +48,12 @@ namespace Zira.Presentation.Controllers
 
             if (!await this.budgetService.AddBudgetAsync(budgetModel))
             {
-                this.TempData["ErrorMessage"] = "A budget for this category in the selected month already exists.";
+                this.TempData["ErrorMessage"] = @BudgetText.BudgetExists;
                 this.ViewBag.Categories = Enum.GetValues(typeof(Categories));
                 return this.View(budgetModel);
             }
 
-            this.TempData["SuccessMessage"] = "Budget added successfully!";
+            this.TempData["SuccessMessage"] = @BudgetText.BudgetSuccess;
             return this.RedirectToAction("ViewBudgets");
         }
 
@@ -102,22 +103,22 @@ namespace Zira.Presentation.Controllers
             budgetModel.UserId = this.User.GetUserId();
             if (!await this.budgetService.UpdateBudgetAsync(budgetModel))
             {
-                this.TempData["ErrorMessage"] = "Budget update failed.";
+                this.TempData["ErrorMessage"] = @BudgetText.BudgetUpdateFail;
                 this.ViewBag.Categories = Enum.GetValues(typeof(Categories));
                 return this.View(budgetModel);
             }
 
-            this.TempData["SuccessMessage"] = "Budget updated successfully!";
+            this.TempData["SuccessMessage"] = @BudgetText.BudgetUpdateSuccess;
             return this.RedirectToAction("ViewBudgets");
         }
 
         [HttpGet("/delete-budget/{id}")]
         public async Task<IActionResult> DeleteBudget(Guid id)
         {
-            var budget = await this.budgetService.GetBudgetByIdAsync(id, this.User.GetUserId() );
+            var budget = await this.budgetService.GetBudgetByIdAsync(id, this.User.GetUserId());
             if (budget == null)
             {
-                this.TempData["ErrorMessage"] = "Budget not found.";
+                this.TempData["ErrorMessage"] = @BudgetText.BudgetNotFound;
                 return this.RedirectToAction("ViewBudgets");
             }
 
@@ -129,11 +130,11 @@ namespace Zira.Presentation.Controllers
         {
             if (!await this.budgetService.DeleteBudgetAsync(id, this.User.GetUserId()))
             {
-                this.TempData["ErrorMessage"] = "Budget not found or could not be deleted.";
+                this.TempData["ErrorMessage"] = @BudgetText.BudgetNotFound;
                 return this.RedirectToAction("ViewBudgets");
             }
 
-            this.TempData["SuccessMessage"] = "Budget deleted successfully!";
+            this.TempData["SuccessMessage"] = @BudgetText.BudgetDeleteSuccess;
             return this.RedirectToAction("ViewBudgets");
         }
     }

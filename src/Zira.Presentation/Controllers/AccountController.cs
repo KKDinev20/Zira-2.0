@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Zira.Common;
 using Zira.Data;
 using Zira.Data.Models;
 using Zira.Presentation.Extensions;
@@ -96,7 +97,10 @@ public class AccountController : Controller
             }
 
             var uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
-            var uploadPath = Path.Combine(this.webHostEnvironment.WebRootPath, "dashboard/assets/img/avatars", uniqueFileName);
+            var uploadPath = Path.Combine(
+                this.webHostEnvironment.WebRootPath,
+                "dashboard/assets/img/avatars",
+                uniqueFileName);
 
             using (var stream = new FileStream(uploadPath, FileMode.Create))
             {
@@ -113,7 +117,7 @@ public class AccountController : Controller
             return this.View("Profile");
         }
 
-        this.TempData["SuccessMessage"] = "Profile updated successfully!";
+        this.TempData["SuccessMessage"] = @AccountText.ProfileSuccess;
         return this.RedirectToAction("Profile");
     }
 
@@ -231,7 +235,7 @@ public class AccountController : Controller
             return this.View(model);
         }
 
-        this.TempData["SuccessMessage"] = "Password changed successfully!";
+        this.TempData["SuccessMessage"] = @AccountText.PasswordSuccess;
         return this.RedirectToAction("Profile");
     }
 }

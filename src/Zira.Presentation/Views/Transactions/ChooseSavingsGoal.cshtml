@@ -1,0 +1,35 @@
+﻿@model ChooseSavingsGoalViewModel
+
+@{
+    Layout = "Shared/_TransactionsLayout";
+    ViewData["Title"] = "Choose Savings Goal";
+}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4">
+        <i class="bx bx-wallet"></i> Choose a Savings Goal
+    </h4>
+
+    <div class="card shadow-sm">
+        <h5 class="card-header">Select a Savings Goal</h5>
+        <div class="card-body">
+            <p>You have <strong>@Model.AmountToSetAside.ToString("C")</strong> to set aside. Choose a goal:</p>
+
+            <form method="post" asp-action="SetAsideForSavingsManual">
+                <input type="hidden" name="TransactionId" value="@Model.TransactionId"/>
+
+                @foreach (var goal in Model.SavingsGoals)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="goalId" value="@goal.Id" required>
+                        <label class="form-check-label">
+                            @goal.Name - Target: @goal.TargetAmount.ToString("C") - Current: @goal.CurrentAmount.ToString("C")
+                        </label>
+                    </div>
+                }
+
+                <button type="submit" class="btn btn-success mt-3">Set Aside</button>
+            </form>
+        </div>
+    </div>
+</div>
