@@ -6,29 +6,39 @@
 }
 
 <div class="container-xxl flex-grow-1 container-p-y">
-    <h4 class="fw-bold py-3 mb-4">
-        <i class="bx bx-wallet"></i> Choose a Savings Goal
+    <h4 class="fw-bold py-3 mb-4 d-flex align-items-center gap-2">
+        <i class="bx bx-wallet text-primary"></i> Choose a Savings Goal
     </h4>
 
-    <div class="card shadow-sm">
-        <h5 class="card-header">Select a Savings Goal</h5>
-        <div class="card-body">
-            <p>You have <strong>@Model.AmountToSetAside.ToString("C")</strong> to set aside. Choose a goal:</p>
+    <div class="card shadow-lg border-0">
+        <h5 class="card-header bg-white py-3 px-4">
+            Select a Savings Goal
+        </h5>
+        <div class="card-body p-4">
+            <p class="mb-4 fs-5 fw-medium">
+                You have <strong class="text-primary">@Model.AmountToSetAside.ToString("C")</strong> to set aside. Choose a goal:
+            </p>
 
-            <form method="post" asp-action="SetAsideForSavingsManual">
+            <form method="post" asp-action="SetAsideForSavingsManual" class="space-y-3">
                 <input type="hidden" name="TransactionId" value="@Model.TransactionId"/>
 
                 @foreach (var goal in Model.SavingsGoals)
                 {
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="goalId" value="@goal.Id" required>
-                        <label class="form-check-label">
-                            @goal.Name - Target: @goal.TargetAmount.ToString("C") - Current: @goal.CurrentAmount.ToString("C")
+                    <div class="form-check rounded-lg border p-3 cursor-pointer transition-all duration-200 hover:bg-secondary/50">
+                        <input class="form-check-input appearance-none rounded-full h-4 w-4 border-2 border-gray-400 checked:border-primary checked:bg-primary"
+                               type="radio"
+                               name="goalId"
+                               value="@goal.Id"
+                               required>
+                        <label class="form-check-label ms-3 text-gray-700">
+                            @goal.Name - Target: <strong class="text-primary">@goal.TargetAmount.ToString("C")</strong> - Current: <strong class="text-muted">@goal.CurrentAmount.ToString("C")</strong>
                         </label>
                     </div>
                 }
 
-                <button type="submit" class="btn btn-success mt-3">Set Aside</button>
+                <button type="submit" class="btn btn-success w-100 mt-4 py-2 px-4 rounded-pill text-uppercase fw-semibold hover:opacity-90 transition-opacity">
+                    Set Aside
+                </button>
             </form>
         </div>
     </div>

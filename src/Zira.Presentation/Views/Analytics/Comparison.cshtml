@@ -1,0 +1,128 @@
+﻿@model Zira.Services.Analytics.Models.ExpenseComparisonModel
+
+@{
+    Layout = "Shared/_AnalyticsLayout";
+    ViewData["Title"] = @AnalyticsText.FinancialOverview;
+}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h2 class="fw-bold mb-4">Expense Comparison</h2>
+
+    <div class="card shadow-lg border-0 mb-4">
+        <div class="card-header bg-white py-3 px-4">
+            <h4 class="mb-0">Monthly Comparison</h4>
+        </div>
+        <div class="card-body p-4">
+            <table class="table table-responsive">
+                <thead>
+                <tr>
+                    <th class="fw-medium">Month</th>
+                    <th class="fw-medium">Income</th>
+                    <th class="fw-medium">Expenses</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model.MonthlyComparison)
+                {
+                    <tr>
+                        <td class="text-nowrap">@item.Month</td>
+                        <td class="text-nowrap">@item.Income.ToString("C")</td>
+                        <td class="text-nowrap">@item.Expenses.ToString("C")</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-white py-3 px-4">
+            <h4 class="mb-0">Category-Based Spending</h4>
+        </div>
+        <div class="card-body p-4">
+            <canvas id="categoryChart"></canvas>
+        </div>
+    </div>
+
+    <div class="card shadow-lg border-0 mt-4">
+        <div class="card-header bg-white py-3 px-4">
+            <h4 class="mb-0">Monthly Savings Rate</h4>
+        </div>
+        <div class="card-body p-4">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Month</th>
+                    <th>Savings Rate (%)</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model.MonthlySavingsRate)
+                {
+                    <tr>
+                        <td>@item.Month</td>
+                        <td>@item.SavingsRate.ToString("0.##")%</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('categoryChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: @Json.Serialize(Model.CategoryComparison.Select(x => x.Category)),
+                datasets: [{
+                    label: 'Total Amount',
+                    data: @Json.Serialize(Model.CategoryComparison.Select(x => x.TotalAmount)),
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.7)',
+                        'rgba(54, 162, 235, 0.7)',
+                        'rgba(255, 206, 86, 0.7)',
+                        'rgba(75, 192, 192, 0.7)',
+                        'rgba(153, 102, 255, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            font: {
+                                size: 14
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const value = context.raw;
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = Math.round((value / total) * 100);
+                                return `${context.label}: $${value.toLocaleString()} (${percentage}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>

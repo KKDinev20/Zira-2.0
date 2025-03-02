@@ -6,22 +6,43 @@
 }
 
 <div class="container-xxl flex-grow-1 container-p-y">
-    <h4 class="fw-bold py-3 mb-4">
-        <i class="bx bx-wallet"></i> Delete Savings Goal
+    <h4 class="fw-bold py-3 mb-4 d-flex align-items-center gap-2">
+        <i class="bx bx-wallet text-destructive"></i> Delete Savings Goal
     </h4>
 
-    <div class="card shadow-sm">
-        <h5 class="card-header">Confirm Deletion</h5>
-        <div class="card-body">
-            <p>Are you sure you want to delete the savings goal: <strong>@Model.Name</strong>?</p>
-            <p>Target Amount: @Model.TargetAmount.ToString("C")</p>
-            <p>Current Amount: @Model.CurrentAmount.ToString("C")</p>
-            <p>Target Date: @Model.TargetDate?.ToString("MMMM dd, yyyy")</p>
+    <div class="card shadow-lg border-0">
+        <h5 class="card-header bg-white py-3 px-4">
+            Confirm Deletion
+        </h5>
+        <div class="card-body p-4">
+            <p class="fs-5 fw-medium text-destructive mb-3">
+                Are you sure you want to delete the savings goal: <strong class="text-dark">@Model.Name</strong>?
+            </p>
 
-            <form method="post" asp-action="DeleteSavingsGoalConfirmed">
+            <div class="border-l-4 border-destructive pl-3 mb-4">
+                <p class="mb-1">
+                    <strong>Target Amount:</strong> @Model.TargetAmount.ToString("C")
+                </p>
+                <p class="mb-1">
+                    <strong>Current Amount:</strong> @Model.CurrentAmount.ToString("C")
+                </p>
+                <p>
+                    <strong>Target Date:</strong> @Model.TargetDate?.ToString("MMMM dd, yyyy")
+                </p>
+            </div>
+
+            <form method="post" asp-action="DeleteSavingsGoalConfirmed" class="mt-4 space-x-3">
                 <input type="hidden" name="Id" value="@Model.Id"/>
-                <button type="submit" class="btn btn-danger">Yes, Delete</button>
-                <a href="@Url.Action("ViewSavingsGoals", "SavingsGoal")" class="btn btn-secondary">Cancel</a>
+
+                <button type="submit"
+                        class="btn btn-destructive w-auto py-2 px-4 rounded-md text-uppercase fw-semibold hover:opacity-90 transition-opacity">
+                    Delete
+                </button>
+
+                <a href="@Url.Action("ViewSavingsGoals", "SavingsGoal")"
+                   class="btn btn-outline-secondary w-auto py-2 px-4 rounded-md text-uppercase fw-semibold hover:opacity-90 transition-opacity">
+                    Cancel
+                </a>
             </form>
         </div>
     </div>

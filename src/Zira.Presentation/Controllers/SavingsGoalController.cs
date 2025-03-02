@@ -55,8 +55,10 @@ namespace Zira.Presentation.Controllers
         }
 
         [HttpGet("/create-savings-goal/")]
-        public IActionResult CreateSavingsGoal()
+        public async Task<IActionResult> CreateSavingsGoal()
         {
+            await this.SetGlobalUserInfoAsync(this.userManager, this.context);
+
             return this.View(new SavingsGoalViewModel());
         }
 

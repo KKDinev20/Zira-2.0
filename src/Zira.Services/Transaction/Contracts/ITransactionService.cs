@@ -11,6 +11,8 @@ public interface ITransactionService
 {
     Task<List<Data.Models.Transaction>> GetTransactionsAsync(Guid userId, int page, int pageSize, Categories? category);
 
+    Task<List<Data.Models.Transaction>> GetUserTransactionsAsync(Guid userId);
+
     Task<int> GetTotalTransactionRecordsAsync(Guid userId);
 
     Task<Data.Models.Transaction?> GetTransactionByIdAsync(Guid id, Guid userId);
@@ -42,4 +44,5 @@ public interface ITransactionService
     Task<List<CategoryExpenseSummary>> GetTopExpenseCategoriesAsync(Guid userId, int top = 5);
 
     Task<(List<decimal> Incomes, List<decimal> Expenses)> GetMonthlyIncomeAndExpensesAsync(Guid userId, int year);
+    Task<List<(DateTime Month, decimal NetWorth)>> GetNetWorthTrendAsync(Guid userId);
 }

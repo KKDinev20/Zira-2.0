@@ -1,13 +1,18 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Zira.Data;
+using Zira.Data.Enums;
 using Zira.Data.Models;
 using Zira.Presentation.Extensions;
 using Zira.Presentation.Models;
 using Zira.Services.Analytics.Contracts;
+using Zira.Services.Analytics.Models;
 using Zira.Services.Identity.Constants;
+using Zira.Services.SavingsGoal.Contracts;
+using Zira.Services.Transaction.Contracts;
 
 namespace Zira.Presentation.Controllers;
 
@@ -16,12 +21,21 @@ public class AnalyticsController : Controller
 {
     private readonly UserManager<ApplicationUser> userManager;
     private readonly IAnalyticsService expenseAnalyticsService;
+    private readonly ITransactionService transactionService;
+    private readonly ISavingsGoalService savingsGoalService;
     private readonly EntityContext context;
 
-    public AnalyticsController(UserManager<ApplicationUser> userManager, IAnalyticsService expenseAnalyticsService, EntityContext context)
+    public AnalyticsController(
+        UserManager<ApplicationUser> userManager,
+        IAnalyticsService expenseAnalyticsService,
+        ITransactionService transactionService,
+        ISavingsGoalService savingsGoalService,
+        EntityContext context)
     {
         this.userManager = userManager;
         this.expenseAnalyticsService = expenseAnalyticsService;
+        this.transactionService = transactionService;
+        this.savingsGoalService = savingsGoalService;
         this.context = context;
     }
 
@@ -37,13 +51,127 @@ public class AnalyticsController : Controller
         }
 
         var topExpenses = await this.expenseAnalyticsService.GetTopExpenseCategoriesAsync(user.Id);
-
         var savingTips = this.expenseAnalyticsService.GetCostSavingTips(topExpenses);
 
         var viewModel = new ExpenseAnalyticsViewModel
         {
             TopExpenses = topExpenses,
             CostSavingTips = savingTips,
+        };
+
+        return this.View(viewModel);
+    }
+
+    [HttpGet("/financial-analytics")]
+    public async Task<IActionResult> FinancialAnalytics()
+    {
+        await this.SetGlobalUserInfoAsync(this.userManager, this.context);
+
+        var user = await this.userManager.GetUserAsync(this.User);
+        if (user == null)
+        {
+            return this.RedirectToAction("Login", "Authentication");
+        }
+
+        var transactions = await this.transactionService.GetUserTransactionsAsync(user.Id);
+
+        var income = transactions.Where(t => t.Type == TransactionType.Income).Sum(t => t.Amount);
+        var expenses = transactions.Where(t => t.Type == TransactionType.Expense).Sum(t => t.Amount);
+
+        var savingsGoals = await this.savingsGoalService.GetSavingsGoalsAsync(user.Id);
+        var totalSavings = savingsGoals.Sum(sg => sg.CurrentAmount);
+        var netWorth = income - expenses + totalSavings;
+
+        var savingsProgress = savingsGoals.Select(
+            sg => new SavingsGoalProgressModel
+            {
+                Name = sg.Name,
+                TargetAmount = sg.TargetAmount,
+                CurrentAmount = sg.CurrentAmount,
+                Progress = sg.CurrentAmount / sg.TargetAmount * 100,
+            }).ToList();
+
+        var netWorthTrend = transactions
+            .GroupBy(t => new { t.Date.Year, t.Date.Month })
+            .Select(
+                g => new NetWorthTrendModel
+                {
+                    Month = $"{g.Key.Month}/{g.Key.Year}",
+                    NetWorth = g.Where(t => t.Type == TransactionType.Income).Sum(t => t.Amount) -
+                               g.Where(t => t.Type == TransactionType.Expense).Sum(t => t.Amount) +
+                               totalSavings,
+                })
+            .OrderBy(m => m.Month)
+            .ToList();
+
+        var viewModel = new FinancialSummaryModel
+        {
+            TotalIncome = income,
+            TotalExpenses = expenses,
+            NetWorth = netWorth,
+            SavingsGoals = savingsProgress,
+            NetWorthTrend = netWorthTrend,
+        };
+
+        return this.View(viewModel);
+    }
+
+    [HttpGet("/expense-comparison")]
+    public async Task<IActionResult> Comparison()
+    {
+        await this.SetGlobalUserInfoAsync(this.userManager, this.context);
+
+        var user = await this.userManager.GetUserAsync(this.User);
+        if (user == null)
+        {
+            return this.RedirectToAction("Login", "Authentication");
+        }
+
+        var transactions = await this.transactionService.GetUserTransactionsAsync(user.Id);
+
+        var monthlyComparison = transactions
+            .GroupBy(t => new { t.Date.Year, t.Date.Month })
+            .Select(
+                g => new MonthlyComparisonModel
+                {
+                    Month = $"{g.Key.Month}/{g.Key.Year}",
+                    Income = g.Where(t => t.Type == TransactionType.Income).Sum(t => t.Amount),
+                    Expenses = g.Where(t => t.Type == TransactionType.Expense).Sum(t => t.Amount),
+                })
+            .OrderByDescending(m => m.Month)
+            .ToList();
+
+        var categoryComparison = transactions
+            .Where(t => t.Type == TransactionType.Expense)
+            .GroupBy(t => t.Category)
+            .Select(
+                g => new CategoryComparisonModel
+                {
+                    Category = g.Key.ToString(),
+                    TotalAmount = g.Sum(t => t.Amount),
+                })
+            .ToList();
+
+        var monthlySavingsRate = transactions
+            .GroupBy(t => new { t.Date.Year, t.Date.Month })
+            .Select(
+                g => new MonthlySavingsRateModel
+                {
+                    Month = $"{g.Key.Month}/{g.Key.Year}",
+                    SavingsRate = g.Where(t => t.Type == TransactionType.Income).Sum(t => t.Amount) > 0
+                        ? (g.Where(t => t.Type == TransactionType.Income).Sum(t => t.Amount) -
+                           g.Where(t => t.Type == TransactionType.Expense).Sum(t => t.Amount))
+                        / g.Where(t => t.Type == TransactionType.Income).Sum(t => t.Amount) * 100
+                        : 0,
+                })
+            .OrderByDescending(m => m.Month)
+            .ToList();
+
+        var viewModel = new ExpenseComparisonModel
+        {
+            MonthlyComparison = monthlyComparison,
+            CategoryComparison = categoryComparison,
+            MonthlySavingsRate = monthlySavingsRate,
         };
 
         return this.View(viewModel);

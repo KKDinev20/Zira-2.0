@@ -6,27 +6,53 @@
 }
 
 <div class="container-xxl flex-grow-1 container-p-y">
-    <h4 class="fw-bold py-3 mb-4">
-        <i class="bx bx-wallet"></i> @SavingsGoalText.CreateSavingsGoal
+    <h4 class="fw-bold py-3 mb-4 d-flex align-items-center gap-2">
+        <i class="bx bx-wallet text-primary"></i> @SavingsGoalText.CreateSavingsGoal
     </h4>
 
-    <div class="card shadow-sm">
-        <h5 class="card-header">@SavingsGoalText.NewSavingsGoal</h5>
-        <div class="card-body">
-            <form method="post" asp-action="CreateSavingsGoal">
+    <div class="card shadow-lg border-0">
+        <h5 class="card-header bg-white py-3 px-4">
+            @SavingsGoalText.NewSavingsGoal
+        </h5>
+        <div class="card-body p-4">
+            <form method="post" asp-action="CreateSavingsGoal" class="space-y-4">
                 <div class="mb-3">
-                    <label for="Name" class="form-label">@SavingsGoalText.GoalName</label>
-                    <input type="text" class="form-control" id="Name" name="Name" required/>
+                    <label for="Name" class="form-label fw-medium text-gray-700 mb-2">
+                        @SavingsGoalText.GoalName
+                    </label>
+                    <input type="text"
+                           class="form-control border-2 rounded-lg px-3 py-2 focus-visible:ring-2 focus-visible:ring-primary transition-colors"
+                           id="Name"
+                           name="Name"
+                           required/>
                 </div>
+
                 <div class="mb-3">
-                    <label for="TargetAmount" class="form-label">@SavingsGoalText.TargetAmount</label>
-                    <input type="number" class="form-control" id="TargetAmount" name="TargetAmount" required min="1"/>
+                    <label for="TargetAmount" class="form-label fw-medium text-gray-700 mb-2">
+                        @SavingsGoalText.TargetAmount
+                    </label>
+                    <input type="number"
+                           class="form-control border-2 rounded-lg px-3 py-2 focus-visible:ring-2 focus-visible:ring-primary transition-colors"
+                           id="TargetAmount"
+                           name="TargetAmount"
+                           required
+                           min="1"/>
                 </div>
+
                 <div class="mb-3">
-                    <label for="TargetDate" class="form-label">@SavingsGoalText.TargetDate</label>
-                    <input type="date" class="form-control" id="TargetDate" name="TargetDate"/>
+                    <label for="TargetDate" class="form-label fw-medium text-gray-700 mb-2">
+                        @SavingsGoalText.TargetDate
+                    </label>
+                    <input type="date"
+                           class="form-control border-2 rounded-lg px-3 py-2 focus-visible:ring-2 focus-visible:ring-primary transition-colors"
+                           id="TargetDate"
+                           name="TargetDate"/>
                 </div>
-                <button type="submit" class="btn btn-success">@SavingsGoalText.CreateGoal</button>
+
+                <button type="submit"
+                        class="btn btn-success w-100 py-2 px-4 rounded-md text-uppercase fw-semibold hover:opacity-90 transition-opacity">
+                    @SavingsGoalText.CreateGoal
+                </button>
             </form>
         </div>
     </div>

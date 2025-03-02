@@ -40,6 +40,15 @@ public class TransactionService : ITransactionService
             .ToListAsync();
     }
 
+    public async Task<List<Data.Models.Transaction>> GetUserTransactionsAsync(Guid userId)
+    {
+        var query = this.context.Transactions.Where(t => t.UserId == userId);
+
+        return await query
+            .OrderByDescending(t => t.Date)
+            .ToListAsync();
+    }
+
     public async Task<int> GetTotalTransactionRecordsAsync(Guid userId)
     {
         return await this.context.Transactions.CountAsync(t => t.UserId == userId);
@@ -216,6 +225,20 @@ public class TransactionService : ITransactionService
         }
 
         return (incomes, expenses);
+    }
+
+    public async Task<List<(DateTime Month, decimal NetWorth)>> GetNetWorthTrendAsync(Guid userId)
+    {
+        var transactions = await this.GetUserTransactionsAsync(userId);
+
+        return transactions
+            .GroupBy(t => new { t.Date.Year, t.Date.Month })
+            .Select(
+                g => (
+                    Month: new DateTime(g.Key.Year, g.Key.Month, 1),
+                    NetWorth: g.Sum(t => t.Type == TransactionType.Income ? t.Amount : -t.Amount)))
+            .OrderBy(x => x.Month)
+            .ToList();
     }
 
     public async Task<(List<decimal> MonthlyTotals, List<string> MonthLabels)> GetLastSixMonthsDataAsync(

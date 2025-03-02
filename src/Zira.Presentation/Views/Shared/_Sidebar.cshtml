@@ -112,10 +112,14 @@
                         <div data-i18n="Budget Overview">@DashboardText.BudgetOverview</div>
                     </a>
                 </li>
+                <li class="menu-item">
+                    <a asp-action="ViewSavingsGoals" asp-controller="SavingsGoal" class="menu-link">
+                        <div data-i18n="Savings Goals">@DashboardText.Savings</div>
+                    </a>
+                </li>
             </ul>
         </li>
 
-        <!-- Analytics -->
         <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-line-chart"></i>
@@ -125,6 +129,11 @@
                 <li class="menu-item">
                     <a asp-action="FinancialSummary" asp-controller="Analytics" class="menu-link">
                         <div data-i18n="Financial Summary">@DashboardText.FinancialSummary</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a asp-action="FinancialAnalytics" asp-controller="Analytics" class="menu-link">
+                        <div data-i18n="Financial Analytics">Financial Analytics</div>
                     </a>
                 </li>
                 <li class="menu-item">

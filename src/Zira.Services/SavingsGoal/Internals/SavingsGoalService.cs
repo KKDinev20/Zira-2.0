@@ -60,7 +60,6 @@ namespace Zira.Services.SavingsGoal.Internals
 
             existingGoal.Name = goal.Name;
             existingGoal.TargetAmount = goal.TargetAmount;
-            existingGoal.CurrentAmount = goal.CurrentAmount;
             existingGoal.TargetDate = goal.TargetDate;
 
             await this.context.SaveChangesAsync();
@@ -119,6 +118,15 @@ namespace Zira.Services.SavingsGoal.Internals
             }
 
             return savingsGoals;
+        }
+
+        public async Task<List<Data.Models.SavingsGoal>> GetSavingsGoalsAsync(Guid userId)
+        {
+            var query = this.context.SavingsGoals.Where(t => t.UserId == userId);
+
+            return await query
+                .OrderByDescending(t => t.CreatedAt)
+                .ToListAsync();
         }
 
         public async Task<int> GetTotalSavingsGoalsAsync(Guid userId)

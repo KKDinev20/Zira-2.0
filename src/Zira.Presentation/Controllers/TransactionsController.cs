@@ -189,6 +189,8 @@ public class TransactionsController : Controller
     [HttpGet("/set-aside-savings/{transactionId}")]
     public async Task<IActionResult> SetAsideForSavings(Guid transactionId)
     {
+        await this.SetGlobalUserInfoAsync(this.userManager, this.entityContext);
+
         var user = await this.userManager.GetUserAsync(this.User);
         if (user == null)
         {
@@ -223,6 +225,8 @@ public class TransactionsController : Controller
     [HttpGet("/choose-savings-goal/{transactionId}")]
     public async Task<IActionResult> ChooseSavingsGoal(Guid transactionId)
     {
+        await this.SetGlobalUserInfoAsync(this.userManager, this.entityContext);
+
         var user = await this.userManager.GetUserAsync(this.User);
         if (user == null)
         {
