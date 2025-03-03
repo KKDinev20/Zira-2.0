@@ -1,8 +1,10 @@
-﻿@{
-    var monthlyTotals = ViewBag.MonthlyTotals as List<decimal> ?? new List<decimal> { 0, 0, 0, 0, 0, 0 };
-    var monthLabels = ViewBag.MonthLabels as List<string> ?? new List<string> { "Jan", "Feb", "Mar", "Apr", "May", "Jun" };
-    var weeklyTotal = (decimal)(ViewBag.WeeklyTotal ?? 0);
-    var selectedType = ViewBag.SelectedType as string ?? "Income";
+﻿@model DashboardViewModel
+
+@{
+    var monthlyTotals = Model.MonthlyTotals ?? new List<decimal> { 0, 0, 0, 0, 0, 0 };
+    var monthLabels = Model.MonthLabels ?? new List<string> { "Jan", "Feb", "Mar", "Apr", "May", "Jun" };
+    var weeklyTotal = Model.WeeklyTotal;
+    var selectedType = Model.SelectedType;
 }
 
 <div class="card h-100">
@@ -29,23 +31,16 @@
                     </div>
                     <div>
                         <small class="text-muted d-block">@TransactionText.TotalBalance</small>
-                        <div class="d-flex align-items-center">
-                            <h6 class="mb-0 me-1">$@monthlyTotals.Sum().ToString("N0")</h6>
-                        </div>
+                        <h6 class="mb-0 me-1">$@monthlyTotals.Sum().ToString("N0")</h6>
                     </div>
                 </div>
                 <div id="balancesChart"></div>
                 <div class="d-flex justify-content-center pt-4 gap-2">
-                    <div class="flex-shrink-0">
-                        <div id="expensesOfTheWeek"></div>
-                    </div>
                     <div>
                         <p class="mb-n1 mt-1">
-                            @(selectedType == "Expense" ? $"{@TransactionText.ExpensesThisWeek}" : $"{@TransactionText.IncomeThisWeek}")
+                            @(selectedType == "Expense" ? @TransactionText.ExpensesThisWeek : @TransactionText.IncomeThisWeek)
                         </p>
-                        <small class="text-muted">
-                            $@weeklyTotal.ToString("N0") @TransactionText.thisWeek
-                        </small>
+                        <small class="text-muted">$@weeklyTotal.ToString("N0") @TransactionText.thisWeek</small>
                     </div>
                 </div>
             </div>

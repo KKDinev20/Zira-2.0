@@ -1,6 +1,8 @@
-﻿@{
-    var monthlyIncomes = ViewBag.MonthlyIncomes as List<decimal> ?? new List<decimal>(new decimal[12]);
-    var monthlyExpenses = ViewBag.MonthlyExpenses as List<decimal> ?? new List<decimal>(new decimal[12]);
+﻿@model DashboardViewModel
+
+@{
+    var monthlyIncomes = Model.MonthlyIncomes ?? new List<decimal>(new decimal[12]);
+    var monthlyExpenses = Model.MonthlyExpenses ?? new List<decimal>(new decimal[12]);
 }
 
 <div class="col-12 col-lg-8 order-2 order-md-3 order-lg-2 mb-4">
@@ -15,11 +17,9 @@
             <div class="col-md-4">
                 <div class="card-body">
                     <div class="text-center">
-                        <div class="dropdown">
-                            <button class="btn btn-sm btn-outline-primary" id="yearSelector">
-                                @DateTime.UtcNow.Year
-                            </button>
-                        </div>
+                        <button class="btn btn-sm btn-outline-primary" id="yearSelector">
+                            @DateTime.UtcNow.Year
+                        </button>
                     </div>
                 </div>
                 <div id="growthsChart"></div>
@@ -142,8 +142,8 @@
 
         const growthChartEl = document.querySelector('#growthsChart');
 
-        const totalIncome = Number(@Html.Raw(Json.Serialize(ViewBag.TotalIncome ?? 0)));
-        const totalExpenses = Number(@Html.Raw(Json.Serialize(ViewBag.TotalExpenses ?? 0)));
+        const totalIncome = Number(@Html.Raw(Json.Serialize(Model.TotalIncome)));
+        const totalExpenses = Number(@Html.Raw(Json.Serialize(Model.TotalExpenses)));
 
 
         const savingsGrowth = totalIncome > 0 ? ((totalIncome - totalExpenses) / totalIncome) * 100 : 0;

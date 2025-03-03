@@ -1,10 +1,11 @@
-﻿@using Zira.Data.Enums
-@using Zira.Services.Transaction.Models
+﻿@model DashboardViewModel
+
 @{
-    var topCategories = ViewBag.TopExpenseCategories as List<CategoryExpenseSummary> ?? new List<CategoryExpenseSummary>();
+    var topCategories = Model.TopExpenseCategories;
     var labels = topCategories.Select(s => s.Category.GetLocalizedExpenseCategory()).ToList();
     var series = topCategories.Select(s => s.TotalAmount).ToList();
 }
+
 <div class="card h-100">
     <div class="card-header d-flex align-items-center justify-content-between pb-0">
         <div class="card-title mb-0">
@@ -19,32 +20,19 @@
         <ul class="p-0 m-0">
             @foreach (var summary in topCategories)
             {
-                string iconClass = "";
-                switch (summary.Category)
+                string iconClass = summary.Category switch
                 {
-                    case Categories.Food:
-                        iconClass = "bx bx-food-menu";
-                        break;
-                    case Categories.Utilities:
-                        iconClass = "bx bx-bulb";
-                        break;
-                    case Categories.Transportation:
-                        iconClass = "bx bx-car";
-                        break;
-                    case Categories.Healthcare:
-                        iconClass = "bx bx-heart";
-                        break;
-                    case Categories.Bills:
-                        iconClass = "bx bx-receipt";
-                        break;
-                    default:
-                        iconClass = "bx bx-folder";
-                        break;
-                }
+                    Categories.Food => "bx bx-food-menu",
+                    Categories.Utilities => "bx bx-bulb",
+                    Categories.Transportation => "bx bx-car",
+                    Categories.Healthcare => "bx bx-heart",
+                    Categories.Bills => "bx bx-receipt",
+                    _ => "bx bx-folder"
+                };
 
                 <li class="d-flex mb-4 pb-1">
                     <div class="avatar flex-shrink-0 me-3">
-                        <span class="avatar-initial rounded bg-label-primary">
+                        <span class="avatar-initial rounded bg-label-warning">
                             <i class="@iconClass"></i>
                         </span>
                     </div>
@@ -62,6 +50,7 @@
         </ul>
     </div>
 </div>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -105,7 +94,7 @@
                                 fontFamily: 'Public Sans'
                             },
                             total: {
-                                show: true, 
+                                show: true,
                                 label: 'Total',
                                 formatter: function (w) {
                                     const total = w.globals.seriesTotals.reduce((a, b) => a + b, 0);
