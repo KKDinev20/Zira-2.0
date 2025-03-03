@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -39,45 +40,28 @@ public class AnalyticsController : Controller
         this.context = context;
     }
 
-    [HttpGet("/financial-summary")]
-    public async Task<IActionResult> FinancialSummary()
+    [HttpGet("/financial-overview")]
+    public async Task<IActionResult> FinancialOverview()
     {
         await this.SetGlobalUserInfoAsync(this.userManager, this.context);
 
         var user = await this.userManager.GetUserAsync(this.User);
-        if (user == null)
-        {
-            return this.RedirectToAction("Login", "Authentication");
-        }
 
         var topExpenses = await this.expenseAnalyticsService.GetTopExpenseCategoriesAsync(user.Id);
         var savingTips = this.expenseAnalyticsService.GetCostSavingTips(topExpenses);
+        var monthlyExpenses =
+            await this.expenseAnalyticsService.GetMonthlyExpensesAsync(user.Id, DateTime.UtcNow.Month);
 
-        var viewModel = new ExpenseAnalyticsViewModel
+        var expenseAnalytics = new ExpenseAnalyticsViewModel
         {
             TopExpenses = topExpenses,
             CostSavingTips = savingTips,
+            MonthlyExpenses = monthlyExpenses,
         };
 
-        return this.View(viewModel);
-    }
-
-    [HttpGet("/financial-analytics")]
-    public async Task<IActionResult> FinancialAnalytics()
-    {
-        await this.SetGlobalUserInfoAsync(this.userManager, this.context);
-
-        var user = await this.userManager.GetUserAsync(this.User);
-        if (user == null)
-        {
-            return this.RedirectToAction("Login", "Authentication");
-        }
-
         var transactions = await this.transactionService.GetUserTransactionsAsync(user.Id);
-
         var income = transactions.Where(t => t.Type == TransactionType.Income).Sum(t => t.Amount);
         var expenses = transactions.Where(t => t.Type == TransactionType.Expense).Sum(t => t.Amount);
-
         var savingsGoals = await this.savingsGoalService.GetSavingsGoalsAsync(user.Id);
         var totalSavings = savingsGoals.Sum(sg => sg.CurrentAmount);
         var netWorth = income - expenses + totalSavings;
@@ -91,41 +75,29 @@ public class AnalyticsController : Controller
                 Progress = sg.CurrentAmount / sg.TargetAmount * 100,
             }).ToList();
 
-        var netWorthTrend = transactions
-            .GroupBy(t => new { t.Date.Year, t.Date.Month })
-            .Select(
-                g => new NetWorthTrendModel
-                {
-                    Month = $"{g.Key.Month}/{g.Key.Year}",
-                    NetWorth = g.Where(t => t.Type == TransactionType.Income).Sum(t => t.Amount) -
-                               g.Where(t => t.Type == TransactionType.Expense).Sum(t => t.Amount) +
-                               totalSavings,
-                })
-            .OrderBy(m => m.Month)
-            .ToList();
-
-        var viewModel = new FinancialSummaryModel
+        var financialSummary = new FinancialSummaryModel
         {
             TotalIncome = income,
             TotalExpenses = expenses,
             NetWorth = netWorth,
             SavingsGoals = savingsProgress,
-            NetWorthTrend = netWorthTrend,
+        };
+
+        var viewModel = new AnalyticsViewModel
+        {
+            ExpenseAnalytics = expenseAnalytics,
+            FinancialSummary = financialSummary,
         };
 
         return this.View(viewModel);
     }
 
     [HttpGet("/expense-comparison")]
-    public async Task<IActionResult> Comparison()
+    public async Task<IActionResult> FinancialComparison()
     {
         await this.SetGlobalUserInfoAsync(this.userManager, this.context);
 
         var user = await this.userManager.GetUserAsync(this.User);
-        if (user == null)
-        {
-            return this.RedirectToAction("Login", "Authentication");
-        }
 
         var transactions = await this.transactionService.GetUserTransactionsAsync(user.Id);
 

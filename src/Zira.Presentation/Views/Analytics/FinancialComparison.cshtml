@@ -6,7 +6,7 @@
 }
 
 <div class="container-xxl flex-grow-1 container-p-y">
-    <h2 class="fw-bold mb-4">Expense Comparison</h2>
+    <h4 class="fw-bold py-3 mb-4 d-flex align-items-center gap-2">Expense Comparison</h4>
 
     <div class="card shadow-lg border-0 mb-4">
         <div class="card-header bg-white py-3 px-4">
@@ -40,9 +40,10 @@
             <h4 class="mb-0">Category-Based Spending</h4>
         </div>
         <div class="card-body p-4">
-            <canvas id="categoryChart"></canvas>
+            <div id="categoryChart"></div>
         </div>
     </div>
+
 
     <div class="card shadow-lg border-0 mt-4">
         <div class="card-header bg-white py-3 px-4">
@@ -71,58 +72,41 @@
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const ctx = document.getElementById('categoryChart').getContext('2d');
-        const myChart = new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: @Json.Serialize(Model.CategoryComparison.Select(x => x.Category)),
-                datasets: [{
-                    label: 'Total Amount',
-                    data: @Json.Serialize(Model.CategoryComparison.Select(x => x.TotalAmount)),
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.7)',
-                        'rgba(54, 162, 235, 0.7)',
-                        'rgba(255, 206, 86, 0.7)',
-                        'rgba(75, 192, 192, 0.7)',
-                        'rgba(153, 102, 255, 0.7)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)'
-                    ],
-                    borderWidth: 2
-                }]
+        var categoryChartOptions = {
+            chart: {
+                type: "donut",
+                height: 400
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            padding: 20,
-                            font: {
-                                size: 14
-                            }
-                        }
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                const value = context.raw;
-                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                const percentage = Math.round((value / total) * 100);
-                                return `${context.label}: $${value.toLocaleString()} (${percentage}%)`;
-                            }
-                        }
+            labels: @Json.Serialize(Model.CategoryComparison.Select(x => x.Category)),
+            series: @Json.Serialize(Model.CategoryComparison.Select(x => x.TotalAmount)),
+            colors: [
+                "#ff6384", "#36a2eb", "#ffce56", "#4bc0c0",
+                "#9966ff", "#ff9f40", "#ff6384", "#1abc9c",
+                "#f39c12", "#7f8c8d"
+            ],
+            legend: {
+                position: "bottom"
+            },
+            dataLabels: {
+                enabled: true,
+                formatter: function (val) {
+                    return parseInt(val) + "%";
+                }
+            },
+            tooltip: {
+                y: {
+                    formatter: function(value) {
+                        return "$" + value.toLocaleString();
                     }
                 }
             }
-        });
+        };
+
+        var categoryChart = new ApexCharts(document.querySelector("#categoryChart"), categoryChartOptions);
+        categoryChart.render();
+
     });
 </script>

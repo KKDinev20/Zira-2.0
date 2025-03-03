@@ -7,6 +7,7 @@ using Zira.Common;
 using Zira.Data;
 using Zira.Data.Enums;
 using Zira.Services.Analytics.Contracts;
+using Zira.Services.Analytics.Models;
 using Zira.Services.Transaction.Models;
 
 namespace Zira.Services.Analytics.Internals
@@ -216,6 +217,20 @@ namespace Zira.Services.Analytics.Internals
             }
 
             return tips;
+        }
+
+        public async Task<List<MonthlyExpenseSummary>> GetMonthlyExpensesAsync(Guid userId, int year)
+        {
+            return await this.context.Transactions
+                .Where(t => t.UserId == userId && t.Date.Year == year && t.Type == TransactionType.Expense)
+                .GroupBy(t => t.Date.Month)
+                .Select(g => new MonthlyExpenseSummary
+                {
+                    Month = g.Key.ToString(),
+                    TotalAmount = g.Sum(t => t.Amount),
+                })
+                .OrderBy(g => g.Month)
+                .ToListAsync();
         }
 
         private void AddTips(Categories category, string[] tipsToAdd)
