@@ -2,23 +2,27 @@
 
 @{
     Layout = "Shared/_AnalyticsLayout";
-    ViewData["Title"] = @AnalyticsText.FinancialOverview;
+    ViewData["Title"] = @AnalyticsText.FinancialComparison;
 }
 
 <div class="container-xxl flex-grow-1 container-p-y">
-    <h4 class="fw-bold py-3 mb-4 d-flex align-items-center gap-2">Expense Comparison</h4>
+    <h4 class="fw-bold py-3 mb-4 d-flex align-items-center gap-2">
+        <i class='bx bx-chart'></i>@AnalyticsText.FinancialComparison
+    </h4>
 
     <div class="card shadow-lg border-0 mb-4">
         <div class="card-header bg-white py-3 px-4">
-            <h4 class="mb-0">Monthly Comparison</h4>
+            <h5 class="mb-0 d-flex align-items-center gap-2">
+                <i class='bx bx-calendar' ></i> @AnalyticsText.MonthlyComparison
+            </h5>
         </div>
         <div class="card-body p-4">
             <table class="table table-responsive">
                 <thead>
                 <tr>
-                    <th class="fw-medium">Month</th>
-                    <th class="fw-medium">Income</th>
-                    <th class="fw-medium">Expenses</th>
+                    <th class="fw-medium">@AnalyticsText.Month</th>
+                    <th class="fw-medium">@AnalyticsText.Income</th>
+                    <th class="fw-medium">@AnalyticsText.Expenses</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -37,7 +41,9 @@
 
     <div class="card shadow-lg border-0">
         <div class="card-header bg-white py-3 px-4">
-            <h4 class="mb-0">Category-Based Spending</h4>
+            <h5 class="mb-0 d-flex align-items-center gap-2">
+                <i class='bx bx-category' ></i> @AnalyticsText.CategoryBased
+            </h5>
         </div>
         <div class="card-body p-4">
             <div id="categoryChart"></div>
@@ -47,14 +53,16 @@
 
     <div class="card shadow-lg border-0 mt-4">
         <div class="card-header bg-white py-3 px-4">
-            <h4 class="mb-0">Monthly Savings Rate</h4>
+            <h5 class="mb-0 d-flex align-items-center gap-2">
+                <i class='bx bx-money' ></i> @AnalyticsText.MonthlySavingsRate
+            </h5>
         </div>
         <div class="card-body p-4">
             <table class="table">
                 <thead>
                 <tr>
-                    <th>Month</th>
-                    <th>Savings Rate (%)</th>
+                    <th>@AnalyticsText.Month</th>
+                    <th>@AnalyticsText.SavingsRate (%)</th>
                 </tr>
                 </thead>
                 <tbody>

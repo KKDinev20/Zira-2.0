@@ -60,6 +60,33 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Действия.
+        /// </summary>
+        public static string Actions {
+            get {
+                return ResourceManager.GetString("Actions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Добавяване на нов фонд.
+        /// </summary>
+        public static string AddNewGoal {
+            get {
+                return ResourceManager.GetString("AddNewGoal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Откажи.
+        /// </summary>
+        public static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Създаване на фонд.
         /// </summary>
         public static string CreateGoal {
@@ -78,6 +105,15 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Текуща сума.
+        /// </summary>
+        public static string CurrentAmount {
+            get {
+                return ResourceManager.GetString("CurrentAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Изтриване.
         /// </summary>
         public static string Delete {
@@ -87,11 +123,38 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Изтриване на целта за спестяване.
+        /// </summary>
+        public static string DeleteSavingsGoal {
+            get {
+                return ResourceManager.GetString("DeleteSavingsGoal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Сигурни ли сте, че искате да изтриете фонда за спестяване: .
+        /// </summary>
+        public static string DeleteWarning {
+            get {
+                return ResourceManager.GetString("DeleteWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Промяна.
         /// </summary>
         public static string Edit {
             get {
                 return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Редактиране на целта за спестяване.
+        /// </summary>
+        public static string EditSavingsGoal {
+            get {
+                return ResourceManager.GetString("EditSavingsGoal", resourceCulture);
             }
         }
         
@@ -110,6 +173,33 @@ namespace Zira.Common {
         public static string NewSavingsGoal {
             get {
                 return ResourceManager.GetString("NewSavingsGoal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Все още няма поставени цели за спестяване. Започнете да спестявате още днес!.
+        /// </summary>
+        public static string NoSavingsMessage {
+            get {
+                return ResourceManager.GetString("NoSavingsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Прогрес.
+        /// </summary>
+        public static string Progress {
+            get {
+                return ResourceManager.GetString("Progress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Запазване на промените.
+        /// </summary>
+        public static string SaveChanges {
+            get {
+                return ResourceManager.GetString("SaveChanges", resourceCulture);
             }
         }
         

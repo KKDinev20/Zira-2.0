@@ -7,12 +7,14 @@
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="col-xl-8">
+            <div class="col-xl-12">
                 <div class="card mb-4 shadow-sm">
                     <div class="card-header text-center text-dark d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">@SavingsGoalText.SavingsGoals</h5>
+                        <h5 class="mb-0 d-flex align-items-center gap-2">
+                             <i class='bx bxs-bank'></i>@SavingsGoalText.SavingsGoals
+                        </h5>
                         <a asp-action="CreateSavingsGoal" asp-controller="SavingsGoal" class="btn btn-success">
-                            <i class="bx bx-plus"></i> Add New Goal
+                            <i class="bx bx-plus"></i> @SavingsGoalText.AddNewGoal
                         </a>
                     </div>
                     @if (TempData["SuccessMessage"] != null)
@@ -26,19 +28,19 @@
                     <div class="card-body">
                         @if (!Model.Goals.Any())
                         {
-                            <p class="text-center">No savings goals set yet. Start saving today!</p>
+                            <p class="text-center">@SavingsGoalText.NoSavingsMessage</p>
                         }
                         else
                         {
                             <table class="table table-striped">
                                 <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Progress</th>
-                                    <th>Target Amount</th>
-                                    <th>Current Amount</th>
-                                    <th>Target Date</th>
-                                    <th>Actions</th>
+                                    <th>@SavingsGoalText.GoalName</th>
+                                    <th>@SavingsGoalText.Progress</th>
+                                    <th>@SavingsGoalText.TargetAmount</th>
+                                    <th>@SavingsGoalText.CurrentAmount</th>
+                                    <th>@SavingsGoalText.TargetDate</th>
+                                    <th>@SavingsGoalText.Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -58,8 +60,19 @@
                                         <td>$@goal.CurrentAmount.ToString("0.00")</td>
                                         <td>@goal.TargetDate?.ToString("MMMM dd, yyyy")</td>
                                         <td>
-                                            <a href="@Url.Action("EditSavingsGoal", "SavingsGoal", new { id = goal.Id })" class="btn btn-primary btn-sm">@SavingsGoalText.Edit</a>
-                                            <a href="@Url.Action("DeleteSavingsGoal", "SavingsGoal", new { id = goal.Id })" class="btn btn-danger btn-sm">@SavingsGoalText.Delete</a>
+                                            <div class="dropdown">
+                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <a href="@Url.Action("EditSavingsGoal", "SavingsGoal", new { id = goal.Id })" class="dropdown-item">
+                                                        <i class="bx bx-edit-alt me-1"></i>@SavingsGoalText.Edit
+                                                    </a>
+                                                    <a href="@Url.Action("DeleteSavingsGoal", "SavingsGoal", new { id = goal.Id })" class="dropdown-item">
+                                                        <i class="bx bx-trash me-1"></i>@SavingsGoalText.Delete
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                 }

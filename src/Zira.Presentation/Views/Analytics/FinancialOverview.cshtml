@@ -102,7 +102,9 @@
             <div class="col-md-6">
                 <div class="card shadow-lg border-0">
                     <div class="card-header bg-white py-3 px-4">
-                        <h4 class="mb-0">Income vs Expenses</h4>
+                        <h5 class="mb-0 d-flex align-items-center gap-2">
+                            <i class='bx bx-credit-card-alt'></i> @TransactionText.IncomeVsExpenses
+                        </h5>
                     </div>
                     <div class="card-body p-4">
                         <div id="incomeExpensesChart"></div>
@@ -113,7 +115,9 @@
             <div class="col-md-6">
                 <div class="card shadow-lg border-0 mt-4">
                     <div class="card-header bg-white py-3 px-4">
-                        <h4 class="mb-0">Savings Goal Progress</h4>
+                        <h5 class="mb-0 d-flex align-items-center gap-2">
+                            <i class='bx bx-line-chart'></i> @AnalyticsText.SavingsGoalProgress
+                        </h5>
                     </div>
                     <div class="card-body p-4">
                         @foreach (var goal in Model.FinancialSummary.SavingsGoals)
@@ -142,13 +146,15 @@
 
                 <div class="card shadow-lg border-0 mt-4">
                     <div class="card-header bg-white py-3 px-4">
-                        <h4 class="mb-0">Net Worth</h4>
+                        <h5 class="mb-0 d-flex align-items-center gap-2">
+                            <i class='bx bx-wallet' ></i> @AnalyticsText.NetWorth
+                        </h5>
                     </div>
                     <div class="card-body p-4 text-center">
                         <div class="fs-4 fw-bold text-primary mb-2">
                             @Model.FinancialSummary.NetWorth.ToString("C")
                         </div>
-                        <div class="text-muted">Total Net Worth</div>
+                        <div class="text-muted">@AnalyticsText.TotalNetWorth</div>
                     </div>
                 </div>
             </div>
@@ -170,11 +176,11 @@
                 }
             },
             series: [{
-                name: 'Amount',
+                name: 'Сума',
                 data: [income, expenses]
             }],
             xaxis: {
-                categories: ['Income', 'Expenses'],
+                categories: ['Приходи', 'Разходи'],
                 labels: {
                     style: {
                         colors: ['#2885a7', '#dc3545']
@@ -188,7 +194,7 @@
                     }
                 },
                 title: {
-                    text: 'Amount ($)'
+                    text: 'Сума ($)'
                 }
             },
             colors: ['#2885a7', '#dc3545'],

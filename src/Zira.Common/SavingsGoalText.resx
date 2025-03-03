@@ -45,4 +45,34 @@
     <data name="CreateSavingsGoal" xml:space="preserve">
         <value>Създаване на нов спестовен фонд</value>
     </data>
+    <data name="AddNewGoal" xml:space="preserve">
+        <value>Добавяване на нов фонд</value>
+    </data>
+    <data name="NoSavingsMessage" xml:space="preserve">
+        <value>Все още няма поставени цели за спестяване. Започнете да спестявате още днес!</value>
+    </data>
+    <data name="Progress" xml:space="preserve">
+        <value>Прогрес</value>
+    </data>
+    <data name="CurrentAmount" xml:space="preserve">
+        <value>Текуща сума</value>
+    </data>
+    <data name="Actions" xml:space="preserve">
+        <value>Действия</value>
+    </data>
+    <data name="Cancel" xml:space="preserve">
+        <value>Откажи</value>
+    </data>
+    <data name="EditSavingsGoal" xml:space="preserve">
+        <value>Редактиране на целта за спестяване</value>
+    </data>
+    <data name="DeleteSavingsGoal" xml:space="preserve">
+        <value>Изтриване на целта за спестяване</value>
+    </data>
+    <data name="SaveChanges" xml:space="preserve">
+        <value>Запазване на промените</value>
+    </data>
+    <data name="DeleteWarning" xml:space="preserve">
+        <value>Сигурни ли сте, че искате да изтриете фонда за спестяване: </value>
+    </data>
 </root>

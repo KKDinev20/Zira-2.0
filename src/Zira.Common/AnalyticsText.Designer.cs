@@ -105,6 +105,15 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Разходи по категории.
+        /// </summary>
+        public static string CategoryBased {
+            get {
+                return ResourceManager.GetString("CategoryBased", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Проверете за данъчни облекчения, свързани с разходите за грижи за деца..
         /// </summary>
         public static string ChildcareTipFive {
@@ -294,6 +303,24 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Разходи.
+        /// </summary>
+        public static string Expenses {
+            get {
+                return ResourceManager.GetString("Expenses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Финансово сравнение.
+        /// </summary>
+        public static string FinancialComparison {
+            get {
+                return ResourceManager.GetString("FinancialComparison", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Финансов отчет.
         /// </summary>
         public static string FinancialOverview {
@@ -438,6 +465,15 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Приход.
+        /// </summary>
+        public static string Income {
+            get {
+                return ResourceManager.GetString("Income", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Търсете оферти от няколко доставчици..
         /// </summary>
         public static string InsuranceTipFive {
@@ -479,6 +515,42 @@ namespace Zira.Common {
         public static string InsuranceTipTwo {
             get {
                 return ResourceManager.GetString("InsuranceTipTwo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Месец.
+        /// </summary>
+        public static string Month {
+            get {
+                return ResourceManager.GetString("Month", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Месечно сравнение.
+        /// </summary>
+        public static string MonthlyComparison {
+            get {
+                return ResourceManager.GetString("MonthlyComparison", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Месечна ставка на спестяванията.
+        /// </summary>
+        public static string MonthlySavingsRate {
+            get {
+                return ResourceManager.GetString("MonthlySavingsRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Нетна стойност.
+        /// </summary>
+        public static string NetWorth {
+            get {
+                return ResourceManager.GetString("NetWorth", resourceCulture);
             }
         }
         
@@ -537,6 +609,24 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Напредък на фонда за спестяване.
+        /// </summary>
+        public static string SavingsGoalProgress {
+            get {
+                return ResourceManager.GetString("SavingsGoalProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Степен на спестяване.
+        /// </summary>
+        public static string SavingsRate {
+            get {
+                return ResourceManager.GetString("SavingsRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Преглеждайте и коригирайте целите за спестяване на тримесечие..
         /// </summary>
         public static string SavingsTipFive {
@@ -587,6 +677,15 @@ namespace Zira.Common {
         public static string TopExpenses {
             get {
                 return ResourceManager.GetString("TopExpenses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Обща нетна стойност.
+        /// </summary>
+        public static string TotalNetWorth {
+            get {
+                return ResourceManager.GetString("TotalNetWorth", resourceCulture);
             }
         }
         

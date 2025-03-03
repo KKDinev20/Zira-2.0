@@ -242,4 +242,37 @@
     <data name="OtherTipFive" xml:space="preserve">
         <value>Обмислете въвеждането на „период на изчакване“ за импулсивни покупки.</value>
     </data>
+    <data name="MonthlyComparison" xml:space="preserve">
+        <value>Месечно сравнение</value>
+    </data>
+    <data name="Month" xml:space="preserve">
+        <value>Месец</value>
+    </data>
+    <data name="Income" xml:space="preserve">
+        <value>Приход</value>
+    </data>
+    <data name="Expenses" xml:space="preserve">
+        <value>Разходи</value>
+    </data>
+    <data name="CategoryBased" xml:space="preserve">
+        <value>Разходи по категории</value>
+    </data>
+    <data name="MonthlySavingsRate" xml:space="preserve">
+        <value>Месечна ставка на спестяванията</value>
+    </data>
+    <data name="SavingsRate" xml:space="preserve">
+        <value>Степен на спестяване</value>
+    </data>
+    <data name="SavingsGoalProgress" xml:space="preserve">
+        <value>Напредък на фонда за спестяване</value>
+    </data>
+    <data name="NetWorth" xml:space="preserve">
+        <value>Нетна стойност</value>
+    </data>
+    <data name="TotalNetWorth" xml:space="preserve">
+        <value>Обща нетна стойност</value>
+    </data>
+    <data name="FinancialComparison" xml:space="preserve">
+        <value>Финансово сравнение</value>
+    </data>
 </root>
