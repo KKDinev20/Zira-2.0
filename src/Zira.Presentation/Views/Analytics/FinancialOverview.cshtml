@@ -5,13 +5,13 @@
     ViewData["Title"] = @AnalyticsText.FinancialOverview;
 }
 
-<div class="container-xxl flex-grow-1 container-p-y">
-    <h4 class="fw-bold py-3 mb-4 d-flex align-items-center gap-2">
+<div class="container-xxl flex-grow-1 container-p-y" data-test="financial-overview-container">
+    <h4 class="fw-bold py-3 mb-4 d-flex align-items-center gap-2" data-test="financial-overview-header">
         <i class="bx bx-pie-chart-alt text-primary"></i> @AnalyticsText.FinancialOverview
     </h4>
 
     <div class="row g-4">
-        <div class="col-lg-6">
+        <div class="col-lg-6" data-test="top-expenses-section">
             <div class="card shadow-lg border-0">
                 <div class="card-header bg-white py-3 px-4">
                     <h5 class="mb-0 d-flex align-items-center gap-2">
@@ -19,8 +19,7 @@
                     </h5>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-hover border-2 rounded-lg">
-                        <thead>
+                    <table class="table table-hover border-2 rounded-lg" data-test="top-expenses-table">                        <thead>
                         <tr>
                             <th class="fw-medium text-nowrap">@TransactionText.Category</th>
                             <th class="fw-medium text-nowrap">@TransactionText.Amount</th>
@@ -47,7 +46,7 @@
             </div>
         </div>
 
-        <div class="col-lg-6">
+        <div class="col-lg-6" data-test="cost-saving-tips-section">
             <div class="card shadow-lg border-0">
                 <div class="card-header bg-white py-3 px-4">
                     <h5 class="mb-0 d-flex align-items-center gap-2">
@@ -55,7 +54,8 @@
                     </h5>
                 </div>
                 <div class="card-body">
-                    <div class="accordion" id="tipsAccordion">
+                    <div class="accordion" id="tipsAccordion" data-test="cost-saving-tips-accordion">
+                        
                         @foreach (var category in Model.ExpenseAnalytics.TopExpenses)
                         {
                             <div class="accordion-item">
@@ -100,20 +100,21 @@
 
         <div class="row g-4">
             <div class="col-md-6">
-                <div class="card shadow-lg border-0">
+                <div class="card shadow-lg border-0" data-test="income-expenses-chart-section">
+                    
                     <div class="card-header bg-white py-3 px-4">
                         <h5 class="mb-0 d-flex align-items-center gap-2">
                             <i class='bx bx-credit-card-alt'></i> @TransactionText.IncomeVsExpenses
                         </h5>
                     </div>
-                    <div class="card-body p-4">
+                    <div class="card-body p-4" data-test="income-expenses-chart">
                         <div id="incomeExpensesChart"></div>
                     </div>
                 </div>
             </div>
 
             <div class="col-md-6">
-                <div class="card shadow-lg border-0 mt-4">
+                <div class="card shadow-lg border-0 mt-4" data-test="savings-goals-section">
                     <div class="card-header bg-white py-3 px-4">
                         <h5 class="mb-0 d-flex align-items-center gap-2">
                             <i class='bx bx-line-chart'></i> @AnalyticsText.SavingsGoalProgress
@@ -144,7 +145,7 @@
                     </div>
                 </div>
 
-                <div class="card shadow-lg border-0 mt-4">
+                <div class="card shadow-lg border-0 mt-4" data-test="net-worth-section">
                     <div class="card-header bg-white py-3 px-4">
                         <h5 class="mb-0 d-flex align-items-center gap-2">
                             <i class='bx bx-wallet' ></i> @AnalyticsText.NetWorth

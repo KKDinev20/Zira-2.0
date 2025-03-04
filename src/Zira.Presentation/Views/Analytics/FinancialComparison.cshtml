@@ -5,19 +5,19 @@
     ViewData["Title"] = @AnalyticsText.FinancialComparison;
 }
 
-<div class="container-xxl flex-grow-1 container-p-y">
-    <h4 class="fw-bold py-3 mb-4 d-flex align-items-center gap-2">
+<div class="container-xxl flex-grow-1 container-p-y" data-test="expense-comparison-container">
+    <h4 class="fw-bold py-3 mb-4 d-flex align-items-center gap-2" data-test="expense-comparison-header">
         <i class='bx bx-chart'></i>@AnalyticsText.FinancialComparison
     </h4>
 
-    <div class="card shadow-lg border-0 mb-4">
+    <div class="card shadow-lg border-0 mb-4" data-test="monthly-comparison-section">
         <div class="card-header bg-white py-3 px-4">
             <h5 class="mb-0 d-flex align-items-center gap-2">
                 <i class='bx bx-calendar' ></i> @AnalyticsText.MonthlyComparison
             </h5>
         </div>
         <div class="card-body p-4">
-            <table class="table table-responsive">
+            <table class="table table-responsive" data-test="monthly-comparison-table">
                 <thead>
                 <tr>
                     <th class="fw-medium">@AnalyticsText.Month</th>
@@ -39,7 +39,7 @@
         </div>
     </div>
 
-    <div class="card shadow-lg border-0">
+    <div class="card shadow-lg border-0" data-test="category-chart-section">
         <div class="card-header bg-white py-3 px-4">
             <h5 class="mb-0 d-flex align-items-center gap-2">
                 <i class='bx bx-category' ></i> @AnalyticsText.CategoryBased
@@ -51,14 +51,14 @@
     </div>
 
 
-    <div class="card shadow-lg border-0 mt-4">
+    <div class="card shadow-lg border-0 mt-4" data-test="savings-rate-section">
         <div class="card-header bg-white py-3 px-4">
             <h5 class="mb-0 d-flex align-items-center gap-2">
                 <i class='bx bx-money' ></i> @AnalyticsText.MonthlySavingsRate
             </h5>
         </div>
         <div class="card-body p-4">
-            <table class="table">
+            <table class="table" data-test="savings-rate-table">
                 <thead>
                 <tr>
                     <th>@AnalyticsText.Month</th>
