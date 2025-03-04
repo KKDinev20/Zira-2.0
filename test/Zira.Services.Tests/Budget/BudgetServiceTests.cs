@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Xunit;
 using Zira.Data.Enums;
 using Zira.Services.Budget.Internals;
 
@@ -271,6 +272,152 @@ public class BudgetServiceTests
 
         // Assert
         result.Should().BeNull();
+        await dbContext.DisposeAsync();
+    }
+
+    [Fact]
+    public async Task AddBudgetAsync_OnNewBudget_ShouldReturnTrue()
+    {
+        // Arrange
+        var dbContext = TestHelpers.CreateDbContext();
+        var userId = Guid.NewGuid();
+        var budget = new Data.Models.Budget
+        {
+            Id = Guid.NewGuid(),
+            UserId = userId,
+            Amount = 1500.00m,
+            Category = Categories.Food,
+            WarningThreshold = 750.00m,
+            Month = new DateTime(2025, 4, 1)
+        };
+
+        var budgetService = new BudgetService(dbContext);
+
+        // Act
+        var result = await budgetService.AddBudgetAsync(budget);
+
+        // Assert
+        result.Should().BeTrue();
+        dbContext.Budgets.Should().ContainEquivalentOf(budget);
+        await dbContext.DisposeAsync();
+    }
+
+    [Fact]
+    public async Task AddBudgetAsync_OnExistingBudget_ShouldReturnFalse()
+    {
+        // Arrange
+        var dbContext = TestHelpers.CreateDbContext();
+        var userId = Guid.NewGuid();
+        var budget = new Data.Models.Budget
+        {
+            Id = Guid.NewGuid(),
+            UserId = userId,
+            Amount = 1500.00m,
+            Category = Categories.Food,
+            WarningThreshold = 750.00m,
+            Month = new DateTime(2025, 4, 1)
+        };
+
+        await dbContext.Budgets.AddAsync(budget);
+        await dbContext.SaveChangesAsync();
+
+        var budgetService = new BudgetService(dbContext);
+
+        // Act
+        var result = await budgetService.AddBudgetAsync(budget);
+
+        // Assert
+        result.Should().BeFalse();
+        await dbContext.DisposeAsync();
+    }
+
+    [Fact]
+    public async Task UpdateBudgetAsync_OnValidBudget_ShouldReturnTrue()
+    {
+        // Arrange
+        var dbContext = TestHelpers.CreateDbContext();
+        var userId = Guid.NewGuid();
+        var budget = new Data.Models.Budget
+        {
+            Id = Guid.NewGuid(),
+            UserId = userId,
+            Amount = 1500.00m,
+            Category = Categories.Food,
+            WarningThreshold = 750.00m,
+            Month = new DateTime(2025, 4, 1)
+        };
+
+        await dbContext.Budgets.AddAsync(budget);
+        await dbContext.SaveChangesAsync();
+
+        var updatedBudget = new Data.Models.Budget
+        {
+            Id = budget.Id,
+            UserId = userId,
+            Amount = 2000.00m,
+            Category = Categories.Transportation,
+            WarningThreshold = 1000.00m,
+            Month = new DateTime(2025, 5, 1)
+        };
+
+        var budgetService = new BudgetService(dbContext);
+
+        // Act
+        var result = await budgetService.UpdateBudgetAsync(updatedBudget);
+
+        // Assert
+        result.Should().BeTrue();
+        var dbBudget = await dbContext.Budgets.FindAsync(budget.Id);
+        dbBudget.Should().BeEquivalentTo(updatedBudget, options => options.Excluding(b => b.Month));
+        dbBudget.Month.Should().Be(new DateTime(2025, 5, 1));
+        await dbContext.DisposeAsync();
+    }
+    
+    [Fact]
+    public async Task DeleteBudgetAsync_OnValidBudget_ShouldReturnTrue()
+    {
+        // Arrange
+        var dbContext = TestHelpers.CreateDbContext();
+        var userId = Guid.NewGuid();
+        var budget = new Data.Models.Budget
+        {
+            Id = Guid.NewGuid(),
+            UserId = userId,
+            Amount = 1500.00m,
+            Category = Categories.Food,
+            WarningThreshold = 750.00m,
+            Month = new DateTime(2025, 4, 1)
+        };
+
+        await dbContext.Budgets.AddAsync(budget);
+        await dbContext.SaveChangesAsync();
+
+        var budgetService = new BudgetService(dbContext);
+
+        // Act
+        var result = await budgetService.DeleteBudgetAsync(budget.Id, userId);
+
+        // Assert
+        result.Should().BeTrue();
+        dbContext.Budgets.Should().NotContain(budget);
+        await dbContext.DisposeAsync();
+    }
+
+    [Fact]
+    public async Task DeleteBudgetAsync_OnInvalidBudget_ShouldReturnFalse()
+    {
+        // Arrange
+        var dbContext = TestHelpers.CreateDbContext();
+        var userId = Guid.NewGuid();
+        var budgetId = Guid.NewGuid();
+
+        var budgetService = new BudgetService(dbContext);
+
+        // Act
+        var result = await budgetService.DeleteBudgetAsync(budgetId, userId);
+
+        // Assert
+        result.Should().BeFalse();
         await dbContext.DisposeAsync();
     }
 }

@@ -88,12 +88,14 @@
                 type: "donut",
                 height: 400
             },
-            labels: @Json.Serialize(Model.CategoryComparison.Select(x => x.Category)),
+            labels: @Json.Serialize(Model.CategoryComparison.Select(x => 
+            ((Categories)Enum.Parse(typeof(Categories), x.Category)).GetLocalizedExpenseCategory())),
             series: @Json.Serialize(Model.CategoryComparison.Select(x => x.TotalAmount)),
             colors: [
                 "#ff6384", "#36a2eb", "#ffce56", "#4bc0c0",
                 "#9966ff", "#ff9f40", "#ff6384", "#1abc9c",
-                "#f39c12", "#7f8c8d"
+                "#f39c12", "#7f8c8d", "#4169e1", "#32cd32",
+                "#da70d6", "#228b22"
             ],
             legend: {
                 position: "bottom"

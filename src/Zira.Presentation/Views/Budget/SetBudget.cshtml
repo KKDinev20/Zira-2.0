@@ -17,9 +17,8 @@ Layout = "Shared/_BudgetLayout";
                 </div>
                 <div class="card-body">
                     <form asp-action="SetBudget" method="post">
-                        <!-- Category -->
                         <div class="mb-3">
-                            <label class="form-label" for="Category">@BudgetText.BudgetCategory</label>
+                            <label class="form-label" asp-for="Category">@BudgetText.BudgetCategory</label>
                             <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="bx bx-briefcase"></i>
@@ -37,9 +36,8 @@ Layout = "Shared/_BudgetLayout";
                             <span class="text-danger" asp-validation-for="Category"></span>
                         </div>
 
-                        <!-- Amount -->
                         <div class="mb-3">
-                            <label class="form-label" asp-forfor="Amount">@BudgetText.BudgetAmount</label>
+                            <label class="form-label" asp-for="Amount">@BudgetText.BudgetAmount</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bx bx-wallet"></i></span>
                                 <input type="number" asp-for="Amount" class="form-control" step="0.01" placeholder="Enter amount" min="0.01" required/>
@@ -47,9 +45,8 @@ Layout = "Shared/_BudgetLayout";
                             <span class="text-danger" asp-validation-for="Amount"></span>
                         </div>
 
-                        <!-- Warning Threshold -->
                         <div class="mb-3">
-                            <label class="form-label" for="WarningThreshold">@BudgetText.WarningThreshold</label>
+                            <label class="form-label" asp-for="WarningThreshold">@BudgetText.WarningThreshold</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bx bx-bell"></i></span>
                                 <input type="number" asp-for="WarningThreshold" class="form-control" step="0.01" placeholder="Set warning threshold" min="0.01" required/>
@@ -57,9 +54,8 @@ Layout = "Shared/_BudgetLayout";
                             <span class="text-danger" asp-validation-for="WarningThreshold"></span>
                         </div>
 
-                        <!-- Month -->
                         <div class="mb-3">
-                            <label class="form-label" for="Month">@BudgetText.BudgetMonth</label>
+                            <label class="form-label" asp-for="Month">@BudgetText.BudgetMonth</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bx bx-calendar"></i></span>
                                 <input type="month" asp-for="Month" class="form-control" required/>
