@@ -20,16 +20,17 @@ builder.Services
             options.AccessDeniedPath = "/access-denied";
         });
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy(
-        Policies.UserPolicy,
-        policyBuilder =>
+builder.Services.AddAuthorization(
+    options =>
     {
-        policyBuilder.RequireAuthenticatedUser();
-        policyBuilder.AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme);
+        options.AddPolicy(
+            Policies.UserPolicy,
+            policyBuilder =>
+            {
+                policyBuilder.RequireAuthenticatedUser();
+                policyBuilder.AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme);
+            });
     });
-});
 
 builder.Services.AddHttpContextAccessor();
 
@@ -63,3 +64,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program
+{
+}
