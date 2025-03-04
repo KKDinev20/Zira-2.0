@@ -24,9 +24,4 @@
       <ProjectReference Include="..\..\src\Zira.Services\Zira.Services.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Analytics\" />
-      <Folder Include="SavingsGoal\" />
-    </ItemGroup>
-
 </Project>

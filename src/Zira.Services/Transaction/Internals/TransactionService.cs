@@ -306,20 +306,6 @@ public class TransactionService : ITransactionService
         return total;
     }
 
-    public async Task<decimal> GetTotalIncome(ApplicationUser user)
-    {
-        return await this.context.Transactions
-            .Where(t => t.UserId == user.Id && t.Type == TransactionType.Income)
-            .SumAsync(t => t.Amount);
-    }
-
-    public async Task<decimal> GetTotalExpenses(ApplicationUser user)
-    {
-        return await this.context.Transactions
-            .Where(t => t.UserId == user.Id && t.Type == TransactionType.Expense)
-            .SumAsync(t => t.Amount);
-    }
-
     public async Task<List<CategoryExpenseSummary>> GetTopExpenseCategoriesAsync(Guid userId, int top = 5)
     {
         var summaries = await this.context.Transactions

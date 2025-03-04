@@ -81,7 +81,7 @@ public class BudgetServiceTests
 
         var budgets = new List<Data.Models.Budget>
         {
-            new Data.Models.Budget
+            new()
             {
                 Id = Guid.NewGuid(),
                 UserId = userId,
@@ -90,7 +90,7 @@ public class BudgetServiceTests
                 WarningThreshold = 500.00m,
                 Month = DateTime.Now
             },
-            new Data.Models.Budget
+            new()
             {
                 Id = Guid.NewGuid(),
                 UserId = userId,
@@ -99,7 +99,7 @@ public class BudgetServiceTests
                 WarningThreshold = 1000.00m,
                 Month = DateTime.Now
             },
-            new Data.Models.Budget
+            new()
             {
                 Id = Guid.NewGuid(),
                 UserId = userId,
@@ -132,7 +132,7 @@ public class BudgetServiceTests
 
         var budgets = new List<Data.Models.Budget>
         {
-            new Data.Models.Budget
+            new()
             {
                 Id = Guid.NewGuid(),
                 UserId = userId,
@@ -141,7 +141,7 @@ public class BudgetServiceTests
                 WarningThreshold = 500.00m,
                 Month = new DateTime(2025, 1, 1)
             },
-            new Data.Models.Budget
+            new()
             {
                 Id = Guid.NewGuid(),
                 UserId = userId,
@@ -150,7 +150,7 @@ public class BudgetServiceTests
                 WarningThreshold = 1000.00m,
                 Month = new DateTime(2025, 2, 1)
             },
-            new Data.Models.Budget
+            new()
             {
                 Id = Guid.NewGuid(),
                 UserId = userId,
@@ -372,7 +372,7 @@ public class BudgetServiceTests
         dbBudget.Month.Should().Be(new DateTime(2025, 5, 1));
         await dbContext.DisposeAsync();
     }
-    
+
     [Fact]
     public async Task DeleteBudgetAsync_OnValidBudget_ShouldReturnTrue()
     {
