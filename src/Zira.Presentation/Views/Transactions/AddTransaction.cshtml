@@ -93,11 +93,15 @@
                                 <span id="transaction-date-icon" class="input-group-text">
                                     <i class="bx bx-calendar"></i>
                                 </span>
-                                <input asp-for="Date" type="date" class="form-control" id="transaction-date" required/>
+                                <input asp-for="Date"
+                                       type="date"
+                                       class="form-control date-picker-input"
+                                       id="transaction-date"
+                                       required
+                                       placeholder="Select date"/>
                                 <span asp-validation-for="Date" class="text-danger"></span>
                             </div>
                         </div>
-
                         <button type="submit" class="btn btn-primary">@TransactionText.AddTransaction</button>
                     </form>
                 </div>

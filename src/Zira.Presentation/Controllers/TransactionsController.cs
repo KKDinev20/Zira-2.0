@@ -55,7 +55,7 @@ public class TransactionsController : Controller
 
         if (!this.ModelState.IsValid)
         {
-            this.TempData["ErrorMessage"] = @TransactionText.IncomeVsExpenses;
+            this.TempData["ErrorMessage"] = @TransactionText.InvalidDetails;
             return this.RedirectToAction("TransactionList");
         }
 
