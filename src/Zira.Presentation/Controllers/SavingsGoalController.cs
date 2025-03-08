@@ -84,6 +84,7 @@ namespace Zira.Presentation.Controllers
                 TargetAmount = model.TargetAmount,
                 CurrentAmount = 0,
                 TargetDate = model.TargetDate,
+                Remark = model.Remark,
             };
 
             await this.savingsGoalService.AddSavingsGoalsAsync(goal);
@@ -115,6 +116,8 @@ namespace Zira.Presentation.Controllers
                 TargetAmount = goal.TargetAmount,
                 CurrentAmount = goal.CurrentAmount,
                 TargetDate = goal.TargetDate,
+                Remark = goal.Remark,
+
             };
 
             return this.View(model);

@@ -53,8 +53,8 @@
         <div class="card-header bg-white py-3 px-4">
             <h5>@TransactionText.Transactions</h5>
         </div>
-        <div class="table-responsive text-nowrap">
-            <table class="table table-responsive align-content-center justify-content-center">
+        <div class="table text-nowrap">
+            <table class="table table-responsive align-content-center justify-content-center text-center">
                 <thead>
                 <tr>
                     <th>@TransactionText.TransactionID</th>
@@ -71,9 +71,8 @@
                 @foreach (var transaction in Model.Transactions)
                 {
                     <tr>
-                        <td>@transaction.TransactionId</td>
+                        <td>#@transaction.TransactionId</td>
                         <td>
-                            <i class="fab fa-angular fa-lg text-danger me-3"></i>
                             <strong>@transaction.Type.GetLocalizedTransactionType()</strong>
                         </td>
                         <td>

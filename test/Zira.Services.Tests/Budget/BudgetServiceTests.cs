@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Xunit;
 using Zira.Data.Enums;
 using Zira.Services.Budget.Internals;
 
@@ -17,6 +16,7 @@ public class BudgetServiceTests
         // Arrange
         var dbContext = TestHelpers.CreateDbContext();
         var userId = Guid.NewGuid();
+        var service = TestHelpers.CreateIdGenerationService();
         var expectedAmount = 1000.00m;
 
         var budget = new Data.Models.Budget
@@ -32,7 +32,7 @@ public class BudgetServiceTests
         dbContext.Budgets.Add(budget);
         await dbContext.SaveChangesAsync();
 
-        var budgetService = new BudgetService(dbContext);
+        var budgetService = new BudgetService(dbContext,service);
 
         // Act
         var result = await budgetService.GetTotalBudgetsAsync(userId);
@@ -48,6 +48,7 @@ public class BudgetServiceTests
         // Arrange
         var dbContext = TestHelpers.CreateDbContext();
         var nonExistingUserId = Guid.NewGuid();
+        var service = TestHelpers.CreateIdGenerationService();
 
         var existingBudget = new Data.Models.Budget
         {
@@ -62,7 +63,7 @@ public class BudgetServiceTests
         dbContext.Budgets.Add(existingBudget);
         await dbContext.SaveChangesAsync();
 
-        var budgetService = new BudgetService(dbContext);
+        var budgetService = new BudgetService(dbContext,service);
 
         // Act
         var result = await budgetService.GetTotalBudgetsAsync(nonExistingUserId);
@@ -78,6 +79,7 @@ public class BudgetServiceTests
         // Arrange
         var dbContext = TestHelpers.CreateDbContext();
         var userId = Guid.NewGuid();
+        var service = TestHelpers.CreateIdGenerationService();
 
         var budgets = new List<Data.Models.Budget>
         {
@@ -113,7 +115,7 @@ public class BudgetServiceTests
         await dbContext.Budgets.AddRangeAsync(budgets);
         await dbContext.SaveChangesAsync();
 
-        var budgetService = new BudgetService(dbContext);
+        var budgetService = new BudgetService(dbContext, service);
 
         // Act
         var result = await budgetService.GetTotalBudgetsAsync(userId);
@@ -128,6 +130,7 @@ public class BudgetServiceTests
     {
         // Arrange
         var dbContext = TestHelpers.CreateDbContext();
+        var service = TestHelpers.CreateIdGenerationService();
         var userId = Guid.NewGuid();
 
         var budgets = new List<Data.Models.Budget>
@@ -164,7 +167,7 @@ public class BudgetServiceTests
         await dbContext.Budgets.AddRangeAsync(budgets);
         await dbContext.SaveChangesAsync();
 
-        var budgetService = new BudgetService(dbContext);
+        var budgetService = new BudgetService(dbContext,service);
         var page = 1;
         var pageSize = 2;
 
@@ -186,6 +189,7 @@ public class BudgetServiceTests
         //Arrange
         var dbContext = TestHelpers.CreateDbContext();
         var userId = Guid.NewGuid();
+        var service = TestHelpers.CreateIdGenerationService();
 
         var existingBudget = new Data.Models.Budget
         {
@@ -200,7 +204,7 @@ public class BudgetServiceTests
         dbContext.Budgets.Add(existingBudget);
         await dbContext.SaveChangesAsync();
 
-        var budgetService = new BudgetService(dbContext);
+        var budgetService = new BudgetService(dbContext,service);
         var page = 1;
         var pageSize = 10;
 
@@ -219,6 +223,7 @@ public class BudgetServiceTests
         // Arrange
         var dbContext = TestHelpers.CreateDbContext();
         var userId = Guid.NewGuid();
+        var service = TestHelpers.CreateIdGenerationService();
 
         var budget = new Data.Models.Budget
         {
@@ -233,7 +238,7 @@ public class BudgetServiceTests
         dbContext.Budgets.Add(budget);
         await dbContext.SaveChangesAsync();
 
-        var budgetService = new BudgetService(dbContext);
+        var budgetService = new BudgetService(dbContext,service);
 
         // Act
         var result = await budgetService.GetBudgetByIdAsync(budget.Id, userId);
@@ -250,6 +255,7 @@ public class BudgetServiceTests
         // Arrange
         var dbContext = TestHelpers.CreateDbContext();
         var userId = Guid.NewGuid();
+        var service = TestHelpers.CreateIdGenerationService();
         var budgetId = Guid.NewGuid();
 
         var budget = new Data.Models.Budget
@@ -265,7 +271,7 @@ public class BudgetServiceTests
         dbContext.Budgets.Add(budget);
         await dbContext.SaveChangesAsync();
 
-        var budgetService = new BudgetService(dbContext);
+        var budgetService = new BudgetService(dbContext,service);
 
         // Act
         var result = await budgetService.GetBudgetByIdAsync(budgetId, userId);
@@ -281,6 +287,7 @@ public class BudgetServiceTests
         // Arrange
         var dbContext = TestHelpers.CreateDbContext();
         var userId = Guid.NewGuid();
+        var service = TestHelpers.CreateIdGenerationService();
         var budget = new Data.Models.Budget
         {
             Id = Guid.NewGuid(),
@@ -291,7 +298,7 @@ public class BudgetServiceTests
             Month = new DateTime(2025, 4, 1)
         };
 
-        var budgetService = new BudgetService(dbContext);
+        var budgetService = new BudgetService(dbContext,service);
 
         // Act
         var result = await budgetService.AddBudgetAsync(budget);
@@ -308,6 +315,7 @@ public class BudgetServiceTests
         // Arrange
         var dbContext = TestHelpers.CreateDbContext();
         var userId = Guid.NewGuid();
+        var service = TestHelpers.CreateIdGenerationService();
         var budget = new Data.Models.Budget
         {
             Id = Guid.NewGuid(),
@@ -321,7 +329,7 @@ public class BudgetServiceTests
         await dbContext.Budgets.AddAsync(budget);
         await dbContext.SaveChangesAsync();
 
-        var budgetService = new BudgetService(dbContext);
+        var budgetService = new BudgetService(dbContext,service);
 
         // Act
         var result = await budgetService.AddBudgetAsync(budget);
@@ -337,6 +345,7 @@ public class BudgetServiceTests
         // Arrange
         var dbContext = TestHelpers.CreateDbContext();
         var userId = Guid.NewGuid();
+        var service = TestHelpers.CreateIdGenerationService();
         var budget = new Data.Models.Budget
         {
             Id = Guid.NewGuid(),
@@ -360,7 +369,7 @@ public class BudgetServiceTests
             Month = new DateTime(2025, 5, 1)
         };
 
-        var budgetService = new BudgetService(dbContext);
+        var budgetService = new BudgetService(dbContext,service);
 
         // Act
         var result = await budgetService.UpdateBudgetAsync(updatedBudget);
@@ -379,6 +388,7 @@ public class BudgetServiceTests
         // Arrange
         var dbContext = TestHelpers.CreateDbContext();
         var userId = Guid.NewGuid();
+        var service = TestHelpers.CreateIdGenerationService();
         var budget = new Data.Models.Budget
         {
             Id = Guid.NewGuid(),
@@ -392,7 +402,7 @@ public class BudgetServiceTests
         await dbContext.Budgets.AddAsync(budget);
         await dbContext.SaveChangesAsync();
 
-        var budgetService = new BudgetService(dbContext);
+        var budgetService = new BudgetService(dbContext,service);
 
         // Act
         var result = await budgetService.DeleteBudgetAsync(budget.Id, userId);
@@ -410,8 +420,9 @@ public class BudgetServiceTests
         var dbContext = TestHelpers.CreateDbContext();
         var userId = Guid.NewGuid();
         var budgetId = Guid.NewGuid();
+        var service = TestHelpers.CreateIdGenerationService();
 
-        var budgetService = new BudgetService(dbContext);
+        var budgetService = new BudgetService(dbContext,service);
 
         // Act
         var result = await budgetService.DeleteBudgetAsync(budgetId, userId);

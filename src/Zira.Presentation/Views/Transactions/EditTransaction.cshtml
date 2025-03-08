@@ -44,6 +44,36 @@
                 </div>
 
                 <div class="mb-3">
+                    <label asp-for="Remark" class="form-label fw-medium text-gray-700 mb-2">
+                        @TransactionText.Remark
+                    </label>
+                    <div class="input-group">
+                                <span id="transaction-remark-icon" class="input-group-text">
+                                    <i class='bx bx-notepad'></i>
+                                </span>
+                        <input type="text"
+                               class="form-control border-2 rounded-lg px-3 py-2 focus-visible:ring-2 focus-visible:ring-primary transition-colors"
+                               id="Remark"
+                               name="@TransactionText.Remark"/>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Reference" class="form-label fw-medium text-gray-700 mb-2">
+                        @TransactionText.Reference
+                    </label>
+                    <div class="input-group">
+                                <span id="transaction-reference-icon" class="input-group-text">
+                                    <i class='bx bx-notepad'></i>
+                                </span>
+                        <input type="text"
+                               class="form-control border-2 rounded-lg px-3 py-2 focus-visible:ring-2 focus-visible:ring-primary transition-colors"
+                               id="Reference"
+                               name="@TransactionText.Reference"/>
+                    </div>
+                </div>
+
+                <div class="mb-3">
                     <label asp-for="Date" class="form-label">@TransactionText.TransactionDate</label>
                     <input type="date" asp-for="Date" class="form-control" required/>
                 </div>

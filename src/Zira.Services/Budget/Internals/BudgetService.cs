@@ -5,16 +5,19 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Zira.Data;
 using Zira.Services.Budget.Contracts;
+using Zira.Services.Common.Contracts;
 
 namespace Zira.Services.Budget.Internals
 {
     public class BudgetService : IBudgetService
     {
         private readonly EntityContext context;
+        private readonly IIdGenerationService idGenerationService;
 
-        public BudgetService(EntityContext context)
+        public BudgetService(EntityContext context, IIdGenerationService idGenerationService)
         {
             this.context = context;
+            this.idGenerationService = idGenerationService;
         }
 
         public async Task<bool> AddBudgetAsync(Data.Models.Budget budget)
@@ -32,6 +35,7 @@ namespace Zira.Services.Budget.Internals
             }
 
             budget.Month = new DateTime(budget.Month.Year, budget.Month.Month, 1);
+            budget.BudgetId = idGenerationService.GenerateDigitIdAsync();
 
             this.context.Budgets.Add(budget);
             await this.context.SaveChangesAsync();

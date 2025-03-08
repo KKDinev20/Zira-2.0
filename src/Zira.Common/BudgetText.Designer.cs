@@ -132,7 +132,16 @@ namespace Zira.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Списък от бюджети.
+        ///   Looks up a localized string similar to Номер на бюджета.
+        /// </summary>
+        public static string BudgetId {
+            get {
+                return ResourceManager.GetString("BudgetId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Списък на бюджетите.
         /// </summary>
         public static string BudgetList {
             get {
@@ -222,7 +231,7 @@ namespace Zira.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Промени.
+        ///   Looks up a localized string similar to Промяна.
         /// </summary>
         public static string Edit {
             get {
@@ -303,7 +312,7 @@ namespace Zira.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Праг на предпреждение.
+        ///   Looks up a localized string similar to Бюджетен праг.
         /// </summary>
         public static string WarningThreshold {
             get {

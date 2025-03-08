@@ -150,7 +150,7 @@ namespace Zira.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Обработване.
+        ///   Looks up a localized string similar to Промяна.
         /// </summary>
         public static string Edit {
             get {
@@ -258,7 +258,7 @@ namespace Zira.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Бързо добавяне.
+        ///   Looks up a localized string similar to Добави.
         /// </summary>
         public static string QuickAdd {
             get {
@@ -267,7 +267,7 @@ namespace Zira.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Бързо добавяне на разходи.
+        ///   Looks up a localized string similar to Бързо добавяне на дневни разходи.
         /// </summary>
         public static string QuickAddExpense {
             get {
@@ -384,7 +384,7 @@ namespace Zira.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Идентификационен номер.
+        ///   Looks up a localized string similar to Номер на транзакцията.
         /// </summary>
         public static string TransactionID {
             get {

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Zira.Data;
 using Zira.Data.Enums;
+using Zira.Services.Common.Contracts;
 using Zira.Services.Transaction.Contracts;
 using Zira.Services.Transaction.Models;
 
@@ -13,10 +14,12 @@ namespace Zira.Services.Transaction.Internals;
 public class TransactionService : ITransactionService
 {
     private readonly EntityContext context;
+    private readonly IIdGenerationService idGenerationService;
 
-    public TransactionService(EntityContext context)
+    public TransactionService(EntityContext context, IIdGenerationService idGenerationService)
     {
         this.context = context;
+        this.idGenerationService = idGenerationService;
     }
 
     public async Task<List<Data.Models.Transaction>> GetTransactionsAsync(
@@ -65,7 +68,7 @@ public class TransactionService : ITransactionService
         transactionModel.UserId = userId;
         transactionModel.Date = transactionModel.Date == default ? DateTime.UtcNow : transactionModel.Date;
 
-        transactionModel.TransactionId = this.GenerateTransactionIdAsync();
+        transactionModel.TransactionId = this.idGenerationService.GenerateDigitIdAsync();
 
         var budget = await this.context.Budgets
             .FirstOrDefaultAsync(
@@ -134,7 +137,7 @@ public class TransactionService : ITransactionService
         transaction.UserId = userId;
         transaction.Date = transaction.Date == default ? DateTime.UtcNow : transaction.Date;
         transaction.Type = TransactionType.Expense;
-        transaction.TransactionId = this.GenerateTransactionIdAsync();
+        transaction.TransactionId = this.idGenerationService.GenerateDigitIdAsync();
 
         var budget = await this.context.Budgets
             .FirstOrDefaultAsync(
@@ -348,24 +351,6 @@ public class TransactionService : ITransactionService
 
         var topSummaries = summaries.Take(top).ToList();
         return topSummaries;
-    }
-
-    private string GenerateTransactionIdAsync()
-    {
-        string transactionId;
-        bool exists;
-
-        do
-        {
-            var timestamp = DateTime.UtcNow.ToString("yyyyMMddHH");
-            var random = new Random().Next(10, 99);
-
-            transactionId = timestamp + random;
-
-            exists = this.context.Transactions.Any(t => t.TransactionId == transactionId);
-        } while (exists);
-
-        return transactionId;
     }
 
     private async Task<decimal> GetCurrentMonthExpenseByCategoryAsync(Guid userId, Categories category)

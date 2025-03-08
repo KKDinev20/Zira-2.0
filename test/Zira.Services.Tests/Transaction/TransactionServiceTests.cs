@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Xunit;
 using Zira.Data.Enums;
 using Zira.Data.Models;
+using Zira.Services.Common.Internals;
 using Zira.Services.Transaction.Internals;
 
 namespace Zira.Services.Tests.Transaction;
@@ -17,6 +18,8 @@ public class TransactionServiceTests
     {
         var userId = Guid.NewGuid();
         var dbContext = TestHelpers.CreateDbContext();
+        var idService = TestHelpers.CreateIdGenerationService();
+
 
         dbContext.Transactions.AddRange(
             new Data.Models.Transaction
@@ -38,7 +41,7 @@ public class TransactionServiceTests
 
         await dbContext.SaveChangesAsync();
 
-        var service = new TransactionService(dbContext);
+        var service = new TransactionService(dbContext, idService);
 
         var result = await service.GetTransactionsAsync(userId, 1, 10, Categories.Food);
         result.Should().HaveCount(1);
@@ -51,12 +54,14 @@ public class TransactionServiceTests
         var userId = Guid.NewGuid();
         var transactionId = Guid.NewGuid();
         var dbContext = TestHelpers.CreateDbContext();
+        var idService = TestHelpers.CreateIdGenerationService();
+
 
         dbContext.Transactions.Add(new Data.Models.Transaction
             { Id = transactionId, UserId = userId, Amount = 200, Date = DateTime.UtcNow });
         await dbContext.SaveChangesAsync();
 
-        var service = new TransactionService(dbContext);
+        var service = new TransactionService(dbContext, idService);
         var result = await service.GetTransactionByIdAsync(transactionId, userId);
 
         result.Should().NotBeNull();
@@ -67,7 +72,8 @@ public class TransactionServiceTests
     public async Task GetTransactionByIdAsync_OnNonExistingTransaction_ShouldReturnNull()
     {
         var dbContext = TestHelpers.CreateDbContext();
-        var service = new TransactionService(dbContext);
+        var idService = TestHelpers.CreateIdGenerationService();
+        var service = new TransactionService(dbContext, idService);
 
         var result = await service.GetTransactionByIdAsync(Guid.NewGuid(), Guid.NewGuid());
 
@@ -79,8 +85,10 @@ public class TransactionServiceTests
     {
         var userId = Guid.NewGuid();
         var dbContext = TestHelpers.CreateDbContext();
+        var idService = TestHelpers.CreateIdGenerationService();
 
-        var service = new TransactionService(dbContext);
+
+        var service = new TransactionService(dbContext, idService);
         var transaction = new Data.Models.Transaction
             { Amount = 100, Type = TransactionType.Income, Date = DateTime.UtcNow };
 
@@ -97,11 +105,13 @@ public class TransactionServiceTests
         var userId = Guid.NewGuid();
         var transactionId = Guid.NewGuid();
         var dbContext = TestHelpers.CreateDbContext();
+        var idService = TestHelpers.CreateIdGenerationService();
+
 
         dbContext.Transactions.Add(new Data.Models.Transaction { Id = transactionId, UserId = userId, Amount = 50 });
         await dbContext.SaveChangesAsync();
 
-        var service = new TransactionService(dbContext);
+        var service = new TransactionService(dbContext, idService);
         await service.DeleteTransactionAsync(transactionId, userId);
 
         var deletedTransaction = await dbContext.Transactions.FindAsync(transactionId);
@@ -114,12 +124,14 @@ public class TransactionServiceTests
         var transactionId = Guid.NewGuid();
         var userId = Guid.NewGuid();
         var dbContext = TestHelpers.CreateDbContext();
+        var idService = TestHelpers.CreateIdGenerationService();
+
 
         dbContext.Transactions.Add(new Data.Models.Transaction
             { Id = transactionId, UserId = userId, Amount = 50, Remark = "Old Remark" });
         await dbContext.SaveChangesAsync();
 
-        var service = new TransactionService(dbContext);
+        var service = new TransactionService(dbContext, idService);
         var updatedTransaction = new Data.Models.Transaction
             { Id = transactionId, UserId = userId, Amount = 100, Remark = "New Remark" };
 
@@ -137,6 +149,8 @@ public class TransactionServiceTests
         var userId = Guid.NewGuid();
         var now = DateTime.UtcNow;
         var dbContext = TestHelpers.CreateDbContext();
+        var idService = TestHelpers.CreateIdGenerationService();
+
 
         dbContext.Transactions.AddRange(
             new Data.Models.Transaction
@@ -147,7 +161,7 @@ public class TransactionServiceTests
 
         await dbContext.SaveChangesAsync();
 
-        var service = new TransactionService(dbContext);
+        var service = new TransactionService(dbContext, idService);
         var income = await service.GetCurrentMonthIncomeAsync(userId);
 
         income.Should().Be(700);
@@ -159,6 +173,8 @@ public class TransactionServiceTests
         var userId = Guid.NewGuid();
         var now = DateTime.UtcNow;
         var dbContext = TestHelpers.CreateDbContext();
+        var idService = TestHelpers.CreateIdGenerationService();
+
 
         dbContext.Transactions.AddRange(
             new Data.Models.Transaction
@@ -169,7 +185,7 @@ public class TransactionServiceTests
 
         await dbContext.SaveChangesAsync();
 
-        var service = new TransactionService(dbContext);
+        var service = new TransactionService(dbContext, idService);
         var expenses = await service.GetCurrentMonthExpensesAsync(userId);
 
         expenses.Should().Be(450);
@@ -181,6 +197,8 @@ public class TransactionServiceTests
         // Arrange
         var userId = Guid.NewGuid();
         var dbContext = TestHelpers.CreateDbContext();
+        var idService = TestHelpers.CreateIdGenerationService();
+
 
         var transactions = Enumerable.Range(0, 10)
             .Select(i => new Data.Models.Transaction
@@ -194,7 +212,7 @@ public class TransactionServiceTests
         dbContext.Transactions.AddRange(transactions);
         await dbContext.SaveChangesAsync();
 
-        var service = new TransactionService(dbContext);
+        var service = new TransactionService(dbContext, idService);
 
         // Act
         var result = await service.GetRecentTransactions(userId);
@@ -211,6 +229,8 @@ public class TransactionServiceTests
         // Arrange
         var userId = Guid.NewGuid();
         var dbContext = TestHelpers.CreateDbContext();
+        var idService = TestHelpers.CreateIdGenerationService();
+
 
         var currentMonth = DateTime.UtcNow;
         for (int i = 0; i < 6; i++)
@@ -238,7 +258,7 @@ public class TransactionServiceTests
 
         await dbContext.SaveChangesAsync();
 
-        var service = new TransactionService(dbContext);
+        var service = new TransactionService(dbContext, idService);
 
         // Act
         var (totals, labels) = await service.GetLastSixMonthsDataAsync(userId, TransactionType.Income);
@@ -254,6 +274,8 @@ public class TransactionServiceTests
         // Arrange
         var userId = Guid.NewGuid();
         var dbContext = TestHelpers.CreateDbContext();
+        var idService = TestHelpers.CreateIdGenerationService();
+
 
         dbContext.Transactions.AddRange(
             new Data.Models.Transaction
@@ -280,7 +302,7 @@ public class TransactionServiceTests
 
         await dbContext.SaveChangesAsync();
 
-        var service = new TransactionService(dbContext);
+        var service = new TransactionService(dbContext, idService);
 
         // Act
         var topCategories = await service.GetTopExpenseCategoriesAsync(userId, 2);
@@ -299,11 +321,13 @@ public class TransactionServiceTests
         // Arrange
         var userId = Guid.NewGuid();
         var dbContext = TestHelpers.CreateDbContext();
+        var idService = TestHelpers.CreateIdGenerationService();
+
 
         dbContext.Users.Add(new ApplicationUser { Id = userId });
         await dbContext.SaveChangesAsync();
 
-        var service = new TransactionService(dbContext);
+        var service = new TransactionService(dbContext, idService);
 
         // Act
         var transaction = new Data.Models.Transaction { Amount = 100, Category = Categories.Food };

@@ -1,5 +1,4 @@
-﻿@using Zira.Presentation.Extensions
-@model BudgetListViewModel
+﻿@model BudgetListViewModel
 
 @{
     ViewData["Title"] = @BudgetText.Budgets;
@@ -13,26 +12,30 @@
 
     @if (TempData["SuccessMessage"] != null)
     {
-        <div class="alert alert-success">
-            <i class="bx bx-check-circle"></i> @TempData["SuccessMessage"]
+        <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     }
     @if (TempData["ErrorMessage"] != null)
     {
-        <div class="alert alert-danger">
-            <i class="bx bx-error-circle"></i> @TempData["ErrorMessage"]
+        <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     }
 
     <div class="card shadow-sm">
         <h5 class="card-header">@BudgetText.BudgetList</h5>
         <div class="table text-nowrap">
-            <table class="table">
+            <table class="table table-responsive align-content-center justify-content-center text-center">
                 <thead>
                 <tr>
+                    <th>@BudgetText.BudgetId</th>
                     <th>@BudgetText.BudgetCategory</th>
                     <th>@BudgetText.BudgetAmount</th>
                     <th>@BudgetText.WarningThreshold</th>
+                    <th>@TransactionText.Remark</th>
                     <th>@BudgetText.BudgetMonth</th>
                     <th>@BudgetText.Actions</th>
                 </tr>
@@ -43,12 +46,13 @@
                     var isWarningExceeded = budget.Amount >= budget.WarningThreshold;
 
                     <tr class="@(isWarningExceeded ? "table-warning" : "")">
+                        <td>#@budget.BudgetId</td>
                         <td>
-                            
-                            <i class="bx bx-wallet-alt me-2"></i> <strong>@budget.Category?.GetLocalizedExpenseCategory()</strong>
+                            <strong>@budget.Category?.GetLocalizedExpenseCategory()</strong>
                         </td>
                         <td>@budget.Amount.ToString("C")</td>
                         <td>@budget.WarningThreshold.ToString("C")</td>
+                        <td>@budget.Remark</td>
                         <td>@budget.Month.ToString("MMMM yyyy")</td>
                         <td>
                             <div class="dropdown">

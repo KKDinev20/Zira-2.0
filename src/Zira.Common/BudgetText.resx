@@ -69,10 +69,10 @@
         <value>Бюджети</value>
     </data>
     <data name="Edit" xml:space="preserve">
-        <value>Промени</value>
+        <value>Промяна</value>
     </data>
     <data name="BudgetList" xml:space="preserve">
-        <value>Списък от бюджети</value>
+        <value>Списък на бюджетите</value>
     </data>
     <data name="Previous" xml:space="preserve">
         <value>Предходен</value>
@@ -87,7 +87,7 @@
         <value>Месечният бюджет не може да бъде в бъдеще </value>
     </data>
     <data name="WarningThreshold" xml:space="preserve">
-        <value>Праг на предпреждение</value>
+        <value>Бюджетен праг</value>
     </data>
     <data name="BudgetExists" xml:space="preserve">
         <value>Вече съществува бюджет за тази категория в избрания месец.</value>
@@ -100,5 +100,8 @@
     </data>
     <data name="BudgetUpdateFail" xml:space="preserve">
         <value>Промяната на бюджета е неуспешна.</value>
+    </data>
+    <data name="BudgetId" xml:space="preserve">
+        <value>Номер на бюджета</value>
     </data>
 </root>

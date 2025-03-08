@@ -12,6 +12,7 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         services.AddScoped<IEmailService, EmailService>();
+        services.AddScoped<IIdGenerationService, IdGenerationService>();
 
         return services;
     }

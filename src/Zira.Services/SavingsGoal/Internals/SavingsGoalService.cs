@@ -93,7 +93,9 @@ namespace Zira.Services.SavingsGoal.Internals
             var year = transactionModel.Date.Year;
 
             var savingsGoals = await this.context.SavingsGoals
-                .Where(sg => sg.UserId == userId && sg.CreatedAt.Month == month && sg.CreatedAt.Year == year)
+                .Where(sg => sg.UserId == userId &&
+                             sg.TargetDate.Value.Month == month &&
+                             sg.TargetDate.Value.Year == year)
                 .ToListAsync();
 
             if (!savingsGoals.Any())
