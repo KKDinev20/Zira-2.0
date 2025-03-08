@@ -20,37 +20,53 @@ namespace Zira.Presentation.Controllers
     {
         private readonly IBudgetService budgetService;
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly EntityContext entityContext;
+        private readonly EntityContext context;
 
         public BudgetController(
             IBudgetService budgetService,
             UserManager<ApplicationUser> userManager,
-            EntityContext entityContext)
+            EntityContext context)
         {
             this.budgetService = budgetService;
             this.userManager = userManager;
-            this.entityContext = entityContext;
+            this.context = context;
         }
 
         [HttpGet("/set-budget/")]
         public async Task<IActionResult> SetBudget()
         {
-            await this.SetGlobalUserInfoAsync(this.userManager, this.entityContext);
+            await this.SetGlobalUserInfoAsync(this.userManager, this.context);
             this.ViewBag.Categories = Enum.GetValues(typeof(Categories));
-            return this.View(new Budget());
+            return this.View(new BudgetViewModel());
         }
 
         [HttpPost("/set-budget/")]
-        public async Task<IActionResult> SetBudget(Budget budgetModel)
+        public async Task<IActionResult> SetBudget(BudgetViewModel viewModel)
         {
+            await this.SetGlobalUserInfoAsync(this.userManager, this.context);
+            if (!this.ModelState.IsValid)
+            {
+                this.ViewBag.Categories = Enum.GetValues(typeof(Categories));
+                return this.View(viewModel);
+            }
+
             var userId = this.User.GetUserId();
-            budgetModel.UserId = userId;
+
+            var budgetModel = new Budget
+            {
+                UserId = userId,
+                Amount = viewModel.Amount,
+                WarningThreshold = viewModel.WarningThreshold,
+                Category = viewModel.Category,
+                Month = new DateTime(viewModel.Month.Year, viewModel.Month.Month, 1),
+                Remark = viewModel.Remark,
+            };
 
             if (!await this.budgetService.AddBudgetAsync(budgetModel))
             {
                 this.TempData["ErrorMessage"] = @BudgetText.BudgetExists;
                 this.ViewBag.Categories = Enum.GetValues(typeof(Categories));
-                return this.View(budgetModel);
+                return this.View(viewModel);
             }
 
             this.TempData["SuccessMessage"] = @BudgetText.BudgetSuccess;
@@ -60,8 +76,7 @@ namespace Zira.Presentation.Controllers
         [HttpGet("/view-budgets/")]
         public async Task<IActionResult> ViewBudgets(int page = 1, int pageSize = 5)
         {
-            await this.SetGlobalUserInfoAsync(this.userManager, this.entityContext);
-
+            await this.SetGlobalUserInfoAsync(this.userManager, this.context);
             var userId = this.User.GetUserId();
             var budgets = await this.budgetService.GetUserBudgetsAsync(userId, page, pageSize);
             var totalBudgets = await this.budgetService.GetTotalBudgetsAsync(userId);
@@ -80,32 +95,53 @@ namespace Zira.Presentation.Controllers
         [HttpGet("/edit-budget/{id}")]
         public async Task<IActionResult> EditBudget(Guid id)
         {
-            await this.SetGlobalUserInfoAsync(this.userManager, this.entityContext);
-
+            await this.SetGlobalUserInfoAsync(this.userManager, this.context);
             var budget = await this.budgetService.GetBudgetByIdAsync(id, this.User.GetUserId());
             if (budget == null)
             {
                 return this.NotFound();
             }
 
+            var viewModel = new BudgetViewModel
+            {
+                Id = budget.Id,
+                Amount = budget.Amount,
+                WarningThreshold = budget.WarningThreshold,
+                Category = budget.Category,
+                Month = budget.Month,
+                Remark = budget.Remark,
+            };
+
             this.ViewBag.Categories = Enum.GetValues(typeof(Categories));
-            return this.View(budget);
+            return this.View(viewModel);
         }
 
         [HttpPost("/edit-budget/{id}")]
-        public async Task<IActionResult> EditBudget(Guid id, Budget budgetModel)
+        public async Task<IActionResult> EditBudget(Guid id, BudgetViewModel viewModel)
         {
-            if (id != budgetModel.Id)
+            await this.SetGlobalUserInfoAsync(this.userManager, this.context);
+            if (id != viewModel.Id || !this.ModelState.IsValid)
             {
-                return this.BadRequest();
+                this.ViewBag.Categories = Enum.GetValues(typeof(Categories));
+                return this.View(viewModel);
             }
 
-            budgetModel.UserId = this.User.GetUserId();
+            var budgetModel = new Budget
+            {
+                Id = viewModel.Id,
+                UserId = this.User.GetUserId(),
+                Amount = viewModel.Amount,
+                Category = viewModel.Category,
+                WarningThreshold = viewModel.WarningThreshold,
+                Month = new DateTime(viewModel.Month.Year, viewModel.Month.Month, 1),
+                Remark = viewModel.Remark,
+            };
+
             if (!await this.budgetService.UpdateBudgetAsync(budgetModel))
             {
                 this.TempData["ErrorMessage"] = @BudgetText.BudgetUpdateFail;
                 this.ViewBag.Categories = Enum.GetValues(typeof(Categories));
-                return this.View(budgetModel);
+                return this.View(viewModel);
             }
 
             this.TempData["SuccessMessage"] = @BudgetText.BudgetUpdateSuccess;
@@ -115,6 +151,7 @@ namespace Zira.Presentation.Controllers
         [HttpGet("/delete-budget/{id}")]
         public async Task<IActionResult> DeleteBudget(Guid id)
         {
+            await this.SetGlobalUserInfoAsync(this.userManager, this.context);
             var budget = await this.budgetService.GetBudgetByIdAsync(id, this.User.GetUserId());
             if (budget == null)
             {
@@ -122,12 +159,21 @@ namespace Zira.Presentation.Controllers
                 return this.RedirectToAction("ViewBudgets");
             }
 
-            return this.View(budget);
+            return this.View(
+                new BudgetViewModel
+                {
+                    Id = budget.Id,
+                    Amount = budget.Amount,
+                    WarningThreshold = budget.WarningThreshold,
+                    Category = budget.Category,
+                    Month = budget.Month,
+                });
         }
 
         [HttpPost("/delete-budget/{id}")]
         public async Task<IActionResult> DeleteBudgetAsync(Guid id)
         {
+            await this.SetGlobalUserInfoAsync(this.userManager, this.context);
             if (!await this.budgetService.DeleteBudgetAsync(id, this.User.GetUserId()))
             {
                 this.TempData["ErrorMessage"] = @BudgetText.BudgetNotFound;

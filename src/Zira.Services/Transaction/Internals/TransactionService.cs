@@ -99,6 +99,7 @@ public class TransactionService : ITransactionService
         if (existingTransaction != null)
         {
             existingTransaction.Remark = transactionModel.Remark;
+            existingTransaction.Reference = transactionModel.Reference;
             existingTransaction.Amount = transactionModel.Amount;
             existingTransaction.Date = transactionModel.Date;
 

@@ -35,7 +35,7 @@ namespace Zira.Services.Budget.Internals
             }
 
             budget.Month = new DateTime(budget.Month.Year, budget.Month.Month, 1);
-            budget.BudgetId = idGenerationService.GenerateDigitIdAsync();
+            budget.BudgetId = this.idGenerationService.GenerateDigitIdAsync();
 
             this.context.Budgets.Add(budget);
             await this.context.SaveChangesAsync();
@@ -54,6 +54,7 @@ namespace Zira.Services.Budget.Internals
             existingBudget.WarningThreshold = budget.WarningThreshold;
             existingBudget.Category = budget.Category;
             existingBudget.Month = new DateTime(budget.Month.Year, budget.Month.Month, 1);
+            existingBudget.Remark = budget.Remark;
 
             await this.context.SaveChangesAsync();
             return true;

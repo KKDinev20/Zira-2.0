@@ -1,7 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
-@using Zira.Data.Enums
-@using Zira.Presentation.Extensions
-@model Zira.Data.Models.Budget
+@model BudgetViewModel
 @{
     ViewData["Title"] = @BudgetText.EditBudget;
     Layout = "Shared/_BudgetLayout";
@@ -15,25 +13,72 @@
                 <input type="hidden" asp-for="Id"/>
 
                 <div class="mb-3">
-                    <label asp-for="Category" class="form-label">@BudgetText.BudgetCategory</label>
-                    <select asp-for="Category" class="form-control">
-                        @foreach (var category in Enum.GetValues(typeof(Categories)).Cast<Categories>())
-                        {
-                        <option value="@category">@category.GetLocalizedExpenseCategory()</option>
-                        }
-                    </select>
+                    <label class="form-label" asp-for="Category">@BudgetText.BudgetCategory</label>
+                    <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bx bx-briefcase"></i>
+                                </span>
+                        <select class="form-control" id="expense-category" name="Category">
+                            <option value="" disabled selected>@TransactionText.SelectACategory</option>
+                            @foreach (var category in Enum.GetValues(typeof(Categories)).Cast<Categories>())
+                            {
+                            <option value="@category" selected="@(Model.Category == category ? "selected" : null)">
+                                @category.GetLocalizedExpenseCategory()
+                            </option>
+                            }
+                        </select>
+                    </div>
+                    <span class="text-danger" asp-validation-for="Category"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="Amount" class="form-label">@BudgetText.BudgetAmount</label>
-                    <input type="number" step="0.01" asp-for="Amount" class="form-control" required/>
-                    <span asp-validation-for="Amount" class="text-danger"></span>
+                    <label class="form-label" asp-for="Amount">@BudgetText.BudgetAmount</label>
+                    <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bx bx-wallet"></i>
+                                </span>
+                        <input type="number" asp-for="Amount" class="form-control" step="0.01" placeholder="Enter amount"/>
+                    </div>
+                    <span class="text-danger" asp-validation-for="Amount"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="Month" class="form-label">@BudgetText.BudgetMonth</label>
-                    <input type="month" asp-for="Month" class="form-control" required/>
-                    <span asp-validation-for="Month" class="text-danger"></span>
+                    <label class="form-label" asp-for="WarningThreshold">@BudgetText.WarningThreshold</label>
+                    <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bx bx-bell"></i>
+                                </span>
+                        <input type="number"
+                               asp-for="WarningThreshold"
+                               class="form-control"
+                               max="100"
+                               placeholder="Set warning threshold"/>
+                    </div>
+                    <span class="text-danger" asp-validation-for="WarningThreshold"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Remark" class="form-label fw-medium text-gray-700 mb-2">
+                        @TransactionText.Remark
+                    </label>
+                    <div class="input-group">
+                                <span id="transaction-remark-icon" class="input-group-text">
+                                    <i class='bx bx-notepad'></i>
+                                </span>
+                        <input asp-for="Remark" type="text" class="form-control" id="Remark"/>
+
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="Month">@BudgetText.BudgetMonth</label>
+                    <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bx bx-calendar"></i>
+                                </span>
+                        <input type="month" asp-for="Month" class="form-control"/>
+                    </div>
+                    <span class="text-danger" asp-validation-for="Month"></span>
                 </div>
 
                 <button type="submit" class="btn btn-primary">@BudgetText.SaveChanges</button>

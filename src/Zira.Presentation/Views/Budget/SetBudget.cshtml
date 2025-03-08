@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
-@model Zira.Data.Models.Budget
+@model BudgetViewModel
 
 @{
     ViewData["Title"] = @BudgetText.SetBudget;
@@ -21,7 +21,7 @@
                                 <span class="input-group-text">
                                     <i class="bx bx-briefcase"></i>
                                 </span>
-                                <select class="form-control" id="expense-category" name="Category" required>
+                                <select class="form-control" id="expense-category" name="Category">
                                     <option value="" disabled selected>@TransactionText.SelectACategory</option>
                                     @foreach (var category in Enum.GetValues(typeof(Categories)).Cast<Categories>())
                                     {
@@ -40,7 +40,7 @@
                                 <span class="input-group-text">
                                     <i class="bx bx-wallet"></i>
                                 </span>
-                                <input type="number" asp-for="Amount" class="form-control" step="0.01" placeholder="Enter amount" min="0.01" required/>
+                                <input type="number" asp-for="Amount" class="form-control" step="0.01" placeholder="Enter amount"/>
                             </div>
                             <span class="text-danger" asp-validation-for="Amount"></span>
                         </div>
@@ -51,7 +51,11 @@
                                 <span class="input-group-text">
                                     <i class="bx bx-bell"></i>
                                 </span>
-                                <input type="number" asp-for="WarningThreshold" class="form-control" step="0.01" placeholder="Set warning threshold" min="0.01" required/>
+                                <input type="number"
+                                       asp-for="WarningThreshold"
+                                       class="form-control"
+                                       max="100"
+                                       placeholder="Set warning threshold"/>
                             </div>
                             <span class="text-danger" asp-validation-for="WarningThreshold"></span>
                         </div>
@@ -65,6 +69,7 @@
                                     <i class='bx bx-notepad'></i>
                                 </span>
                                 <input asp-for="Remark" type="text" class="form-control" id="Remark"/>
+
                             </div>
                         </div>
 
@@ -74,7 +79,7 @@
                                 <span class="input-group-text">
                                     <i class="bx bx-calendar"></i>
                                 </span>
-                                <input type="month" asp-for="Month" class="form-control" required/>
+                                <input type="month" asp-for="Month" class="form-control"/>
                             </div>
                             <span class="text-danger" asp-validation-for="Month"></span>
                         </div>

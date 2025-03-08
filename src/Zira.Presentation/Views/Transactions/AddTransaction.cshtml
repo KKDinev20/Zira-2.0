@@ -15,15 +15,6 @@
                 </div>
                 <div class="card-body">
                     <form asp-action="AddTransaction" asp-controller="Transactions" method="post">
-                        @if (TempData["ErrorMessage"] != null)
-                        {
-                            <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
-                        }
-                        @if (TempData["SuccessMessage"] != null)
-                        {
-                            <div class="alert alert-success">@TempData["SuccessMessage"]</div>
-                        }
-
                         <div class="mb-3">
                             <label class="form-label">@TransactionText.TransactionType</label>
                             <div class="form-check">
@@ -77,7 +68,7 @@
 
                         <div class="mb-3">
                             <label class="form-label" for="transaction-amount">@TransactionText.Amount</label>
-                            <div class="input-group input-group-merge">
+                            <div class="input-group">
                                 <span id="transaction-amount-icon" class="input-group-text">
                                     <i class="bx bx-money"></i>
                                 </span>

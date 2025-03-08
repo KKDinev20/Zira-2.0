@@ -2,6 +2,6 @@
 
 public class CategoryComparisonModel
 {
-    public string Category { get; set; }
+    public string Category { get; set; } = string.Empty;
     public decimal TotalAmount { get; set; }
 }
