@@ -10,6 +10,7 @@ namespace Zira.Data.Models
         public string Name { get; set; }
         public decimal TargetAmount { get; set; }
         public decimal CurrentAmount { get; set; } = 0;
+        public string? Remark { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? TargetDate { get; set; }
         public ApplicationUser User { get; set; }

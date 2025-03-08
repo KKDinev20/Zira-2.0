@@ -94,7 +94,7 @@ public class TransactionService : ITransactionService
         var existingTransaction = await this.context.Transactions.FindAsync(transactionModel.Id);
         if (existingTransaction != null)
         {
-            existingTransaction.Description = transactionModel.Description;
+            existingTransaction.Remark = transactionModel.Remark;
             existingTransaction.Amount = transactionModel.Amount;
             existingTransaction.Date = transactionModel.Date;
 

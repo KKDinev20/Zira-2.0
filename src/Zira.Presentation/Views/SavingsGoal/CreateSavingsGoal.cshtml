@@ -17,36 +17,66 @@
         <div class="card-body p-4">
             <form method="post" asp-action="CreateSavingsGoal" class="space-y-4">
                 <div class="mb-3">
-                    <label for="Name" class="form-label fw-medium text-gray-700 mb-2">
+                    <label asp-for="Name" class="form-label fw-medium text-gray-700 mb-2">
                         @SavingsGoalText.GoalName
                     </label>
-                    <input type="text"
-                           class="form-control border-2 rounded-lg px-3 py-2 focus-visible:ring-2 focus-visible:ring-primary transition-colors"
-                           id="Name"
-                           name="Name"
-                           required/>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class='bx bx-box'></i>
+                        </span>
+                        <input type="text"
+                               class="form-control border-2 rounded-lg px-3 py-2 focus-visible:ring-2 focus-visible:ring-primary transition-colors"
+                               id="Name"
+                               name="Name"
+                               required/>
+                    </div>
                 </div>
 
                 <div class="mb-3">
-                    <label for="TargetAmount" class="form-label fw-medium text-gray-700 mb-2">
+                    <label asp-for="TargetAmount" class="form-label fw-medium text-gray-700 mb-2">
                         @SavingsGoalText.TargetAmount
                     </label>
-                    <input type="number"
-                           class="form-control border-2 rounded-lg px-3 py-2 focus-visible:ring-2 focus-visible:ring-primary transition-colors"
-                           id="TargetAmount"
-                           name="TargetAmount"
-                           required
-                           min="1"/>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="bx bx-wallet"></i>
+                        </span>
+                        <input type="number"
+                               class="form-control border-2 rounded-lg px-3 py-2 focus-visible:ring-2 focus-visible:ring-primary transition-colors"
+                               id="TargetAmount"
+                               name="TargetAmount"
+                               required
+                               min="1"/>
+                    </div>
                 </div>
 
                 <div class="mb-3">
-                    <label for="TargetDate" class="form-label fw-medium text-gray-700 mb-2">
+                    <label asp-for="Remark" class="form-label fw-medium text-gray-700 mb-2">
+                        @TransactionText.Remark
+                    </label>
+                    <div class="input-group">
+                        <span id="transaction-remark-icon" class="input-group-text">
+                            <i class='bx bx-notepad'></i>
+                        </span>
+                        <input type="text"
+                               class="form-control border-2 rounded-lg px-3 py-2 focus-visible:ring-2 focus-visible:ring-primary transition-colors"
+                               id="Remark"
+                               name="@TransactionText.Remark"/>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="TargetDate" class="form-label fw-medium text-gray-700 mb-2">
                         @SavingsGoalText.TargetDate
                     </label>
-                    <input type="date"
-                           class="form-control border-2 rounded-lg px-3 py-2 focus-visible:ring-2 focus-visible:ring-primary transition-colors"
-                           id="TargetDate"
-                           name="TargetDate"/>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="bx bx-calendar"></i>
+                        </span>
+                        <input type="date"
+                               class="form-control border-2 rounded-lg px-3 py-2 focus-visible:ring-2 focus-visible:ring-primary transition-colors"
+                               id="TargetDate"
+                               name="TargetDate"/>
+                    </div>
                 </div>
 
                 <button type="submit"

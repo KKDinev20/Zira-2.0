@@ -7,8 +7,7 @@ namespace Zira.Presentation.Models
     {
         public Guid Id { get; set; }
 
-        [Required]
-        public string Name { get; set; }
+        [Required] public string Name { get; set; }
 
         [Required]
         [Range(1, double.MaxValue, ErrorMessage = "Target amount must be greater than zero.")]
@@ -17,5 +16,7 @@ namespace Zira.Presentation.Models
         public decimal CurrentAmount { get; set; } = 0;
 
         public DateTime? TargetDate { get; set; }
+
+        public string? Remark { get; set; }
     }
 }

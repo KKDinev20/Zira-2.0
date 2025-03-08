@@ -9,8 +9,10 @@ public class Budget
     public Guid UserId { get; set; }
     public Categories? Category { get; set; }
     public decimal Amount { get; set; }
-    public decimal WarningThreshold { get; set; } 
+    public decimal WarningThreshold { get; set; }
     public DateTime Month { get; set; }
+
+    public string? Remark { get; set; }
 
     public ApplicationUser? User { get; set; }
 }

@@ -1,5 +1,4 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
-@using Zira.Data.Enums
 @model Zira.Data.Models.Transaction
 
 @{
@@ -41,7 +40,7 @@
                         <div id="income-fields" class="transaction-fields d-none">
                             <div class="mb-3">
                                 <label class="form-label" for="transaction-source">@TransactionText.Source</label>
-                                <div class="input-group input-group-merge">
+                                <div class="input-group">
                                     <span id="transaction-source-icon" class="input-group-text">
                                         <i class="bx bx-credit-card"></i>
                                     </span>
@@ -60,7 +59,7 @@
                         <div id="expense-fields" class="transaction-fields d-none">
                             <div class="mb-3">
                                 <label class="form-label" for="transaction-category">@TransactionText.Category</label>
-                                <div class="input-group input-group-merge">
+                                <div class="input-group">
                                     <span id="transaction-category-icon" class="input-group-text">
                                         <i class="bx bx-briefcase"></i>
                                     </span>
@@ -78,7 +77,7 @@
 
                         <div class="mb-3">
                             <label class="form-label" for="transaction-amount">@TransactionText.Amount</label>
-                            <div class="input-group input-group-merge">
+                            <div class="input-group">
                                 <span id="transaction-amount-icon" class="input-group-text">
                                     <i class="bx bx-money"></i>
                                 </span>
@@ -88,8 +87,38 @@
                         </div>
 
                         <div class="mb-3">
+                            <label asp-for="Remark" class="form-label fw-medium text-gray-700 mb-2">
+                                @TransactionText.Remark
+                            </label>
+                            <div class="input-group">
+                                <span id="transaction-remark-icon" class="input-group-text">
+                                    <i class='bx bx-notepad'></i>
+                                </span>
+                                <input type="text"
+                                       class="form-control border-2 rounded-lg px-3 py-2 focus-visible:ring-2 focus-visible:ring-primary transition-colors"
+                                       id="Remark"
+                                       name="@TransactionText.Remark"/>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Reference" class="form-label fw-medium text-gray-700 mb-2">
+                                @TransactionText.Reference
+                            </label>
+                            <div class="input-group">
+                                <span id="transaction-reference-icon" class="input-group-text">
+                                    <i class='bx bx-notepad'></i>
+                                </span>
+                                <input type="text"
+                                       class="form-control border-2 rounded-lg px-3 py-2 focus-visible:ring-2 focus-visible:ring-primary transition-colors"
+                                       id="Reference"
+                                       name="@TransactionText.Reference"/>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
                             <label class="form-label" for="transaction-date">@TransactionText.TransactionDate</label>
-                            <div class="input-group input-group-merge">
+                            <div class="input-group">
                                 <span id="transaction-date-icon" class="input-group-text">
                                     <i class="bx bx-calendar"></i>
                                 </span>

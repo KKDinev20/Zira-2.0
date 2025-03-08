@@ -1,11 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
-@using Zira.Data.Enums
-@using Zira.Presentation.Extensions
 @model Zira.Data.Models.Budget
 
 @{
-ViewData["Title"] = @BudgetText.SetBudget;
-Layout = "Shared/_BudgetLayout";
+    ViewData["Title"] = @BudgetText.SetBudget;
+    Layout = "Shared/_BudgetLayout";
 }
 
 <div class="content-wrapper">
@@ -27,9 +25,9 @@ Layout = "Shared/_BudgetLayout";
                                     <option value="" disabled selected>@TransactionText.SelectACategory</option>
                                     @foreach (var category in Enum.GetValues(typeof(Categories)).Cast<Categories>())
                                     {
-                                    <option value="@category" selected="@(Model.Category == category ? "selected" : null)">
-                                        @category.GetLocalizedExpenseCategory()
-                                    </option>
+                                        <option value="@category" selected="@(Model.Category == category ? "selected" : null)">
+                                            @category.GetLocalizedExpenseCategory()
+                                        </option>
                                     }
                                 </select>
                             </div>
@@ -39,7 +37,9 @@ Layout = "Shared/_BudgetLayout";
                         <div class="mb-3">
                             <label class="form-label" asp-for="Amount">@BudgetText.BudgetAmount</label>
                             <div class="input-group">
-                                <span class="input-group-text"><i class="bx bx-wallet"></i></span>
+                                <span class="input-group-text">
+                                    <i class="bx bx-wallet"></i>
+                                </span>
                                 <input type="number" asp-for="Amount" class="form-control" step="0.01" placeholder="Enter amount" min="0.01" required/>
                             </div>
                             <span class="text-danger" asp-validation-for="Amount"></span>
@@ -48,16 +48,35 @@ Layout = "Shared/_BudgetLayout";
                         <div class="mb-3">
                             <label class="form-label" asp-for="WarningThreshold">@BudgetText.WarningThreshold</label>
                             <div class="input-group">
-                                <span class="input-group-text"><i class="bx bx-bell"></i></span>
+                                <span class="input-group-text">
+                                    <i class="bx bx-bell"></i>
+                                </span>
                                 <input type="number" asp-for="WarningThreshold" class="form-control" step="0.01" placeholder="Set warning threshold" min="0.01" required/>
                             </div>
                             <span class="text-danger" asp-validation-for="WarningThreshold"></span>
                         </div>
 
                         <div class="mb-3">
+                            <label asp-for="Remark" class="form-label fw-medium text-gray-700 mb-2">
+                                @TransactionText.Remark
+                            </label>
+                            <div class="input-group">
+                                <span id="transaction-remark-icon" class="input-group-text">
+                                    <i class='bx bx-notepad'></i>
+                                </span>
+                                <input type="text"
+                                       class="form-control border-2 rounded-lg px-3 py-2 focus-visible:ring-2 focus-visible:ring-primary transition-colors"
+                                       id="Remark"
+                                       name="@TransactionText.Remark"/>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
                             <label class="form-label" asp-for="Month">@BudgetText.BudgetMonth</label>
                             <div class="input-group">
-                                <span class="input-group-text"><i class="bx bx-calendar"></i></span>
+                                <span class="input-group-text">
+                                    <i class="bx bx-calendar"></i>
+                                </span>
                                 <input type="month" asp-for="Month" class="form-control" required/>
                             </div>
                             <span class="text-danger" asp-validation-for="Month"></span>

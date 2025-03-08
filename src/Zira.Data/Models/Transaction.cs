@@ -11,7 +11,8 @@ public class Transaction
     public TransactionType Type { get; set; }
     public Categories? Category { get; set; }
     public Sources? Source { get; set; }
-    public string? Description { get; set; }
+    public string? Remark { get; set; }
+    public string? Reference { get; set; }
     public DateTime Date { get; set; }
     public bool IsRecurring { get; set; } = false;
     public RecurrenceType? Recurrence { get; set; }

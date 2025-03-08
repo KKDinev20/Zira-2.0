@@ -116,19 +116,19 @@ public class TransactionServiceTests
         var dbContext = TestHelpers.CreateDbContext();
 
         dbContext.Transactions.Add(new Data.Models.Transaction
-            { Id = transactionId, UserId = userId, Amount = 50, Description = "Old Description" });
+            { Id = transactionId, UserId = userId, Amount = 50, Remark = "Old Remark" });
         await dbContext.SaveChangesAsync();
 
         var service = new TransactionService(dbContext);
         var updatedTransaction = new Data.Models.Transaction
-            { Id = transactionId, UserId = userId, Amount = 100, Description = "New Description" };
+            { Id = transactionId, UserId = userId, Amount = 100, Remark = "New Remark" };
 
         await service.UpdateTransactionAsync(updatedTransaction);
 
         var modifiedTransaction = await dbContext.Transactions.FindAsync(transactionId);
         modifiedTransaction.Should().NotBeNull();
         modifiedTransaction.Amount.Should().Be(100);
-        modifiedTransaction.Description.Should().Be("New Description");
+        modifiedTransaction.Remark.Should().Be("New Remark");
     }
 
     [Fact]
