@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Zira.Data;
 using Zira.Data.Enums;
-using Zira.Data.Models;
 using Zira.Services.Transaction.Contracts;
 using Zira.Services.Transaction.Models;
 
@@ -65,6 +64,8 @@ public class TransactionService : ITransactionService
         transactionModel.Id = Guid.NewGuid();
         transactionModel.UserId = userId;
         transactionModel.Date = transactionModel.Date == default ? DateTime.UtcNow : transactionModel.Date;
+
+        transactionModel.TransactionId = this.GenerateTransactionIdAsync();
 
         var budget = await this.context.Budgets
             .FirstOrDefaultAsync(
@@ -133,6 +134,7 @@ public class TransactionService : ITransactionService
         transaction.UserId = userId;
         transaction.Date = transaction.Date == default ? DateTime.UtcNow : transaction.Date;
         transaction.Type = TransactionType.Expense;
+        transaction.TransactionId = this.GenerateTransactionIdAsync();
 
         var budget = await this.context.Budgets
             .FirstOrDefaultAsync(
@@ -346,6 +348,24 @@ public class TransactionService : ITransactionService
 
         var topSummaries = summaries.Take(top).ToList();
         return topSummaries;
+    }
+
+    private string GenerateTransactionIdAsync()
+    {
+        string transactionId;
+        bool exists;
+
+        do
+        {
+            var timestamp = DateTime.UtcNow.ToString("yyyyMMddHH");
+            var random = new Random().Next(10, 99);
+
+            transactionId = timestamp + random;
+
+            exists = this.context.Transactions.Any(t => t.TransactionId == transactionId);
+        } while (exists);
+
+        return transactionId;
     }
 
     private async Task<decimal> GetCurrentMonthExpenseByCategoryAsync(Guid userId, Categories category)

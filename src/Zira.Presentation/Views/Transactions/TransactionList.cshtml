@@ -54,12 +54,15 @@
             <h5>@TransactionText.Transactions</h5>
         </div>
         <div class="table-responsive text-nowrap">
-            <table class="table table-responsive">
+            <table class="table table-responsive align-content-center justify-content-center">
                 <thead>
                 <tr>
+                    <th>@TransactionText.TransactionID</th>
                     <th>@TransactionText.Type</th>
                     <th>@TransactionText.Category</th>
                     <th>@TransactionText.Amount</th>
+                    <th>@TransactionText.Remark</th>
+                    <th>@TransactionText.Reference</th>
                     <th>@TransactionText.TransactionDate</th>
                     <th>@TransactionText.Actions</th>
                 </tr>
@@ -68,6 +71,7 @@
                 @foreach (var transaction in Model.Transactions)
                 {
                     <tr>
+                        <td>@transaction.TransactionId</td>
                         <td>
                             <i class="fab fa-angular fa-lg text-danger me-3"></i>
                             <strong>@transaction.Type.GetLocalizedTransactionType()</strong>
@@ -83,6 +87,8 @@
                             }
                         </td>
                         <td>@transaction.Amount.ToString("C")</td>
+                        <td>@transaction.Remark</td>
+                        <td>@transaction.Reference</td>
                         <td>@transaction.Date.ToString("dd-MM-yyyy")</td>
                         <td>
                             <div class="dropdown">
@@ -100,7 +106,7 @@
                                     {
                                         <a href="@Url.Action("SetAsideForSavings", "Transactions", new { transactionId = transaction.Id })"
                                            class="dropdown-item">
-                                            <i class='bx bx-credit-card-alt me-1' ></i>Set Aside
+                                            <i class='bx bx-credit-card-alt me-1'></i>Set Aside
 
                                         </a>
                                     }

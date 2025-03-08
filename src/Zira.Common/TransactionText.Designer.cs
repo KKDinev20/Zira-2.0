@@ -384,6 +384,15 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Идентификационен номер.
+        /// </summary>
+        public static string TransactionID {
+            get {
+                return ResourceManager.GetString("TransactionID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Транзакции.
         /// </summary>
         public static string Transactions {

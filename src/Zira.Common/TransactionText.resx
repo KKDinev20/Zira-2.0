@@ -144,4 +144,7 @@
     <data name="Reference" xml:space="preserve">
         <value>Справка</value>
     </data>
+    <data name="TransactionID" xml:space="preserve">
+        <value>Идентификационен номер</value>
+    </data>
 </root>
