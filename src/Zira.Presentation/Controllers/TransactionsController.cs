@@ -12,6 +12,7 @@ using Zira.Data.Models;
 using Zira.Presentation.Extensions;
 using Zira.Presentation.Models;
 using Zira.Presentation.Validations;
+using Zira.Services.Currency.Contracts;
 using Zira.Services.Identity.Constants;
 using Zira.Services.Identity.Extensions;
 using Zira.Services.SavingsGoal.Contracts;
@@ -24,6 +25,7 @@ public class TransactionsController : Controller
 {
     private readonly ITransactionService transactionService;
     private readonly ISavingsGoalService savingsGoalService;
+    private readonly ICurrencyConverter currencyConverter;
     private readonly UserManager<ApplicationUser> userManager;
     private readonly EntityContext entityContext;
 
@@ -31,12 +33,14 @@ public class TransactionsController : Controller
         ITransactionService transactionService,
         UserManager<ApplicationUser> userManager,
         EntityContext entityContext,
-        ISavingsGoalService savingsGoalService)
+        ISavingsGoalService savingsGoalService,
+        ICurrencyConverter currencyConverter)
     {
         this.transactionService = transactionService;
         this.userManager = userManager;
         this.entityContext = entityContext;
         this.savingsGoalService = savingsGoalService;
+        this.currencyConverter = currencyConverter;
     }
 
     [HttpGet("/add-transaction/")]
@@ -91,6 +95,17 @@ public class TransactionsController : Controller
             TotalPages = (int)Math.Ceiling((double)totalRecords / pageSize),
             SelectedCategory = category,
         };
+
+        var user = await this.userManager.GetUserAsync(this.User);
+        if (user != null && !string.IsNullOrEmpty(user.PreferredCurrency))
+        {
+            foreach (var transaction in model.Transactions)
+            {
+                transaction.Amount =
+                    await this.currencyConverter.ConvertCurrencyAsync(userId, transaction.Amount,
+                        "BGN"); // Assuming "BGN" is base currency
+            }
+        }
 
         return this.View(model);
     }

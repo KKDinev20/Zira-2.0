@@ -29,5 +29,7 @@ namespace Zira.Presentation.Models
 
         public string AvatarUrl { get; set; }
         public IFormFile AvatarFile { get; set; }
+
+        public string? PreferredCurrency { get; set; }
     }
 }

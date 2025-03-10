@@ -54,6 +54,7 @@ public class AccountController : Controller
             AvatarUrl = string.IsNullOrEmpty(user.ImageUrl)
                 ? "/dashboard/assets/img/avatars/default.jpg"
                 : user.ImageUrl,
+            PreferredCurrency = user.PreferredCurrency,
         };
 
         return this.View(viewModel);
@@ -67,6 +68,7 @@ public class AccountController : Controller
         string email,
         DateTime birthDate,
         IFormFile? avatarFile,
+        string preferredCurrency,
         bool resetAvatar = false)
     {
         var user = await this.userManager.GetUserAsync(this.User);
@@ -80,6 +82,14 @@ public class AccountController : Controller
         user.Email = email;
         user.NormalizedEmail = email.ToUpper();
         user.Birthday = birthDate;
+        if (string.IsNullOrEmpty(preferredCurrency))
+        {
+            user.PreferredCurrency = "BGN";
+        }
+        else
+        {
+            user.PreferredCurrency = preferredCurrency;
+        }
 
         if (resetAvatar)
         {
@@ -192,6 +202,8 @@ public class AccountController : Controller
                 {
                     applicationUser.ImageUrl = "/dashboard/assets/img/avatars/default.jpg";
                 }
+
+                applicationUser.PreferredCurrency = "BGN";
 
                 this.context.Users.Update(applicationUser);
                 await this.context.SaveChangesAsync();

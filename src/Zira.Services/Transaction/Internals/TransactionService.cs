@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Zira.Data;
 using Zira.Data.Enums;
+using Zira.Data.Models;
 using Zira.Services.Common.Contracts;
+using Zira.Services.Currency.Contracts;
 using Zira.Services.Transaction.Contracts;
 using Zira.Services.Transaction.Models;
 
@@ -15,11 +18,19 @@ public class TransactionService : ITransactionService
 {
     private readonly EntityContext context;
     private readonly IIdGenerationService idGenerationService;
+    private readonly ICurrencyConverter currencyConverter;
+    private readonly UserManager<ApplicationUser> userManager;
 
-    public TransactionService(EntityContext context, IIdGenerationService idGenerationService)
+    public TransactionService(
+        EntityContext context,
+        IIdGenerationService idGenerationService,
+        ICurrencyConverter currencyConverter,
+        UserManager<ApplicationUser> userManager)
     {
         this.context = context;
         this.idGenerationService = idGenerationService;
+        this.currencyConverter = currencyConverter;
+        this.userManager = userManager;
     }
 
     public async Task<List<Data.Models.Transaction>> GetTransactionsAsync(
@@ -28,18 +39,23 @@ public class TransactionService : ITransactionService
         int pageSize,
         Categories? category = null)
     {
-        var query = this.context.Transactions.Where(t => t.UserId == userId);
-
-        if (category.HasValue)
-        {
-            query = query.Where(t => t.Type == TransactionType.Expense && t.Category == category.Value);
-        }
-
-        return await query
+        var transactions = await this.context.Transactions.Where(t => t.UserId == userId)
             .OrderByDescending(t => t.Date)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
+
+        var user = await this.userManager.FindByIdAsync(userId.ToString());
+        if (user != null && !string.IsNullOrEmpty(user.PreferredCurrency))
+        {
+            foreach (var transaction in transactions)
+            {
+                transaction.Amount =
+                    await this.currencyConverter.ConvertCurrencyAsync(userId, transaction.Amount, "BGN");
+            }
+        }
+
+        return transactions;
     }
 
     public async Task<List<Data.Models.Transaction>> GetUserTransactionsAsync(Guid userId)
@@ -166,35 +182,51 @@ public class TransactionService : ITransactionService
     public async Task<decimal> GetCurrentMonthIncomeAsync(Guid userId)
     {
         var now = DateTime.UtcNow;
-        return await this.context.Transactions
+        var income = await this.context.Transactions
             .Where(
                 t => t.UserId == userId
                      && t.Type == TransactionType.Income
                      && t.Date.Year == now.Year
                      && t.Date.Month == now.Month)
             .SumAsync(t => t.Amount);
+
+        var user = await this.userManager.FindByIdAsync(userId.ToString());
+        if (user != null && !string.IsNullOrEmpty(user.PreferredCurrency))
+        {
+            income = await this.currencyConverter.ConvertCurrencyAsync(userId, income, "BGN");
+        }
+
+        return income;
     }
 
     public async Task<decimal> GetCurrentMonthExpensesAsync(Guid userId)
     {
         var now = DateTime.UtcNow;
-        return await this.context.Transactions
+        var expenses = await this.context.Transactions
             .Where(
                 t => t.UserId == userId
                      && t.Type == TransactionType.Expense
                      && t.Date.Year == now.Year
                      && t.Date.Month == now.Month)
             .SumAsync(t => t.Amount);
+
+        var user = await this.userManager.FindByIdAsync(userId.ToString());
+        if (user != null && !string.IsNullOrEmpty(user.PreferredCurrency))
+        {
+            expenses = await this.currencyConverter.ConvertCurrencyAsync(userId, expenses, "BGN");
+        }
+
+        return expenses;
     }
 
     public async Task<decimal> GetCurrentMonthFoodExpense(Guid userId)
     {
-        return await this.GetCurrentMonthExpenseByCategoryAsync(userId, Categories.Food);
+        return await this.ConvertExpenseByCategoryAsync(userId, Categories.Food);
     }
 
     public async Task<decimal> GetCurrentMonthUtilitiesExpense(Guid userId)
     {
-        return await this.GetCurrentMonthExpenseByCategoryAsync(userId, Categories.Utilities);
+        return await this.ConvertExpenseByCategoryAsync(userId, Categories.Utilities);
     }
 
     public async Task<List<Data.Models.Transaction>> GetRecentTransactions(Guid userId)
@@ -365,5 +397,26 @@ public class TransactionService : ITransactionService
                      && t.Date.Year == now.Year
                      && t.Date.Month == now.Month)
             .SumAsync(t => t.Amount);
+    }
+
+    private async Task<decimal> ConvertExpenseByCategoryAsync(Guid userId, Categories category)
+    {
+        var now = DateTime.UtcNow;
+        var expense = await this.context.Transactions
+            .Where(
+                t => t.UserId == userId
+                     && t.Type == TransactionType.Expense
+                     && t.Category == category
+                     && t.Date.Year == now.Year
+                     && t.Date.Month == now.Month)
+            .SumAsync(t => t.Amount);
+
+        var user = await this.userManager.FindByIdAsync(userId.ToString());
+        if (user != null && !string.IsNullOrEmpty(user.PreferredCurrency))
+        {
+            expense = await this.currencyConverter.ConvertCurrencyAsync(userId, expense, "BGN");
+        }
+
+        return expense;
     }
 }
