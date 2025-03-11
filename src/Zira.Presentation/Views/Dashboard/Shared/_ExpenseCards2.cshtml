@@ -1,6 +1,11 @@
-﻿<div class="col-12 col-md-8 col-lg-4 order-3 order-md-2">
+﻿@{
+var monthlyTotals = Model.MonthlyTotals ?? new List<decimal> { 0, 0, 0, 0, 0, 0 };
+}
+
+
+<div class="col-12 col-md-8 col-lg-4 order-3 order-md-2">
     <div class="row">
-        <div class="col-6 mb-4 mt-4">
+        <div class="col-6 mb-4">
             <div class="card">
                 <div class="card-body">
                     <div class="card-title d-flex align-items-start justify-content-between">
@@ -13,7 +18,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-6 mb-4 mt-4">
+        <div class="col-6 mb-4">
             <div class="card">
                 <div class="card-body">
                     <div class="card-title d-flex align-items-start justify-content-between">
@@ -26,5 +31,74 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-12 mb-4 mt-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between flex-sm-row flex-column gap-3">
+                        <div class="d-flex flex-sm-column flex-row align-items-start justify-content-between">
+                            <div class="card-title">
+                                <h5 class="text-nowrap mb-2">Semiannual Income</h5>
+                                <span class="badge bg-label-success rounded-pill">Year 2025</span>
+                            </div>
+                        </div>
+                        <div id="profileReportChartA"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const profileReportChartEl = document.querySelector('#profileReportChartA');
+    
+    const monthLabels = @Html.Raw(Json.Serialize(Model.MonthLabels));
+    const monthlyTotals = @Html.Raw(Json.Serialize(Model.MonthlyTotals));
+
+    const profileReportChartConfig = {
+        chart: {
+            height: 80,
+            type: 'line',
+            toolbar: { show: false },
+            dropShadow: {
+                enabled: true,
+                top: 10,
+                left: 5,
+                blur: 3,
+                color: '#85BB65',
+                opacity: 0.15
+            },
+            sparkline: { enabled: true }
+        },
+        grid: {
+            show: false,
+            padding: { right: 8 }
+        },
+        colors: ['#85BB65'],
+        dataLabels: { enabled: false },
+        stroke: {
+            width: 5,
+            curve: 'smooth'
+        },
+        series: [
+            {
+                name: 'Income',
+                data: monthlyTotals
+            }
+        ],
+        xaxis: {
+            categories: monthLabels,
+            type: 'category',
+            labels: { format: 'MMM' }
+        },
+        yaxis: { show: false }
+    };
+
+    if (profileReportChartEl) {
+        const profileReportChart = new ApexCharts(profileReportChartEl, profileReportChartConfig);
+        profileReportChart.render();
+    }
+});
+</script>

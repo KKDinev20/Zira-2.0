@@ -1,8 +1,14 @@
 using System;
+using System.Security.Claims;
+using Moq;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Zira.Data;
+using Zira.Data.Models;
+using Zira.Services.Currency.Contracts;
 using Zira.Services.Common.Contracts;
 using Zira.Services.Common.Internals;
+using Zira.Services.Currency.Internals;
 
 namespace Zira.Services.Tests;
 
@@ -16,9 +22,11 @@ public static class TestHelpers
         return new EntityContext(dbContextOptions.Options);
     }
     
-    public static IIdGenerationService CreateIdGenerationService()
-    {
-        return new IdGenerationService(CreateDbContext());
-    }
+    public static IIdGenerationService CreateIdGenerationService() => Mock.Of<IIdGenerationService>();
+    public static ICurrencyConverter CreateCurrencyConverterService() => Mock.Of<ICurrencyConverter>();
 
+    public static Mock<UserManager<ApplicationUser>> CreateMockUserManager()
+    {
+        return new Mock<UserManager<ApplicationUser>>(Mock.Of<IUserStore<ApplicationUser>>(), null, null, null, null, null, null, null, null);
+    }
 }
