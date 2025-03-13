@@ -1,5 +1,4 @@
 using System;
-using System.Security.Claims;
 using Moq;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -7,8 +6,6 @@ using Zira.Data;
 using Zira.Data.Models;
 using Zira.Services.Currency.Contracts;
 using Zira.Services.Common.Contracts;
-using Zira.Services.Common.Internals;
-using Zira.Services.Currency.Internals;
 
 namespace Zira.Services.Tests;
 

@@ -13,6 +13,22 @@
                 <div class="card-header text-center text-dark">
                     <h5 class="mb-0">@BudgetText.SetBudget</h5>
                 </div>
+
+                @if (TempData["SuccessMessage"] != null)
+                {
+                <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                    @TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                }
+                @if (TempData["ErrorMessage"] != null)
+                {
+                <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                    @TempData["ErrorMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                }
+                
                 <div class="card-body">
                     <form asp-action="SetBudget" method="post">
                         <div class="mb-3">

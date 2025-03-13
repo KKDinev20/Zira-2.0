@@ -1,8 +1,12 @@
-﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@inject UserManager<ApplicationUser> UserManager
 @model Zira.Presentation.Models.TransactionsListViewModel
 
 @{
     ViewData["Title"] = @TransactionText.Transactions;
+    var user = await UserManager.GetUserAsync(User);
+    var preferredCurrency = user?.PreferredCurrency ?? "USD";
     Layout = "Shared/_TransactionsLayout";
 }
 
@@ -85,7 +89,7 @@
                                 <strong>@transaction.Source?.GetLocalizedIncomeSource()</strong>
                             }
                         </td>
-                        <td>@transaction.Amount.ToString("C")</td>
+                        <td>@transaction.Amount @preferredCurrency</td>
                         <td>@transaction.Remark</td>
                         <td>@transaction.Reference</td>
                         <td>@transaction.Date.ToString("dd-MM-yyyy")</td>

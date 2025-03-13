@@ -101,9 +101,7 @@ public class TransactionsController : Controller
         {
             foreach (var transaction in model.Transactions)
             {
-                transaction.Amount =
-                    await this.currencyConverter.ConvertCurrencyAsync(userId, transaction.Amount,
-                        "BGN"); // Assuming "BGN" is base currency
+                transaction.Amount = await this.currencyConverter.ConvertCurrencyAsync(userId, transaction.Amount, user.PreferredCurrency);
             }
         }
 

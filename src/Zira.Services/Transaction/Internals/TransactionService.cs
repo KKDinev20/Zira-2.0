@@ -39,7 +39,14 @@ public class TransactionService : ITransactionService
         int pageSize,
         Categories? category = null)
     {
-        var transactions = await this.context.Transactions.Where(t => t.UserId == userId)
+        var query = this.context.Transactions.Where(t => t.UserId == userId);
+
+        if (category.HasValue)
+        {
+            query = query.Where(t => t.Category == category);
+        }
+
+        var transactions = await query
             .OrderByDescending(t => t.Date)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
@@ -50,8 +57,14 @@ public class TransactionService : ITransactionService
         {
             foreach (var transaction in transactions)
             {
-                transaction.Amount =
-                    await this.currencyConverter.ConvertCurrencyAsync(userId, transaction.Amount, "BGN");
+                if (!string.IsNullOrEmpty(transaction.Currency) && transaction.Currency != user.PreferredCurrency)
+                {
+                    transaction.Amount = await this.currencyConverter.ConvertCurrencyAsync(
+                        userId,
+                        transaction.Amount,
+                        transaction.Currency,
+                        user.PreferredCurrency);
+                }
             }
         }
 
@@ -86,6 +99,9 @@ public class TransactionService : ITransactionService
 
         transactionModel.TransactionId = this.idGenerationService.GenerateDigitIdAsync();
 
+        var user = await this.userManager.FindByIdAsync(userId.ToString());
+        transactionModel.Currency = user?.PreferredCurrency ?? "BGN";
+
         var budget = await this.context.Budgets
             .FirstOrDefaultAsync(
                 b => b.UserId == userId
@@ -93,7 +109,7 @@ public class TransactionService : ITransactionService
                      && b.Month.Year == transactionModel.Date.Year
                      && b.Month.Month == transactionModel.Date.Month);
 
-        if (budget != null)
+        if (budget != null && transactionModel.Type == TransactionType.Expense)
         {
             budget.Amount -= transactionModel.Amount;
 
@@ -112,24 +128,43 @@ public class TransactionService : ITransactionService
     public async Task UpdateTransactionAsync(Data.Models.Transaction transactionModel)
     {
         var existingTransaction = await this.context.Transactions.FindAsync(transactionModel.Id);
-        if (existingTransaction != null)
+        if (existingTransaction == null)
         {
-            existingTransaction.Remark = transactionModel.Remark;
-            existingTransaction.Reference = transactionModel.Reference;
-            existingTransaction.Amount = transactionModel.Amount;
-            existingTransaction.Date = transactionModel.Date;
-
-            if (transactionModel.Type == TransactionType.Expense && transactionModel.Category != null)
-            {
-                existingTransaction.Category = transactionModel.Category;
-            }
-            else
-            {
-                existingTransaction.Source = transactionModel.Source;
-            }
-
-            await this.context.SaveChangesAsync();
+            throw new KeyNotFoundException("Transaction not found");
         }
+
+        string originalCurrency = existingTransaction.Currency;
+
+        existingTransaction.Remark = transactionModel.Remark;
+        existingTransaction.Reference = transactionModel.Reference;
+        existingTransaction.Date = transactionModel.Date;
+
+        if (!string.IsNullOrEmpty(transactionModel.Currency) &&
+            transactionModel.Currency != originalCurrency)
+        {
+            existingTransaction.Amount = await this.currencyConverter.ConvertCurrencyAsync(
+                existingTransaction.UserId,
+                transactionModel.Amount,
+                originalCurrency,
+                transactionModel.Currency);
+
+            existingTransaction.Currency = transactionModel.Currency;
+        }
+        else
+        {
+            existingTransaction.Amount = transactionModel.Amount;
+        }
+
+        if (transactionModel.Type == TransactionType.Expense && transactionModel.Category != null)
+        {
+            existingTransaction.Category = transactionModel.Category;
+        }
+        else
+        {
+            existingTransaction.Source = transactionModel.Source;
+        }
+
+        await this.context.SaveChangesAsync();
     }
 
     public async Task DeleteTransactionAsync(Guid id, Guid userId)
@@ -155,6 +190,7 @@ public class TransactionService : ITransactionService
         transaction.Date = transaction.Date == default ? DateTime.UtcNow : transaction.Date;
         transaction.Type = TransactionType.Expense;
         transaction.TransactionId = this.idGenerationService.GenerateDigitIdAsync();
+        transaction.Currency = user.PreferredCurrency ?? "BGN";
 
         var budget = await this.context.Budgets
             .FirstOrDefaultAsync(
