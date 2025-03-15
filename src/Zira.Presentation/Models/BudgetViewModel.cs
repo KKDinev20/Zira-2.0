@@ -22,6 +22,6 @@ namespace Zira.Presentation.Models
         [Range(10, 100, ErrorMessage = "Warning threshold must be between 0 and 100.")]
         public decimal WarningThreshold { get; set; }
 
-        public string Remark { get; set; }
+        public string? Remark { get; set; }
     }
 }

@@ -12,6 +12,8 @@ public class Budget
     public Categories? Category { get; set; }
     public decimal Amount { get; set; }
     public decimal WarningThreshold { get; set; }
+
+    public decimal? SpentPercentage { get; set; } = 0;
     public DateTime Month { get; set; }
 
     public string? Remark { get; set; }

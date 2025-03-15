@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Zira.Data;
+using Zira.Data.Enums;
 using Zira.Services.Budget.Contracts;
 using Zira.Services.Common.Contracts;
 
@@ -35,7 +36,27 @@ namespace Zira.Services.Budget.Internals
             }
 
             budget.Month = new DateTime(budget.Month.Year, budget.Month.Month, 1);
+
             budget.BudgetId = this.idGenerationService.GenerateDigitIdAsync();
+
+            decimal totalSpent = 0;
+            if (await this.context.Transactions.AnyAsync(
+                    t => t.UserId == budget.UserId &&
+                         t.Category == budget.Category &&
+                         t.Date.Year == budget.Month.Year &&
+                         t.Date.Month == budget.Month.Month))
+            {
+                totalSpent = await this.context.Transactions
+                    .Where(
+                        t => t.UserId == budget.UserId &&
+                             t.Type == TransactionType.Expense &&
+                             t.Category == budget.Category &&
+                             t.Date.Year == budget.Month.Year &&
+                             t.Date.Month == budget.Month.Month)
+                    .SumAsync(t => t.Amount);
+            }
+
+            budget.SpentPercentage = budget.Amount > 0 ? (totalSpent / budget.Amount) * 100 : 0;
 
             this.context.Budgets.Add(budget);
             await this.context.SaveChangesAsync();
@@ -81,17 +102,69 @@ namespace Zira.Services.Budget.Internals
 
         public async Task<List<Data.Models.Budget>> GetUserBudgetsAsync(Guid userId, int page, int pageSize)
         {
-            return await this.context.Budgets
+            var budgets = await this.context.Budgets
                 .Where(b => b.UserId == userId)
                 .OrderByDescending(b => b.Month)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
+
+            foreach (var budget in budgets)
+            {
+                var totalSpent = await this.context.Transactions
+                    .Where(
+                        t => t.UserId == userId &&
+                             t.Type == TransactionType.Expense &&
+                             t.Category == budget.Category &&
+                             t.Date.Year == budget.Month.Year &&
+                             t.Date.Month == budget.Month.Month)
+                    .SumAsync(t => t.Amount);
+
+                budget.SpentPercentage = budget.Amount > 0 ? (totalSpent / budget.Amount) * 100 : 0;
+            }
+
+            return budgets;
         }
 
         public async Task<int> GetTotalBudgetsAsync(Guid userId)
         {
             return await this.context.Budgets.CountAsync(b => b.UserId == userId);
+        }
+
+        public async Task<List<string>> GetBudgetWarningsAsync(Guid userId)
+        {
+            var warnings = new List<string>();
+
+            var budgets = await this.context.Budgets
+                .Where(b => b.UserId == userId)
+                .ToListAsync();
+
+            foreach (var budget in budgets)
+            {
+                var totalExpenses = await this.context.Transactions
+                    .Where(
+                        t => t.UserId == userId &&
+                             t.Type == TransactionType.Expense &&
+                             t.Category == budget.Category &&
+                             t.Date.Year == budget.Month.Year &&
+                             t.Date.Month == budget.Month.Month)
+                    .SumAsync(t => t.Amount);
+
+                decimal expensePercentage = (totalExpenses / budget.Amount) * 100;
+
+                if (expensePercentage >= 50 && expensePercentage < 100)
+                {
+                    warnings.Add(
+                        $"⚠️ Warning: You have used {expensePercentage:F2}% of your budget for {budget.Category}.");
+                }
+                else if (expensePercentage >= 100)
+                {
+                    warnings.Add(
+                        $"🚨 Alert: You have exceeded your budget for {budget.Category} by {expensePercentage - 100:F2}%.");
+                }
+            }
+
+            return warnings;
         }
     }
 }

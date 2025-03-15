@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Zira.Common;
 using Zira.Data;
 using Zira.Data.Enums;
@@ -12,6 +13,7 @@ using Zira.Presentation.Models;
 using Zira.Services.Budget.Contracts;
 using Zira.Services.Identity.Constants;
 using Zira.Services.Identity.Extensions;
+using Zira.Services.Reminder.Internals;
 
 namespace Zira.Presentation.Controllers
 {
@@ -21,15 +23,18 @@ namespace Zira.Presentation.Controllers
         private readonly IBudgetService budgetService;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly EntityContext context;
+        private readonly IHubContext<NotificationHub> hubContext;
 
         public BudgetController(
             IBudgetService budgetService,
             UserManager<ApplicationUser> userManager,
-            EntityContext context)
+            EntityContext context,
+            IHubContext<NotificationHub> hubContext)
         {
             this.budgetService = budgetService;
             this.userManager = userManager;
             this.context = context;
+            this.hubContext = hubContext;
         }
 
         [HttpGet("/set-budget/")]
@@ -81,6 +86,9 @@ namespace Zira.Presentation.Controllers
             var budgets = await this.budgetService.GetUserBudgetsAsync(userId, page, pageSize);
             var totalBudgets = await this.budgetService.GetTotalBudgetsAsync(userId);
             var totalPages = (int)Math.Ceiling((double)totalBudgets / pageSize);
+
+            var warnings = await this.budgetService.GetBudgetWarningsAsync(userId);
+            this.TempData["BudgetWarnings"] = warnings;
 
             var model = new BudgetListViewModel
             {
