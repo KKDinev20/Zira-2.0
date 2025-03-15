@@ -12,8 +12,8 @@ using Zira.Data;
 namespace Zira.Data.Migrations
 {
     [DbContext(typeof(EntityContext))]
-    [Migration("20250308102454_AddBudgetIdToBudgetModel")]
-    partial class AddBudgetIdToBudgetModel
+    [Migration("20250315162450_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -211,6 +211,9 @@ namespace Zira.Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("PreferredCurrency")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -281,6 +284,9 @@ namespace Zira.Data.Migrations
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsNotified")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Remark")
                         .HasColumnType("nvarchar(max)");
 
@@ -298,6 +304,28 @@ namespace Zira.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Reminders");
+                });
+
+            modelBuilder.Entity("Zira.Data.Models.ReminderSettings", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("EnableBillReminders")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("EnableBudgetAlerts")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ReminderSettings");
                 });
 
             modelBuilder.Entity("Zira.Data.Models.SavingsGoal", b =>
@@ -346,6 +374,9 @@ namespace Zira.Data.Migrations
 
                     b.Property<int?>("Category")
                         .HasColumnType("int");
+
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -455,6 +486,17 @@ namespace Zira.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Zira.Data.Models.ReminderSettings", b =>
+                {
+                    b.HasOne("Zira.Data.Models.ApplicationUser", "User")
+                        .WithMany("ReminderSettings")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Zira.Data.Models.SavingsGoal", b =>
                 {
                     b.HasOne("Zira.Data.Models.ApplicationUser", "User")
@@ -480,6 +522,8 @@ namespace Zira.Data.Migrations
             modelBuilder.Entity("Zira.Data.Models.ApplicationUser", b =>
                 {
                     b.Navigation("Budgets");
+
+                    b.Navigation("ReminderSettings");
 
                     b.Navigation("Reminders");
 

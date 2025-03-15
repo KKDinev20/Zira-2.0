@@ -281,17 +281,8 @@ namespace Zira.Data.Migrations
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Frequency")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsNotified")
                         .HasColumnType("bit");
-
-                    b.Property<bool>("IsRecurring")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("NotificationMethod")
-                        .HasColumnType("int");
 
                     b.Property<string>("Remark")
                         .HasColumnType("nvarchar(max)");
@@ -323,9 +314,6 @@ namespace Zira.Data.Migrations
 
                     b.Property<bool>("EnableBudgetAlerts")
                         .HasColumnType("bit");
-
-                    b.Property<int>("PreferredNotification")
-                        .HasColumnType("int");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");

@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Zira.Data;
 using Zira.Data.Enums;
 using Zira.Data.Models;
+using Zira.Presentation.Extensions;
 using Zira.Presentation.Models;
 using Zira.Services.Identity.Constants;
 using Zira.Services.Reminder.Internals;
@@ -18,26 +19,32 @@ namespace Zira.Presentation.Controllers
     [Authorize(Policies.UserPolicy)]
     public class AutomationController : Controller
     {
-        private readonly EntityContext _context;
+        private readonly EntityContext context;
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly IHubContext<NotificationHub> _hubContext;
+        private readonly IHubContext<NotificationHub> hubContext;
 
         public AutomationController(
             EntityContext context,
             UserManager<ApplicationUser> userManager,
             IHubContext<NotificationHub> hubContext)
         {
-            _context = context;
+            this.context = context;
             this.userManager = userManager;
-            this._hubContext = hubContext;
+            this.hubContext = hubContext;
         }
 
         [HttpGet("/bill-reminders")]
-        public async Task<IActionResult> BillReminders()
+        public async Task<IActionResult> BillReminders(int page = 1, int pageSize = 10)
         {
+            await this.SetGlobalUserInfoAsync(this.userManager, this.context);
+
             var user = await this.userManager.GetUserAsync(this.User);
 
-            var reminders = await _context.Reminders
+            var totalReminders = await this.context.Reminders
+                .Where(r => r.UserId == user.Id)
+                .CountAsync();
+
+            var reminders = await this.context.Reminders
                 .Where(r => r.UserId == user.Id)
                 .OrderBy(r => r.DueDate)
                 .Select(
@@ -48,29 +55,42 @@ namespace Zira.Presentation.Controllers
                         Amount = r.Amount,
                         DueDate = r.DueDate,
                     })
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
                 .ToListAsync();
 
-            return View(reminders);
+            var totalPages = (int)Math.Ceiling((double)totalReminders / pageSize);
+
+            var viewModel = new PaginatedViewModel<ReminderViewModel>
+            {
+                Items = reminders,
+                CurrentPage = page,
+                TotalPages = totalPages,
+                PageSize = pageSize,
+            };
+
+            return this.View(viewModel);
         }
 
         [HttpGet("/create-reminder")]
         public IActionResult CreateReminder()
         {
-            return View(new ReminderViewModel());
+            return this.View(new ReminderViewModel());
         }
 
         [HttpPost("/create-reminder")]
         public async Task<IActionResult> CreateReminder(ReminderViewModel model)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return Json(new { success = false, message = "Invalid data." });
+                return this.View(model);
             }
 
-            var user = await userManager.GetUserAsync(this.User);
+            var user = await this.userManager.GetUserAsync(this.User);
             if (user == null)
             {
-                return Json(new { success = false, message = "User not found." });
+                this.TempData["ErrorMessage"] = "User not found.";
+                return this.View(model);
             }
 
             try
@@ -80,59 +100,56 @@ namespace Zira.Presentation.Controllers
                     Id = Guid.NewGuid(),
                     UserId = user.Id,
                     Title = model.Title,
-                    Remark = model.Remark ?? string.Empty,
+                    Remark = model.Remark,
                     Amount = model.Amount,
                     DueDate = model.DueDate,
                     Status = ReminderStatus.Pending,
                     IsNotified = false,
                 };
 
-                _context.Reminders.Add(reminder);
-                await _context.SaveChangesAsync();
+                this.context.Reminders.Add(reminder);
+                await this.context.SaveChangesAsync();
 
-                await _hubContext.Clients.User(user.Id.ToString())
-                    .SendAsync("ReceiveNotification", $"New Reminder: {reminder.Title} - {reminder.DueDate:yyyy-MM-dd}");
+                this.TempData["ReminderTitle"] = reminder.Title;
+                this.TempData["ReminderRemark"] = reminder.Remark;
+                this.TempData["ReminderDueDate"] = reminder.DueDate.ToString("yyyy-MM-dd");
+                this.TempData["ReminderAmount"] = reminder.Amount.ToString("C");
 
-                TempData["ReminderTitle"] = reminder.Title;
-                TempData["ReminderRemark"] = reminder.Remark;
-                TempData["ReminderDueDate"] = reminder.DueDate.ToString("yyyy-MM-dd");
-                TempData["ReminderAmount"] = reminder.Amount.ToString("C");
-
-                return RedirectToAction("BillReminders");
+                this.TempData["SuccessMessage"] = "Reminder created successfully!";
+                return this.RedirectToAction("BillReminders");
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = $"Error creating reminder: {ex.Message}";
-                return View(model);
+                this.TempData["ErrorMessage"] = $"Error creating reminder: {ex.Message}";
+                return this.View(model);
             }
         }
-
 
         [HttpPost("/send-notification/{reminderId}")]
         public async Task<IActionResult> SendNotification(Guid reminderId)
         {
-            var reminder = await _context.Reminders.FirstOrDefaultAsync(r => r.Id == reminderId);
+            var reminder = await this.context.Reminders.FirstOrDefaultAsync(r => r.Id == reminderId);
 
             if (reminder == null)
             {
-                TempData["ErrorMessage"] = "Reminder not found.";
-                return RedirectToAction("BillReminders");
+                this.TempData["ErrorMessage"] = "Reminder not found.";
+                return this.RedirectToAction("BillReminders");
             }
 
-            var user = await userManager.FindByIdAsync(reminder.UserId.ToString());
+            var user = await this.userManager.FindByIdAsync(reminder.UserId.ToString());
             if (user != null)
             {
                 var message = $"Reminder: {reminder.Title} - {reminder.DueDate:yyyy-MM-dd} to pay ${reminder.Amount}.";
-                await _hubContext.Clients.User(user.Id.ToString()).SendAsync("ReceiveNotification", message);
+                await this.hubContext.Clients.User(user.Id.ToString()).SendAsync("ReceiveNotification", message);
 
-                TempData["SuccessMessage"] = "Notification sent!";
+                this.TempData["SuccessMessage"] = "Notification sent!";
             }
             else
             {
-                TempData["ErrorMessage"] = "User not found.";
+                this.TempData["ErrorMessage"] = "User not found.";
             }
 
-            return RedirectToAction("BillReminders");
+            return this.RedirectToAction("BillReminders");
         }
     }
 }

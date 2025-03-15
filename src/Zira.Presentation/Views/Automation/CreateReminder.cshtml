@@ -1,8 +1,8 @@
 ﻿@model Zira.Presentation.Models.ReminderViewModel
 
 @{
-ViewData["Title"] = "Create Reminder";
-Layout = "Shared/_AutomationLayout";
+    ViewData["Title"] = "Create Reminder";
+    Layout = "Shared/_AutomationLayout";
 }
 
 <!-- Page Content -->
@@ -14,9 +14,7 @@ Layout = "Shared/_AutomationLayout";
     <div class="card shadow-lg border-0">
         <h5 class="card-header bg-white py-3 px-4">New Reminder</h5>
         <div class="card-body p-4">
-            <form id="reminderForm">
-                @Html.AntiForgeryToken()
-
+            <form id="reminderForm" method="post" asp-action="CreateReminder">
                 <div class="mb-3">
                     <label asp-for="Title">Title</label>
                     <input asp-for="Title" class="form-control" required/>
