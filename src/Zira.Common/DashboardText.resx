@@ -56,7 +56,7 @@
         <value>Предпочитания за известия</value>
     </data>
     <data name="Automation" xml:space="preserve">
-        <value>Автоматизация</value>
+        <value>Известия</value>
     </data>
     <data name="BillReminders" xml:space="preserve">
         <value>Напомняния за сметки</value>

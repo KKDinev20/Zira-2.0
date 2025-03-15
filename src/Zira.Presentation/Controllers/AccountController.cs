@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Zira.Common;
 using Zira.Data;
+using Zira.Data.Enums;
 using Zira.Data.Models;
 using Zira.Presentation.Extensions;
 using Zira.Presentation.Models;
@@ -123,7 +124,7 @@ public class AccountController : Controller
         var result = await this.userManager.UpdateAsync(user);
         if (!result.Succeeded)
         {
-            this.ModelState.AddModelError("", "Failed to update profile.");
+            this.ModelState.AddModelError(" ", "Failed to update profile.");
             return this.View("Profile");
         }
 
@@ -249,5 +250,77 @@ public class AccountController : Controller
 
         this.TempData["SuccessMessage"] = @AccountText.PasswordSuccess;
         return this.RedirectToAction("Profile");
+    }
+
+    [HttpGet("/profile/notification-preferences")]
+    public async Task<IActionResult> NotificationPreferences()
+    {
+        await this.SetGlobalUserInfoAsync(this.userManager, this.context);
+        var user = await this.userManager.GetUserAsync(this.User);
+        if (user == null)
+        {
+            return this.RedirectToAction("Login", "Authentication");
+        }
+
+        var settings = await this.context.ReminderSettings
+            .FirstOrDefaultAsync(x => x.UserId == user.Id);
+
+        if (settings == null)
+        {
+            settings = new ReminderSettings
+            {
+                EnableBillReminders = true,
+                EnableBudgetAlerts = true,
+            };
+        }
+
+        return this.View(settings);
+    }
+
+    [HttpPost("/profile/update-notifications")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> UpdateNotificationPreferences(
+        bool enableBillReminders,
+        bool enableBudgetAlerts,
+        NotificationType preferredNotification)
+    {
+        var user = await this.userManager.GetUserAsync(this.User);
+        if (user == null)
+        {
+            return this.RedirectToAction("Login", "Authentication");
+        }
+
+        await this.UpdateReminderSettings(user.Id, enableBillReminders, enableBudgetAlerts, preferredNotification);
+
+        this.TempData["SuccessMessage"] = "Notification preferences updated successfully.";
+        return this.RedirectToAction("NotificationPreferences");
+    }
+
+    private async Task UpdateReminderSettings(
+        Guid userId,
+        bool billReminders,
+        bool budgetAlerts,
+        NotificationType notificationType)
+    {
+        var settings = await this.context.ReminderSettings.FirstOrDefaultAsync(x => x.UserId == userId);
+
+        if (settings == null)
+        {
+            settings = new ReminderSettings
+            {
+                UserId = userId,
+                EnableBillReminders = billReminders,
+                EnableBudgetAlerts = budgetAlerts,
+            };
+            await this.context.ReminderSettings.AddAsync(settings);
+        }
+        else
+        {
+            settings.EnableBillReminders = billReminders;
+            settings.EnableBudgetAlerts = budgetAlerts;
+            this.context.ReminderSettings.Update(settings);
+        }
+
+        await this.context.SaveChangesAsync();
     }
 }

@@ -15,6 +15,7 @@ namespace Zira.Data.Models
         public ICollection<Transaction> Transactions { get; set; }
         public ICollection<Budget>? Budgets { get; set; }
         public ICollection<Reminder>? Reminders { get; set; }
+        public ICollection<ReminderSettings>? ReminderSettings { get; set; }
         public ICollection<SavingsGoal>? SavingsGoals { get; set; }
     }
 }

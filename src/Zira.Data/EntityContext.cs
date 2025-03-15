@@ -12,6 +12,7 @@ namespace Zira.Data
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Budget> Budgets { get; set; }
         public DbSet<Reminder> Reminders { get; set; }
+        public DbSet<ReminderSettings> ReminderSettings { get; set; }
         public DbSet<SavingsGoal> SavingsGoals { get; set; }
 
         public EntityContext(DbContextOptions<EntityContext> options)
@@ -36,6 +37,11 @@ namespace Zira.Data
             modelBuilder.Entity<Reminder>()
                 .HasOne(r => r.User)
                 .WithMany(x => x.Reminders)
+                .HasForeignKey(r => r.UserId);
+
+            modelBuilder.Entity<ReminderSettings>()
+                .HasOne(r => r.User)
+                .WithMany(x => x.ReminderSettings)
                 .HasForeignKey(r => r.UserId);
 
             modelBuilder.Entity<SavingsGoal>()

@@ -32,7 +32,9 @@ public class HomeController : Controller
     {
         return this.View();
     }
-
+    
+    
+    [HttpPost("/budget-alert")]
     public async Task<IActionResult> BudgetAlert()
     {
         var emailModel = new EmailModel

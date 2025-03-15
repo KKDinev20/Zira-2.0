@@ -1,0 +1,21 @@
+﻿<script>
+    $(document).ready(function () {
+        var successMessage = '@TempData["SuccessMessage"]';
+        var errorMessage = '@TempData["ErrorMessage"]';
+        var infoMessage = '@TempData["InfoMessage"]';
+        var warningMessage = '@TempData["WarningMessage"]';
+
+        if (successMessage) {
+            toastr.success(successMessage);
+        }
+        if (errorMessage) {
+            toastr.error(errorMessage);
+        }
+        if (infoMessage) {
+            toastr.info(infoMessage);
+        }
+        if (warningMessage) {
+            toastr.warning(warningMessage);
+        }
+    });
+</script>

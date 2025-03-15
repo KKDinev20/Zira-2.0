@@ -6,6 +6,7 @@ using Zira.Data;
 using Zira.Presentation;
 using Zira.Services;
 using Zira.Services.Identity.Constants;
+using Zira.Services.Reminder.Internals;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,8 +59,11 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapHub<NotificationHub>("/notificationHub");
 
 app.MapControllers();
 

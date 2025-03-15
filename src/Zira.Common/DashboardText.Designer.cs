@@ -105,7 +105,7 @@ namespace Zira.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Автоматизация.
+        ///   Looks up a localized string similar to Известия.
         /// </summary>
         public static string Automation {
             get {
