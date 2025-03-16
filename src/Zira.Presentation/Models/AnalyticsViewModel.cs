@@ -6,4 +6,6 @@ public class AnalyticsViewModel
 {
     public ExpenseAnalyticsViewModel ExpenseAnalytics { get; set; }
     public FinancialSummaryModel FinancialSummary { get; set; }
+
+    public string PreferredCurrencySymbol { get; set; } = "лв.";
 }

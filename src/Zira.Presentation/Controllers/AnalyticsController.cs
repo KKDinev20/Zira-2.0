@@ -87,6 +87,7 @@ public class AnalyticsController : Controller
         {
             ExpenseAnalytics = expenseAnalytics,
             FinancialSummary = financialSummary,
+            PreferredCurrencySymbol = user.PreferredCurrency.Symbol ?? "лв."
         };
 
         return this.View(viewModel);
@@ -144,6 +145,7 @@ public class AnalyticsController : Controller
             MonthlyComparison = monthlyComparison,
             CategoryComparison = categoryComparison,
             MonthlySavingsRate = monthlySavingsRate,
+            PreferredCurrencySymbol = user.PreferredCurrency.Symbol ?? "лв.",
         };
 
         return this.View(viewModel);

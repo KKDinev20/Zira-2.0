@@ -30,8 +30,8 @@
                 {
                     <tr>
                         <td class="text-nowrap">@item.Month</td>
-                        <td class="text-nowrap">@item.Income.ToString("C")</td>
-                        <td class="text-nowrap">@item.Expenses.ToString("C")</td>
+                        <td class="text-nowrap">@item.Income.ToString("N2") @Model.PreferredCurrencySymbol </td>
+                        <td class="text-nowrap">@item.Expenses.ToString("N2") @Model.PreferredCurrencySymbol</td>
                     </tr>
                 }
                 </tbody>
@@ -109,7 +109,7 @@
             tooltip: {
                 y: {
                     formatter: function(value) {
-                        return "$" + value.toLocaleString();
+                        return  value.toLocaleString() + ' @Model.PreferredCurrencySymbol';
                     }
                 }
             }
