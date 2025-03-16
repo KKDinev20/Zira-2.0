@@ -35,12 +35,8 @@ namespace Zira.Presentation.Controllers
             await this.SetGlobalUserInfoAsync(this.userManager, this.context);
 
             var user = await this.userManager.GetUserAsync(this.User);
-            if (user == null)
-            {
-                return this.RedirectToAction("Login", "Authentication");
-            }
 
-            var goals = await this.savingsGoalService.GetUserSavingsGoalsAsync(user.Id, page, pageSize);
+            var goals = await this.savingsGoalService.GetUserSavingsGoalsAsync(user.Id, page, pageSize, user.PreferredCurrencyCode);
             var totalGoals = await this.savingsGoalService.GetTotalSavingsGoalsAsync(user.Id);
             var totalPages = (int)Math.Ceiling((double)totalGoals / pageSize);
 
@@ -85,9 +81,11 @@ namespace Zira.Presentation.Controllers
                 CurrentAmount = 0,
                 TargetDate = model.TargetDate,
                 Remark = model.Remark,
+                Currency = user.PreferredCurrency,
+                CurrencyCode = user.PreferredCurrencyCode ?? "BGN",
             };
 
-            await this.savingsGoalService.AddSavingsGoalsAsync(goal);
+            await this.savingsGoalService.AddSavingsGoalsAsync(goal, goal.CurrencyCode);
             this.TempData["SuccessMessage"] = "Savings goal created successfully!";
             return this.RedirectToAction("ViewSavingsGoals");
         }
@@ -117,7 +115,6 @@ namespace Zira.Presentation.Controllers
                 CurrentAmount = goal.CurrentAmount,
                 TargetDate = goal.TargetDate,
                 Remark = goal.Remark,
-
             };
 
             return this.View(model);
@@ -150,9 +147,11 @@ namespace Zira.Presentation.Controllers
                 TargetAmount = model.TargetAmount,
                 CurrentAmount = model.CurrentAmount,
                 TargetDate = model.TargetDate,
+                Currency = user.PreferredCurrency,
+                CurrencyCode = user.PreferredCurrencyCode ?? "BGN",
             };
 
-            await this.savingsGoalService.UpdateSavingsGoalsAsync(goal);
+            await this.savingsGoalService.UpdateSavingsGoalsAsync(goal, goal.CurrencyCode);
             this.TempData["SuccessMessage"] = "Savings goal updated successfully!";
             return this.RedirectToAction("ViewSavingsGoals");
         }

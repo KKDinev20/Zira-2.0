@@ -1,9 +1,11 @@
 ﻿@model Zira.Presentation.Models.SavingsGoalListViewModel
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = @SavingsGoalText.SavingsGoals;
+    var user = await UserManager.GetUserAsync(User);
+    var currencySymbol = user?.PreferredCurrency?.Symbol ?? "BGN";
     Layout = "Shared/_SavingsGoalLayout";
 }
-
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="container-fluid">
         <div class="row justify-content-center">
@@ -62,8 +64,8 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>$@goal.TargetAmount.ToString("0.00")</td>
-                                        <td>$@goal.CurrentAmount.ToString("0.00")</td>
+                                        <td>@goal.TargetAmount.ToString("N2") @(goal.Currency?.Symbol ?? currencySymbol)</td>
+                                        <td>@goal.CurrentAmount.ToString("N2") @(goal.Currency?.Symbol ?? currencySymbol)</td>
                                         <td>@goal.TargetDate?.ToString("MMMM dd, yyyy")</td>
                                         <td>
                                             <div class="dropdown">

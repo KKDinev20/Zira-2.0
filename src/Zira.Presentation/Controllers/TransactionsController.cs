@@ -95,7 +95,7 @@ public class TransactionsController : Controller
             TotalPages = (int)Math.Ceiling((double)totalRecords / pageSize),
             SelectedCategory = category,
         };
-        
+
         return this.View(model);
     }
 

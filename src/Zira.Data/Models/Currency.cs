@@ -9,5 +9,6 @@ public class Currency
     public string Symbol { get; set; }
 
     public ICollection<Transaction> Transactions { get; set; }
+    public ICollection<SavingsGoal> SavingsGoals { get; set; }
     public ICollection<ApplicationUser> Users { get; set; }
 }

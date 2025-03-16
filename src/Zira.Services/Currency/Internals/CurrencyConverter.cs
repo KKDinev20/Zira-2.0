@@ -53,23 +53,23 @@ namespace Zira.Services.Currency
             fromCurrency = fromCurrency.ToUpperInvariant();
             toCurrency = toCurrency.ToUpperInvariant();
 
-            var cachedRates = await cache.GetOrCreateAsync(
+            var cachedRates = await this.cache.GetOrCreateAsync(
                 CacheKey,
                 async entry =>
                 {
-                    entry.AbsoluteExpirationRelativeToNow = cacheExpirationTime;
-                    return await LoadRatesFromDatabaseAsync();
+                    entry.AbsoluteExpirationRelativeToNow = this.cacheExpirationTime;
+                    return await this.LoadRatesFromDatabaseAsync();
                 });
 
-            if (TryGetRateFromDictionary(cachedRates, fromCurrency, toCurrency, out decimal rate))
+            if (this.TryGetRateFromDictionary(cachedRates, fromCurrency, toCurrency, out decimal rate))
             {
                 return rate;
             }
 
             if (fromCurrency != "BGN" && toCurrency != "BGN")
             {
-                if (TryGetRateFromDictionary(cachedRates, fromCurrency, "BGN", out decimal fromToBgn) &&
-                    TryGetRateFromDictionary(cachedRates, "BGN", toCurrency, out decimal bgnToTo))
+                if (this.TryGetRateFromDictionary(cachedRates, fromCurrency, "BGN", out decimal fromToBgn) &&
+                    this.TryGetRateFromDictionary(cachedRates, "BGN", toCurrency, out decimal bgnToTo))
                 {
                     return fromToBgn * bgnToTo;
                 }
@@ -102,7 +102,7 @@ namespace Zira.Services.Currency
                 }
             }
 
-            return 1.0m; // Default fallback
+            return 1.0m;
         }
 
         private bool TryGetRateFromDictionary(
