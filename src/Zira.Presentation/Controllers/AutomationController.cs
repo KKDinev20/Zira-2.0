@@ -11,6 +11,7 @@ using Zira.Data.Enums;
 using Zira.Data.Models;
 using Zira.Presentation.Extensions;
 using Zira.Presentation.Models;
+using Zira.Services.Currency.Contracts;
 using Zira.Services.Identity.Constants;
 using Zira.Services.Reminder.Internals;
 
@@ -22,19 +23,22 @@ namespace Zira.Presentation.Controllers
         private readonly EntityContext context;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IHubContext<NotificationHub> hubContext;
+        private readonly ICurrencyConverter currencyConverter;
 
         public AutomationController(
             EntityContext context,
             UserManager<ApplicationUser> userManager,
-            IHubContext<NotificationHub> hubContext)
+            IHubContext<NotificationHub> hubContext,
+            ICurrencyConverter currencyConverter)
         {
             this.context = context;
             this.userManager = userManager;
             this.hubContext = hubContext;
+            this.currencyConverter = currencyConverter;
         }
 
         [HttpGet("/bill-reminders")]
-        public async Task<IActionResult> BillReminders(int page = 1, int pageSize = 10)
+        public async Task<IActionResult> BillReminders(int page = 1, int pageSize = 5)
         {
             await this.SetGlobalUserInfoAsync(this.userManager, this.context);
 
@@ -59,6 +63,21 @@ namespace Zira.Presentation.Controllers
                 .Take(pageSize)
                 .ToListAsync();
 
+            if (user != null && !string.IsNullOrEmpty(user.PreferredCurrencyCode))
+            {
+                foreach (var reminder in reminders)
+                {
+                    if (reminder.Currency?.Code != user.PreferredCurrencyCode)
+                    {
+                        reminder.Amount = await this.currencyConverter.ConvertCurrencyAsync(
+                            user.Id,
+                            reminder.Amount,
+                            reminder.Currency?.Code ?? "BGN",
+                            user.PreferredCurrencyCode);
+                    }
+                }
+            }
+
             var totalPages = (int)Math.Ceiling((double)totalReminders / pageSize);
 
             var viewModel = new PaginatedViewModel<ReminderViewModel>
@@ -67,20 +86,25 @@ namespace Zira.Presentation.Controllers
                 CurrentPage = page,
                 TotalPages = totalPages,
                 PageSize = pageSize,
+                ReminderCount = await this.context.Reminders.CountAsync(r => !r.IsNotified),
             };
 
             return this.View(viewModel);
         }
 
         [HttpGet("/create-reminder")]
-        public IActionResult CreateReminder()
+        public async Task<IActionResult> CreateReminder()
         {
+            await this.SetGlobalUserInfoAsync(this.userManager, this.context);
+
             return this.View(new ReminderViewModel());
         }
 
         [HttpPost("/create-reminder")]
         public async Task<IActionResult> CreateReminder(ReminderViewModel model)
         {
+            await this.SetGlobalUserInfoAsync(this.userManager, this.context);
+
             if (!this.ModelState.IsValid)
             {
                 return this.View(model);
@@ -105,6 +129,8 @@ namespace Zira.Presentation.Controllers
                     DueDate = model.DueDate,
                     Status = ReminderStatus.Pending,
                     IsNotified = false,
+                    Currency = user.PreferredCurrency,
+                    CurrencyCode = user.PreferredCurrencyCode,
                 };
 
                 this.context.Reminders.Add(reminder);

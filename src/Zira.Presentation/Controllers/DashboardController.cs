@@ -64,6 +64,8 @@ public class DashboardController : Controller
             .Where(t => t.UserId == user.Id && t.Type == TransactionType.Expense).SumAsync(t => t.Amount);
         var topCategories = await this.transactionService.GetTopExpenseCategoriesAsync(user.Id, 5);
 
+        int reminderCount = await this.context.Reminders.CountAsync(r => r.IsNotified == false);
+        
         var viewModel = new DashboardViewModel
         {
             MonthlyIncome = income,
@@ -83,6 +85,7 @@ public class DashboardController : Controller
             MonthLabels = monthLabels,
             SelectedType = selectedType.ToString(),
             PreferredCurrencySymbol = preferredCurrency?.Symbol ?? "лв.",
+            ReminderCount = reminderCount,
         };
 
         return this.View(viewModel);

@@ -56,6 +56,12 @@ namespace Zira.Data
                 .WithMany(x => x.Reminders)
                 .HasForeignKey(r => r.UserId);
 
+            modelBuilder.Entity<Reminder>()
+                .HasOne(t => t.Currency)
+                .WithMany(c => c.Reminders)
+                .HasForeignKey(t => t.CurrencyCode)
+                .OnDelete(DeleteBehavior.NoAction);
+
             modelBuilder.Entity<ReminderSettings>()
                 .HasOne(r => r.User)
                 .WithMany(x => x.ReminderSettings)
