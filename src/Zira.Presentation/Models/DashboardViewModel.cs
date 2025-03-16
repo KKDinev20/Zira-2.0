@@ -22,4 +22,6 @@ public class DashboardViewModel
     public List<decimal> MonthlyTotals { get; set; } = new();
     public List<string> MonthLabels { get; set; } = new();
     public string SelectedType { get; set; }
+
+    public string PreferredCurrencySymbol { get; set; } = "лв.";
 }

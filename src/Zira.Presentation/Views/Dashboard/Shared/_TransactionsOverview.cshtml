@@ -31,7 +31,7 @@
                     </div>
                     <div>
                         <small class="text-muted d-block">@TransactionText.TotalBalance</small>
-                        <h6 class="mb-0 me-1">$@monthlyTotals.Sum().ToString("N0")</h6>
+                        <h6 class="mb-0 me-1">@monthlyTotals.Sum().ToString("N2") @Model.PreferredCurrencySymbol</h6>
                     </div>
                 </div>
                 <div id="balancesChart"></div>
@@ -40,7 +40,7 @@
                         <p class="mb-n1 mt-1">
                             @(selectedType == "Expense" ? @TransactionText.ExpensesThisWeek : @TransactionText.IncomeThisWeek)
                         </p>
-                        <small class="text-muted">$@weeklyTotal.ToString("N0") @TransactionText.thisWeek</small>
+                        <small class="text-muted">@weeklyTotal.ToString("N2") @Model.PreferredCurrencySymbol @TransactionText.thisWeek</small>
                     </div>
                 </div>
             </div>
@@ -94,7 +94,7 @@
             },
             tooltip: {
                 theme: 'dark',
-                y: { formatter: function(val) { return "$" + val.toLocaleString(); } }
+                y: { formatter: function(val) { return val.toLocaleString() + ' @Model.PreferredCurrencySymbol'; } }
             }
         };
 
@@ -118,7 +118,7 @@
                         show: true,
                         name: { show: false },
                         value: {
-                            formatter: function (val) { return "$" + parseInt(val); },
+                            formatter: function (val) { return parseInt(val) + ' @Model.PreferredCurrencySymbol'; },
                             offsetY: 5,
                             color: '#697a8d',
                             fontSize: '13px'

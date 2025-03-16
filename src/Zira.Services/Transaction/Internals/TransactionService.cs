@@ -39,7 +39,9 @@ public class TransactionService : ITransactionService
         int pageSize,
         Categories? category = null)
     {
-        var query = this.context.Transactions.Where(t => t.UserId == userId);
+        var query = this.context.Transactions
+            .Include(t => t.Currency) // Ensure Currency is loaded
+            .Where(t => t.UserId == userId);
 
         if (category.HasValue)
         {
@@ -53,17 +55,19 @@ public class TransactionService : ITransactionService
             .ToListAsync();
 
         var user = await this.userManager.FindByIdAsync(userId.ToString());
-        if (user != null && !string.IsNullOrEmpty(user.PreferredCurrency))
+        if (user != null && !string.IsNullOrEmpty(user.PreferredCurrencyCode))
         {
             foreach (var transaction in transactions)
             {
-                if (!string.IsNullOrEmpty(transaction.Currency) && transaction.Currency != user.PreferredCurrency)
+                string transactionCurrencyCode = transaction.Currency?.Code ?? "BGN";
+
+                if (transactionCurrencyCode != user.PreferredCurrencyCode)
                 {
                     transaction.Amount = await this.currencyConverter.ConvertCurrencyAsync(
                         userId,
                         transaction.Amount,
-                        transaction.Currency,
-                        user.PreferredCurrency);
+                        transactionCurrencyCode,
+                        user.PreferredCurrencyCode);
                 }
             }
         }
@@ -96,11 +100,24 @@ public class TransactionService : ITransactionService
         transactionModel.Id = Guid.NewGuid();
         transactionModel.UserId = userId;
         transactionModel.Date = transactionModel.Date == default ? DateTime.UtcNow : transactionModel.Date;
-
         transactionModel.TransactionId = this.idGenerationService.GenerateDigitIdAsync();
 
         var user = await this.userManager.FindByIdAsync(userId.ToString());
-        transactionModel.Currency = user?.PreferredCurrency ?? "BGN";
+
+        if (user == null)
+        {
+            throw new InvalidOperationException("User not found!");
+        }
+
+        transactionModel.CurrencyCode = user.PreferredCurrencyCode ?? "BGN";
+
+        transactionModel.Currency = await this.context.Currencies
+            .FirstOrDefaultAsync(c => c.Code == transactionModel.CurrencyCode);
+
+        if (transactionModel.Currency == null)
+        {
+            throw new InvalidOperationException("Currency not found!");
+        }
 
         var budget = await this.context.Budgets
             .FirstOrDefaultAsync(
@@ -127,41 +144,41 @@ public class TransactionService : ITransactionService
 
     public async Task UpdateTransactionAsync(Data.Models.Transaction transactionModel)
     {
-        var existingTransaction = await this.context.Transactions.FindAsync(transactionModel.Id);
+        var existingTransaction = await this.context.Transactions
+            .Include(t => t.Currency)
+            .FirstOrDefaultAsync(t => t.Id == transactionModel.Id);
+
         if (existingTransaction == null)
         {
             throw new KeyNotFoundException("Transaction not found");
         }
 
-        string originalCurrency = existingTransaction.Currency;
+        var user = await this.userManager.FindByIdAsync(existingTransaction.UserId.ToString());
+
+        if (user == null)
+        {
+            throw new InvalidOperationException("User not found!");
+        }
+
+        string originalCurrencyCode = existingTransaction.CurrencyCode;
+        string newCurrencyCode = user.PreferredCurrencyCode ?? "BGN";
 
         existingTransaction.Remark = transactionModel.Remark;
         existingTransaction.Reference = transactionModel.Reference;
         existingTransaction.Date = transactionModel.Date;
 
-        if (!string.IsNullOrEmpty(transactionModel.Currency) &&
-            transactionModel.Currency != originalCurrency)
+        // Convert only when the currency code changes
+        if (originalCurrencyCode != newCurrencyCode)
         {
             existingTransaction.Amount = await this.currencyConverter.ConvertCurrencyAsync(
                 existingTransaction.UserId,
-                transactionModel.Amount,
-                originalCurrency,
-                transactionModel.Currency);
+                existingTransaction.Amount,
+                originalCurrencyCode,
+                newCurrencyCode);
 
-            existingTransaction.Currency = transactionModel.Currency;
-        }
-        else
-        {
-            existingTransaction.Amount = transactionModel.Amount;
-        }
-
-        if (transactionModel.Type == TransactionType.Expense && transactionModel.Category != null)
-        {
-            existingTransaction.Category = transactionModel.Category;
-        }
-        else
-        {
-            existingTransaction.Source = transactionModel.Source;
+            existingTransaction.CurrencyCode = newCurrencyCode;
+            existingTransaction.Currency = await this.context.Currencies
+                .FirstOrDefaultAsync(c => c.Code == newCurrencyCode);
         }
 
         await this.context.SaveChangesAsync();
@@ -190,7 +207,21 @@ public class TransactionService : ITransactionService
         transaction.Date = transaction.Date == default ? DateTime.UtcNow : transaction.Date;
         transaction.Type = TransactionType.Expense;
         transaction.TransactionId = this.idGenerationService.GenerateDigitIdAsync();
-        transaction.Currency = user.PreferredCurrency ?? "BGN";
+
+        var baseCurrency = "BGN"; // Your default base currency
+        var preferredCurrencyCode = user.PreferredCurrencyCode ?? "BGN";
+
+        transaction.CurrencyCode = preferredCurrencyCode;
+
+// Convert the amount before saving
+        if (preferredCurrencyCode != baseCurrency)
+        {
+            transaction.Amount = await this.currencyConverter.ConvertCurrencyAsync(
+                userId,
+                transaction.Amount,
+                baseCurrency,
+                preferredCurrencyCode);
+        }
 
         var budget = await this.context.Budgets
             .FirstOrDefaultAsync(
@@ -227,9 +258,13 @@ public class TransactionService : ITransactionService
             .SumAsync(t => t.Amount);
 
         var user = await this.userManager.FindByIdAsync(userId.ToString());
-        if (user != null && !string.IsNullOrEmpty(user.PreferredCurrency))
+        if (user != null && !string.IsNullOrEmpty(user.PreferredCurrencyCode))
         {
-            income = await this.currencyConverter.ConvertCurrencyAsync(userId, income, "BGN");
+            income = await this.currencyConverter.ConvertCurrencyAsync(
+                userId,
+                income,
+                "BGN",
+                user.PreferredCurrencyCode);
         }
 
         return income;
@@ -247,9 +282,13 @@ public class TransactionService : ITransactionService
             .SumAsync(t => t.Amount);
 
         var user = await this.userManager.FindByIdAsync(userId.ToString());
-        if (user != null && !string.IsNullOrEmpty(user.PreferredCurrency))
+        if (user != null && !string.IsNullOrEmpty(user.PreferredCurrencyCode))
         {
-            expenses = await this.currencyConverter.ConvertCurrencyAsync(userId, expenses, "BGN");
+            expenses = await this.currencyConverter.ConvertCurrencyAsync(
+                userId,
+                expenses,
+                "BGN",
+                user.PreferredCurrencyCode);
         }
 
         return expenses;
@@ -448,9 +487,13 @@ public class TransactionService : ITransactionService
             .SumAsync(t => t.Amount);
 
         var user = await this.userManager.FindByIdAsync(userId.ToString());
-        if (user != null && !string.IsNullOrEmpty(user.PreferredCurrency))
+        if (user != null && !string.IsNullOrEmpty(user.PreferredCurrencyCode))
         {
-            expense = await this.currencyConverter.ConvertCurrencyAsync(userId, expense, "BGN");
+            expense = await this.currencyConverter.ConvertCurrencyAsync(
+                userId,
+                expense,
+                "BGN",
+                user.PreferredCurrencyCode);
         }
 
         return expense;

@@ -6,7 +6,7 @@
 @{
     ViewData["Title"] = @TransactionText.Transactions;
     var user = await UserManager.GetUserAsync(User);
-    var preferredCurrency = user?.PreferredCurrency ?? "USD";
+    var preferredCurrency = user.PreferredCurrencyCode;
     Layout = "Shared/_TransactionsLayout";
 }
 
@@ -65,6 +65,7 @@
                     <th>@TransactionText.Type</th>
                     <th>@TransactionText.Category</th>
                     <th>@TransactionText.Amount</th>
+                    <th>Original Currency</th>
                     <th>@TransactionText.Remark</th>
                     <th>@TransactionText.Reference</th>
                     <th>@TransactionText.TransactionDate</th>
@@ -90,6 +91,7 @@
                             }
                         </td>
                         <td>@transaction.Amount @preferredCurrency</td>
+                        <td>@transaction.CurrencyCode</td>
                         <td>@transaction.Remark</td>
                         <td>@transaction.Reference</td>
                         <td>@transaction.Date.ToString("dd-MM-yyyy")</td>

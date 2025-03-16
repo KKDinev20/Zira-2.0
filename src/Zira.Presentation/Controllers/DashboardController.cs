@@ -39,22 +39,30 @@ public class DashboardController : Controller
         await this.SetGlobalUserInfoAsync(this.userManager, this.context);
 
         var user = await this.userManager.GetUserAsync(this.User);
+        var preferredCurrency = await this.context.Currencies
+            .Where(c => c.Code == user.PreferredCurrencyCode)
+            .Select(c => new { c.Code, c.Symbol })
+            .FirstOrDefaultAsync();
         if (!Enum.TryParse(type, true, out TransactionType selectedType))
         {
             selectedType = TransactionType.Income;
         }
 
-        var (monthlyTotals, monthLabels) = await transactionService.GetLastSixMonthsDataAsync(user.Id, selectedType);
-        var weeklyTotal = await transactionService.GetCurrentWeekTotalAsync(user.Id, selectedType);
-        var income = await transactionService.GetCurrentMonthIncomeAsync(user.Id);
-        var expenses = await transactionService.GetCurrentMonthExpensesAsync(user.Id);
-        var food = await transactionService.GetCurrentMonthFoodExpense(user.Id);
-        var utilities = await transactionService.GetCurrentMonthUtilitiesExpense(user.Id);
-        var recentTransactions = await transactionService.GetRecentTransactions(user.Id);
-        var (monthlyIncomes, monthlyExpenses) = await transactionService.GetMonthlyIncomeAndExpensesAsync(user.Id, DateTime.UtcNow.Year);
-        var totalIncome = await context.Transactions.Where(t => t.UserId == user.Id && t.Type == TransactionType.Income).SumAsync(t => t.Amount);
-        var totalExpenses = await context.Transactions.Where(t => t.UserId == user.Id && t.Type == TransactionType.Expense).SumAsync(t => t.Amount);
-        var topCategories = await transactionService.GetTopExpenseCategoriesAsync(user.Id, 5);
+        var (monthlyTotals, monthLabels) =
+            await this.transactionService.GetLastSixMonthsDataAsync(user.Id, selectedType);
+        var weeklyTotal = await this.transactionService.GetCurrentWeekTotalAsync(user.Id, selectedType);
+        var income = await this.transactionService.GetCurrentMonthIncomeAsync(user.Id);
+        var expenses = await this.transactionService.GetCurrentMonthExpensesAsync(user.Id);
+        var food = await this.transactionService.GetCurrentMonthFoodExpense(user.Id);
+        var utilities = await this.transactionService.GetCurrentMonthUtilitiesExpense(user.Id);
+        var recentTransactions = await this.transactionService.GetRecentTransactions(user.Id);
+        var (monthlyIncomes, monthlyExpenses) =
+            await this.transactionService.GetMonthlyIncomeAndExpensesAsync(user.Id, DateTime.UtcNow.Year);
+        var totalIncome = await this.context.Transactions
+            .Where(t => t.UserId == user.Id && t.Type == TransactionType.Income).SumAsync(t => t.Amount);
+        var totalExpenses = await this.context.Transactions
+            .Where(t => t.UserId == user.Id && t.Type == TransactionType.Expense).SumAsync(t => t.Amount);
+        var topCategories = await this.transactionService.GetTopExpenseCategoriesAsync(user.Id, 5);
 
         var viewModel = new DashboardViewModel
         {
@@ -74,8 +82,9 @@ public class DashboardController : Controller
             MonthlyTotals = monthlyTotals,
             MonthLabels = monthLabels,
             SelectedType = selectedType.ToString(),
+            PreferredCurrencySymbol = preferredCurrency?.Symbol ?? "лв.",
         };
 
-        return View(viewModel);
+        return this.View(viewModel);
     }
 }

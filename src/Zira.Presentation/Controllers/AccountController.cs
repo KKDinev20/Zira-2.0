@@ -46,6 +46,9 @@ public class AccountController : Controller
             return this.RedirectToAction("Login", "Authentication");
         }
 
+        var currencies = await this.context.Currencies.ToListAsync();
+        this.ViewBag.Currencies = currencies;
+
         var viewModel = new ProfileViewModel
         {
             FirstName = user!.FirstName,
@@ -56,6 +59,7 @@ public class AccountController : Controller
                 ? "/dashboard/assets/img/avatars/default.jpg"
                 : user.ImageUrl,
             PreferredCurrency = user.PreferredCurrency,
+            PreferredCurrencyCode = user.PreferredCurrencyCode,
         };
 
         return this.View(viewModel);
@@ -85,11 +89,11 @@ public class AccountController : Controller
         user.Birthday = birthDate;
         if (string.IsNullOrEmpty(preferredCurrency))
         {
-            user.PreferredCurrency = "BGN";
+            user.PreferredCurrencyCode = "BGN";
         }
         else
         {
-            user.PreferredCurrency = preferredCurrency;
+            user.PreferredCurrencyCode = preferredCurrency;
         }
 
         if (resetAvatar)
@@ -204,7 +208,7 @@ public class AccountController : Controller
                     applicationUser.ImageUrl = "/dashboard/assets/img/avatars/default.jpg";
                 }
 
-                applicationUser.PreferredCurrency = "BGN";
+                applicationUser.PreferredCurrencyCode = "BGN";
 
                 this.context.Users.Update(applicationUser);
                 await this.context.SaveChangesAsync();

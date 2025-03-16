@@ -1,5 +1,5 @@
 ﻿@{
-var monthlyTotals = Model.MonthlyTotals ?? new List<decimal> { 0, 0, 0, 0, 0, 0 };
+    var monthlyTotals = Model.MonthlyTotals ?? new List<decimal> { 0, 0, 0, 0, 0, 0 };
 }
 
 
@@ -14,7 +14,7 @@ var monthlyTotals = Model.MonthlyTotals ?? new List<decimal> { 0, 0, 0, 0, 0, 0 
                         </div>
                     </div>
                     <span class="fw-semibold d-block mb-1">@DashboardText.Groceries</span>
-                    <h3 class="card-title text-nowrap mb-2">@Model.MonthlyFood.ToString("C")</h3>
+                    <h3 class="card-title text-nowrap mb-2">@Model.MonthlyFood.ToString("N2") @Model.PreferredCurrencySymbol</h3>
                 </div>
             </div>
         </div>
@@ -27,7 +27,7 @@ var monthlyTotals = Model.MonthlyTotals ?? new List<decimal> { 0, 0, 0, 0, 0, 0 
                         </div>
                     </div>
                     <span class="fw-semibold d-block mb-1">@DashboardText.Utilities</span>
-                    <h3 class="card-title mb-2">@Model.MonthlyUtilities.ToString("C")</h3>
+                    <h3 class="card-title mb-2">@Model.MonthlyUtilities.ToString("N2") @Model.PreferredCurrencySymbol</h3>
                 </div>
             </div>
         </div>
@@ -52,7 +52,7 @@ var monthlyTotals = Model.MonthlyTotals ?? new List<decimal> { 0, 0, 0, 0, 0, 0 
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-    const profileReportChartEl = document.querySelector('#profileReportChartA');
+    const profileReportChartEl = document.querySelector('#semiannualReport');
     
     const monthLabels = @Html.Raw(Json.Serialize(Model.MonthLabels));
     const monthlyTotals = @Html.Raw(Json.Serialize(Model.MonthlyTotals));

@@ -42,7 +42,7 @@
                             <small class="text-muted">@TransactionText.SpentThisMonth</small>
                         </div>
                         <div class="user-progress">
-                            <small class="fw-semibold">@summary.TotalAmount.ToString("C")</small>
+                            <small class="fw-semibold">@summary.TotalAmount.ToString("N2") @Model.PreferredCurrencySymbol</small>
                         </div>
                     </div>
                 </li>
@@ -98,7 +98,8 @@
                                 label: 'Total',
                                 formatter: function (w) {
                                     const total = w.globals.seriesTotals.reduce((a, b) => a + b, 0);
-                                    return total.toLocaleString('bg-BG', { style: 'currency',currency: 'LEV' });
+                                    // Fix currency Display
+                                    return total.toLocaleString('bg-BG', { style: 'currency',currency: 'BGN' });
                                 }
                             }
                         }

@@ -1,5 +1,4 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
-@using Zira.Data.Enums
 @model Zira.Data.Models.Transaction
 @{
     ViewData["Title"] = @TransactionText.EditTransaction;
@@ -40,14 +39,14 @@
                 <div class="mb-3">
                     <label class="form-label" for="transaction-amount">@TransactionText.Amount</label>
                     <div class="input-group">
-                                <span id="transaction-amount-icon" class="input-group-text">
-                                    <i class="bx bx-money"></i>
-                                </span>
+                        <span id="transaction-amount-icon" class="input-group-text">
+                            <i class="bx bx-money"></i>
+                        </span>
                         <input asp-for="Amount" type="number" class="form-control" id="transaction-amount" placeholder="@TransactionText.Amount" required step="0.01"/>
                         <span asp-validation-for="Amount" class="text-danger"></span>
                     </div>
                 </div>
-
+                
                 <div class="mb-3">
                     <label asp-for="Remark" class="form-label fw-medium text-gray-700 mb-2">
                         @TransactionText.Remark
@@ -63,7 +62,7 @@
 
                 <div class="mb-3">
                     <label asp-for="Reference" class="form-label fw-medium text-gray-700 mb-2">
-                        @TransactionText.Remark
+                        @TransactionText.Reference
                     </label>
                     <div class="input-group">
                                 <span id="transaction-reference-icon" class="input-group-text">

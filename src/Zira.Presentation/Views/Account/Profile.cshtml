@@ -75,39 +75,27 @@
                                             </div>
 
                                             <div class="mb-3 col-md-6">
-                                                <label for="PreferredCurrency" class="form-label">Preferred
-                                                    Currency</label>
-                                                <select class="form-select" id="PreferredCurrency"
-                                                        name="PreferredCurrency">
-                                                    <!option value="BGN"
-                                                            @(Model.PreferredCurrency == "BGN" ? "selected" : "")>BGN
-                                                    </!option>
-                                                    <!option value="USD"
-                                                            @(Model.PreferredCurrency == "USD" ? "selected" : "")>USD
-                                                    </!option>
-                                                    <!option value="EUR"
-                                                            @(Model.PreferredCurrency == "EUR" ? "selected" : "")>EUR
-                                                    </!option>
-                                                    <!option value="GBP"
-                                                             @(Model.PreferredCurrency == "GBP" ? "selected" : "")>GBP
-                                                    </!option>
-                                                    <!option value="JPY"
-                                                             @(Model.PreferredCurrency == "JPY" ? "selected" : "")>JPY
-                                                    </!option>
-                                                    <!option value="CAD"
-                                                             @(Model.PreferredCurrency == "CAD" ? "selected" : "")>CAD
-                                                    </!option>
-                                                    <!option value="AUD"
-                                                             @(Model.PreferredCurrency == "AUD" ? "selected" : "")>AUD
-                                                    </!option>
+                                                <label for="PreferredCurrency" class="form-label">Preferred Currency</label>
+                                                <select class="form-select" id="PreferredCurrency" name="PreferredCurrency">
+                                                    @foreach (var currency in ViewBag.Currencies)
+                                                    {
+                                                        <!option value="@currency.Code"
+                                                                @(Model.PreferredCurrencyCode == currency.Code ? "selected" : "")>
+                                                            @currency.Code (@currency.Symbol)
+                                                        </!option>
+                                                    }
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="mt-3">
                                             <button type="submit"
-                                                    class="btn btn-primary me-2">@AccountText.Save</button>
+                                                    class="btn btn-primary me-2">
+                                                @AccountText.Save
+                                            </button>
                                             <a asp-action="Index" asp-controller="Dashboard"
-                                               class="btn btn-outline-secondary">@AccountText.Cancel</a>
+                                               class="btn btn-outline-secondary">
+                                                @AccountText.Cancel
+                                            </a>
                                         </div>
                                     </form>
                                 </div>

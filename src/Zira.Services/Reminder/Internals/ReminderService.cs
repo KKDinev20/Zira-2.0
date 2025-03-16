@@ -83,7 +83,7 @@ namespace Zira.Services.Reminder.Internals
                     await dbContext.SaveChangesAsync();
                 }
 
-                await Task.Delay(TimeSpan.FromMinutes(3), stoppingToken);
+                await Task.Delay(TimeSpan.FromDays(3), stoppingToken);
             }
         }
     }

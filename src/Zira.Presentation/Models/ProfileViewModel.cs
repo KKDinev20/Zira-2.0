@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
+using Zira.Data.Models;
 
 namespace Zira.Presentation.Models
 {
@@ -30,6 +31,7 @@ namespace Zira.Presentation.Models
         public string AvatarUrl { get; set; }
         public IFormFile AvatarFile { get; set; }
 
-        public string? PreferredCurrency { get; set; }
+        public Currency? PreferredCurrency { get; set; }
+        public string? PreferredCurrencyCode { get; set; }
     }
 }

@@ -163,7 +163,7 @@
     const notificationContainer = document.getElementById("notification-container");
 
     const connection = new signalR.HubConnectionBuilder()
-        .withUrl("/notifications")
+        .withUrl("/notificationHub")
         .configureLogging(signalR.LogLevel.Information)
         .build();
 
@@ -190,12 +190,8 @@
     `;
         document.body.appendChild(notification);
 
-        setTimeout(() => {
-            notification.classList.remove("show");
-            notification.classList.add("fade");
-            setTimeout(() => notification.remove(), 500);
-        }, 5000); 
+        setTimeout(function () {
+            $('.toast').toast('hide');
+        }, 5000);
     }
-
-
 </script>

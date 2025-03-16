@@ -9,8 +9,9 @@ public class Transaction
     public Guid UserId { get; set; }
 
     public string TransactionId { get; set; } = string.Empty;
-    
-    public string? Currency { get; set; }
+
+    public string? CurrencyCode { get; set; }
+    public Currency? Currency { get; set; }
     public decimal Amount { get; set; }
     public TransactionType Type { get; set; }
     public Categories? Category { get; set; }

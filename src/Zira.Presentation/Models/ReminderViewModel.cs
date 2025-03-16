@@ -8,11 +8,14 @@ namespace Zira.Presentation.Models
     {
         public Guid Id { get; set; }
 
-        [StringLength(100)] public string? Title { get; set; }
+        [StringLength(100)]
+        public string? Title { get; set; }
 
-        [Range(0.01, 100000)] public decimal Amount { get; set; }
+        [Range(0.01, 100000)]
+        public decimal Amount { get; set; }
 
-        [Required] public DateTime DueDate { get; set; }
+        [Required]
+        public DateTime DueDate { get; set; }
 
         public string? Remark { get; set; }
     }

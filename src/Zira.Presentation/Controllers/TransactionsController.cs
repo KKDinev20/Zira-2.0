@@ -95,16 +95,7 @@ public class TransactionsController : Controller
             TotalPages = (int)Math.Ceiling((double)totalRecords / pageSize),
             SelectedCategory = category,
         };
-
-        var user = await this.userManager.GetUserAsync(this.User);
-        if (user != null && !string.IsNullOrEmpty(user.PreferredCurrency))
-        {
-            foreach (var transaction in model.Transactions)
-            {
-                transaction.Amount = await this.currencyConverter.ConvertCurrencyAsync(userId, transaction.Amount, user.PreferredCurrency);
-            }
-        }
-
+        
         return this.View(model);
     }
 

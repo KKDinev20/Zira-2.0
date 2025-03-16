@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
+using Zira.Data;
 using Zira.Services.Currency.Contracts;
 
 namespace Zira.Services.Currency
@@ -12,17 +15,17 @@ namespace Zira.Services.Currency
         private const string CacheKey = "ExchangeRates";
         private readonly IMemoryCache cache;
         private readonly IConfiguration configuration;
-        private readonly Dictionary<string, Dictionary<string, decimal>> exchangeRates;
+        private readonly EntityContext context;
         private readonly TimeSpan cacheExpirationTime = TimeSpan.FromHours(24);
 
         public CurrencyConverter(
             IMemoryCache cache,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            EntityContext context)
         {
             this.cache = cache;
             this.configuration = configuration;
-
-            this.exchangeRates = this.InitializeExchangeRates();
+            this.context = context;
         }
 
         public async Task<decimal> ConvertCurrencyAsync(
@@ -41,125 +44,65 @@ namespace Zira.Services.Currency
                 return amount;
             }
 
-            var rate = this.GetExchangeRate(fromCurrency, toCurrency);
+            var rate = await this.GetExchangeRate(fromCurrency, toCurrency);
             return Math.Round(amount * rate, 2);
         }
 
-        public async Task<decimal> ConvertCurrencyAsync(Guid userId, decimal amount, string toCurrency)
-        {
-            return amount;
-        }
-
-        public IDictionary<string, string> GetAvailableCurrencies()
-        {
-            return new Dictionary<string, string>
-            {
-                { "USD", "US Dollar" },
-                { "EUR", "Euro" },
-                { "GBP", "British Pound" },
-                { "JPY", "Japanese Yen" },
-                { "CAD", "Canadian Dollar" },
-                { "AUD", "Australian Dollar" },
-                { "CHF", "Swiss Franc" },
-                { "CNY", "Chinese Yuan" },
-                { "BGN", "Bulgarian Lev" },
-            };
-        }
-
-        public void UpdateExchangeRate(string fromCurrency, string toCurrency, decimal rate)
+        private async Task<decimal> GetExchangeRate(string fromCurrency, string toCurrency)
         {
             fromCurrency = fromCurrency.ToUpperInvariant();
             toCurrency = toCurrency.ToUpperInvariant();
 
-            var rates = this.cache.Get<Dictionary<string, Dictionary<string, decimal>>>(CacheKey) ?? this.exchangeRates;
-
-            if (!rates.ContainsKey(fromCurrency))
-            {
-                rates[fromCurrency] = new Dictionary<string, decimal>(StringComparer.OrdinalIgnoreCase);
-            }
-
-            rates[fromCurrency][toCurrency] = rate;
-
-            if (!rates.ContainsKey(toCurrency))
-            {
-                rates[toCurrency] = new Dictionary<string, decimal>(StringComparer.OrdinalIgnoreCase);
-            }
-
-            if (rate != 0)
-            {
-                rates[toCurrency][fromCurrency] = 1 / rate;
-            }
-
-            this.cache.Set(CacheKey, rates, this.cacheExpirationTime);
-        }
-
-        private Dictionary<string, Dictionary<string, decimal>> LoadRatesFromConfiguration()
-        {
-            try
-            {
-                var configSection = this.configuration.GetSection("ExchangeRates");
-                if (!configSection.Exists())
+            var cachedRates = await cache.GetOrCreateAsync(
+                CacheKey,
+                async entry =>
                 {
-                    return null;
-                }
+                    entry.AbsoluteExpirationRelativeToNow = cacheExpirationTime;
+                    return await LoadRatesFromDatabaseAsync();
+                });
 
-                var result = new Dictionary<string, Dictionary<string, decimal>>(StringComparer.OrdinalIgnoreCase);
-
-                foreach (var fromCurrency in configSection.GetChildren())
-                {
-                    var fromCurrencyCode = fromCurrency.Key;
-                    var toCurrencies = new Dictionary<string, decimal>(StringComparer.OrdinalIgnoreCase);
-
-                    foreach (var toCurrency in fromCurrency.GetChildren())
-                    {
-                        if (decimal.TryParse(toCurrency.Value, out decimal rate))
-                        {
-                            toCurrencies[toCurrency.Key] = rate;
-                        }
-                    }
-
-                    if (toCurrencies.Count > 0)
-                    {
-                        result[fromCurrencyCode] = toCurrencies;
-                    }
-                }
-
-                return result;
-            }
-            catch
+            if (TryGetRateFromDictionary(cachedRates, fromCurrency, toCurrency, out decimal rate))
             {
-                return null;
+                return rate;
             }
-        }
 
-        private decimal GetExchangeRate(string fromCurrency, string toCurrency)
-        {
-            fromCurrency = fromCurrency.ToUpperInvariant();
-            toCurrency = toCurrency.ToUpperInvariant();
-
-            if (this.cache.TryGetValue(CacheKey, out Dictionary<string, Dictionary<string, decimal>> cachedRates))
+            if (fromCurrency != "BGN" && toCurrency != "BGN")
             {
-                if (this.TryGetRateFromDictionary(cachedRates, fromCurrency, toCurrency, out decimal rate))
+                if (TryGetRateFromDictionary(cachedRates, fromCurrency, "BGN", out decimal fromToBgn) &&
+                    TryGetRateFromDictionary(cachedRates, "BGN", toCurrency, out decimal bgnToTo))
                 {
-                    return rate;
+                    return fromToBgn * bgnToTo;
                 }
             }
 
-            if (this.TryGetRateFromDictionary(this.exchangeRates, fromCurrency, toCurrency, out decimal defaultRate))
+            var exchangeRate = await this.context.ExchangeRates
+                .Where(r => r.FromCurrencyCode == fromCurrency && r.ToCurrencyCode == toCurrency)
+                .FirstOrDefaultAsync();
+
+            if (exchangeRate != null)
             {
-                return defaultRate;
+                return exchangeRate.Rate;
             }
 
-            if (fromCurrency != "USD" && toCurrency != "USD")
+            if (fromCurrency != "BGN" && toCurrency != "BGN")
             {
-                if (this.TryGetRateFromDictionary(this.exchangeRates, fromCurrency, "USD", out decimal fromToUsd) &&
-                    this.TryGetRateFromDictionary(this.exchangeRates, "USD", toCurrency, out decimal usdToTarget))
+                var fromToBgn = await this.context.ExchangeRates
+                    .Where(r => r.FromCurrencyCode == fromCurrency && r.ToCurrencyCode == "BGN")
+                    .Select(r => r.Rate)
+                    .FirstOrDefaultAsync();
+
+                var bgnToTo = await this.context.ExchangeRates
+                    .Where(r => r.FromCurrencyCode == "BGN" && r.ToCurrencyCode == toCurrency)
+                    .Select(r => r.Rate)
+                    .FirstOrDefaultAsync();
+
+                if (fromToBgn != 0 && bgnToTo != 0)
                 {
-                    return fromToUsd * usdToTarget;
+                    return fromToBgn * bgnToTo;
                 }
             }
 
-            return 1.0m;
+            return 1.0m; // Default fallback
         }
 
         private bool TryGetRateFromDictionary(
@@ -188,46 +131,22 @@ namespace Zira.Services.Currency
             return false;
         }
 
-        private Dictionary<string, Dictionary<string, decimal>> InitializeExchangeRates()
+        private async Task<Dictionary<string, Dictionary<string, decimal>>> LoadRatesFromDatabaseAsync()
         {
-            var configRates = this.LoadRatesFromConfiguration();
-            if (configRates != null && configRates.Count > 0)
+            var rates = new Dictionary<string, Dictionary<string, decimal>>(StringComparer.OrdinalIgnoreCase);
+
+            var exchangeRates = await this.context.ExchangeRates.ToListAsync();
+
+            foreach (var exchangeRate in exchangeRates)
             {
-                return configRates;
+                if (!rates.ContainsKey(exchangeRate.FromCurrencyCode))
+                {
+                    rates[exchangeRate.FromCurrencyCode] =
+                        new Dictionary<string, decimal>(StringComparer.OrdinalIgnoreCase);
+                }
+
+                rates[exchangeRate.FromCurrencyCode][exchangeRate.ToCurrencyCode] = exchangeRate.Rate;
             }
-
-            var rates = new Dictionary<string, Dictionary<string, decimal>>(StringComparer.OrdinalIgnoreCase)
-            {
-                ["USD"] = new Dictionary<string, decimal>(StringComparer.OrdinalIgnoreCase)
-                {
-                    ["EUR"] = 0.9173m,
-                    ["GBP"] = 0.7700m,
-                    ["JPY"] = 147.3374m,
-                    ["CAD"] = 1.4375m,
-                    ["AUD"] = 1.5858m,
-                    ["BGN"] = 1.7926m,
-                },
-                ["EUR"] = new Dictionary<string, decimal>(StringComparer.OrdinalIgnoreCase)
-                {
-                    ["USD"] = 1.0857m,
-                    ["GBP"] = 0.8381m,
-                    ["JPY"] = 160.3991m,
-                    ["CAD"] = 1.5638m,
-                    ["AUD"] = 1.7249m,
-                    ["BGN"] = 1.9513m,
-                },
-                ["BGN"] = new Dictionary<string, decimal>(StringComparer.OrdinalIgnoreCase)
-                {
-                    ["USD"] = 0.5539m,
-                    ["EUR"] = 0.5094m,
-                    ["GBP"] = 0.4276m,
-                    ["JPY"] = 81.7555m,
-                    ["CAD"] = 0.7970m,
-                    ["AUD"] = 0.8798m,
-                },
-            };
-
-            this.cache.Set(CacheKey, rates, this.cacheExpirationTime);
 
             return rates;
         }
