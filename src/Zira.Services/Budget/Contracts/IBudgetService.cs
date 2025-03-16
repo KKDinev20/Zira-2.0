@@ -6,7 +6,7 @@ namespace Zira.Services.Budget.Contracts
 {
     public interface IBudgetService
     {
-        Task<bool> AddBudgetAsync(Data.Models.Budget budget);
+        Task<bool> AddBudgetAsync(Data.Models.Budget budget, Guid userId);
         Task<bool> UpdateBudgetAsync(Data.Models.Budget budget);
         Task<bool> DeleteBudgetAsync(Guid budgetId, Guid userId);
         Task<Data.Models.Budget?> GetBudgetByIdAsync(Guid budgetId, Guid userId);

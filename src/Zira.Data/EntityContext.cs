@@ -45,6 +45,12 @@ namespace Zira.Data
                 .WithMany(x => x.Budgets)
                 .HasForeignKey(b => b.UserId);
 
+            modelBuilder.Entity<Budget>()
+                .HasOne(t => t.Currency)
+                .WithMany(c => c.Budgets)
+                .HasForeignKey(t => t.CurrencyCode)
+                .OnDelete(DeleteBehavior.NoAction);
+
             modelBuilder.Entity<Reminder>()
                 .HasOne(r => r.User)
                 .WithMany(x => x.Reminders)

@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Zira.Data;
 using Zira.Data.Enums;
+using Zira.Data.Models;
 using Zira.Services.Budget.Contracts;
 using Zira.Services.Common.Contracts;
+using Zira.Services.Currency.Contracts;
 
 namespace Zira.Services.Budget.Internals
 {
@@ -14,14 +17,22 @@ namespace Zira.Services.Budget.Internals
     {
         private readonly EntityContext context;
         private readonly IIdGenerationService idGenerationService;
+        private readonly ICurrencyConverter currencyConverter;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public BudgetService(EntityContext context, IIdGenerationService idGenerationService)
+        public BudgetService(
+            EntityContext context,
+            IIdGenerationService idGenerationService,
+            ICurrencyConverter currencyConverter,
+            UserManager<ApplicationUser> userManager)
         {
             this.context = context;
             this.idGenerationService = idGenerationService;
+            this.currencyConverter = currencyConverter;
+            this.userManager = userManager;
         }
 
-        public async Task<bool> AddBudgetAsync(Data.Models.Budget budget)
+        public async Task<bool> AddBudgetAsync(Data.Models.Budget budget, Guid userId)
         {
             var existingBudget = await this.context.Budgets
                 .FirstOrDefaultAsync(
@@ -36,8 +47,24 @@ namespace Zira.Services.Budget.Internals
             }
 
             budget.Month = new DateTime(budget.Month.Year, budget.Month.Month, 1);
-
             budget.BudgetId = this.idGenerationService.GenerateDigitIdAsync();
+
+            var user = await this.userManager.FindByIdAsync(userId.ToString());
+
+            if (user == null)
+            {
+                throw new InvalidOperationException("User not found!");
+            }
+
+            budget.CurrencyCode = user.PreferredCurrencyCode ?? "BGN";
+
+            budget.Currency = await this.context.Currencies
+                .FirstOrDefaultAsync(c => c.Code == budget.CurrencyCode);
+
+            if (budget.Currency == null)
+            {
+                throw new InvalidOperationException("Currency not found!");
+            }
 
             decimal totalSpent = 0;
             if (await this.context.Transactions.AnyAsync(
@@ -71,11 +98,34 @@ namespace Zira.Services.Budget.Internals
                 return false;
             }
 
+            var user = await this.userManager.FindByIdAsync(existingBudget.UserId.ToString());
+
+            if (user == null)
+            {
+                throw new InvalidOperationException("User not found!");
+            }
+
             existingBudget.Amount = budget.Amount;
             existingBudget.WarningThreshold = budget.WarningThreshold;
             existingBudget.Category = budget.Category;
             existingBudget.Month = new DateTime(budget.Month.Year, budget.Month.Month, 1);
             existingBudget.Remark = budget.Remark;
+
+            string originalCurrencyCode = existingBudget.CurrencyCode;
+            string newCurrencyCode = user.PreferredCurrencyCode ?? "BGN";
+
+            if (originalCurrencyCode != newCurrencyCode)
+            {
+                existingBudget.Amount = await this.currencyConverter.ConvertCurrencyAsync(
+                    existingBudget.UserId,
+                    existingBudget.Amount,
+                    originalCurrencyCode,
+                    newCurrencyCode);
+
+                existingBudget.CurrencyCode = newCurrencyCode;
+                existingBudget.Currency = await this.context.Currencies
+                    .FirstOrDefaultAsync(c => c.Code == newCurrencyCode);
+            }
 
             await this.context.SaveChangesAsync();
             return true;
@@ -109,6 +159,7 @@ namespace Zira.Services.Budget.Internals
                 .Take(pageSize)
                 .ToListAsync();
 
+            var user = await this.userManager.FindByIdAsync(userId.ToString());
             foreach (var budget in budgets)
             {
                 var totalSpent = await this.context.Transactions
@@ -119,6 +170,15 @@ namespace Zira.Services.Budget.Internals
                              t.Date.Year == budget.Month.Year &&
                              t.Date.Month == budget.Month.Month)
                     .SumAsync(t => t.Amount);
+
+                if (budget.Currency?.Code != user.PreferredCurrencyCode)
+                {
+                    budget.Amount = await this.currencyConverter.ConvertCurrencyAsync(
+                        userId,
+                        budget.Amount,
+                        budget.Currency?.Code ?? "BGN",
+                        user.PreferredCurrencyCode);
+                }
 
                 budget.SpentPercentage = budget.Amount > 0 ? (totalSpent / budget.Amount) * 100 : 0;
             }

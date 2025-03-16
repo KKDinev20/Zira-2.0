@@ -1,7 +1,10 @@
-﻿@model BudgetListViewModel
+﻿@inject UserManager<ApplicationUser> UserManager
+@model BudgetListViewModel
 
 @{
     ViewData["Title"] = @BudgetText.Budgets;
+    var user = await UserManager.GetUserAsync(User);
+    var preferredCurrency = user.PreferredCurrencyCode;
     Layout = "Shared/_BudgetLayout";
 }
 
@@ -89,7 +92,7 @@
                         <td>
                             <strong>@budget.Category?.GetLocalizedExpenseCategory()</strong>
                         </td>
-                        <td>@budget.Amount.ToString("C")</td>
+                        <td>@budget.Amount.ToString("N2") @preferredCurrency</td>
                         <td>@budget.WarningThreshold%</td>
                         <td>@budget.Remark</td>
                         <td>@budget.Month.ToString("MMMM yyyy")</td>

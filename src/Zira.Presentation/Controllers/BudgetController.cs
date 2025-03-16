@@ -67,7 +67,7 @@ namespace Zira.Presentation.Controllers
                 Remark = viewModel.Remark,
             };
 
-            if (!await this.budgetService.AddBudgetAsync(budgetModel))
+            if (!await this.budgetService.AddBudgetAsync(budgetModel, userId))
             {
                 this.TempData["ErrorMessage"] = @BudgetText.BudgetExists;
                 this.ViewBag.Categories = Enum.GetValues(typeof(Categories));
