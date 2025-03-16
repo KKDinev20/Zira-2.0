@@ -40,7 +40,7 @@ public class TransactionService : ITransactionService
         Categories? category = null)
     {
         var query = this.context.Transactions
-            .Include(t => t.Currency) // Ensure Currency is loaded
+            .Include(t => t.Currency)
             .Where(t => t.UserId == userId);
 
         if (category.HasValue)
@@ -77,11 +77,29 @@ public class TransactionService : ITransactionService
 
     public async Task<List<Data.Models.Transaction>> GetUserTransactionsAsync(Guid userId)
     {
-        var query = this.context.Transactions.Where(t => t.UserId == userId);
-
-        return await query
+        var transactions = await this.context.Transactions
+            .Include(t => t.Currency)
+            .Where(t => t.UserId == userId)
             .OrderByDescending(t => t.Date)
             .ToListAsync();
+
+        var user = await this.userManager.FindByIdAsync(userId.ToString());
+        if (user != null && !string.IsNullOrEmpty(user.PreferredCurrencyCode))
+        {
+            foreach (var transaction in transactions)
+            {
+                if (transaction.Currency?.Code != user.PreferredCurrencyCode)
+                {
+                    transaction.Amount = await this.currencyConverter.ConvertCurrencyAsync(
+                        userId,
+                        transaction.Amount,
+                        transaction.Currency?.Code ?? "BGN",
+                        user.PreferredCurrencyCode);
+                }
+            }
+        }
+
+        return transactions;
     }
 
     public async Task<int> GetTotalTransactionRecordsAsync(Guid userId)
@@ -91,8 +109,27 @@ public class TransactionService : ITransactionService
 
     public async Task<Data.Models.Transaction?> GetTransactionByIdAsync(Guid id, Guid userId)
     {
-        return await this.context.Transactions
+        var transaction = await this.context.Transactions
+            .Include(t => t.Currency)
             .FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
+
+        if (transaction == null)
+        {
+            return null;
+        }
+
+        var user = await this.userManager.FindByIdAsync(userId.ToString());
+        if (user != null && !string.IsNullOrEmpty(user.PreferredCurrencyCode) &&
+            transaction.Currency?.Code != user.PreferredCurrencyCode)
+        {
+            transaction.Amount = await this.currencyConverter.ConvertCurrencyAsync(
+                userId,
+                transaction.Amount,
+                transaction.Currency?.Code ?? "BGN",
+                user.PreferredCurrencyCode);
+        }
+
+        return transaction;
     }
 
     public async Task AddTransactionAsync(Data.Models.Transaction transactionModel, Guid userId)
@@ -167,7 +204,6 @@ public class TransactionService : ITransactionService
         existingTransaction.Reference = transactionModel.Reference;
         existingTransaction.Date = transactionModel.Date;
 
-        // Convert only when the currency code changes
         if (originalCurrencyCode != newCurrencyCode)
         {
             existingTransaction.Amount = await this.currencyConverter.ConvertCurrencyAsync(
@@ -196,10 +232,10 @@ public class TransactionService : ITransactionService
 
     public async Task QuickAddTransactionAsync(Data.Models.Transaction transaction, Guid userId)
     {
-        var user = await this.context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+        var user = await this.userManager.FindByIdAsync(userId.ToString());
         if (user == null)
         {
-            throw new InvalidOperationException("User not found.");
+            throw new InvalidOperationException("User not found!");
         }
 
         transaction.Id = Guid.NewGuid();
@@ -208,19 +244,14 @@ public class TransactionService : ITransactionService
         transaction.Type = TransactionType.Expense;
         transaction.TransactionId = this.idGenerationService.GenerateDigitIdAsync();
 
-        var baseCurrency = "BGN"; // Your default base currency
-        var preferredCurrencyCode = user.PreferredCurrencyCode ?? "BGN";
+        transaction.CurrencyCode = user.PreferredCurrencyCode ?? "BGN";
 
-        transaction.CurrencyCode = preferredCurrencyCode;
+        transaction.Currency = await this.context.Currencies
+            .FirstOrDefaultAsync(c => c.Code == transaction.CurrencyCode);
 
-// Convert the amount before saving
-        if (preferredCurrencyCode != baseCurrency)
+        if (transaction.Currency == null)
         {
-            transaction.Amount = await this.currencyConverter.ConvertCurrencyAsync(
-                userId,
-                transaction.Amount,
-                baseCurrency,
-                preferredCurrencyCode);
+            throw new InvalidOperationException("Currency not found!");
         }
 
         var budget = await this.context.Budgets
@@ -245,6 +276,7 @@ public class TransactionService : ITransactionService
         this.context.Transactions.Add(transaction);
         await this.context.SaveChangesAsync();
     }
+
 
     public async Task<decimal> GetCurrentMonthIncomeAsync(Guid userId)
     {
@@ -306,20 +338,41 @@ public class TransactionService : ITransactionService
 
     public async Task<List<Data.Models.Transaction>> GetRecentTransactions(Guid userId)
     {
-        return await this.context.Transactions
+        var transactions = await this.context.Transactions
+            .Include(t => t.Currency)
             .Where(t => t.UserId == userId)
             .OrderByDescending(t => t.Date)
             .Take(6)
             .ToListAsync();
+
+        var user = await this.userManager.FindByIdAsync(userId.ToString());
+        if (user != null && !string.IsNullOrEmpty(user.PreferredCurrencyCode))
+        {
+            foreach (var transaction in transactions)
+            {
+                if (transaction.Currency?.Code != user.PreferredCurrencyCode)
+                {
+                    transaction.Amount = await this.currencyConverter.ConvertCurrencyAsync(
+                        userId,
+                        transaction.Amount,
+                        transaction.Currency?.Code ?? "BGN",
+                        user.PreferredCurrencyCode);
+                }
+            }
+        }
+
+        return transactions;
     }
 
-    public async Task<(List<decimal> Incomes, List<decimal> Expenses)> GetMonthlyIncomeAndExpensesAsync(
-        Guid userId,
-        int year)
+    public async Task<(List<decimal> Incomes, List<decimal> Expenses)> GetMonthlyIncomeAndExpensesAsync(Guid userId, int year)
     {
         var transactions = await this.context.Transactions
+            .Include(t => t.Currency)
             .Where(t => t.UserId == userId && t.Date.Year == year)
             .ToListAsync();
+
+        var user = await this.userManager.FindByIdAsync(userId.ToString());
+        var preferredCurrency = user?.PreferredCurrencyCode ?? "BGN";
 
         var incomes = new List<decimal>(new decimal[12]);
         var expenses = new List<decimal>(new decimal[12]);
@@ -327,18 +380,22 @@ public class TransactionService : ITransactionService
         foreach (var t in transactions)
         {
             int monthIndex = t.Date.Month - 1;
+            decimal amount = t.Amount;
+            
+
             if (t.Type == TransactionType.Income)
             {
-                incomes[monthIndex] += t.Amount;
+                incomes[monthIndex] += amount;
             }
             else if (t.Type == TransactionType.Expense)
             {
-                expenses[monthIndex] += t.Amount;
+                expenses[monthIndex] += amount;
             }
         }
 
         return (incomes, expenses);
     }
+
 
     public async Task<List<(DateTime Month, decimal NetWorth)>> GetNetWorthTrendAsync(Guid userId)
     {
@@ -354,38 +411,36 @@ public class TransactionService : ITransactionService
             .ToList();
     }
 
-    public async Task<(List<decimal> MonthlyTotals, List<string> MonthLabels)> GetLastSixMonthsDataAsync(
-        Guid userId,
-        TransactionType type)
+    public async Task<(List<decimal> MonthlyTotals, List<string> MonthLabels)> GetLastSixMonthsDataAsync(Guid userId, TransactionType type)
     {
         var today = DateTime.UtcNow;
         var startMonth = new DateTime(today.Year, today.Month, 1).AddMonths(-5);
         List<decimal> totals = new List<decimal>();
         List<string> labels = new List<string>();
 
+        var user = await this.userManager.FindByIdAsync(userId.ToString());
+        var preferredCurrency = user?.PreferredCurrencyCode ?? "BGN";
+
         for (int i = 0; i < 6; i++)
         {
             var month = startMonth.AddMonths(i);
             labels.Add(month.ToString("MMM"));
 
-            decimal total = type switch
-            {
-                TransactionType.Income => await this.context.Transactions.Where(
-                        t => t.UserId == userId && t.Type == TransactionType.Income && t.Date.Year == month.Year &&
-                             t.Date.Month == month.Month)
-                    .SumAsync(t => t.Amount),
-                TransactionType.Expense => await this.context.Transactions.Where(
-                        t => t.UserId == userId && t.Type == TransactionType.Expense && t.Date.Year == month.Year &&
-                             t.Date.Month == month.Month)
-                    .SumAsync(t => t.Amount),
-                _ => 0,
-            };
+            decimal total = await this.context.Transactions
+                .Where(
+                    t => t.UserId == userId &&
+                         t.Type == type &&
+                         t.Date.Year == month.Year &&
+                         t.Date.Month == month.Month)
+                .SumAsync(t => t.Amount);
 
+            total = await this.currencyConverter.ConvertCurrencyAsync(userId, total, "BGN", preferredCurrency);
             totals.Add(total);
         }
 
         return (totals, labels);
     }
+
 
     public async Task<decimal> GetCurrentWeekTotalAsync(Guid userId, TransactionType type)
     {
@@ -421,7 +476,11 @@ public class TransactionService : ITransactionService
 
     public async Task<List<CategoryExpenseSummary>> GetTopExpenseCategoriesAsync(Guid userId, int top = 5)
     {
+        var user = await this.userManager.FindByIdAsync(userId.ToString());
+        var preferredCurrency = user?.PreferredCurrencyCode ?? "BGN";
+
         var summaries = await this.context.Transactions
+            .Include(t => t.Currency)
             .Where(t => t.UserId == userId && t.Type == TransactionType.Expense && t.Category != null)
             .GroupBy(t => t.Category.Value)
             .Select(
@@ -431,6 +490,11 @@ public class TransactionService : ITransactionService
                     TotalAmount = g.Sum(t => t.Amount),
                 })
             .ToListAsync();
+
+        foreach (var summary in summaries)
+        {
+            summary.TotalAmount = await this.currencyConverter.ConvertCurrencyAsync(userId, summary.TotalAmount, "BGN", preferredCurrency);
+        }
 
         summaries.Sort((a, b) => b.TotalAmount.CompareTo(a.TotalAmount));
 
@@ -455,6 +519,15 @@ public class TransactionService : ITransactionService
             {
                 low = mid + 1;
             }
+        }
+
+        foreach (var summary in summaries)
+        {
+            summary.TotalAmount = await this.currencyConverter.ConvertCurrencyAsync(
+                userId,
+                summary.TotalAmount,
+                "BGN",
+                preferredCurrency);
         }
 
         var topSummaries = summaries.Take(top).ToList();
