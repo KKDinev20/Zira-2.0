@@ -1,10 +1,14 @@
 ﻿@inject UserManager<ApplicationUser> UserManager
+@inject EntityContext DbContext
+
 @model Zira.Presentation.Models.TransactionsListViewModel
 
 @{
     ViewData["Title"] = @TransactionText.Transactions;
     var user = await UserManager.GetUserAsync(User);
-    var preferredCurrency = user.PreferredCurrency.Symbol;
+    var currencyCode = user.PreferredCurrencyCode;
+    var currency = await DbContext.Currencies.FirstOrDefaultAsync(c => c.Code == currencyCode);
+    var preferredCurrency = currency?.Symbol ?? "лв.";
     Layout = "Shared/_TransactionsLayout";
 }
 

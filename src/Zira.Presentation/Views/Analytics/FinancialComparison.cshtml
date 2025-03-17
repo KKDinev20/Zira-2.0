@@ -1,7 +1,13 @@
-﻿@model Zira.Services.Analytics.Models.ExpenseComparisonModel
+﻿@inject UserManager<ApplicationUser> UserManager
+@inject EntityContext DbContext
+@model Zira.Services.Analytics.Models.ExpenseComparisonModel
 
 @{
     Layout = "Shared/_AnalyticsLayout";
+    var user = await UserManager.GetUserAsync(User);
+    var currencyCode = user.PreferredCurrencyCode;
+    var currency = await DbContext.Currencies.FirstOrDefaultAsync(c => c.Code == currencyCode);
+    var preferredCurrency = currency?.Symbol ?? "лв.";
     ViewData["Title"] = @AnalyticsText.FinancialComparison;
 }
 
@@ -30,8 +36,8 @@
                 {
                     <tr>
                         <td class="text-nowrap">@item.Month</td>
-                        <td class="text-nowrap">@item.Income.ToString("N2") @Model.PreferredCurrencySymbol </td>
-                        <td class="text-nowrap">@item.Expenses.ToString("N2") @Model.PreferredCurrencySymbol</td>
+                        <td class="text-nowrap">@item.Income.ToString("N2") @preferredCurrency </td>
+                        <td class="text-nowrap">@item.Expenses.ToString("N2") @preferredCurrency</td>
                     </tr>
                 }
                 </tbody>
@@ -109,7 +115,7 @@
             tooltip: {
                 y: {
                     formatter: function(value) {
-                        return  value.toLocaleString() + ' @Model.PreferredCurrencySymbol';
+                        return  value.toLocaleString() + ' @preferredCurrency';
                     }
                 }
             }

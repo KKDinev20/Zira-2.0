@@ -1,6 +1,12 @@
-﻿@model AnalyticsViewModel
+﻿@inject UserManager<ApplicationUser> UserManager
+@inject EntityContext DbContext
+@model AnalyticsViewModel
 
 @{
+    var user = await UserManager.GetUserAsync(User);
+    var currencyCode = user.PreferredCurrencyCode;
+    var currency = await DbContext.Currencies.FirstOrDefaultAsync(c => c.Code == currencyCode);
+    var preferredCurrency = currency?.Symbol ?? "лв.";
     Layout = "Shared/_AnalyticsLayout";
     ViewData["Title"] = @AnalyticsText.FinancialOverview;
 }
@@ -35,7 +41,7 @@
                                 </td>
                                 <td>
                                     <span class="badge bg-danger text-white px-3 py-1">
-                                        @expense.TotalAmount.ToString("N2") @Model.PreferredCurrencySymbol
+                                        @expense.TotalAmount.ToString("N2") @preferredCurrency
                                     </span>
                                 </td>
                             </tr>
@@ -127,7 +133,7 @@
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <h5 class="mb-0">@goal.Name</h5>
                                     <div class="text-muted">
-                                        <strong>@goal.CurrentAmount.ToString("N2") @Model.PreferredCurrencySymbol</strong> / @goal.TargetAmount.ToString("C")
+                                        <strong>@goal.CurrentAmount.ToString("N2") @preferredCurrency</strong> / @goal.TargetAmount.ToString("C")
                                     </div>
                                 </div>
                                 <div class="progress" style="height: 20px;">
@@ -153,7 +159,7 @@
                     </div>
                     <div class="card-body p-4 text-center">
                         <div class="fs-4 fw-bold text-primary mb-2">
-                            @Model.FinancialSummary.NetWorth.ToString("N2") @Model.PreferredCurrencySymbol
+                            @Model.FinancialSummary.NetWorth.ToString("N2") @preferredCurrency
                         </div>
                         <div class="text-muted">@AnalyticsText.TotalNetWorth</div>
                     </div>
@@ -191,11 +197,11 @@
             yaxis: {
                 labels: {
                     formatter: function(value) {
-                        return  value.toLocaleString() + ' @Model.PreferredCurrencySymbol';
+                        return  value.toLocaleString() + ' @preferredCurrency';
                     }
                 },
                 title: {
-                    text: 'Сума (@Model.PreferredCurrencySymbol)'
+                    text: 'Сума (@preferredCurrency)'
                 }
             },
             colors: ['#2885a7', '#dc3545'],
@@ -217,7 +223,7 @@
                 theme: 'dark',
                 y: {
                     formatter: function(val) {
-                        return val.toLocaleString() + ' @Model.PreferredCurrencySymbol';
+                        return val.toLocaleString() + ' @preferredCurrency';
                     }
                 }
             }

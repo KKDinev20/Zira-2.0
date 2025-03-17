@@ -62,6 +62,8 @@ public class AccountController : Controller
             PreferredCurrencyCode = user.PreferredCurrencyCode,
         };
 
+        user.PreferredCurrency.Symbol = "лв.";
+
         return this.View(viewModel);
     }
 
@@ -87,6 +89,7 @@ public class AccountController : Controller
         user.Email = email;
         user.NormalizedEmail = email.ToUpper();
         user.Birthday = birthDate;
+
         if (string.IsNullOrEmpty(preferredCurrency))
         {
             user.PreferredCurrencyCode = "BGN";
@@ -94,6 +97,23 @@ public class AccountController : Controller
         else
         {
             user.PreferredCurrencyCode = preferredCurrency;
+        }
+
+        var currency = await this.context.Currencies
+            .FirstOrDefaultAsync(c => c.Code == user.PreferredCurrencyCode);
+
+        if (currency != null)
+        {
+            user.PreferredCurrency = currency;
+        }
+        else
+        {
+            var defaultCurrency = await this.context.Currencies.FirstOrDefaultAsync(c => c.Code == "BGN");
+            if (defaultCurrency != null)
+            {
+                user.PreferredCurrency = defaultCurrency;
+                user.PreferredCurrencyCode = "BGN";
+            }
         }
 
         if (resetAvatar)
@@ -209,6 +229,13 @@ public class AccountController : Controller
                 }
 
                 applicationUser.PreferredCurrencyCode = "BGN";
+
+                var defaultCurrency = await this.context.Currencies.FirstOrDefaultAsync(c => c.Code == "BGN");
+                if (defaultCurrency != null)
+                {
+                    applicationUser.PreferredCurrency = defaultCurrency;
+                }
+
 
                 this.context.Users.Update(applicationUser);
                 await this.context.SaveChangesAsync();

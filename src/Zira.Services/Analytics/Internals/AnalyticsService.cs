@@ -197,6 +197,34 @@ namespace Zira.Services.Analytics.Internals
                 .Take(top)
                 .ToListAsync();
 
+            expenses.Sort((a, b) => b.TotalAmount.CompareTo(a.TotalAmount));
+
+            if (expenses.Count <= top)
+            {
+                return expenses;
+            }
+
+            decimal kthValue = expenses[top - 1].TotalAmount;
+
+            int low = 0, high = expenses.Count - 1;
+            int split = expenses.Count;
+            while (low <= high)
+            {
+                int mid = low + (high - low) / 2;
+                if (expenses[mid].TotalAmount < kthValue)
+                {
+                    split = mid;
+                    high = mid - 1;
+                }
+                else
+                {
+                    low = mid + 1;
+                }
+            }
+
+            var topExpenses = expenses.Take(top).ToList();
+            return topExpenses;
+
             return expenses;
         }
 
