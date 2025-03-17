@@ -73,6 +73,10 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>SavingsGoalText.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="ReminderText.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>ReminderText.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -135,6 +139,11 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>SavingsGoalText.resx</DependentUpon>
+      </Compile>
+      <Compile Update="ReminderText.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>ReminderText.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

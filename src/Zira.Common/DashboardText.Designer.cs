@@ -222,6 +222,15 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Приходи.
+        /// </summary>
+        public static string incomes {
+            get {
+                return ResourceManager.GetString("incomes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to $39 по-малко от миналата седмица.
         /// </summary>
         public static string LessThanLastWeek {
@@ -245,6 +254,15 @@ namespace Zira.Common {
         public static string MonthlyIncome {
             get {
                 return ResourceManager.GetString("MonthlyIncome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 6 месеца.
+        /// </summary>
+        public static string months {
+            get {
+                return ResourceManager.GetString("months", resourceCulture);
             }
         }
         
@@ -299,6 +317,15 @@ namespace Zira.Common {
         public static string Savings {
             get {
                 return ResourceManager.GetString("Savings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Полугодишен отчет.
+        /// </summary>
+        public static string SemiannualReport {
+            get {
+                return ResourceManager.GetString("SemiannualReport", resourceCulture);
             }
         }
         

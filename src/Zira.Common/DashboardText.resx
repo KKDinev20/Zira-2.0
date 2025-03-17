@@ -118,4 +118,13 @@
     <data name="Savings" xml:space="preserve">
         <value>Спестявания</value>
     </data>
+    <data name="SemiannualReport" xml:space="preserve">
+        <value>Полугодишен отчет</value>
+    </data>
+    <data name="incomes" xml:space="preserve">
+        <value>Приходи</value>
+    </data>
+    <data name="months" xml:space="preserve">
+        <value>6 месеца</value>
+    </data>
 </root>

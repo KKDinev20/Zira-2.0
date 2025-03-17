@@ -258,6 +258,15 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Първоначална валута.
+        /// </summary>
+        public static string OriginalCurrency {
+            get {
+                return ResourceManager.GetString("OriginalCurrency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Добави.
         /// </summary>
         public static string QuickAdd {
@@ -326,6 +335,15 @@ namespace Zira.Common {
         public static string SelectASource {
             get {
                 return ResourceManager.GetString("SelectASource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Заделяне.
+        /// </summary>
+        public static string SetAside {
+            get {
+                return ResourceManager.GetString("SetAside", resourceCulture);
             }
         }
         

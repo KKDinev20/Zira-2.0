@@ -84,4 +84,25 @@
     <data name="ProfileSuccess" xml:space="preserve">
         <value>Потребителските данни бяха променени успешно.</value>
     </data>
+    <data name="Notifications" xml:space="preserve">
+        <value>Известия</value>
+    </data>
+    <data name="NotificationPreferences" xml:space="preserve">
+        <value>Предпочитания за известията</value>
+    </data>
+    <data name="NotifConfigPrompt" xml:space="preserve">
+        <value>Моля, задайте предпочитанията си за уведомяване</value>
+    </data>
+    <data name="EnableNotifications" xml:space="preserve">
+        <value>Включване на известия</value>
+    </data>
+    <data name="Enable" xml:space="preserve">
+        <value>Активиране</value>
+    </data>
+    <data name="BillReminders" xml:space="preserve">
+        <value>Напомняния за сметки</value>
+    </data>
+    <data name="BudgetAlerts" xml:space="preserve">
+        <value>Сигнали за бюджета</value>
+    </data>
 </root>

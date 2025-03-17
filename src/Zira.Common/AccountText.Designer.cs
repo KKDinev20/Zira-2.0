@@ -78,11 +78,29 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Напомняния за сметки.
+        /// </summary>
+        public static string BillReminders {
+            get {
+                return ResourceManager.GetString("BillReminders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Дата на раждане.
         /// </summary>
         public static string BirthDate {
             get {
                 return ResourceManager.GetString("BirthDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Сигнали за бюджета.
+        /// </summary>
+        public static string BudgetAlerts {
+            get {
+                return ResourceManager.GetString("BudgetAlerts", resourceCulture);
             }
         }
         
@@ -159,6 +177,24 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Активиране.
+        /// </summary>
+        public static string Enable {
+            get {
+                return ResourceManager.GetString("Enable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Включване на известия.
+        /// </summary>
+        public static string EnableNotifications {
+            get {
+                return ResourceManager.GetString("EnableNotifications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Полето е задължително.
         /// </summary>
         public static string FieldIsRequired {
@@ -191,6 +227,33 @@ namespace Zira.Common {
         public static string NewPassword {
             get {
                 return ResourceManager.GetString("NewPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Моля, задайте предпочитанията си за уведомяване.
+        /// </summary>
+        public static string NotifConfigPrompt {
+            get {
+                return ResourceManager.GetString("NotifConfigPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Предпочитания за известията.
+        /// </summary>
+        public static string NotificationPreferences {
+            get {
+                return ResourceManager.GetString("NotificationPreferences", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Известия.
+        /// </summary>
+        public static string Notifications {
+            get {
+                return ResourceManager.GetString("Notifications", resourceCulture);
             }
         }
         

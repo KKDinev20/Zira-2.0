@@ -104,4 +104,7 @@
     <data name="BudgetId" xml:space="preserve">
         <value>Номер на бюджета</value>
     </data>
+    <data name="SpentPercentage" xml:space="preserve">
+        <value>Изразходван процент</value>
+    </data>
 </root>

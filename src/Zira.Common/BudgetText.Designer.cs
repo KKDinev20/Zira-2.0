@@ -303,6 +303,15 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Изразходван процент.
+        /// </summary>
+        public static string SpentPercentage {
+            get {
+                return ResourceManager.GetString("SpentPercentage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Сигурни ли сте, че искате да изтриете този бюджет?.
         /// </summary>
         public static string Warning {

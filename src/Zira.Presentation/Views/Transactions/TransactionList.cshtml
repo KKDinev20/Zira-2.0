@@ -67,7 +67,7 @@
                     <th>@TransactionText.Type</th>
                     <th>@TransactionText.Category</th>
                     <th>@TransactionText.Amount</th>
-                    <th>Original Currency</th>
+                    <th>@TransactionText.OriginalCurrency</th>
                     <th>@TransactionText.Remark</th>
                     <th>@TransactionText.Reference</th>
                     <th>@TransactionText.TransactionDate</th>
@@ -92,7 +92,7 @@
                                 <strong>@transaction.Source?.GetLocalizedIncomeSource()</strong>
                             }
                         </td>
-                        <td>@transaction.Amount @preferredCurrency</td>
+                        <td>@transaction.Amount@preferredCurrency</td>
                         <td>@transaction.CurrencyCode</td>
                         <td>@transaction.Remark</td>
                         <td>@transaction.Reference</td>
@@ -113,7 +113,7 @@
                                     {
                                         <a href="@Url.Action("SetAsideForSavings", "Transactions", new { transactionId = transaction.Id })"
                                            class="dropdown-item">
-                                            <i class='bx bx-credit-card-alt me-1'></i>Set Aside
+                                            <i class='bx bx-credit-card-alt me-1'></i>@TransactionText.SetAside
 
                                         </a>
                                     }

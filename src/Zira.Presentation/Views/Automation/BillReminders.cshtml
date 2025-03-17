@@ -2,7 +2,7 @@
 @model PaginatedViewModel<Zira.Presentation.Models.ReminderViewModel>
 
 @{
-    ViewData["Title"] = "Bill Reminders";
+    ViewData["Title"] = @AccountText.BillReminders;
     var user = await UserManager.GetUserAsync(User);
     Layout = "Shared/_AutomationLayout";
 }
@@ -14,7 +14,7 @@
                 <div class="card mb-4 shadow-sm">
                     <div class="card-header text-center text-dark d-flex justify-content-between align-items-center">
                         <h5 class="mb-0 d-flex align-items-center gap-2">
-                            <i class='bx bxs-bank'></i>Bill Reminders
+                            <i class='bx bxs-bank'></i>@AccountText.BillReminders
                         </h5>
                     </div>
 
@@ -38,9 +38,9 @@
                             <table class="table table-striped">
                                 <thead>
                                 <tr>
-                                    <th>Title</th>
-                                    <th>Amount</th>
-                                    <th>Due Date</th>
+                                    <th>@ReminderText.Title</th>
+                                    <th>@ReminderText.Amount</th>
+                                    <th>@ReminderText.DueDate</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -94,7 +94,7 @@
                         }
                         else
                         {
-                            <p class="text-center">No bill reminders set.</p>
+                            <p class="text-center">@ReminderText.NoReminders.</p>
                         }
                     </div>
                 </div>
@@ -119,14 +119,14 @@
             <div class="bs-toast toast fade show bg-success" role="alert" aria-live="assertive" aria-atomic="true">
                 <div class="toast-header">
                     <i class="bx bx-bell me-2"></i>
-                    <div class="me-auto fw-semibold">Reminder Created</div>
+                    <div class="me-auto fw-semibold">@ReminderText.ReminderCreated</div>
                     <small>${dueDate}</small>
                     <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
                 <div class="toast-body">
                     <strong>${title}</strong><br>
-                    <span>Remark: ${remark}</span><br>
-                    <span>Amount: ${amount}</span>
+                    <span>@ReminderText.Remark: ${remark}</span><br>
+                    <span>@ReminderText.Amount: ${amount}</span>
                 </div>
             </div>
         </div>`;
@@ -145,8 +145,8 @@
             <div class="bs-toast toast fade show bg-danger" role="alert" aria-live="assertive" aria-atomic="true">
                 <div class="toast-header">
                     <i class="bx bx-bell me-2"></i>
-                    <div class="me-auto fw-semibold">Error</div>
-                    <small>Just Now</small>
+                    <div class="me-auto fw-semibold">@ReminderText.Error</div>
+                    <small>@ReminderText.JustNow</small>
                     <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
                 <div class="toast-body">
