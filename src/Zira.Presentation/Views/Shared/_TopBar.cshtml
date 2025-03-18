@@ -6,19 +6,10 @@
             <i class="bx bx-menu bx-sm"></i>
         </a>
     </div>
+    
+    //Add Content
 
     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-        <div class="navbar-nav align-items-center">
-            <div class="nav-item d-flex align-items-center">
-                <i class="bx bx-search fs-4 lh-0"></i>
-                <input
-                    type="text"
-                    class="form-control border-0 shadow-none"
-                    placeholder="Search..."
-                    aria-label="Search..."/>
-            </div>
-        </div>
-
         <ul class="navbar-nav flex-row align-items-center ms-auto">
             <li class="nav-item navbar-dropdown dropdown-user dropdown">
                 <a class="nav-link dropdown-toggle hide-arrow" asp-controller="Account" asp-action="Profile" data-bs-toggle="dropdown">
@@ -56,7 +47,7 @@
                     <li>
                         <a class="dropdown-item" asp-controller="Automation" asp-action="BillReminders">
                             <i class="bx bx-credit-card me-2"></i>
-                            <span class="flex-grow-1 align-middle"> Reminders </span>
+                            <span class="flex-grow-1 align-middle"> @DashboardText.Automation </span>
                         </a>
                     </li>
 

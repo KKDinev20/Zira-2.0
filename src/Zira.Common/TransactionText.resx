@@ -142,7 +142,7 @@
         <value>Бележка</value>
     </data>
     <data name="Reference" xml:space="preserve">
-        <value>Справка</value>
+        <value>Референция</value>
     </data>
     <data name="TransactionID" xml:space="preserve">
         <value>Номер на транзакцията</value>

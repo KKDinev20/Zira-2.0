@@ -294,7 +294,7 @@ namespace Zira.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Справка.
+        ///   Looks up a localized string similar to Референция.
         /// </summary>
         public static string Reference {
             get {

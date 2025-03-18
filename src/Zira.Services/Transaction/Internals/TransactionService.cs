@@ -277,7 +277,6 @@ public class TransactionService : ITransactionService
         await this.context.SaveChangesAsync();
     }
 
-
     public async Task<decimal> GetCurrentMonthIncomeAsync(Guid userId)
     {
         var now = DateTime.UtcNow;
@@ -364,7 +363,9 @@ public class TransactionService : ITransactionService
         return transactions;
     }
 
-    public async Task<(List<decimal> Incomes, List<decimal> Expenses)> GetMonthlyIncomeAndExpensesAsync(Guid userId, int year)
+    public async Task<(List<decimal> Incomes, List<decimal> Expenses)> GetMonthlyIncomeAndExpensesAsync(
+        Guid userId,
+        int year)
     {
         var transactions = await this.context.Transactions
             .Include(t => t.Currency)
@@ -381,7 +382,6 @@ public class TransactionService : ITransactionService
         {
             int monthIndex = t.Date.Month - 1;
             decimal amount = t.Amount;
-            
 
             if (t.Type == TransactionType.Income)
             {
@@ -395,7 +395,6 @@ public class TransactionService : ITransactionService
 
         return (incomes, expenses);
     }
-
 
     public async Task<List<(DateTime Month, decimal NetWorth)>> GetNetWorthTrendAsync(Guid userId)
     {
@@ -411,7 +410,9 @@ public class TransactionService : ITransactionService
             .ToList();
     }
 
-    public async Task<(List<decimal> MonthlyTotals, List<string> MonthLabels)> GetLastSixMonthsDataAsync(Guid userId, TransactionType type)
+    public async Task<(List<decimal> MonthlyTotals, List<string> MonthLabels)> GetLastSixMonthsDataAsync(
+        Guid userId,
+        TransactionType type)
     {
         var today = DateTime.UtcNow;
         var startMonth = new DateTime(today.Year, today.Month, 1).AddMonths(-5);
@@ -440,7 +441,6 @@ public class TransactionService : ITransactionService
 
         return (totals, labels);
     }
-
 
     public async Task<decimal> GetCurrentWeekTotalAsync(Guid userId, TransactionType type)
     {
@@ -479,59 +479,72 @@ public class TransactionService : ITransactionService
         var user = await this.userManager.FindByIdAsync(userId.ToString());
         var preferredCurrency = user?.PreferredCurrencyCode ?? "BGN";
 
-        var summaries = await this.context.Transactions
-            .Include(t => t.Currency)
+        var transactions = await this.context.Transactions
             .Where(t => t.UserId == userId && t.Type == TransactionType.Expense && t.Category != null)
-            .GroupBy(t => t.Category.Value)
             .Select(
-                g => new CategoryExpenseSummary
+                t => new
                 {
-                    Category = g.Key,
-                    TotalAmount = g.Sum(t => t.Amount),
+                    Category = t.Category.Value,
+                    Amount = t.Amount,
+                    Currency = t.CurrencyCode ?? "BGN",
                 })
             .ToListAsync();
 
-        foreach (var summary in summaries)
+        var expensesByCategory = new Dictionary<Categories, decimal>();
+
+        foreach (var transaction in transactions)
         {
-            summary.TotalAmount = await this.currencyConverter.ConvertCurrencyAsync(userId, summary.TotalAmount, "BGN", preferredCurrency);
-        }
+            var convertedAmount = await this.currencyConverter.ConvertCurrencyAsync(
+                userId,
+                transaction.Amount,
+                transaction.Currency,
+                preferredCurrency);
 
-        summaries.Sort((a, b) => b.TotalAmount.CompareTo(a.TotalAmount));
-
-        if (summaries.Count <= top)
-        {
-            return summaries;
-        }
-
-        decimal kthValue = summaries[top - 1].TotalAmount;
-
-        int low = 0, high = summaries.Count - 1;
-        int split = summaries.Count;
-        while (low <= high)
-        {
-            int mid = low + (high - low) / 2;
-            if (summaries[mid].TotalAmount < kthValue)
+            if (expensesByCategory.ContainsKey(transaction.Category))
             {
-                split = mid;
-                high = mid - 1;
+                expensesByCategory[transaction.Category] += convertedAmount;
             }
             else
             {
-                low = mid + 1;
+                expensesByCategory[transaction.Category] = convertedAmount;
             }
         }
 
-        foreach (var summary in summaries)
+        var expenses = expensesByCategory
+            .Select(
+                kvp => new CategoryExpenseSummary
+                {
+                    Category = kvp.Key,
+                    TotalAmount = kvp.Value
+                })
+            .OrderByDescending(x => x.TotalAmount)
+            .ToList();
+
+        if (expenses.Count > top)
         {
-            summary.TotalAmount = await this.currencyConverter.ConvertCurrencyAsync(
-                userId,
-                summary.TotalAmount,
-                "BGN",
-                preferredCurrency);
+            decimal kthValue = expenses[top - 1].TotalAmount;
+
+            int low = 0, high = expenses.Count - 1;
+            int split = expenses.Count;
+
+            while (low <= high)
+            {
+                int mid = low + (high - low) / 2;
+                if (expenses[mid].TotalAmount < kthValue)
+                {
+                    split = mid;
+                    high = mid - 1;
+                }
+                else
+                {
+                    low = mid + 1;
+                }
+            }
+
+            expenses = expenses.Take(top).ToList();
         }
 
-        var topSummaries = summaries.Take(top).ToList();
-        return topSummaries;
+        return expenses;
     }
 
     private async Task<decimal> GetCurrentMonthExpenseByCategoryAsync(Guid userId, Categories category)

@@ -42,38 +42,70 @@ namespace Zira.Services.Reminder.Internals
                             continue;
                         }
 
-                        string emailBody = $"Hello {user.UserName},\n\n";
+                        string emailBody = $@"
+    <html>
+    <head>
+        <style>
+            body {{ font-family: Arial, sans-serif; }}
+            .container {{ padding: 20px; }}
+            .highlight {{ color: #d9534f; font-weight: bold; }}
+            .section-title {{ font-size: 18px; font-weight: bold; margin-top: 10px; }}
+            ul {{ padding-left: 20px; }}
+            li {{ margin-bottom: 5px; }}
+        </style>
+    </head>
+    <body>
+        <div class='container'>
+            <h2>Здравейте, {user.UserName},</h2>
+            <p>Надяваме се, че сте добре! Ето вашите финансови известия:</p>";
 
                         if (setting.EnableBillReminders)
                         {
                             var upcomingBills = await dbContext.Reminders
-                                .Where(r => r.UserId == user.Id && !r.IsNotified && r.DueDate <= DateTime.UtcNow.AddDays(7))
+                                .Where(
+                                    r => r.UserId == user.Id && !r.IsNotified &&
+                                         r.DueDate <= DateTime.UtcNow.AddDays(7))
                                 .ToListAsync();
 
                             if (upcomingBills.Any())
                             {
-                                emailBody += $"📌 You have {upcomingBills.Count} upcoming bill(s) due soon:\n";
+                                emailBody += $@"
+            <p class='section-title'>📌 Предстоящи сметки</p>
+            <ul>";
+
                                 foreach (var bill in upcomingBills)
                                 {
-                                    emailBody += $"- {bill.Title}: Due {bill.DueDate:yyyy-MM-dd}, Amount: ${bill.Amount}\n";
+                                    emailBody +=
+                                        $"<li><b>{bill.Title}</b>: Дата на плащане: <span class='highlight'>{bill.DueDate:yyyy-MM-dd}</span>, Сума: <span class='highlight'>{bill.Amount} лв.</span></li>";
                                     bill.IsNotified = true;
                                 }
+
+                                emailBody += "</ul>";
                             }
                         }
 
                         if (setting.EnableBudgetAlerts)
                         {
-                            emailBody += "\n💰 Don't forget to check your budget and stay on track!\n";
+                            emailBody +=
+                                "<p class='section-title'>💰 Напомняне за бюджет</p><p>Не забравяйте да следите бюджета си и да останете на правилния път!</p>";
                         }
 
-                        emailBody += "\n🔗 More info in your account at: [YOUR_WEBSITE_LINK]";
+                        emailBody += @"
+            <p>🔗 Проверете вашите сметки за електричество и вода:</p>
+            <ul>
+                <li><a href='https://evn.bg/Online/Login.aspx?returnurl=%2fOnline%2fLogin%2fInfo.aspx' target='_blank'>EVN - Електричество</a></li>
+                <li><a href='https://vik-burgas.com/' target='_blank'>ВиК Бургас - Вода</a></li>
+            </ul>
+        </div>
+    </body>
+    </html>";
 
                         if (!string.IsNullOrWhiteSpace(emailBody))
                         {
                             var emailModel = new EmailModel
                             {
                                 ToEmail = user.Email,
-                                Subject = "📢 Important Financial Updates",
+                                Subject = "📢 Важни финансови актуализации",
                                 Body = emailBody,
                             };
                             await emailService.SendEmailAsync(emailModel);
@@ -83,7 +115,7 @@ namespace Zira.Services.Reminder.Internals
                     await dbContext.SaveChangesAsync();
                 }
 
-                await Task.Delay(TimeSpan.FromDays(3), stoppingToken);
+                await Task.Delay(TimeSpan.FromDays(1), stoppingToken);
             }
         }
     }

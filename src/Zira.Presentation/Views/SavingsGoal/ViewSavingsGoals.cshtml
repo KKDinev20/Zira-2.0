@@ -50,6 +50,7 @@
                                     <th>@SavingsGoalText.Progress</th>
                                     <th>@SavingsGoalText.TargetAmount</th>
                                     <th>@SavingsGoalText.CurrentAmount</th>
+                                    <th>@TransactionText.Remark</th>
                                     <th>@SavingsGoalText.TargetDate</th>
                                     <th>@SavingsGoalText.Actions</th>
                                 </tr>
@@ -67,8 +68,9 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>@goal.TargetAmount.ToString("N2") @(goal.Currency?.Symbol ?? preferredCurrency)</td>
-                                        <td>@goal.CurrentAmount.ToString("N2") @(goal.Currency?.Symbol ?? preferredCurrency)</td>
+                                        <td>@goal.TargetAmount.ToString("N2") @preferredCurrency</td>
+                                        <td>@goal.CurrentAmount.ToString("N2") @preferredCurrency</td>
+                                        <td>@goal.Remark</td>
                                         <td>@goal.TargetDate?.ToString("MMMM dd, yyyy")</td>
                                         <td>
                                             <div class="dropdown">

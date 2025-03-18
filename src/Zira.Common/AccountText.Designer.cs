@@ -267,6 +267,15 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Избиране на валута.
+        /// </summary>
+        public static string PreferredCurrency {
+            get {
+                return ResourceManager.GetString("PreferredCurrency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Потребителски профил.
         /// </summary>
         public static string Profile {

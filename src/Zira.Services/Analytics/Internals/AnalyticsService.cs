@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Zira.Common;
 using Zira.Data;
 using Zira.Data.Enums;
+using Zira.Data.Models;
 using Zira.Services.Analytics.Contracts;
 using Zira.Services.Analytics.Models;
+using Zira.Services.Currency.Contracts;
 using Zira.Services.Transaction.Models;
 
 namespace Zira.Services.Analytics.Internals
@@ -16,10 +19,17 @@ namespace Zira.Services.Analytics.Internals
     {
         private readonly EntityContext context;
         private readonly Dictionary<Categories, List<string>> tips;
+        private readonly ICurrencyConverter currencyConverter;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public AnalyticsService(EntityContext context)
+        public AnalyticsService(
+            EntityContext context,
+            ICurrencyConverter currencyConverter,
+            UserManager<ApplicationUser> userManager)
         {
             this.context = context;
+            this.currencyConverter = currencyConverter;
+            this.userManager = userManager;
             this.tips = new Dictionary<Categories, List<string>>();
 
             foreach (Categories category in Enum.GetValues(typeof(Categories)))
@@ -184,46 +194,73 @@ namespace Zira.Services.Analytics.Internals
 
         public async Task<List<CategoryExpenseSummary>> GetTopExpenseCategoriesAsync(Guid userId, int top = 5)
         {
-            var expenses = await this.context.Transactions
+            var user = await this.userManager.FindByIdAsync(userId.ToString());
+            var preferredCurrency = user?.PreferredCurrencyCode ?? "BGN";
+
+            var transactions = await this.context.Transactions
                 .Where(t => t.UserId == userId && t.Type == TransactionType.Expense && t.Category != null)
-                .GroupBy(t => t.Category.Value)
                 .Select(
-                    g => new CategoryExpenseSummary
+                    t => new
                     {
-                        Category = g.Key,
-                        TotalAmount = g.Sum(t => t.Amount),
+                        Category = t.Category.Value,
+                        Amount = t.Amount,
+                        Currency = t.CurrencyCode ?? "BGN",
                     })
-                .OrderByDescending(x => x.TotalAmount)
-                .Take(top)
                 .ToListAsync();
 
-            expenses.Sort((a, b) => b.TotalAmount.CompareTo(a.TotalAmount));
+            var expensesByCategory = new Dictionary<Categories, decimal>();
 
-            if (expenses.Count <= top)
+            foreach (var transaction in transactions)
             {
-                return expenses;
-            }
+                var convertedAmount = await this.currencyConverter.ConvertCurrencyAsync(
+                    userId,
+                    transaction.Amount,
+                    transaction.Currency,
+                    preferredCurrency);
 
-            decimal kthValue = expenses[top - 1].TotalAmount;
-
-            int low = 0, high = expenses.Count - 1;
-            int split = expenses.Count;
-            while (low <= high)
-            {
-                int mid = low + (high - low) / 2;
-                if (expenses[mid].TotalAmount < kthValue)
+                if (expensesByCategory.ContainsKey(transaction.Category))
                 {
-                    split = mid;
-                    high = mid - 1;
+                    expensesByCategory[transaction.Category] += convertedAmount;
                 }
                 else
                 {
-                    low = mid + 1;
+                    expensesByCategory[transaction.Category] = convertedAmount;
                 }
             }
 
-            var topExpenses = expenses.Take(top).ToList();
-            return topExpenses;
+            var expenses = expensesByCategory
+                .Select(
+                    kvp => new CategoryExpenseSummary
+                    {
+                        Category = kvp.Key,
+                        TotalAmount = kvp.Value
+                    })
+                .OrderByDescending(x => x.TotalAmount)
+                .ToList();
+
+            if (expenses.Count > top)
+            {
+                decimal kthValue = expenses[top - 1].TotalAmount;
+
+                int low = 0, high = expenses.Count - 1;
+                int split = expenses.Count;
+
+                while (low <= high)
+                {
+                    int mid = low + (high - low) / 2;
+                    if (expenses[mid].TotalAmount < kthValue)
+                    {
+                        split = mid;
+                        high = mid - 1;
+                    }
+                    else
+                    {
+                        low = mid + 1;
+                    }
+                }
+
+                expenses = expenses.Take(top).ToList();
+            }
 
             return expenses;
         }
@@ -252,11 +289,12 @@ namespace Zira.Services.Analytics.Internals
             return await this.context.Transactions
                 .Where(t => t.UserId == userId && t.Date.Year == year && t.Type == TransactionType.Expense)
                 .GroupBy(t => t.Date.Month)
-                .Select(g => new MonthlyExpenseSummary
-                {
-                    Month = g.Key.ToString(),
-                    TotalAmount = g.Sum(t => t.Amount),
-                })
+                .Select(
+                    g => new MonthlyExpenseSummary
+                    {
+                        Month = g.Key.ToString(),
+                        TotalAmount = g.Sum(t => t.Amount),
+                    })
                 .OrderBy(g => g.Month)
                 .ToListAsync();
         }

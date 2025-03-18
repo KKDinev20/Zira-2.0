@@ -105,4 +105,7 @@
     <data name="BudgetAlerts" xml:space="preserve">
         <value>Сигнали за бюджета</value>
     </data>
+    <data name="PreferredCurrency" xml:space="preserve">
+        <value>Избиране на валута</value>
+    </data>
 </root>

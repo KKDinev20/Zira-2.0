@@ -210,13 +210,42 @@ namespace Zira.Services.SavingsGoal.Internals
             return savingsGoals;
         }
 
-        public async Task<List<Data.Models.SavingsGoal>> GetSavingsGoalsAsync(Guid userId)
+        public async Task<List<Data.Models.SavingsGoal>> GetSavingsGoalsAsync(Guid userId, int page, int pageSize)
         {
-            var query = this.context.SavingsGoals.Where(t => t.UserId == userId);
+            var query = this.context.SavingsGoals
+                .Include(t => t.Currency)
+                .Where(t => t.UserId == userId);
 
-            return await query
+            var savingsGoals = await query
                 .OrderByDescending(t => t.CreatedAt)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
                 .ToListAsync();
+
+            var user = await this.userManager.FindByIdAsync(userId.ToString());
+            if (user != null && !string.IsNullOrEmpty(user.PreferredCurrencyCode))
+            {
+                foreach (var transaction in savingsGoals)
+                {
+                    string transactionCurrencyCode = transaction.Currency?.Code ?? "BGN";
+
+                    if (transactionCurrencyCode != user.PreferredCurrencyCode)
+                    {
+                        transaction.TargetAmount = await this.currencyConverter.ConvertCurrencyAsync(
+                            userId,
+                            transaction.TargetAmount,
+                            transactionCurrencyCode,
+                            user.PreferredCurrencyCode);
+                        transaction.CurrentAmount = await this.currencyConverter.ConvertCurrencyAsync(
+                            userId,
+                            transaction.CurrentAmount,
+                            transactionCurrencyCode,
+                            user.PreferredCurrencyCode);
+                    }
+                }
+            }
+
+            return savingsGoals;
         }
 
         public async Task<int> GetTotalSavingsGoalsAsync(Guid userId)

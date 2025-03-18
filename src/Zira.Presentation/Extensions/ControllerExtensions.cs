@@ -33,7 +33,7 @@ public static class ControllerExtensions
                 .FirstOrDefaultAsync(u => u.Id == user.Id);
 
             controller.ViewBag.UserName = applicationUser != null
-                ? $"{applicationUser.FirstName} {applicationUser.LastName}"
+                ? $"{applicationUser.FirstName}"
                 : "Unknown User";
             controller.ViewBag.FirstName = applicationUser.FirstName;
             controller.ViewBag.LastName = applicationUser.LastName;

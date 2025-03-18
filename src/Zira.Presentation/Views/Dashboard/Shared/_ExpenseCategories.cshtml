@@ -1,7 +1,10 @@
-﻿@model DashboardViewModel
+﻿@inject UserManager<ApplicationUser> UserManager
+@model DashboardViewModel
 
 @{
     var topCategories = Model.TopExpenseCategories;
+    var user = await UserManager.GetUserAsync(User);
+    var currencyCode = user.PreferredCurrencyCode;
     var labels = topCategories.Select(s => s.Category.GetLocalizedExpenseCategory()).ToList();
     var series = topCategories.Select(s => s.TotalAmount).ToList();
 }
@@ -95,11 +98,11 @@
                             },
                             total: {
                                 show: true,
-                                label: 'Total',
+                                label: 'Общо',
                                 formatter: function (w) {
                                     const total = w.globals.seriesTotals.reduce((a, b) => a + b, 0);
                                     // Fix currency Display
-                                    return total.toLocaleString('bg-BG', { style: 'currency',currency: 'BGN' });
+                                    return total.toLocaleString() + ' @currencyCode';
                                 }
                             }
                         }

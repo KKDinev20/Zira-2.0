@@ -62,7 +62,7 @@ public class AnalyticsController : Controller
         var transactions = await this.transactionService.GetUserTransactionsAsync(user.Id);
         var income = transactions.Where(t => t.Type == TransactionType.Income).Sum(t => t.Amount);
         var expenses = transactions.Where(t => t.Type == TransactionType.Expense).Sum(t => t.Amount);
-        var savingsGoals = await this.savingsGoalService.GetSavingsGoalsAsync(user.Id);
+        var savingsGoals = await this.savingsGoalService.GetSavingsGoalsAsync(user.Id, 1, 5);
         var totalSavings = savingsGoals.Sum(sg => sg.CurrentAmount);
         var netWorth = income - expenses + totalSavings;
 
