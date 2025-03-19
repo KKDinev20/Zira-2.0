@@ -127,7 +127,7 @@ public class AccountController : Controller
 
             if (!allowedExtensions.Contains(fileExtension))
             {
-                this.ModelState.AddModelError("AvatarFile", "Invalid file type. Allowed: JPG, PNG, GIF.");
+                this.ModelState.AddModelError("AvatarFile", "Невалиден файлов тип. Моля използвайте от тип: JPG, PNG, GIF.");
                 return this.View("Profile");
             }
 
@@ -148,7 +148,7 @@ public class AccountController : Controller
         var result = await this.userManager.UpdateAsync(user);
         if (!result.Succeeded)
         {
-            this.ModelState.AddModelError(" ", "Failed to update profile.");
+            this.ModelState.AddModelError(" ", @AccountText.UpdateError);
             return this.View("Profile");
         }
 
@@ -207,7 +207,7 @@ public class AccountController : Controller
 
                     if (!allowedExtensions.Contains(fileExtension))
                     {
-                        this.ModelState.AddModelError("AvatarUrl", "Invalid file type. Please upload an image file.");
+                        this.ModelState.AddModelError("AvatarUrl", @AccountText.InvalidAvatar);
                         return this.View(model);
                     }
 
@@ -323,7 +323,7 @@ public class AccountController : Controller
 
         await this.UpdateReminderSettings(user.Id, enableBillReminders, enableBudgetAlerts, preferredNotification);
 
-        this.TempData["SuccessMessage"] = "Notification preferences updated successfully.";
+        this.TempData["SuccessMessage"] = @AccountText.NotificationsSuccess;
         return this.RedirectToAction("NotificationPreferences");
     }
 

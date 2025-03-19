@@ -215,12 +215,12 @@ namespace Zira.Services.Budget.Internals
                 if (expensePercentage >= 50 && expensePercentage < 100)
                 {
                     warnings.Add(
-                        $"⚠️ Warning: You have used {expensePercentage:F2}% of your budget for {budget.Category}.");
+                        $"⚠️ Предужпреждение: Използвали сте {expensePercentage:F2}% от своя бюджет за {budget.Category}.");
                 }
                 else if (expensePercentage >= 100)
                 {
                     warnings.Add(
-                        $"🚨 Alert: You have exceeded your budget for {budget.Category} by {expensePercentage - 100:F2}%.");
+                        $"🚨 Внимание: Надвишили сте бюджета си за {budget.Category} с {expensePercentage - 100:F2}%.");
                 }
             }
 

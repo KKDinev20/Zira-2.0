@@ -132,6 +132,15 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Фонда на спестяване е изтрит успешно!.
+        /// </summary>
+        public static string DeleteSuccess {
+            get {
+                return ResourceManager.GetString("DeleteSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Сигурни ли сте, че искате да изтриете фонда за спестяване: .
         /// </summary>
         public static string DeleteWarning {
@@ -204,11 +213,29 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Спестовния фонд не е намерен.
+        /// </summary>
+        public static string SavingsGoalNotFound {
+            get {
+                return ResourceManager.GetString("SavingsGoalNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Спестовен фонд.
         /// </summary>
         public static string SavingsGoals {
             get {
                 return ResourceManager.GetString("SavingsGoals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Спестовния фонд е създаден успешно.
+        /// </summary>
+        public static string SavingsGoalSuccess {
+            get {
+                return ResourceManager.GetString("SavingsGoalSuccess", resourceCulture);
             }
         }
         
@@ -227,6 +254,15 @@ namespace Zira.Common {
         public static string TargetDate {
             get {
                 return ResourceManager.GetString("TargetDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Фонда на спестяване е актуализиран успешно.
+        /// </summary>
+        public static string UpdateSuccess {
+            get {
+                return ResourceManager.GetString("UpdateSuccess", resourceCulture);
             }
         }
     }

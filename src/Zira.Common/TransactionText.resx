@@ -153,4 +153,22 @@
     <data name="SetAside" xml:space="preserve">
         <value>Заделяне</value>
     </data>
+    <data name="ChooseSavingsGoal" xml:space="preserve">
+        <value>Избиране на спестовен фонд</value>
+    </data>
+    <data name="SavingsGoalPrompt" xml:space="preserve">
+        <value>Изберете спестовен фонд</value>
+    </data>
+    <data name="InvalidTransaction" xml:space="preserve">
+        <value>Невалидна транзакция</value>
+    </data>
+    <data name="InvalidSelection" xml:space="preserve">
+        <value>Невалиден избор</value>
+    </data>
+    <data name="InsufficientFunds" xml:space="preserve">
+        <value>Недостатъчни средства за заделяне.</value>
+    </data>
+    <data name="UnavailableGoals" xml:space="preserve">
+        <value>Няма налични спестовни фондове за този месец</value>
+    </data>
 </root>

@@ -123,6 +123,15 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Изпратено известие!.
+        /// </summary>
+        public static string NotificationSuccess {
+            get {
+                return ResourceManager.GetString("NotificationSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Бележка.
         /// </summary>
         public static string Remark {
@@ -137,6 +146,24 @@ namespace Zira.Common {
         public static string ReminderCreated {
             get {
                 return ResourceManager.GetString("ReminderCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Напомнянето не е намерено.
+        /// </summary>
+        public static string ReminderNotFound {
+            get {
+                return ResourceManager.GetString("ReminderNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Напомнянето е създадено успешно!.
+        /// </summary>
+        public static string ReminderSuccess {
+            get {
+                return ResourceManager.GetString("ReminderSuccess", resourceCulture);
             }
         }
         

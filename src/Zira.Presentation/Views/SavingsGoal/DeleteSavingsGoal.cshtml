@@ -1,7 +1,13 @@
 ﻿@model Zira.Data.Models.SavingsGoal
+@inject UserManager<ApplicationUser> UserManager
+@inject EntityContext DbContext
 
 @{
     Layout = "Shared/_SavingsGoalLayout";
+    var user = await UserManager.GetUserAsync(User);
+    var currencyCode = user.PreferredCurrencyCode;
+    var currency = await DbContext.Currencies.FirstOrDefaultAsync(c => c.Code == currencyCode);
+    var preferredCurrency = currency?.Symbol ?? "лв.";
     ViewData["Title"] = @SavingsGoalText.DeleteSavingsGoal;
 }
 
@@ -21,10 +27,10 @@
 
             <div class="border-l-4 border-destructive pl-3 mb-4">
                 <p class="mb-1">
-                    <strong>@SavingsGoalText.TargetAmount:</strong> @Model.TargetAmount.ToString("C")
+                    <strong>@SavingsGoalText.TargetAmount:</strong> @Model.TargetAmount.ToString("N2") @preferredCurrency
                 </p>
                 <p class="mb-1">
-                    <strong>@SavingsGoalText.CurrentAmount:</strong> @Model.CurrentAmount.ToString("C")
+                    <strong>@SavingsGoalText.CurrentAmount:</strong> @Model.CurrentAmount.ToString("N2") @preferredCurrency
                 </p>
                 <p>
                     <strong>@SavingsGoalText.TargetDate:</strong> @Model.TargetDate?.ToString("MMMM dd, yyyy")

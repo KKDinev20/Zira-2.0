@@ -51,4 +51,13 @@
     <data name="Error" xml:space="preserve">
         <value>Грешка</value>
     </data>
+    <data name="ReminderNotFound" xml:space="preserve">
+        <value>Напомнянето не е намерено</value>
+    </data>
+    <data name="NotificationSuccess" xml:space="preserve">
+        <value>Изпратено известие!</value>
+    </data>
+    <data name="ReminderSuccess" xml:space="preserve">
+        <value>Напомнянето е създадено успешно!</value>
+    </data>
 </root>

@@ -12,7 +12,6 @@ using Zira.Data.Models;
 using Zira.Presentation.Extensions;
 using Zira.Presentation.Models;
 using Zira.Presentation.Validations;
-using Zira.Services.Currency.Contracts;
 using Zira.Services.Identity.Constants;
 using Zira.Services.Identity.Extensions;
 using Zira.Services.SavingsGoal.Contracts;
@@ -25,7 +24,6 @@ public class TransactionsController : Controller
 {
     private readonly ITransactionService transactionService;
     private readonly ISavingsGoalService savingsGoalService;
-    private readonly ICurrencyConverter currencyConverter;
     private readonly UserManager<ApplicationUser> userManager;
     private readonly EntityContext entityContext;
 
@@ -33,14 +31,12 @@ public class TransactionsController : Controller
         ITransactionService transactionService,
         UserManager<ApplicationUser> userManager,
         EntityContext entityContext,
-        ISavingsGoalService savingsGoalService,
-        ICurrencyConverter currencyConverter)
+        ISavingsGoalService savingsGoalService)
     {
         this.transactionService = transactionService;
         this.userManager = userManager;
         this.entityContext = entityContext;
         this.savingsGoalService = savingsGoalService;
-        this.currencyConverter = currencyConverter;
     }
 
     [HttpGet("/add-transaction/")]
@@ -86,7 +82,7 @@ public class TransactionsController : Controller
         var transactions = await this.transactionService.GetTransactionsAsync(userId, page, pageSize, category);
         var totalRecords = await this.transactionService.GetTotalTransactionRecordsAsync(userId);
 
-        this.ViewBag.SelectedCategory = category?.ToString() ?? "All";
+        this.ViewBag.SelectedCategory = category?.ToString() ?? "Всички";
 
         var model = new TransactionsListViewModel
         {
@@ -204,7 +200,7 @@ public class TransactionsController : Controller
         var transaction = await this.transactionService.GetTransactionByIdAsync(transactionId, user.Id);
         if (transaction == null || transaction.Type != TransactionType.Income)
         {
-            this.TempData["ErrorMessage"] = "Invalid transaction.";
+            this.TempData["ErrorMessage"] = @TransactionText.InvalidTransaction;
             return this.RedirectToAction("TransactionList");
         }
 
@@ -212,14 +208,14 @@ public class TransactionsController : Controller
 
         if (!savingsGoals.Any())
         {
-            this.TempData["ErrorMessage"] = "No savings goals available for this month.";
+            this.TempData["ErrorMessage"] = @TransactionText.UnavailableGoals;
             return this.RedirectToAction("TransactionList");
         }
 
         if (savingsGoals.Count == 1)
         {
             this.TempData["SuccessMessage"] =
-                $"10% of {transaction.Amount:C} was set aside for '{savingsGoals[0].Name}'.";
+                $"10% от {transaction.Amount:C} са заделени за '{savingsGoals[0].Name}'.";
             return this.RedirectToAction("TransactionList");
         }
 
@@ -240,7 +236,7 @@ public class TransactionsController : Controller
         var transaction = await this.transactionService.GetTransactionByIdAsync(transactionId, user.Id);
         if (transaction == null || transaction.Type != TransactionType.Income)
         {
-            this.TempData["ErrorMessage"] = "Invalid transaction.";
+            this.TempData["ErrorMessage"] = @TransactionText.InvalidTransaction;
             return this.RedirectToAction("TransactionList");
         }
 
@@ -248,7 +244,7 @@ public class TransactionsController : Controller
 
         if (!savingsGoals.Any())
         {
-            this.TempData["ErrorMessage"] = "No savings goals available for this month.";
+            this.TempData["ErrorMessage"] = @TransactionText.UnavailableGoals;
             return this.RedirectToAction("TransactionList");
         }
 
@@ -276,7 +272,7 @@ public class TransactionsController : Controller
 
         if (transaction == null || goal == null)
         {
-            this.TempData["ErrorMessage"] = "Invalid selection.";
+            this.TempData["ErrorMessage"] = @TransactionText.InvalidSelection;
             return this.RedirectToAction("TransactionList");
         }
 
@@ -284,7 +280,7 @@ public class TransactionsController : Controller
 
         if (transaction.Amount < amountToSetAside)
         {
-            this.TempData["ErrorMessage"] = "Insufficient funds to set aside.";
+            this.TempData["ErrorMessage"] = @TransactionText.InsufficientFunds;
             return this.RedirectToAction("TransactionList");
         }
 
@@ -300,7 +296,7 @@ public class TransactionsController : Controller
         await this.entityContext.SaveChangesAsync();
 
         this.TempData["SuccessMessage"] =
-            $"10% of {transaction.Amount + amountToSetAside:C} was set aside for '{goal.Name}'.";
+            $"10% от {transaction.Amount + amountToSetAside:C} са заделени за '{goal.Name}'.";
         return this.RedirectToAction("TransactionList");
     }
 }

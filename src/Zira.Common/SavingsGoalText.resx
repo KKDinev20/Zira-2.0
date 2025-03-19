@@ -75,4 +75,16 @@
     <data name="DeleteWarning" xml:space="preserve">
         <value>Сигурни ли сте, че искате да изтриете фонда за спестяване: </value>
     </data>
+    <data name="SavingsGoalSuccess" xml:space="preserve">
+        <value>Спестовния фонд е създаден успешно</value>
+    </data>
+    <data name="SavingsGoalNotFound" xml:space="preserve">
+        <value>Спестовния фонд не е намерен</value>
+    </data>
+    <data name="DeleteSuccess" xml:space="preserve">
+        <value>Фонда на спестяване е изтрит успешно!</value>
+    </data>
+    <data name="UpdateSuccess" xml:space="preserve">
+        <value>Фонда на спестяване е актуализиран успешно</value>
+    </data>
 </root>

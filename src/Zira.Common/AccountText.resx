@@ -108,4 +108,16 @@
     <data name="PreferredCurrency" xml:space="preserve">
         <value>Избиране на валута</value>
     </data>
+    <data name="UpdateError" xml:space="preserve">
+        <value>Неуспешно актуализиране на профила.</value>
+    </data>
+    <data name="InvalidAvatar" xml:space="preserve">
+        <value>Невалиден тип файл. Моля, качете изображение.</value>
+    </data>
+    <data name="NotificationsSuccess" xml:space="preserve">
+        <value>Предпочитанията за известия са актуализирани успешно.</value>
+    </data>
+    <data name="UserNotFound" xml:space="preserve">
+        <value>Потребителят не е намерен</value>
+    </data>
 </root>

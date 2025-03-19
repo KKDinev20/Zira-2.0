@@ -32,24 +32,4 @@ public class HomeController : Controller
     {
         return this.View();
     }
-    
-    
-    [HttpPost("/budget-alert")]
-    public async Task<IActionResult> BudgetAlert()
-    {
-        var emailModel = new EmailModel
-        {
-            ToEmail = "konstantindinv@gmail.com",
-            Subject = "Budget Alert",
-            Body = @"
-                <h1>Warning!</h1>
-                <p>You seem to be exceeding your monthly budget limit.</p>
-                <p>Consider changing your limit in the settings.</p>
-            ",
-        };
-
-        await this.emailService.SendEmailAsync(emailModel);
-
-        return this.Ok("Email Sent Successfully");
-    }
 }

@@ -65,7 +65,7 @@ public class DashboardController : Controller
         var topCategories = await this.transactionService.GetTopExpenseCategoriesAsync(user.Id, 5);
 
         int reminderCount = await this.context.Reminders.CountAsync(r => r.IsNotified == false);
-        
+
         var viewModel = new DashboardViewModel
         {
             MonthlyIncome = income,

@@ -123,6 +123,15 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Избиране на спестовен фонд.
+        /// </summary>
+        public static string ChooseSavingsGoal {
+            get {
+                return ResourceManager.GetString("ChooseSavingsGoal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Изтриване.
         /// </summary>
         public static string Delete {
@@ -240,11 +249,38 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Недостатъчни средства за заделяне..
+        /// </summary>
+        public static string InsufficientFunds {
+            get {
+                return ResourceManager.GetString("InsufficientFunds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Невалидни данни за транзакцията.
         /// </summary>
         public static string InvalidDetails {
             get {
                 return ResourceManager.GetString("InvalidDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Невалиден избор.
+        /// </summary>
+        public static string InvalidSelection {
+            get {
+                return ResourceManager.GetString("InvalidSelection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Невалидна транзакция.
+        /// </summary>
+        public static string InvalidTransaction {
+            get {
+                return ResourceManager.GetString("InvalidTransaction", resourceCulture);
             }
         }
         
@@ -317,6 +353,15 @@ namespace Zira.Common {
         public static string SaveChanges {
             get {
                 return ResourceManager.GetString("SaveChanges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Изберете спестовен фонд.
+        /// </summary>
+        public static string SavingsGoalPrompt {
+            get {
+                return ResourceManager.GetString("SavingsGoalPrompt", resourceCulture);
             }
         }
         
@@ -443,6 +488,15 @@ namespace Zira.Common {
         public static string Type {
             get {
                 return ResourceManager.GetString("Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Няма налични спестовни фондове за този месец.
+        /// </summary>
+        public static string UnavailableGoals {
+            get {
+                return ResourceManager.GetString("UnavailableGoals", resourceCulture);
             }
         }
         

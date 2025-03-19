@@ -1,8 +1,14 @@
 ﻿@model BudgetViewModel
+@inject UserManager<ApplicationUser> UserManager
+@inject EntityContext DbContext
 
 @{
-ViewData["Title"] = @BudgetText.DeleteBudget;
-Layout = "Shared/_BudgetLayout";
+    ViewData["Title"] = @BudgetText.DeleteBudget;
+    var user = await UserManager.GetUserAsync(User);
+    var currencyCode = user.PreferredCurrencyCode;
+    var currency = await DbContext.Currencies.FirstOrDefaultAsync(c => c.Code == currencyCode);
+    var preferredCurrency = currency?.Symbol ?? "лв.";
+    Layout = "Shared/_BudgetLayout";
 }
 
 <div class="container-xxl flex-grow-1 container-p-y">
@@ -11,20 +17,22 @@ Layout = "Shared/_BudgetLayout";
 
         @if (TempData["SuccessMessage"] != null)
         {
-        <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
-            @TempData["SuccessMessage"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+            <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                @TempData["SuccessMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         }
         @if (TempData["ErrorMessage"] != null)
         {
-        <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
-            @TempData["ErrorMessage"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+            <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                @TempData["ErrorMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         }
         <div class="card-body">
-            <h6 class="card-title text-danger"><i class="bx bx-error-circle"></i> @BudgetText.Warning</h6>
+            <h6 class="card-title text-danger">
+                <i class="bx bx-error-circle"></i> @BudgetText.Warning
+            </h6>
 
             <div class="table-responsive text-nowrap">
                 <table class="table">
@@ -41,7 +49,7 @@ Layout = "Shared/_BudgetLayout";
                         <td>
                             <i class="bx bx-briefcase fa-lg text-primary me-3"></i> <strong>@Model.Category?.GetLocalizedExpenseCategory()</strong>
                         </td>
-                        <td>@Model.Amount.ToString("C")</td>
+                        <td>@Model.Amount.ToString("N2") @preferredCurrency</td>
                         <td>@Model.Month.ToString("MMMM yyyy")</td>
                     </tr>
                     </tbody>

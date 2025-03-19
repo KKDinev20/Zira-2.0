@@ -1,7 +1,12 @@
-﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@inject UserManager<ApplicationUser> UserManager
+@inject EntityContext DbContext
 @model Zira.Data.Models.Transaction
 @{
     ViewData["Title"] = @TransactionText.EditTransaction;
+    var user = await UserManager.GetUserAsync(User);
+    var currencyCode = user.PreferredCurrencyCode;
+    var currency = await DbContext.Currencies.FirstOrDefaultAsync(c => c.Code == currencyCode);
+    var preferredCurrency = currency?.Symbol ?? "лв.";
     Layout = "Shared/_TransactionsLayout";
 }
 

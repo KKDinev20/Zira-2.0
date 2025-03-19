@@ -1,22 +1,28 @@
-﻿@model ChooseSavingsGoalViewModel
+﻿@inject UserManager<ApplicationUser> UserManager
+@inject EntityContext DbContext
+@model ChooseSavingsGoalViewModel
 
 @{
     Layout = "Shared/_TransactionsLayout";
-    ViewData["Title"] = "Choose Savings Goal";
+    var user = await UserManager.GetUserAsync(User);
+    var currencyCode = user.PreferredCurrencyCode;
+    var currency = await DbContext.Currencies.FirstOrDefaultAsync(c => c.Code == currencyCode);
+    var preferredCurrency = currency?.Symbol ?? "лв.";
+    ViewData["Title"] = @TransactionText.ChooseSavingsGoal;
 }
 
 <div class="container-xxl flex-grow-1 container-p-y">
     <h4 class="fw-bold py-3 mb-4 d-flex align-items-center gap-2">
-        <i class="bx bx-wallet text-primary"></i> Choose a Savings Goal
+        <i class="bx bx-wallet text-primary"></i> @TransactionText.ChooseSavingsGoal
     </h4>
 
     <div class="card shadow-lg border-0">
         <h5 class="card-header bg-white py-3 px-4">
-            Select a Savings Goal
+            @TransactionText.SavingsGoalPrompt
         </h5>
         <div class="card-body p-4">
             <p class="mb-4 fs-5 fw-medium">
-                You have <strong class="text-primary">@Model.AmountToSetAside.ToString("C")</strong> to set aside. Choose a goal:
+                Имате <strong class="text-primary">@Model.AmountToSetAside.ToString("N2") @preferredCurrency</strong> да заделите. Изберете спестовен фонд:
             </p>
 
             <form method="post" asp-action="SetAsideForSavingsManual" class="space-y-3">
@@ -31,13 +37,13 @@
                                value="@goal.Id"
                                required>
                         <label class="form-check-label ms-3 text-gray-700">
-                            @goal.Name - Target: <strong class="text-primary">@goal.TargetAmount.ToString("C")</strong> - Current: <strong class="text-muted">@goal.CurrentAmount.ToString("C")</strong>
+                            @goal.Name - @SavingsGoalText.TargetAmount: <strong class="text-primary">@goal.TargetAmount.ToString("N2") @preferredCurrency</strong> - @SavingsGoalText.CurrentAmount: <strong class="text-muted">@goal.CurrentAmount.ToString("N2") @preferredCurrency</strong>
                         </label>
                     </div>
                 }
 
                 <button type="submit" class="btn btn-success w-100 mt-4 py-2 px-4 rounded-pill text-uppercase fw-semibold hover:opacity-90 transition-opacity">
-                    Set Aside
+                    @TransactionText.SetAside
                 </button>
             </form>
         </div>

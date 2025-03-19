@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Zira.Common;
 using Zira.Data;
 using Zira.Data.Enums;
 using Zira.Data.Models;
@@ -113,7 +114,7 @@ namespace Zira.Presentation.Controllers
             var user = await this.userManager.GetUserAsync(this.User);
             if (user == null)
             {
-                this.TempData["ErrorMessage"] = "User not found.";
+                this.TempData["ErrorMessage"] = @AccountText.UserNotFound;
                 return this.View(model);
             }
 
@@ -139,14 +140,14 @@ namespace Zira.Presentation.Controllers
                 this.TempData["ReminderTitle"] = reminder.Title;
                 this.TempData["ReminderRemark"] = reminder.Remark;
                 this.TempData["ReminderDueDate"] = reminder.DueDate.ToString("yyyy-MM-dd");
-                this.TempData["ReminderAmount"] = reminder.Amount.ToString("C");
+                this.TempData["ReminderAmount"] = reminder.Amount.ToString("N2");
 
-                this.TempData["SuccessMessage"] = "Reminder created successfully!";
+                this.TempData["SuccessMessage"] = @ReminderText.ReminderSuccess;
                 return this.RedirectToAction("BillReminders");
             }
             catch (Exception ex)
             {
-                this.TempData["ErrorMessage"] = $"Error creating reminder: {ex.Message}";
+                this.TempData["ErrorMessage"] = $"Грешка присъздаването на известие: {ex.Message}";
                 return this.View(model);
             }
         }
@@ -158,21 +159,21 @@ namespace Zira.Presentation.Controllers
 
             if (reminder == null)
             {
-                this.TempData["ErrorMessage"] = "Reminder not found.";
+                this.TempData["ErrorMessage"] = @ReminderText.ReminderNotFound;
                 return this.RedirectToAction("BillReminders");
             }
 
             var user = await this.userManager.FindByIdAsync(reminder.UserId.ToString());
             if (user != null)
             {
-                var message = $"Reminder: {reminder.Title} - {reminder.DueDate:yyyy-MM-dd} to pay ${reminder.Amount}.";
+                var message = $"Известие: {reminder.Title} - {reminder.DueDate:yyyy-MM-dd} със сума ${reminder.Amount}.";
                 await this.hubContext.Clients.User(user.Id.ToString()).SendAsync("ReceiveNotification", message);
 
-                this.TempData["SuccessMessage"] = "Notification sent!";
+                this.TempData["SuccessMessage"] = @ReminderText.NotificationSuccess;
             }
             else
             {
-                this.TempData["ErrorMessage"] = "User not found.";
+                this.TempData["ErrorMessage"] = @AccountText.UserNotFound;
             }
 
             return this.RedirectToAction("BillReminders");

@@ -213,6 +213,15 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Невалиден тип файл. Моля, качете изображение..
+        /// </summary>
+        public static string InvalidAvatar {
+            get {
+                return ResourceManager.GetString("InvalidAvatar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Фамилия.
         /// </summary>
         public static string LastName {
@@ -254,6 +263,15 @@ namespace Zira.Common {
         public static string Notifications {
             get {
                 return ResourceManager.GetString("Notifications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Предпочитанията за известия са актуализирани успешно..
+        /// </summary>
+        public static string NotificationsSuccess {
+            get {
+                return ResourceManager.GetString("NotificationsSuccess", resourceCulture);
             }
         }
         
@@ -321,11 +339,29 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Неуспешно актуализиране на профила..
+        /// </summary>
+        public static string UpdateError {
+            get {
+                return ResourceManager.GetString("UpdateError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Нова снимка.
         /// </summary>
         public static string UploadNewPhoto {
             get {
                 return ResourceManager.GetString("UploadNewPhoto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Потребителят не е намерен.
+        /// </summary>
+        public static string UserNotFound {
+            get {
+                return ResourceManager.GetString("UserNotFound", resourceCulture);
             }
         }
     }

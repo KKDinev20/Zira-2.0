@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Zira.Common;
 using Zira.Data;
 using Zira.Data.Models;
 using Zira.Presentation.Extensions;
@@ -36,7 +37,11 @@ namespace Zira.Presentation.Controllers
 
             var user = await this.userManager.GetUserAsync(this.User);
 
-            var goals = await this.savingsGoalService.GetUserSavingsGoalsAsync(user.Id, page, pageSize, user.PreferredCurrencyCode);
+            var goals = await this.savingsGoalService.GetUserSavingsGoalsAsync(
+                user.Id,
+                page,
+                pageSize,
+                user.PreferredCurrencyCode);
             var totalGoals = await this.savingsGoalService.GetTotalSavingsGoalsAsync(user.Id);
             var totalPages = (int)Math.Ceiling((double)totalGoals / pageSize);
 
@@ -86,7 +91,7 @@ namespace Zira.Presentation.Controllers
             };
 
             await this.savingsGoalService.AddSavingsGoalsAsync(goal, goal.CurrencyCode);
-            this.TempData["SuccessMessage"] = "Savings goal created successfully!";
+            this.TempData["SuccessMessage"] = @SavingsGoalText.SavingsGoalSuccess;
             return this.RedirectToAction("ViewSavingsGoals");
         }
 
@@ -103,7 +108,7 @@ namespace Zira.Presentation.Controllers
             var goal = await this.savingsGoalService.GetSavingsGoalByIdAsync(user.Id, id);
             if (goal == null)
             {
-                this.TempData["ErrorMessage"] = "Savings goal not found.";
+                this.TempData["ErrorMessage"] = @SavingsGoalText.SavingsGoalNotFound;
                 return this.RedirectToAction("ViewSavingsGoals");
             }
 
@@ -152,7 +157,7 @@ namespace Zira.Presentation.Controllers
             };
 
             await this.savingsGoalService.UpdateSavingsGoalsAsync(goal, goal.CurrencyCode);
-            this.TempData["SuccessMessage"] = "Savings goal updated successfully!";
+            this.TempData["SuccessMessage"] = @SavingsGoalText.UpdateSuccess;
             return this.RedirectToAction("ViewSavingsGoals");
         }
 
@@ -169,7 +174,7 @@ namespace Zira.Presentation.Controllers
             var goal = await this.savingsGoalService.GetSavingsGoalByIdAsync(user.Id, id);
             if (goal == null)
             {
-                this.TempData["ErrorMessage"] = "Savings goal not found.";
+                this.TempData["ErrorMessage"] = @SavingsGoalText.SavingsGoalNotFound;
                 return this.RedirectToAction("ViewSavingsGoals");
             }
 
@@ -188,12 +193,12 @@ namespace Zira.Presentation.Controllers
             var goal = await this.savingsGoalService.GetSavingsGoalByIdAsync(user.Id, id);
             if (goal == null)
             {
-                this.TempData["ErrorMessage"] = "Savings goal not found.";
+                this.TempData["ErrorMessage"] = @SavingsGoalText.SavingsGoalNotFound;
                 return this.RedirectToAction("ViewSavingsGoals");
             }
 
             await this.savingsGoalService.DeleteSavingsGoalsAsync(goal);
-            this.TempData["SuccessMessage"] = "Savings goal deleted successfully!";
+            this.TempData["SuccessMessage"] = @SavingsGoalText.DeleteSuccess;
             return this.RedirectToAction("ViewSavingsGoals");
         }
     }
