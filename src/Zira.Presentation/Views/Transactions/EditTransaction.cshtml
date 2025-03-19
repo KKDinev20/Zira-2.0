@@ -17,29 +17,29 @@
             <form method="post">
                 <input type="hidden" asp-for="Id"/>
                 <div class="mb-3">
-                <label asp-for="Amount" class="form-label">@TransactionText.Source</label>
-                @if (ViewBag.IsIncome)
-                {
-                    <select asp-for="Source" class="form-control" id="transaction-source">
-                        <option value="" disabled selected>@TransactionText.SelectASource</option>
-                        @foreach (var source in ViewBag.Sources as Sources[])
-                        {
-                            <option value="@source">@source.GetLocalizedIncomeSource()</option>
-                        }
-                    </select>
-                    <span asp-validation-for="Source" class="text-danger"></span>
-                }
-                else
-                {
-                    <select asp-for="Category" class="form-control" id="transaction-source">
-                        <option value="" disabled selected>@TransactionText.SelectACategory</option>
-                        @foreach (var category in ViewBag.Categories as Categories[])
-                        {
-                            <option value="@category">@category.GetLocalizedExpenseCategory()</option>
-                        }
-                    </select>
-                    <span asp-validation-for="Source" class="text-danger"></span>
-                }
+                    <label asp-for="Amount" class="form-label">@TransactionText.Source</label>
+                    @if (ViewBag.IsIncome)
+                    {
+                        <select asp-for="Source" class="form-control" id="transaction-source">
+                            <option value="" disabled selected>@TransactionText.SelectASource</option>
+                            @foreach (var source in ViewBag.Sources as Sources[])
+                            {
+                                <option value="@source">@source.GetLocalizedIncomeSource()</option>
+                            }
+                        </select>
+                        <span asp-validation-for="Source" class="text-danger"></span>
+                    }
+                    else
+                    {
+                        <select asp-for="Category" class="form-control" id="transaction-source">
+                            <option value="" disabled selected>@TransactionText.SelectACategory</option>
+                            @foreach (var category in ViewBag.Categories as Categories[])
+                            {
+                                <option value="@category">@category.GetLocalizedExpenseCategory()</option>
+                            }
+                        </select>
+                        <span asp-validation-for="Source" class="text-danger"></span>
+                    }
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="transaction-amount">@TransactionText.Amount</label>
@@ -57,9 +57,9 @@
                         @TransactionText.Remark
                     </label>
                     <div class="input-group">
-                                <span id="transaction-remark-icon" class="input-group-text">
-                                    <i class='bx bx-notepad'></i>
-                                </span>
+                        <span id="transaction-remark-icon" class="input-group-text">
+                            <i class='bx bx-notepad'></i>
+                        </span>
                         <input asp-for="Remark" type="text" class="form-control" id="Remark"/>
 
                     </div>
@@ -70,9 +70,9 @@
                         @TransactionText.Reference
                     </label>
                     <div class="input-group">
-                                <span id="transaction-reference-icon" class="input-group-text">
-                                    <i class='bx bx-notepad'></i>
-                                </span>
+                        <span id="transaction-reference-icon" class="input-group-text">
+                            <i class='bx bx-notepad'></i>
+                        </span>
                         <input asp-for="Reference" type="text" class="form-control" id="Reference"/>
                     </div>
                 </div>
@@ -80,12 +80,12 @@
                 <div class="mb-3">
                     <label class="form-label" for="transaction-date">@TransactionText.TransactionDate</label>
                     <div class="input-group input-group-merge">
-                                <span id="transaction-date-icon" class="input-group-text">
-                                    <i class="bx bx-calendar"></i>
-                                </span>
+                        <span id="transaction-date-icon" class="input-group-text">
+                            <i class="bx bx-calendar"></i>
+                        </span>
                         <input asp-for="Date"
                                type="date"
-                               class="form-control date-picker-input"
+                               class="form-control datepicker"
                                id="transaction-date"
                                required
                                placeholder="Select date"/>

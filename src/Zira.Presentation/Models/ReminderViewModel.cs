@@ -13,12 +13,12 @@ namespace Zira.Presentation.Models
 
         [Range(0.01, 100000)] public decimal Amount { get; set; }
 
-        [Required] public DateTime DueDate { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]
+        public DateTime DueDate { get; set; }
 
         public string? Remark { get; set; }
 
         public string? CurrencyCode { get; set; }
         public Currency? Currency { get; set; }
-        
     }
 }

@@ -34,7 +34,7 @@
 
                 <div class="mb-3">
                     <label asp-for="DueDate">@ReminderText.DueDate</label>
-                    <input asp-for="DueDate" type="date" class="form-control" required/>
+                    <input asp-for="DueDate" type="text" class="form-control datepicker" required/>
                     <span asp-validation-for="DueDate" class="text-danger"></span>
                 </div>
 

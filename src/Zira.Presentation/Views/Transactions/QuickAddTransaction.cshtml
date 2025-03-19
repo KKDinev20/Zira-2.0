@@ -31,8 +31,12 @@
                         <label for="DateSpent" class="form-label fw-medium text-gray-700 mb-2">
                             @TransactionText.TransactionDate
                         </label>
-                        <input type="date" id="DateSpent" name="DateSpent" class="form-control border-2 rounded-lg px-3 py-2 focus-visible:ring-2 focus-visible:ring-primary transition-colors"
-                               value="@DateTime.UtcNow.ToString("yyyy-MM-dd")"/>
+                        <input for="DateSpent"
+                               type="date"
+                               class="form-control datepicker"
+                               id="transaction-date"
+                               required
+                               placeholder="Select date"/>
                     </div>
                 </div>
 

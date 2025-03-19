@@ -13,32 +13,32 @@
 
                 @if (TempData["SuccessMessage"] != null)
                 {
-                <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
-                    @TempData["SuccessMessage"]
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
+                    <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                        @TempData["SuccessMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                 }
                 @if (TempData["ErrorMessage"] != null)
                 {
-                <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
-                    @TempData["ErrorMessage"]
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
+                    <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                        @TempData["ErrorMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                 }
 
                 <div class="mb-3">
                     <label class="form-label" asp-for="Category">@BudgetText.BudgetCategory</label>
                     <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="bx bx-briefcase"></i>
-                                </span>
+                        <span class="input-group-text">
+                            <i class="bx bx-briefcase"></i>
+                        </span>
                         <select class="form-control" id="expense-category" name="Category">
                             <option value="" disabled selected>@TransactionText.SelectACategory</option>
                             @foreach (var category in Enum.GetValues(typeof(Categories)).Cast<Categories>())
                             {
-                            <option value="@category" selected="@(Model.Category == category ? "selected" : null)">
-                                @category.GetLocalizedExpenseCategory()
-                            </option>
+                                <option value="@category" selected="@(Model.Category == category ? "selected" : null)">
+                                    @category.GetLocalizedExpenseCategory()
+                                </option>
                             }
                         </select>
                     </div>
@@ -48,9 +48,9 @@
                 <div class="mb-3">
                     <label class="form-label" asp-for="Amount">@BudgetText.BudgetAmount</label>
                     <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="bx bx-wallet"></i>
-                                </span>
+                        <span class="input-group-text">
+                            <i class="bx bx-wallet"></i>
+                        </span>
                         <input type="number" asp-for="Amount" class="form-control" step="0.01" placeholder="Enter amount"/>
                     </div>
                     <span class="text-danger" asp-validation-for="Amount"></span>
@@ -59,9 +59,9 @@
                 <div class="mb-3">
                     <label class="form-label" asp-for="WarningThreshold">@BudgetText.WarningThreshold</label>
                     <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="bx bx-bell"></i>
-                                </span>
+                        <span class="input-group-text">
+                            <i class="bx bx-bell"></i>
+                        </span>
                         <input type="number"
                                asp-for="WarningThreshold"
                                class="form-control"
@@ -76,9 +76,9 @@
                         @TransactionText.Remark
                     </label>
                     <div class="input-group">
-                                <span id="transaction-remark-icon" class="input-group-text">
-                                    <i class='bx bx-notepad'></i>
-                                </span>
+                        <span id="transaction-remark-icon" class="input-group-text">
+                            <i class='bx bx-notepad'></i>
+                        </span>
                         <input asp-for="Remark" type="text" class="form-control" id="Remark"/>
 
                     </div>
@@ -87,10 +87,10 @@
                 <div class="mb-3">
                     <label class="form-label" asp-for="Month">@BudgetText.BudgetMonth</label>
                     <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="bx bx-calendar"></i>
-                                </span>
-                        <input type="month" asp-for="Month" class="form-control"/>
+                        <span class="input-group-text">
+                            <i class="bx bx-calendar"></i>
+                        </span>
+                        <input type="month" asp-for="Month" class="form-control datepicker"/>
                     </div>
                     <span class="text-danger" asp-validation-for="Month"></span>
                 </div>
@@ -101,3 +101,13 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        flatpickr(".datepicker", {
+            dateFormat: "m-Y",
+            allowInput: true,
+            defaultDate: new Date(),
+        });
+    });
+</script>

@@ -109,7 +109,7 @@
                                 </span>
                                 <input asp-for="Date"
                                        type="date"
-                                       class="form-control date-picker-input"
+                                       class="form-control datepicker"
                                        id="transaction-date"
                                        required
                                        placeholder="Select date"/>
@@ -132,4 +132,12 @@
         document.getElementById("income-fields").classList.toggle("d-none", !isIncome);
         document.getElementById("expense-fields").classList.toggle("d-none", !isExpense);
     }
+    
+    document.addEventListener("DOMContentLoaded", function () {
+        flatpickr(".datepicker", {
+            dateFormat: "d/m/Y",
+            allowInput: true,
+            defaultDate: new Date(),
+        });
+    });
 </script>
