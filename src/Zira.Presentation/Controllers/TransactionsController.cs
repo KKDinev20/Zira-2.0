@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Zira.Common;
 using Zira.Data;
 using Zira.Data.Enums;
@@ -45,6 +46,15 @@ public class TransactionsController : Controller
         await this.SetGlobalUserInfoAsync(this.userManager, this.entityContext);
         this.ViewBag.Categories = Enum.GetValues(typeof(Categories));
         this.ViewBag.Sources = Enum.GetValues(typeof(Sources));
+        var userId = this.User.GetUserId();
+        var user = await this.userManager.FindByIdAsync(userId.ToString());
+
+        var availableCurrencies = await this.entityContext.Currencies
+            .Select(c => c.Code)
+            .ToListAsync();
+
+        this.ViewBag.Currencies = availableCurrencies;
+        this.ViewBag.DefaultCurrency = user?.PreferredCurrencyCode ?? "BGN";
         return this.View();
     }
 

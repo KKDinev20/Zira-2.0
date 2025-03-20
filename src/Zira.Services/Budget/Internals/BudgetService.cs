@@ -56,8 +56,9 @@ namespace Zira.Services.Budget.Internals
                 throw new InvalidOperationException("User not found!");
             }
 
-            budget.CurrencyCode = user.PreferredCurrencyCode ?? "BGN";
-
+            budget.CurrencyCode = !string.IsNullOrEmpty(budget.CurrencyCode)
+                ? budget.CurrencyCode
+                : user.PreferredCurrencyCode ?? "BGN";
             budget.Currency = await this.context.Currencies
                 .FirstOrDefaultAsync(c => c.Code == budget.CurrencyCode);
 
@@ -170,15 +171,6 @@ namespace Zira.Services.Budget.Internals
                              t.Date.Year == budget.Month.Year &&
                              t.Date.Month == budget.Month.Month)
                     .SumAsync(t => t.Amount);
-
-                if (budget.Currency?.Code != user.PreferredCurrencyCode)
-                {
-                    budget.Amount = await this.currencyConverter.ConvertCurrencyAsync(
-                        userId,
-                        budget.Amount,
-                        budget.Currency?.Code ?? "BGN",
-                        user.PreferredCurrencyCode);
-                }
 
                 budget.SpentPercentage = budget.Amount > 0 ? (totalSpent / budget.Amount) * 100 : 0;
             }

@@ -23,5 +23,8 @@ namespace Zira.Presentation.Models
         public decimal WarningThreshold { get; set; }
 
         public string? Remark { get; set; }
+
+        [Required]
+        public string CurrencyCode { get; set; } = "BGN";
     }
 }

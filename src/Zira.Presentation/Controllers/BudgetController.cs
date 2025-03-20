@@ -42,6 +42,7 @@ namespace Zira.Presentation.Controllers
         {
             await this.SetGlobalUserInfoAsync(this.userManager, this.context);
             this.ViewBag.Categories = Enum.GetValues(typeof(Categories));
+
             return this.View(new BudgetViewModel());
         }
 

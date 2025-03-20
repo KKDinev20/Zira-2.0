@@ -54,24 +54,6 @@ public class TransactionService : ITransactionService
             .Take(pageSize)
             .ToListAsync();
 
-        var user = await this.userManager.FindByIdAsync(userId.ToString());
-        if (user != null && !string.IsNullOrEmpty(user.PreferredCurrencyCode))
-        {
-            foreach (var transaction in transactions)
-            {
-                string transactionCurrencyCode = transaction.Currency?.Code ?? "BGN";
-
-                if (transactionCurrencyCode != user.PreferredCurrencyCode)
-                {
-                    transaction.Amount = await this.currencyConverter.ConvertCurrencyAsync(
-                        userId,
-                        transaction.Amount,
-                        transactionCurrencyCode,
-                        user.PreferredCurrencyCode);
-                }
-            }
-        }
-
         return transactions;
     }
 
@@ -146,7 +128,9 @@ public class TransactionService : ITransactionService
             throw new InvalidOperationException("User not found!");
         }
 
-        transactionModel.CurrencyCode = user.PreferredCurrencyCode ?? "BGN";
+        transactionModel.CurrencyCode = string.IsNullOrEmpty(transactionModel.CurrencyCode)
+            ? user.PreferredCurrencyCode ?? "BGN"
+            : transactionModel.CurrencyCode;
 
         transactionModel.Currency = await this.context.Currencies
             .FirstOrDefaultAsync(c => c.Code == transactionModel.CurrencyCode);

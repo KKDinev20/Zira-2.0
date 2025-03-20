@@ -95,7 +95,7 @@
                         <td>
                             <strong>@budget.Category?.GetLocalizedExpenseCategory()</strong>
                         </td>
-                        <td>@budget.Amount.ToString("N2") @preferredCurrency</td>
+                        <td>@budget.Amount.ToString("N2") @budget.Currency.Symbol</td>
                         <td>@budget.WarningThreshold%</td>
                         <td>@budget.Remark</td>
                         <td>@budget.Month.ToString("MMMM yyyy")</td>

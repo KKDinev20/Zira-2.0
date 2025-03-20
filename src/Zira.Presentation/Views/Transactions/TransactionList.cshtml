@@ -67,7 +67,6 @@
                     <th>@TransactionText.Type</th>
                     <th>@TransactionText.Category</th>
                     <th>@TransactionText.Amount</th>
-                    <th>@TransactionText.OriginalCurrency</th>
                     <th>@TransactionText.Remark</th>
                     <th>@TransactionText.Reference</th>
                     <th>@TransactionText.TransactionDate</th>
@@ -92,8 +91,7 @@
                                 <strong>@transaction.Source?.GetLocalizedIncomeSource()</strong>
                             }
                         </td>
-                        <td>@transaction.Amount@preferredCurrency</td>
-                        <td>@transaction.CurrencyCode</td>
+                        <td>@transaction.Amount@transaction.Currency.Symbol</td>
                         <td>@transaction.Remark</td>
                         <td>@transaction.Reference</td>
                         <td>@transaction.Date.ToString("dd.MM.yyyy")</td>
