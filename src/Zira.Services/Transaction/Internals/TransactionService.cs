@@ -280,49 +280,65 @@ public class TransactionService : ITransactionService
     public async Task<decimal> GetCurrentMonthIncomeAsync(Guid userId)
     {
         var now = DateTime.UtcNow;
-        var income = await this.context.Transactions
+
+        var incomeTransactions = await this.context.Transactions
             .Where(
                 t => t.UserId == userId
                      && t.Type == TransactionType.Income
                      && t.Date.Year == now.Year
                      && t.Date.Month == now.Month)
-            .SumAsync(t => t.Amount);
+            .Select(t => new { t.Amount, t.CurrencyCode })
+            .ToListAsync();
 
         var user = await this.userManager.FindByIdAsync(userId.ToString());
-        if (user != null && !string.IsNullOrEmpty(user.PreferredCurrencyCode))
+        var preferredCurrency = user?.PreferredCurrencyCode ?? "BGN";
+
+        decimal totalIncome = 0;
+
+        foreach (var transaction in incomeTransactions)
         {
-            income = await this.currencyConverter.ConvertCurrencyAsync(
+            decimal convertedAmount = await this.currencyConverter.ConvertCurrencyAsync(
                 userId,
-                income,
-                "BGN",
-                user.PreferredCurrencyCode);
+                transaction.Amount,
+                transaction.CurrencyCode,
+                preferredCurrency);
+
+            totalIncome += convertedAmount;
         }
 
-        return income;
+        return totalIncome;
     }
 
     public async Task<decimal> GetCurrentMonthExpensesAsync(Guid userId)
     {
         var now = DateTime.UtcNow;
-        var expenses = await this.context.Transactions
+
+        var expenseTransactions = await this.context.Transactions
             .Where(
                 t => t.UserId == userId
                      && t.Type == TransactionType.Expense
                      && t.Date.Year == now.Year
                      && t.Date.Month == now.Month)
-            .SumAsync(t => t.Amount);
+            .Select(t => new { t.Amount, t.CurrencyCode })
+            .ToListAsync();
 
         var user = await this.userManager.FindByIdAsync(userId.ToString());
-        if (user != null && !string.IsNullOrEmpty(user.PreferredCurrencyCode))
+        var preferredCurrency = user?.PreferredCurrencyCode ?? "BGN";
+
+        decimal totalExpenses = 0;
+
+        foreach (var transaction in expenseTransactions)
         {
-            expenses = await this.currencyConverter.ConvertCurrencyAsync(
+            decimal convertedAmount = await this.currencyConverter.ConvertCurrencyAsync(
                 userId,
-                expenses,
-                "BGN",
-                user.PreferredCurrencyCode);
+                transaction.Amount,
+                transaction.CurrencyCode,
+                preferredCurrency);
+
+            totalExpenses += convertedAmount;
         }
 
-        return expenses;
+        return totalExpenses;
     }
 
     public async Task<decimal> GetCurrentMonthFoodExpense(Guid userId)
@@ -416,6 +432,7 @@ public class TransactionService : ITransactionService
     {
         var today = DateTime.UtcNow;
         var startMonth = new DateTime(today.Year, today.Month, 1).AddMonths(-5);
+
         List<decimal> totals = new List<decimal>();
         List<string> labels = new List<string>();
 
@@ -425,17 +442,30 @@ public class TransactionService : ITransactionService
         for (int i = 0; i < 6; i++)
         {
             var month = startMonth.AddMonths(i);
-            labels.Add(month.ToString("MMM"));
+            labels.Add(month.ToString("MMMM"));
 
-            decimal total = await this.context.Transactions
+            var transactions = await this.context.Transactions
                 .Where(
                     t => t.UserId == userId &&
                          t.Type == type &&
                          t.Date.Year == month.Year &&
                          t.Date.Month == month.Month)
-                .SumAsync(t => t.Amount);
+                .Select(t => new { t.Amount, t.CurrencyCode })
+                .ToListAsync();
 
-            total = await this.currencyConverter.ConvertCurrencyAsync(userId, total, "BGN", preferredCurrency);
+            decimal total = 0;
+
+            foreach (var transaction in transactions)
+            {
+                decimal convertedAmount = await this.currencyConverter.ConvertCurrencyAsync(
+                    userId,
+                    transaction.Amount,
+                    transaction.CurrencyCode,
+                    preferredCurrency);
+
+                total += convertedAmount;
+            }
+
             totals.Add(total);
         }
 
@@ -563,25 +593,33 @@ public class TransactionService : ITransactionService
     private async Task<decimal> ConvertExpenseByCategoryAsync(Guid userId, Categories category)
     {
         var now = DateTime.UtcNow;
-        var expense = await this.context.Transactions
+
+        var expenses = await this.context.Transactions
             .Where(
                 t => t.UserId == userId
                      && t.Type == TransactionType.Expense
                      && t.Category == category
                      && t.Date.Year == now.Year
                      && t.Date.Month == now.Month)
-            .SumAsync(t => t.Amount);
+            .Select(t => new { t.Amount, t.CurrencyCode })
+            .ToListAsync();
 
         var user = await this.userManager.FindByIdAsync(userId.ToString());
-        if (user != null && !string.IsNullOrEmpty(user.PreferredCurrencyCode))
+        var preferredCurrency = user?.PreferredCurrencyCode ?? "BGN";
+
+        decimal totalExpense = 0;
+
+        foreach (var expense in expenses)
         {
-            expense = await this.currencyConverter.ConvertCurrencyAsync(
+            decimal convertedAmount = await this.currencyConverter.ConvertCurrencyAsync(
                 userId,
-                expense,
-                "BGN",
-                user.PreferredCurrencyCode);
+                expense.Amount,
+                expense.CurrencyCode,
+                preferredCurrency);
+
+            totalExpense += convertedAmount;
         }
 
-        return expense;
+        return totalExpense;
     }
 }

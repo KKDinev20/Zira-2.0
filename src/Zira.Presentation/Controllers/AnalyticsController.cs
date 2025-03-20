@@ -11,6 +11,7 @@ using Zira.Presentation.Extensions;
 using Zira.Presentation.Models;
 using Zira.Services.Analytics.Contracts;
 using Zira.Services.Analytics.Models;
+using Zira.Services.Budget.Contracts;
 using Zira.Services.Identity.Constants;
 using Zira.Services.SavingsGoal.Contracts;
 using Zira.Services.Transaction.Contracts;
@@ -23,6 +24,7 @@ public class AnalyticsController : Controller
     private readonly UserManager<ApplicationUser> userManager;
     private readonly IAnalyticsService expenseAnalyticsService;
     private readonly ITransactionService transactionService;
+    private readonly IBudgetService budgetService;
     private readonly ISavingsGoalService savingsGoalService;
     private readonly EntityContext context;
 
@@ -31,13 +33,15 @@ public class AnalyticsController : Controller
         IAnalyticsService expenseAnalyticsService,
         ITransactionService transactionService,
         ISavingsGoalService savingsGoalService,
-        EntityContext context)
+        EntityContext context,
+        IBudgetService budgetService)
     {
         this.userManager = userManager;
         this.expenseAnalyticsService = expenseAnalyticsService;
         this.transactionService = transactionService;
         this.savingsGoalService = savingsGoalService;
         this.context = context;
+        this.budgetService = budgetService;
     }
 
     [HttpGet("/financial-overview")]
@@ -65,6 +69,17 @@ public class AnalyticsController : Controller
         var savingsGoals = await this.savingsGoalService.GetSavingsGoalsAsync(user.Id, 1, 5);
         var totalSavings = savingsGoals.Sum(sg => sg.CurrentAmount);
         var netWorth = income - expenses + totalSavings;
+        var budgets = await this.budgetService.GetUserBudgetsAsync(user.Id, 1, 100);
+
+        var budgetComparison = budgets.Select(
+            budget => new BudgetComparisonModel
+            {
+                Category = budget.Category,
+                BudgetedAmount = budget.Amount,
+                ActualAmount = transactions
+                    .Where(t => t.Type == TransactionType.Expense && t.Category == budget.Category)
+                    .Sum(t => t.Amount),
+            }).ToList();
 
         var savingsProgress = savingsGoals.Select(
             sg => new SavingsGoalProgressModel
@@ -81,6 +96,7 @@ public class AnalyticsController : Controller
             TotalExpenses = expenses,
             NetWorth = netWorth,
             SavingsGoals = savingsProgress,
+            BudgetComparison = budgetComparison,
         };
 
         var viewModel = new AnalyticsViewModel

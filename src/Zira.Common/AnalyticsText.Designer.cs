@@ -105,6 +105,15 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Визуализация на бюджет.
+        /// </summary>
+        public static string BudgetVisualization {
+            get {
+                return ResourceManager.GetString("BudgetVisualization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Разходи по категории.
         /// </summary>
         public static string CategoryBased {

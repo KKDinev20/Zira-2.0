@@ -275,4 +275,7 @@
     <data name="FinancialComparison" xml:space="preserve">
         <value>Финансово сравнение</value>
     </data>
+    <data name="BudgetVisualization" xml:space="preserve">
+        <value>Визуализация на бюджет</value>
+    </data>
 </root>
