@@ -78,10 +78,10 @@ public class TransactionPerformanceTests
     }
 }
 
-class Program
+/*class Program
 {
     public void Main(string[] args)
     {
         var summary = BenchmarkRunner.Run<TransactionPerformanceTests>();
     }
-}
+}*/
