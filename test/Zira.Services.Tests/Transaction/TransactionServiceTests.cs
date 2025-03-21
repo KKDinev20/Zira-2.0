@@ -14,6 +14,7 @@ public class TransactionServiceTests
     [Fact]
     public async Task GetTransactionsAsync_ShouldReturnFilteredTransactions()
     {
+        // Arrange
         var userId = Guid.NewGuid();
         var dbContext = TestHelpers.CreateDbContext();
         var idService = TestHelpers.CreateIdGenerationService();
@@ -169,10 +170,9 @@ public class TransactionServiceTests
 
         await service.AddTransactionAsync(expense, userId);
 
-        // ✅ Check if budget is updated correctly
         var updatedBudget = await dbContext.Budgets.FirstOrDefaultAsync(b => b.UserId == userId && b.Category == category);
         updatedBudget.Should().NotBeNull();
-        updatedBudget.Amount.Should().Be(150); // 200 - 50 = 150
+        updatedBudget.Amount.Should().Be(150);
     }
 
     
@@ -357,7 +357,6 @@ public class TransactionServiceTests
         await dbContext.Currencies.AddAsync(new Data.Models.Currency { Code = "USD", Name = "US Dollar", Symbol = "$" });
         await dbContext.SaveChangesAsync();
 
-        // Add several transactions for the user
         for (int i = 0; i < 5; i++)
         {
             dbContext.Transactions.Add(new Data.Models.Transaction
@@ -371,7 +370,6 @@ public class TransactionServiceTests
             });
         }
         
-        // Add a transaction for a different user (should not be returned)
         dbContext.Transactions.Add(new Data.Models.Transaction
         {
             Id = Guid.NewGuid(),
@@ -404,7 +402,6 @@ public class TransactionServiceTests
         var currencyConverter = TestHelpers.CreateCurrencyConverterService();
         var mockUserManager = TestHelpers.CreateMockUserManager();
 
-        // Add several transactions for the user
         for (int i = 0; i < 8; i++)
         {
             dbContext.Transactions.Add(new Data.Models.Transaction
@@ -416,7 +413,6 @@ public class TransactionServiceTests
             });
         }
         
-        // Add transactions for a different user (should not be counted)
         for (int i = 0; i < 3; i++)
         {
             dbContext.Transactions.Add(new Data.Models.Transaction
@@ -449,12 +445,12 @@ public class TransactionServiceTests
         var currencyConverter = TestHelpers.CreateCurrencyConverterService();
         var mockUserManager = TestHelpers.CreateMockUserManager();
 
-        await dbContext.Currencies.AddAsync(new Data.Models.Currency { Code = "USD", Name = "US Dollar", Symbol = "$" });
+        await dbContext.Currencies.AddAsync(new Data.Models.Currency
+            { Code = "USD", Name = "US Dollar", Symbol = "$" });
         await dbContext.SaveChangesAsync();
 
         var now = DateTime.UtcNow;
-        
-        // Current month income transactions
+
         dbContext.Transactions.AddRange(
             new Data.Models.Transaction
             {
@@ -475,8 +471,7 @@ public class TransactionServiceTests
                 CurrencyCode = "USD"
             }
         );
-        
-        // Previous month income (should not be counted)
+
         dbContext.Transactions.Add(new Data.Models.Transaction
         {
             Id = Guid.NewGuid(),
@@ -486,8 +481,7 @@ public class TransactionServiceTests
             Date = now.AddMonths(-1),
             CurrencyCode = "USD"
         });
-        
-        // Current month expense (should not be counted)
+
         dbContext.Transactions.Add(new Data.Models.Transaction
         {
             Id = Guid.NewGuid(),
@@ -497,7 +491,7 @@ public class TransactionServiceTests
             Date = now,
             CurrencyCode = "USD"
         });
-        
+
         await dbContext.SaveChangesAsync();
 
         var service = new TransactionService(dbContext, idService, currencyConverter, mockUserManager);
@@ -506,7 +500,7 @@ public class TransactionServiceTests
         var result = await service.GetCurrentMonthIncomeAsync(userId);
 
         // Assert
-        result.Should().Be(300); // 100 + 200 = 300
+        result.Should().Be(300);
     }
 
     [Fact]
@@ -524,7 +518,6 @@ public class TransactionServiceTests
 
         var now = DateTime.UtcNow;
         
-        // Current month expense transactions
         dbContext.Transactions.AddRange(
             new Data.Models.Transaction
             {
@@ -546,7 +539,6 @@ public class TransactionServiceTests
             }
         );
         
-        // Previous month expense (should not be counted)
         dbContext.Transactions.Add(new Data.Models.Transaction
         {
             Id = Guid.NewGuid(),
@@ -557,7 +549,6 @@ public class TransactionServiceTests
             CurrencyCode = "USD"
         });
         
-        // Current month income (should not be counted)
         dbContext.Transactions.Add(new Data.Models.Transaction
         {
             Id = Guid.NewGuid(),
@@ -576,7 +567,7 @@ public class TransactionServiceTests
         var result = await service.GetCurrentMonthExpensesAsync(userId);
 
         // Assert
-        result.Should().Be(200); // 75 + 125 = 200
+        result.Should().Be(200);
     }
 
     [Fact]
@@ -594,7 +585,6 @@ public class TransactionServiceTests
 
         var now = DateTime.UtcNow;
         
-        // Current month food expenses
         dbContext.Transactions.AddRange(
             new Data.Models.Transaction
             {
@@ -618,7 +608,6 @@ public class TransactionServiceTests
             }
         );
         
-        // Other category expense (should not be counted)
         dbContext.Transactions.Add(new Data.Models.Transaction
         {
             Id = Guid.NewGuid(),
@@ -638,7 +627,7 @@ public class TransactionServiceTests
         var result = await service.GetCurrentMonthFoodExpense(userId);
 
         // Assert
-        result.Should().Be(80); // 50 + 30 = 80
+        result.Should().Be(80);
     }
     
     [Fact]
@@ -656,7 +645,7 @@ public class TransactionServiceTests
 
         var now = DateTime.UtcNow;
         
-        // Current month food expenses
+
         dbContext.Transactions.AddRange(
             new Data.Models.Transaction
             {
@@ -716,7 +705,6 @@ public class TransactionServiceTests
         int diff = (7 + (today.DayOfWeek - DayOfWeek.Monday)) % 7;
         var monday = today.AddDays(-1 * diff).Date;
         
-        // Transactions within current week
         dbContext.Transactions.AddRange(
             new Data.Models.Transaction
             {
@@ -744,7 +732,6 @@ public class TransactionServiceTests
             }
         );
         
-        // Transaction from previous week (should not be counted)
         dbContext.Transactions.Add(new Data.Models.Transaction
         {
             Id = Guid.NewGuid(),
@@ -867,7 +854,6 @@ public class TransactionServiceTests
         
         var year = 2025;
         
-        // January transactions
         dbContext.Transactions.AddRange(
             new Data.Models.Transaction
             {
@@ -889,7 +875,6 @@ public class TransactionServiceTests
             }
         );
         
-        // February transactions
         dbContext.Transactions.AddRange(
             new Data.Models.Transaction
             {
@@ -911,7 +896,6 @@ public class TransactionServiceTests
             }
         );
         
-        // Different year (should not be included)
         dbContext.Transactions.Add(new Data.Models.Transaction
         {
             Id = Guid.NewGuid(),
@@ -933,10 +917,10 @@ public class TransactionServiceTests
         incomes.Should().HaveCount(12);
         expenses.Should().HaveCount(12);
         
-        incomes[0].Should().Be(1000); // January
-        incomes[1].Should().Be(1200); // February
-        expenses[0].Should().Be(600); // January
-        expenses[1].Should().Be(700); // February
+        incomes[0].Should().Be(1000); 
+        incomes[1].Should().Be(1200); 
+        expenses[0].Should().Be(600);
+        expenses[1].Should().Be(700);
     }
 
     [Fact]
@@ -973,7 +957,6 @@ public class TransactionServiceTests
             }
         );
         
-        // February transactions
         dbContext.Transactions.AddRange(
             new Data.Models.Transaction
             {
@@ -1003,12 +986,12 @@ public class TransactionServiceTests
         var netWorthTrend = await service.GetNetWorthTrendAsync(userId);
 
         // Assert
-        netWorthTrend.Should().HaveCount(2); // Two months
+        netWorthTrend.Should().HaveCount(2); 
         
         netWorthTrend[0].Month.Should().Be(new DateTime(2025, 1, 1));
-        netWorthTrend[0].NetWorth.Should().Be(1200); // 2000 - 800 = 1200
+        netWorthTrend[0].NetWorth.Should().Be(1200);
         
         netWorthTrend[1].Month.Should().Be(new DateTime(2025, 2, 1));
-        netWorthTrend[1].NetWorth.Should().Be(1000); // 2200 - 1200 = 1000
+        netWorthTrend[1].NetWorth.Should().Be(1000);
     }
 }

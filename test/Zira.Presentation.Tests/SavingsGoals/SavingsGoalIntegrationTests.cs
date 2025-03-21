@@ -35,7 +35,7 @@ public class SavingsGoalIntegrationTests : IClassFixture<CustomWebApplicationFac
         var savingsGoal = testHelpers.CreateTestSavingsGoal(user.Id);
 
         // Act
-        var result = await savingsGoalService.AddSavingsGoalsAsync(savingsGoal);
+        var result = await savingsGoalService.AddSavingsGoalsAsync(savingsGoal, user.PreferredCurrencyCode);
 
         // Assert
         result.Should().BeTrue();
@@ -65,13 +65,13 @@ public class SavingsGoalIntegrationTests : IClassFixture<CustomWebApplicationFac
         duplicateGoal.Name = savingsGoal.Name;
 
         // Act
-        var result = await savingsGoalService.AddSavingsGoalsAsync(duplicateGoal);
+        var result = await savingsGoalService.AddSavingsGoalsAsync(duplicateGoal, user.PreferredCurrencyCode);
 
         // Assert
         result.Should().BeFalse();
 
         var goals = await context.SavingsGoals.Where(g =>
-            g.UserId == user.Id && 
+            g.UserId == user.Id &&
             g.Name == duplicateGoal.Name).ToListAsync();
         goals.Should().HaveCount(1);
     }
@@ -101,7 +101,7 @@ public class SavingsGoalIntegrationTests : IClassFixture<CustomWebApplicationFac
         };
 
         // Act
-        var result = await savingsGoalService.UpdateSavingsGoalsAsync(updatedGoal);
+        var result = await savingsGoalService.UpdateSavingsGoalsAsync(updatedGoal, user.PreferredCurrencyCode);
 
         // Assert
         result.Should().BeTrue();
@@ -150,12 +150,12 @@ public class SavingsGoalIntegrationTests : IClassFixture<CustomWebApplicationFac
         var goals = Enumerable.Range(0, 10)
             .Select(i => testHelpers.CreateTestSavingsGoal(user.Id))
             .ToList();
-        
+
         await context.SavingsGoals.AddRangeAsync(goals);
         await context.SaveChangesAsync();
 
         // Act
-        var result = await savingsGoalService.GetUserSavingsGoalsAsync(user.Id, 1, 5);
+        var result = await savingsGoalService.GetUserSavingsGoalsAsync(user.Id, 1, 5, user.PreferredCurrencyCode);
 
         // Assert
         result.Should().HaveCount(5);
@@ -171,11 +171,11 @@ public class SavingsGoalIntegrationTests : IClassFixture<CustomWebApplicationFac
         var context = scope.ServiceProvider.GetRequiredService<EntityContext>();
 
         var user = await testHelpers.CreateUserAsync();
-        
+
         var goals = Enumerable.Range(0, 10)
             .Select(i => testHelpers.CreateTestSavingsGoal(user.Id))
             .ToList();
-        
+
         await context.SavingsGoals.AddRangeAsync(goals);
         await context.SaveChangesAsync();
 
@@ -185,7 +185,7 @@ public class SavingsGoalIntegrationTests : IClassFixture<CustomWebApplicationFac
         // Assert
         count.Should().Be(10);
     }
-    
+
     [Fact]
     public async Task SetAsideForSavingsGoalsAsync_OnNonIncomeTransaction_ShouldReturnEmptyList()
     {
@@ -195,7 +195,7 @@ public class SavingsGoalIntegrationTests : IClassFixture<CustomWebApplicationFac
         var context = scope.ServiceProvider.GetRequiredService<EntityContext>();
 
         var user = await testHelpers.CreateUserAsync();
-        
+
         var transaction = new Transaction
         {
             Id = Guid.NewGuid(),

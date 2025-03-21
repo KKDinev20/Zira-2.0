@@ -34,7 +34,7 @@ public class BudgetIntegrationTests : IClassFixture<CustomWebApplicationFactory>
         var budget = testHelpers.CreateTestBudget(user.Id);
 
         // Act
-        var result = await budgetService.AddBudgetAsync(budget);
+        var result = await budgetService.AddBudgetAsync(budget, user.Id);
 
         // Assert
         result.Should().BeTrue();
@@ -61,7 +61,7 @@ public class BudgetIntegrationTests : IClassFixture<CustomWebApplicationFactory>
         await context.SaveChangesAsync();
 
         // Act
-        var result = await budgetService.AddBudgetAsync(budget);
+        var result = await budgetService.AddBudgetAsync(budget, user.Id);
 
         // Assert
         result.Should().BeFalse();
@@ -165,8 +165,8 @@ public class BudgetIntegrationTests : IClassFixture<CustomWebApplicationFactory>
         var deletedBudget = await context.Budgets.FindAsync(budget.Id);
         deletedBudget.Should().BeNull();
     }
-    
-     [Fact]
+
+    [Fact]
     public async Task GetBudgetByIdAsync_OnNonExistingBudget_ShouldReturnNull()
     {
         // Arrange
@@ -190,11 +190,11 @@ public class BudgetIntegrationTests : IClassFixture<CustomWebApplicationFactory>
         var context = scope.ServiceProvider.GetRequiredService<EntityContext>();
 
         var user = await testHelpers.CreateUserAsync();
-        
+
         var budgets = Enumerable.Range(0, 10)
             .Select(i => testHelpers.CreateTestBudget(user.Id))
             .ToList();
-        
+
         await context.Budgets.AddRangeAsync(budgets);
         await context.SaveChangesAsync();
 
@@ -215,11 +215,11 @@ public class BudgetIntegrationTests : IClassFixture<CustomWebApplicationFactory>
         var context = scope.ServiceProvider.GetRequiredService<EntityContext>();
 
         var user = await testHelpers.CreateUserAsync();
-        
+
         var budgets = Enumerable.Range(0, 10)
             .Select(i => testHelpers.CreateTestBudget(user.Id))
             .ToList();
-        
+
         await context.Budgets.AddRangeAsync(budgets);
         await context.SaveChangesAsync();
 
@@ -229,4 +229,147 @@ public class BudgetIntegrationTests : IClassFixture<CustomWebApplicationFactory>
         // Assert
         count.Should().Be(10);
     }
+
+    [Fact]
+    public async Task GetBudgetByIdAsync_OnExistingBudget_ShouldReturnBudget()
+    {
+        // Arrange
+        using var scope = webApplicationFactory.Services.CreateScope();
+        var budgetService = scope.ServiceProvider.GetRequiredService<IBudgetService>();
+        var context = scope.ServiceProvider.GetRequiredService<EntityContext>();
+
+        var user = await testHelpers.CreateUserAsync();
+        var budget = testHelpers.CreateTestBudget(user.Id);
+        await context.Budgets.AddAsync(budget);
+        await context.SaveChangesAsync();
+
+        // Act
+        var result = await budgetService.GetBudgetByIdAsync(budget.Id, user.Id);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Id.Should().Be(budget.Id);
+        result.Amount.Should().Be(budget.Amount);
+        result.Category.Should().Be(budget.Category);
+    }
+
+    [Fact]
+    public async Task GetBudgetByIdAsync_OnWrongUserId_ShouldReturnNull()
+    {
+        // Arrange
+        using var scope = webApplicationFactory.Services.CreateScope();
+        var budgetService = scope.ServiceProvider.GetRequiredService<IBudgetService>();
+        var context = scope.ServiceProvider.GetRequiredService<EntityContext>();
+
+        var user = await testHelpers.CreateUserAsync();
+        var budget = testHelpers.CreateTestBudget(user.Id);
+        await context.Budgets.AddAsync(budget);
+        await context.SaveChangesAsync();
+
+        // Act
+        var result = await budgetService.GetBudgetByIdAsync(budget.Id, Guid.NewGuid());
+
+        // Assert
+        result.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task DeleteBudgetAsync_OnNonExistingBudget_ShouldReturnFalse()
+    {
+        // Arrange
+        using var scope = webApplicationFactory.Services.CreateScope();
+        var budgetService = scope.ServiceProvider.GetRequiredService<IBudgetService>();
+        var user = await testHelpers.CreateUserAsync();
+
+        // Act
+        var result = await budgetService.DeleteBudgetAsync(Guid.NewGuid(), user.Id);
+
+        // Assert
+        result.Should().BeFalse();
+    }
+
+    [Fact]
+    public async Task DeleteBudgetAsync_OnWrongUserId_ShouldReturnFalse()
+    {
+        // Arrange
+        using var scope = webApplicationFactory.Services.CreateScope();
+        var budgetService = scope.ServiceProvider.GetRequiredService<IBudgetService>();
+        var context = scope.ServiceProvider.GetRequiredService<EntityContext>();
+
+        var user = await testHelpers.CreateUserAsync();
+        var budget = testHelpers.CreateTestBudget(user.Id);
+        await context.Budgets.AddAsync(budget);
+        await context.SaveChangesAsync();
+
+        // Act
+        var result = await budgetService.DeleteBudgetAsync(budget.Id, Guid.NewGuid());
+
+        // Assert
+        result.Should().BeFalse();
+    }
+
+    [Fact]
+    public async Task GetUserBudgetsAsync_OnEmptyBudgets_ShouldReturnEmptyList()
+    {
+        // Arrange
+        using var scope = webApplicationFactory.Services.CreateScope();
+        var budgetService = scope.ServiceProvider.GetRequiredService<IBudgetService>();
+        var user = await testHelpers.CreateUserAsync();
+
+        // Act
+        var result = await budgetService.GetUserBudgetsAsync(user.Id, 1, 10);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async Task GetUserBudgetsAsync_ShouldCalculateSpentPercentage()
+    {
+        // Arrange
+        using var scope = webApplicationFactory.Services.CreateScope();
+        var budgetService = scope.ServiceProvider.GetRequiredService<IBudgetService>();
+        var context = scope.ServiceProvider.GetRequiredService<EntityContext>();
+
+        var user = await testHelpers.CreateUserAsync();
+        var budget = testHelpers.CreateTestBudget(user.Id);
+        await context.Budgets.AddAsync(budget);
+
+        var transaction = new Data.Models.Transaction
+        {
+            Id = Guid.NewGuid(),
+            UserId = user.Id,
+            Amount = 500.00m,
+            Category = budget.Category,
+            Type = TransactionType.Expense,
+            Date = budget.Month
+        };
+        await context.Transactions.AddAsync(transaction);
+        await context.SaveChangesAsync();
+
+        // Act
+        var results = await budgetService.GetUserBudgetsAsync(user.Id, 1, 10);
+        var result = results.FirstOrDefault();
+
+        // Assert
+        result.Should().NotBeNull();
+        result.SpentPercentage.Should().Be(50.00m);
+    }
+    
+    [Fact]
+    public async Task GetTotalBudgetsAsync_OnEmptyBudgets_ShouldReturnZero()
+    {
+        // Arrange
+        using var scope = webApplicationFactory.Services.CreateScope();
+        var budgetService = scope.ServiceProvider.GetRequiredService<IBudgetService>();
+        var user = await testHelpers.CreateUserAsync();
+
+        // Act
+        var count = await budgetService.GetTotalBudgetsAsync(user.Id);
+
+        // Assert
+        count.Should().Be(0);
+    }
+    
 }
