@@ -14,6 +14,8 @@ public class SavingsGoalServiceTests
     public async Task GetUserSavingsGoalsAsync_ShouldReturnPagedSavingsGoals()
     {
         var context = TestHelpers.CreateDbContext();
+        var currencyService = TestHelpers.CreateCurrencyConverterService();
+        var userManager = TestHelpers.CreateMockUserManager();
         var userId = Guid.NewGuid();
 
         context.SavingsGoals.AddRange(
@@ -25,8 +27,8 @@ public class SavingsGoalServiceTests
 
         await context.SaveChangesAsync();
 
-        var service = new SavingsGoalService(context);
-        var result = await service.GetUserSavingsGoalsAsync(userId, page: 1, pageSize: 1);
+        var service = new SavingsGoalService(context, currencyService, userManager);
+        var result = await service.GetUserSavingsGoalsAsync(userId, page: 1, pageSize: 1, "BGN");
 
         result.Should().HaveCount(1);
         result.First().Name.Should().Be("Goal 1");
@@ -37,13 +39,15 @@ public class SavingsGoalServiceTests
     {
         var context = TestHelpers.CreateDbContext();
         var userId = Guid.NewGuid();
+        var currencyService = TestHelpers.CreateCurrencyConverterService();
+        var userManager = TestHelpers.CreateMockUserManager();
         var goal = new Data.Models.SavingsGoal
             { Id = Guid.NewGuid(), UserId = userId, Name = "Goal Test", CreatedAt = DateTime.UtcNow };
 
         context.SavingsGoals.Add(goal);
         await context.SaveChangesAsync();
 
-        var service = new SavingsGoalService(context);
+        var service = new SavingsGoalService(context, currencyService, userManager);
         var result = await service.GetSavingsGoalByIdAsync(userId, goal.Id);
 
         result.Should().NotBeNull();
@@ -54,7 +58,10 @@ public class SavingsGoalServiceTests
     public async Task GetSavingsGoalByIdAsync_ShouldReturnNull_WhenNotExists()
     {
         var context = TestHelpers.CreateDbContext();
-        var service = new SavingsGoalService(context);
+        var userId = Guid.NewGuid();
+        var currencyService = TestHelpers.CreateCurrencyConverterService();
+        var userManager = TestHelpers.CreateMockUserManager();
+        var service = new SavingsGoalService(context, currencyService, userManager);
 
         var result = await service.GetSavingsGoalByIdAsync(Guid.NewGuid(), Guid.NewGuid());
 
@@ -65,7 +72,10 @@ public class SavingsGoalServiceTests
     public async Task AddSavingsGoalsAsync_ShouldAddNewGoal()
     {
         var context = TestHelpers.CreateDbContext();
-        var service = new SavingsGoalService(context);
+        var userId = Guid.NewGuid();
+        var currencyService = TestHelpers.CreateCurrencyConverterService();
+        var userManager = TestHelpers.CreateMockUserManager();
+        var service = new SavingsGoalService(context, currencyService, userManager);
 
         var goal = new Data.Models.SavingsGoal
         {
@@ -75,7 +85,7 @@ public class SavingsGoalServiceTests
             CreatedAt = DateTime.UtcNow
         };
 
-        var result = await service.AddSavingsGoalsAsync(goal);
+        var result = await service.AddSavingsGoalsAsync(goal, "BGN");
         result.Should().BeTrue();
 
         var savedGoal = await context.SavingsGoals.FirstOrDefaultAsync(g => g.Id == goal.Id);
@@ -88,17 +98,19 @@ public class SavingsGoalServiceTests
     {
         var context = TestHelpers.CreateDbContext();
         var userId = Guid.NewGuid();
+        var currencyService = TestHelpers.CreateCurrencyConverterService();
+        var userManager = TestHelpers.CreateMockUserManager();
         var goalName = "Duplicate Goal";
 
         context.SavingsGoals.Add(new Data.Models.SavingsGoal
             { Id = Guid.NewGuid(), UserId = userId, Name = goalName, CreatedAt = DateTime.UtcNow });
         await context.SaveChangesAsync();
 
-        var service = new SavingsGoalService(context);
+        var service = new SavingsGoalService(context, currencyService, userManager);
         var newGoal = new Data.Models.SavingsGoal
             { Id = Guid.NewGuid(), UserId = userId, Name = goalName, CreatedAt = DateTime.UtcNow };
 
-        var result = await service.AddSavingsGoalsAsync(newGoal);
+        var result = await service.AddSavingsGoalsAsync(newGoal, "BGN");
         result.Should().BeFalse();
     }
 
@@ -106,6 +118,8 @@ public class SavingsGoalServiceTests
     public async Task UpdateSavingsGoalsAsync_ShouldUpdateGoal_WhenExists()
     {
         var context = TestHelpers.CreateDbContext();
+        var currencyService = TestHelpers.CreateCurrencyConverterService();
+        var userManager = TestHelpers.CreateMockUserManager();
         var goal = new Data.Models.SavingsGoal
         {
             Id = Guid.NewGuid(), UserId = Guid.NewGuid(), Name = "Old Goal", TargetAmount = 1000,
@@ -115,11 +129,11 @@ public class SavingsGoalServiceTests
         context.SavingsGoals.Add(goal);
         await context.SaveChangesAsync();
 
-        var service = new SavingsGoalService(context);
+        var service = new SavingsGoalService(context, currencyService, userManager);
         goal.Name = "Updated Goal";
         goal.TargetAmount = 2000;
 
-        var result = await service.UpdateSavingsGoalsAsync(goal);
+        var result = await service.UpdateSavingsGoalsAsync(goal, "BGN");
         result.Should().BeTrue();
 
         var updatedGoal = await context.SavingsGoals.FindAsync(goal.Id);
@@ -132,12 +146,14 @@ public class SavingsGoalServiceTests
     public async Task UpdateSavingsGoalsAsync_ShouldReturnFalse_WhenGoalDoesNotExist()
     {
         var context = TestHelpers.CreateDbContext();
-        var service = new SavingsGoalService(context);
+        var currencyService = TestHelpers.CreateCurrencyConverterService();
+        var userManager = TestHelpers.CreateMockUserManager();
+        var service = new SavingsGoalService(context, currencyService, userManager);
 
         var goal = new Data.Models.SavingsGoal
             { Id = Guid.NewGuid(), UserId = Guid.NewGuid(), Name = "Non-existing Goal", TargetAmount = 5000 };
 
-        var result = await service.UpdateSavingsGoalsAsync(goal);
+        var result = await service.UpdateSavingsGoalsAsync(goal, "BGN");
         result.Should().BeFalse();
     }
 
@@ -145,13 +161,15 @@ public class SavingsGoalServiceTests
     public async Task DeleteSavingsGoalsAsync_ShouldRemoveGoal_WhenExists()
     {
         var context = TestHelpers.CreateDbContext();
+        var currencyService = TestHelpers.CreateCurrencyConverterService();
+        var userManager = TestHelpers.CreateMockUserManager();
         var goal = new Data.Models.SavingsGoal
             { Id = Guid.NewGuid(), UserId = Guid.NewGuid(), Name = "Goal to Delete", CreatedAt = DateTime.UtcNow };
 
         context.SavingsGoals.Add(goal);
         await context.SaveChangesAsync();
 
-        var service = new SavingsGoalService(context);
+        var service = new SavingsGoalService(context, currencyService, userManager);
         var result = await service.DeleteSavingsGoalsAsync(goal);
 
         result.Should().BeTrue();
@@ -164,7 +182,9 @@ public class SavingsGoalServiceTests
     public async Task DeleteSavingsGoalsAsync_ShouldReturnFalse_WhenGoalDoesNotExist()
     {
         var context = TestHelpers.CreateDbContext();
-        var service = new SavingsGoalService(context);
+        var currencyService = TestHelpers.CreateCurrencyConverterService();
+        var userManager = TestHelpers.CreateMockUserManager();
+        var service = new SavingsGoalService(context, currencyService, userManager);
 
         var goal = new Data.Models.SavingsGoal
             { Id = Guid.NewGuid(), UserId = Guid.NewGuid(), Name = "Non-existent Goal" };
@@ -177,6 +197,8 @@ public class SavingsGoalServiceTests
     public async Task GetTotalSavingsGoalsAsync_ShouldReturnCorrectCount()
     {
         var context = TestHelpers.CreateDbContext();
+        var currencyService = TestHelpers.CreateCurrencyConverterService();
+        var userManager = TestHelpers.CreateMockUserManager();
         var userId = Guid.NewGuid();
 
         context.SavingsGoals.AddRange(
@@ -188,7 +210,7 @@ public class SavingsGoalServiceTests
 
         await context.SaveChangesAsync();
 
-        var service = new SavingsGoalService(context);
+        var service = new SavingsGoalService(context, currencyService, userManager);
         var result = await service.GetTotalSavingsGoalsAsync(userId);
 
         result.Should().Be(2);

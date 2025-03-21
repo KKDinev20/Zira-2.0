@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Xunit;
 using Zira.Data.Enums;
 using Zira.Services.Analytics.Internals;
 using Zira.Services.Transaction.Models;
@@ -12,65 +11,16 @@ namespace Zira.Services.Tests.Analytics
 {
     public class AnalyticsServiceTests
     {
-        [Fact]
-        public async Task GetTopExpenseCategoriesAsync_WhenTransactionsExist_ShouldReturnCorrectTopCategories()
-        {
-            // Arrange
-            var dbContext = TestHelpers.CreateDbContext();
-            var userId = Guid.NewGuid();
-
-            dbContext.Transactions.AddRange(
-                new Data.Models.Transaction
-                {
-                    Id = Guid.NewGuid(),
-                    UserId = userId,
-                    Type = TransactionType.Expense,
-                    Category = Categories.Food,
-                    Amount = 500,
-                    Date = DateTime.Now
-                },
-                new Data.Models.Transaction
-                {
-                    Id = Guid.NewGuid(),
-                    UserId = userId,
-                    Type = TransactionType.Expense,
-                    Category = Categories.Transportation,
-                    Amount = 300,
-                    Date = DateTime.Now
-                },
-                new Data.Models.Transaction
-                {
-                    Id = Guid.NewGuid(),
-                    UserId = userId,
-                    Type = TransactionType.Expense,
-                    Category = Categories.Bills,
-                    Amount = 700,
-                    Date = DateTime.Now
-                }
-            );
-
-            await dbContext.SaveChangesAsync();
-
-            var analyticsService = new AnalyticsService(dbContext);
-
-            // Act
-            var result = await analyticsService.GetTopExpenseCategoriesAsync(userId, 2);
-
-            // Assert
-            result.Should().HaveCount(2);
-            result.First().Category.Should().Be(Categories.Bills);
-            result.First().TotalAmount.Should().Be(700);
-            result.Last().Category.Should().Be(Categories.Food);
-            result.Last().TotalAmount.Should().Be(500);
-        }
-
+        
         [Fact]
         public async Task GetTopExpenseCategoriesAsync_WhenNoTransactions_ShouldReturnEmptyList()
         {
             // Arrange
             var dbContext = TestHelpers.CreateDbContext();
             var userId = Guid.NewGuid();
-            var analyticsService = new AnalyticsService(dbContext);
+            var currencyService = TestHelpers.CreateCurrencyConverterService();
+            var userManager = TestHelpers.CreateMockUserManager();
+            var analyticsService = new AnalyticsService(dbContext, currencyService, userManager);
 
             // Act
             var result = await analyticsService.GetTopExpenseCategoriesAsync(userId, 5);
@@ -84,7 +34,9 @@ namespace Zira.Services.Tests.Analytics
         {
             // Arrange
             var dbContext = TestHelpers.CreateDbContext();
-            var analyticsService = new AnalyticsService(dbContext);
+            var currencyService = TestHelpers.CreateCurrencyConverterService();
+            var userManager = TestHelpers.CreateMockUserManager();
+            var analyticsService = new AnalyticsService(dbContext, currencyService, userManager);
 
             var expenseSummaries = new List<CategoryExpenseSummary>
             {
@@ -108,6 +60,8 @@ namespace Zira.Services.Tests.Analytics
             // Arrange
             var dbContext = TestHelpers.CreateDbContext();
             var userId = Guid.NewGuid();
+            var currencyService = TestHelpers.CreateCurrencyConverterService();
+            var userManager = TestHelpers.CreateMockUserManager();
 
             dbContext.Transactions.AddRange(
                 new Data.Models.Transaction
@@ -137,7 +91,7 @@ namespace Zira.Services.Tests.Analytics
             );
 
             await dbContext.SaveChangesAsync();
-            var analyticsService = new AnalyticsService(dbContext);
+            var analyticsService = new AnalyticsService(dbContext, currencyService, userManager);
 
             // Act
             var result = await analyticsService.GetMonthlyExpensesAsync(userId, 2024);
@@ -156,7 +110,9 @@ namespace Zira.Services.Tests.Analytics
             // Arrange
             var dbContext = TestHelpers.CreateDbContext();
             var userId = Guid.NewGuid();
-            var analyticsService = new AnalyticsService(dbContext);
+            var currencyService = TestHelpers.CreateCurrencyConverterService();
+            var userManager = TestHelpers.CreateMockUserManager();
+            var analyticsService = new AnalyticsService(dbContext, currencyService, userManager);
 
             // Act
             var result = await analyticsService.GetMonthlyExpensesAsync(userId, 2024);

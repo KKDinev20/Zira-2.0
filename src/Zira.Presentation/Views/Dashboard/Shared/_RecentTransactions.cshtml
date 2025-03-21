@@ -25,7 +25,7 @@
                             </div>
                             <div class="user-progress d-flex align-items-center gap-1">
                                 <h6 class="mb-0 @(transaction.Type == TransactionType.Expense ? "text-danger" : "text-success")">
-                                    @(transaction.Type == TransactionType.Expense ? "-" : "+") @transaction.Amount.ToString("N2")
+                                    @(transaction.Type == TransactionType.Expense ? "-" : "+") @transaction.Amount.ToString("N2") @transaction.Currency.Symbol
                                 </h6>
                             </div>
                         </div>

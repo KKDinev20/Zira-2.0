@@ -343,23 +343,7 @@ public class TransactionService : ITransactionService
             .OrderByDescending(t => t.Date)
             .Take(6)
             .ToListAsync();
-
-        var user = await this.userManager.FindByIdAsync(userId.ToString());
-        if (user != null && !string.IsNullOrEmpty(user.PreferredCurrencyCode))
-        {
-            foreach (var transaction in transactions)
-            {
-                if (transaction.Currency?.Code != user.PreferredCurrencyCode)
-                {
-                    transaction.Amount = await this.currencyConverter.ConvertCurrencyAsync(
-                        userId,
-                        transaction.Amount,
-                        transaction.Currency?.Code ?? "BGN",
-                        user.PreferredCurrencyCode);
-                }
-            }
-        }
-
+        
         return transactions;
     }
 
@@ -436,21 +420,6 @@ public class TransactionService : ITransactionService
                          t.Date.Month == month.Month)
                 .Select(t => new { t.Amount, t.CurrencyCode })
                 .ToListAsync();
-
-            decimal total = 0;
-
-            foreach (var transaction in transactions)
-            {
-                decimal convertedAmount = await this.currencyConverter.ConvertCurrencyAsync(
-                    userId,
-                    transaction.Amount,
-                    transaction.CurrencyCode,
-                    preferredCurrency);
-
-                total += convertedAmount;
-            }
-
-            totals.Add(total);
         }
 
         return (totals, labels);

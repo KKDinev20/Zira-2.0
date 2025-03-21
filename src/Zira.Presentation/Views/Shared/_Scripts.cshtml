@@ -71,13 +71,6 @@
     }).catch(function (err) {
         console.error("Error starting SignalR connection: " + err.toString());
     });
-
-    document.addEventListener("DOMContentLoaded", function () {
-        flatpickr(".datepicker", {
-            dateFormat: "d/m/Y",
-            allowInput: true,
-            defaultDate: new Date(),
-        });
-    });
+    
 </script>
 
