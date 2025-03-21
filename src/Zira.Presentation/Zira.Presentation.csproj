@@ -102,6 +102,7 @@
 
 
     <ItemGroup>
+      <ProjectReference Include="..\..\test\Zira.Services.Tests\Zira.Services.Tests.csproj" />
       <ProjectReference Include="..\Zira.Services\Zira.Services.csproj" />
     </ItemGroup>
 

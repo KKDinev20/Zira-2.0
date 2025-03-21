@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
         <PackageReference Include="Essentials" Version="0.0.10" />
         <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
