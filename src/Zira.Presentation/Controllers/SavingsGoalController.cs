@@ -1,14 +1,17 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Zira.Common;
 using Zira.Data;
 using Zira.Data.Models;
 using Zira.Presentation.Extensions;
 using Zira.Presentation.Models;
 using Zira.Services.Identity.Constants;
+using Zira.Services.Identity.Extensions;
 using Zira.Services.SavingsGoal.Contracts;
 
 namespace Zira.Presentation.Controllers
@@ -41,7 +44,7 @@ namespace Zira.Presentation.Controllers
                 user.Id,
                 page,
                 pageSize,
-                user.PreferredCurrencyCode);
+                null);
             var totalGoals = await this.savingsGoalService.GetTotalSavingsGoalsAsync(user.Id);
             var totalPages = (int)Math.Ceiling((double)totalGoals / pageSize);
 
@@ -59,7 +62,13 @@ namespace Zira.Presentation.Controllers
         public async Task<IActionResult> CreateSavingsGoal()
         {
             await this.SetGlobalUserInfoAsync(this.userManager, this.context);
-
+            var availableCurrencies = await this.context.Currencies
+                .Select(c => c.Code)
+                .ToListAsync();
+            var userId = this.User.GetUserId();
+            var user = await this.userManager.FindByIdAsync(userId.ToString());
+            this.ViewBag.Currencies = availableCurrencies;
+            this.ViewBag.DefaultCurrency = user?.PreferredCurrencyCode ?? "BGN";
             return this.View(new SavingsGoalViewModel());
         }
 
@@ -86,8 +95,8 @@ namespace Zira.Presentation.Controllers
                 CurrentAmount = 0,
                 TargetDate = model.TargetDate,
                 Remark = model.Remark,
-                Currency = user.PreferredCurrency,
-                CurrencyCode = user.PreferredCurrencyCode ?? "BGN",
+                Currency = model.Currency,
+                CurrencyCode = model.CurrencyCode,
             };
 
             await this.savingsGoalService.AddSavingsGoalsAsync(goal, goal.CurrencyCode);
@@ -120,7 +129,15 @@ namespace Zira.Presentation.Controllers
                 CurrentAmount = goal.CurrentAmount,
                 TargetDate = goal.TargetDate,
                 Remark = goal.Remark,
+                Currency = goal.Currency,
+                CurrencyCode = goal.CurrencyCode,
             };
+
+            var availableCurrencies = await this.context.Currencies
+                .Select(c => c.Code)
+                .ToListAsync();
+            this.ViewBag.Currencies = availableCurrencies;
+            this.ViewBag.DefaultCurrency = goal.CurrencyCode ?? user.PreferredCurrencyCode ?? "BGN";
 
             return this.View(model);
         }
@@ -128,6 +145,7 @@ namespace Zira.Presentation.Controllers
         [HttpPost("/edit-savings-goal/{id}")]
         public async Task<IActionResult> EditSavingsGoal(Guid id, SavingsGoalViewModel model)
         {
+            await this.SetGlobalUserInfoAsync(this.userManager, this.context);
             if (id != model.Id)
             {
                 return this.BadRequest();
@@ -141,22 +159,42 @@ namespace Zira.Presentation.Controllers
 
             if (!this.ModelState.IsValid)
             {
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    Console.WriteLine(error.ErrorMessage);
+                }
+
+                var availableCurrencies = await this.context.Currencies
+                    .Select(c => c.Code)
+                    .ToListAsync();
+                this.ViewBag.Currencies = availableCurrencies;
+                this.ViewBag.DefaultCurrency = model.CurrencyCode ?? user.PreferredCurrencyCode ?? "BGN";
+
                 return this.View(model);
             }
 
-            var goal = new SavingsGoal
-            {
-                Id = model.Id,
-                UserId = user.Id,
-                Name = model.Name,
-                TargetAmount = model.TargetAmount,
-                CurrentAmount = model.CurrentAmount,
-                TargetDate = model.TargetDate,
-                Currency = user.PreferredCurrency,
-                CurrencyCode = user.PreferredCurrencyCode ?? "BGN",
-            };
 
-            await this.savingsGoalService.UpdateSavingsGoalsAsync(goal, goal.CurrencyCode);
+            model.CurrencyCode = model.CurrencyCode ?? user.PreferredCurrencyCode ?? "BGN";
+
+            var existingGoal = await this.savingsGoalService.GetSavingsGoalByIdAsync(user.Id, id);
+            if (existingGoal == null)
+            {
+                this.TempData["ErrorMessage"] = @SavingsGoalText.SavingsGoalNotFound;
+                return this.RedirectToAction("ViewSavingsGoals");
+            }
+
+            existingGoal.Name = model.Name;
+            existingGoal.TargetAmount = model.TargetAmount;
+            if (model.CurrentAmount != 0)
+            {
+                existingGoal.CurrentAmount = model.CurrentAmount;
+            }
+
+            existingGoal.TargetDate = model.TargetDate;
+            existingGoal.Remark = model.Remark;
+            existingGoal.CurrencyCode = model.CurrencyCode;
+
+            await this.savingsGoalService.UpdateSavingsGoalsAsync(existingGoal, existingGoal.CurrencyCode);
             this.TempData["SuccessMessage"] = @SavingsGoalText.UpdateSuccess;
             return this.RedirectToAction("ViewSavingsGoals");
         }

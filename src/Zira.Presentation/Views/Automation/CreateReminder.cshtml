@@ -33,8 +33,24 @@
                 </div>
 
                 <div class="mb-3">
+                    <label class="form-label">Currency</label>
+                    <select name="CurrencyCode" class="form-control">
+                        @foreach (var currency in ViewBag.Currencies as List<string>)
+                        {
+                            <option value="@currency" selected="@(currency == ViewBag.DefaultCurrency)">@currency</option>
+                        }
+                    </select>
+                </div>
+
+
+                <div class="mb-3">
                     <label asp-for="DueDate">@ReminderText.DueDate</label>
-                    <input asp-for="DueDate" type="text" class="form-control datepicker" required/>
+                    <input asp-for="DueDate"
+                           type="text"
+                           class="form-control datepicker"
+                           id="transaction-date"
+                           required
+                           placeholder="Select date"/>
                     <span asp-validation-for="DueDate" class="text-danger"></span>
                 </div>
 

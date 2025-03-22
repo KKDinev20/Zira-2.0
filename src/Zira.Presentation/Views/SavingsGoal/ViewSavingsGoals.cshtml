@@ -1,14 +1,9 @@
 ﻿@model Zira.Presentation.Models.SavingsGoalListViewModel
-@inject UserManager<ApplicationUser> UserManager
-@inject EntityContext DbContext
 @{
     ViewData["Title"] = @SavingsGoalText.SavingsGoals;
-    var user = await UserManager.GetUserAsync(User);
-    var currencyCode = user.PreferredCurrencyCode;
-    var currency = await DbContext.Currencies.FirstOrDefaultAsync(c => c.Code == currencyCode);
-    var preferredCurrency = currency?.Symbol ?? "лв.";
     Layout = "Shared/_SavingsGoalLayout";
 }
+
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="container-fluid">
         <div class="row justify-content-center">
@@ -61,15 +56,30 @@
                                     <tr>
                                         <td>@goal.Name</td>
                                         <td>
-                                            <div class="progress" style="height: 20px;">
-                                                @{ var progress = (goal.CurrentAmount / goal.TargetAmount) * 100; }
-                                                <div class="progress-bar @(progress < 30 ? "bg-danger" : progress < 70 ? "bg-warning" : "bg-success")" role="progressbar" style="width: @progress%;">
-                                                    @progress.ToString("0.0")%
+                                            <div class="progress" style="height: 32px; margin-bottom: 5px;">
+                                                @{
+                                                    var progress = (goal.CurrentAmount / goal.TargetAmount) * 100;
+                                                    var progressColorClass = progress < 30 ? "bg-danger" :
+                                                        progress < 70 ? "bg-warning" : "bg-success";
+                                                    var completionStatus = progress >= 100 ? "Complete!" :
+                                                        progress >= 70 ? "Almost there!" :
+                                                        progress >= 30 ? "In progress..." : "Getting started";
+                                                }
+                                                <div class="progress-bar @progressColorClass"
+                                                     role="progressbar"
+                                                     style="width: @progress%; transition: width 0.3s ease-in-out;">
+                                                    <span class="innerProgress text-white font-weight-bold">
+                                                        @progress.ToString("0.0")% - @completionStatus
+                                                    </span>
                                                 </div>
                                             </div>
+                                            <small class="text-muted d-block mt-2">
+                                                @goal.CurrentAmount.ToString("N2") @goal.Currency.Symbol /
+                                                @goal.TargetAmount.ToString("N2") @goal.Currency.Symbol
+                                            </small>
                                         </td>
-                                        <td>@goal.TargetAmount.ToString("N2") @preferredCurrency</td>
-                                        <td>@goal.CurrentAmount.ToString("N2") @preferredCurrency</td>
+                                        <td>@goal.TargetAmount.ToString("N2") @goal.Currency.Symbol</td>
+                                        <td>@goal.CurrentAmount.ToString("N2") @goal.Currency.Symbol</td>
                                         <td>@goal.Remark</td>
                                         <td>@goal.TargetDate?.ToString("dd/MM/yyyy")</td>
                                         <td>

@@ -49,27 +49,9 @@ namespace Zira.Services.SavingsGoal.Internals
                 {
                     if (goal.Currency == null)
                     {
-                        goal.Currency = user.PreferredCurrency ?? new Data.Models.Currency
-                            { Code = "BGN", Symbol = "BGN" };
-                    }
-
-                    string goalCurrencyCode = goal.CurrencyCode ?? "BGN";
-
-                    if (!string.IsNullOrEmpty(goalCurrencyCode) && goalCurrencyCode != targetCurrency)
-                    {
-                        goal.TargetAmount = await this.currencyConverter.ConvertCurrencyAsync(
-                            userId,
-                            goal.TargetAmount,
-                            goalCurrencyCode,
-                            targetCurrency);
-                        goal.CurrentAmount = await this.currencyConverter.ConvertCurrencyAsync(
-                            userId,
-                            goal.CurrentAmount,
-                            goalCurrencyCode,
-                            targetCurrency);
-                        goal.CurrencyCode = targetCurrency;
-                        goal.Currency = user.PreferredCurrency ?? new Data.Models.Currency
-                            { Code = targetCurrency, Symbol = targetCurrency };
+                        goal.Currency = await this.context.Currencies
+                                            .FirstOrDefaultAsync(c => c.Code == goal.CurrencyCode)
+                                        ?? new Data.Models.Currency { Code = "BGN", Symbol = "BGN" }; 
                     }
                 }
             }
@@ -110,12 +92,17 @@ namespace Zira.Services.SavingsGoal.Internals
                         Symbol = userPreferredCurrency,
                     };
                 }
+                
+                goal.CurrencyCode = goal.CurrencyCode;
 
-                goal.Currency = currency;
-                goal.CurrencyCode = userPreferredCurrency;
+                goal.Currency = await this.context.Currencies
+                    .FirstOrDefaultAsync(c => c.Code == goal.CurrencyCode);
 
-                goal.Currency = currency;
-                goal.CurrencyCode = userPreferredCurrency;
+                if (goal.Currency == null)
+                {
+                    throw new InvalidOperationException("Currency not found!");
+                }
+
             }
 
             await this.context.SavingsGoals.AddAsync(goal);
@@ -131,23 +118,18 @@ namespace Zira.Services.SavingsGoal.Internals
             {
                 return false;
             }
-
-            if (!string.IsNullOrEmpty(goal.CurrencyCode) && goal.CurrencyCode != userPreferredCurrency)
-            {
-                goal.TargetAmount = await this.currencyConverter.ConvertCurrencyAsync(
-                    goal.UserId,
-                    goal.TargetAmount,
-                    userPreferredCurrency,
-                    goal.CurrencyCode);
-                goal.CurrencyCode = userPreferredCurrency;
-            }
-
+    
             existingGoal.Name = goal.Name;
             existingGoal.TargetAmount = goal.TargetAmount;
-            existingGoal.CurrentAmount = goal.CurrentAmount;
+            if (goal.CurrentAmount >= 0)
+            {
+                existingGoal.CurrentAmount = goal.CurrentAmount; 
+            }
             existingGoal.TargetDate = goal.TargetDate;
+            existingGoal.Remark = goal.Remark;
             existingGoal.CurrencyCode = goal.CurrencyCode;
-            existingGoal.Currency = goal.Currency;
+            existingGoal.Currency = await this.context.Currencies
+                .FirstOrDefaultAsync(c => c.Code == goal.CurrencyCode);
 
             await this.context.SaveChangesAsync();
             return true;

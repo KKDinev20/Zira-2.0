@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Zira.Data.Models;
 
 namespace Zira.Presentation.Models
 {
@@ -18,5 +19,9 @@ namespace Zira.Presentation.Models
         public DateTime? TargetDate { get; set; }
 
         public string? Remark { get; set; }
+        
+        public Currency? Currency { get; set; }
+        public string CurrencyCode { get; set; }
+        
     }
 }

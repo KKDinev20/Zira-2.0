@@ -51,7 +51,7 @@
                                 {
                                     <tr>
                                         <td>@reminder.Title</td>
-                                        <td>@reminder.Amount.ToString("N2") @preferredCurrency</td>
+                                        <td>@reminder.Amount.ToString("N2") @reminder.Currency.Symbol</td>
                                         <td>@reminder.DueDate.ToShortDateString()</td>
                                     </tr>
                                 }

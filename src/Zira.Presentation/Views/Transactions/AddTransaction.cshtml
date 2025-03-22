@@ -81,7 +81,7 @@
                             <select name="CurrencyCode" class="form-control">
                                 @foreach (var currency in ViewBag.Currencies as List<string>)
                                 {
-                                <option value="@currency" selected="@(currency == ViewBag.DefaultCurrency)">@currency</option>
+                                    <option value="@currency" selected="@(currency == ViewBag.DefaultCurrency)">@currency</option>
                                 }
                             </select>
                         </div>

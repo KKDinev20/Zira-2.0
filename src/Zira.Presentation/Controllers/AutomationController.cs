@@ -14,6 +14,7 @@ using Zira.Presentation.Extensions;
 using Zira.Presentation.Models;
 using Zira.Services.Currency.Contracts;
 using Zira.Services.Identity.Constants;
+using Zira.Services.Identity.Extensions;
 using Zira.Services.Reminder.Internals;
 
 namespace Zira.Presentation.Controllers
@@ -51,6 +52,7 @@ namespace Zira.Presentation.Controllers
 
             var reminders = await this.context.Reminders
                 .Where(r => r.UserId == user.Id)
+                .Include(r => r.Currency)
                 .OrderBy(r => r.DueDate)
                 .Select(
                     r => new ReminderViewModel
@@ -59,26 +61,13 @@ namespace Zira.Presentation.Controllers
                         Title = r.Title,
                         Amount = r.Amount,
                         DueDate = r.DueDate,
+                        Currency = r.Currency,
+                        CurrencyCode = r.CurrencyCode
                     })
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
-
-            if (user != null && !string.IsNullOrEmpty(user.PreferredCurrencyCode))
-            {
-                foreach (var reminder in reminders)
-                {
-                    if (reminder.Currency?.Code != user.PreferredCurrencyCode)
-                    {
-                        reminder.Amount = await this.currencyConverter.ConvertCurrencyAsync(
-                            user.Id,
-                            reminder.Amount,
-                            reminder.Currency?.Code ?? "BGN",
-                            user.PreferredCurrencyCode);
-                    }
-                }
-            }
-
+            
             var totalPages = (int)Math.Ceiling((double)totalReminders / pageSize);
 
             var viewModel = new PaginatedViewModel<ReminderViewModel>
@@ -97,6 +86,13 @@ namespace Zira.Presentation.Controllers
         public async Task<IActionResult> CreateReminder()
         {
             await this.SetGlobalUserInfoAsync(this.userManager, this.context);
+            var availableCurrencies = await this.context.Currencies
+                .Select(c => c.Code)
+                .ToListAsync();
+            var userId = this.User.GetUserId();
+            var user = await this.userManager.FindByIdAsync(userId.ToString());
+            this.ViewBag.Currencies = availableCurrencies;
+            this.ViewBag.DefaultCurrency = user?.PreferredCurrencyCode ?? "BGN";
 
             return this.View(new ReminderViewModel());
         }
@@ -117,6 +113,9 @@ namespace Zira.Presentation.Controllers
                 this.TempData["ErrorMessage"] = @AccountText.UserNotFound;
                 return this.View(model);
             }
+            
+            model.Currency = await this.context.Currencies
+                .FirstOrDefaultAsync(c => c.Code == model.CurrencyCode);
 
             try
             {
@@ -130,8 +129,8 @@ namespace Zira.Presentation.Controllers
                     DueDate = model.DueDate,
                     Status = ReminderStatus.Pending,
                     IsNotified = false,
-                    Currency = user.PreferredCurrency,
-                    CurrencyCode = user.PreferredCurrencyCode,
+                    Currency = model.Currency,
+                    CurrencyCode = model.CurrencyCode,
                 };
 
                 this.context.Reminders.Add(reminder);
