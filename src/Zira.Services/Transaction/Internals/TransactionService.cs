@@ -343,7 +343,7 @@ public class TransactionService : ITransactionService
             .OrderByDescending(t => t.Date)
             .Take(6)
             .ToListAsync();
-        
+
         return transactions;
     }
 
@@ -400,7 +400,6 @@ public class TransactionService : ITransactionService
     {
         var today = DateTime.UtcNow;
         var startMonth = new DateTime(today.Year, today.Month, 1).AddMonths(-5);
-
         List<decimal> totals = new List<decimal>();
         List<string> labels = new List<string>();
 
@@ -410,16 +409,28 @@ public class TransactionService : ITransactionService
         for (int i = 0; i < 6; i++)
         {
             var month = startMonth.AddMonths(i);
-            labels.Add(month.ToString("MMMM"));
+            labels.Add(month.ToString("MMM"));
 
-            var transactions = await this.context.Transactions
-                .Where(
-                    t => t.UserId == userId &&
-                         t.Type == type &&
-                         t.Date.Year == month.Year &&
-                         t.Date.Month == month.Month)
-                .Select(t => new { t.Amount, t.CurrencyCode })
+            var monthlyTransactions = await this.context.Transactions.Where(
+                    t =>
+                        t.UserId == userId &&
+                        t.Type == type &&
+                        t.Date.Year == month.Year &&
+                        t.Date.Month == month.Month)
                 .ToListAsync();
+
+            decimal total = 0;
+            foreach (var transaction in monthlyTransactions)
+            {
+                decimal convertedAmount = await this.currencyConverter.ConvertCurrencyAsync(
+                    userId,
+                    transaction.Amount,
+                    transaction.CurrencyCode,
+                    preferredCurrency);
+                total += convertedAmount;
+            }
+
+            totals.Add(total);
         }
 
         return (totals, labels);
