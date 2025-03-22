@@ -321,7 +321,7 @@ namespace Zira.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Бюджетен праг.
+        ///   Looks up a localized string similar to Бюджетен праг(%).
         /// </summary>
         public static string WarningThreshold {
             get {

@@ -8,18 +8,18 @@ namespace Zira.Presentation.Models
     {
         public Guid Id { get; set; }
 
-        [Required(ErrorMessage = "Amount is required.")]
-        [Range(0.01, double.MaxValue, ErrorMessage = "Amount must be greater than zero.")]
+        [Required(ErrorMessage = "Сумата е необходима.")]
+        [Range(0.01, double.MaxValue, ErrorMessage = "Сумата трябва да е по-голяма от 0.")]
         public decimal Amount { get; set; }
 
-        [Required(ErrorMessage = "Month is required.")]
+        [Required(ErrorMessage = "Месецът е задължително поле.")]
         public DateTime Month { get; set; } = DateTime.UtcNow;
 
-        [Required(ErrorMessage = "Category is required.")]
+        [Required(ErrorMessage = "Категорията на бюджета е задължително поле.")]
         public Categories? Category { get; set; }
 
-        [Required(ErrorMessage = "Threshold is required.")]
-        [Range(10, 100, ErrorMessage = "Warning threshold must be between 0 and 100.")]
+        [Required(ErrorMessage = "Прагът на бюджета е задължително поле.")]
+        [Range(10, 100, ErrorMessage = "Прагът на бюджета трябва да е между 0 и 100.")]
         public decimal WarningThreshold { get; set; }
 
         public string? Remark { get; set; }

@@ -8,14 +8,16 @@ namespace Zira.Presentation.Models
     {
         public Guid Id { get; set; }
 
-        [Required] public string Name { get; set; }
+        [Required(ErrorMessage = "Името на целта е необходимо.")] 
+        public string Name { get; set; }
 
         [Required]
-        [Range(1, double.MaxValue, ErrorMessage = "Target amount must be greater than zero.")]
+        [Range(1, double.MaxValue, ErrorMessage = "Целевата сума трябва да е по-голяма от 0.")]
         public decimal TargetAmount { get; set; }
 
         public decimal CurrentAmount { get; set; } = 0;
 
+        [Required]
         public DateTime? TargetDate { get; set; }
 
         public string? Remark { get; set; }

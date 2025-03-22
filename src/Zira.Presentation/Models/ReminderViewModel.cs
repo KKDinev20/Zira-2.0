@@ -9,9 +9,12 @@ namespace Zira.Presentation.Models
     {
         public Guid Id { get; set; }
 
-        [StringLength(100)] public string? Title { get; set; }
+        [Required(ErrorMessage = "Името на напомнянето е необходимо.")] 
+        public string? Title { get; set; }
 
-        [Range(0.01, 100000)] public decimal Amount { get; set; }
+        [Required(ErrorMessage = "Сумата е необходима.")] 
+        [Range(1, double.MaxValue, ErrorMessage = "Сумата трябва да е по-голяма от 0.")]
+        public decimal Amount { get; set; }
 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime DueDate { get; set; }

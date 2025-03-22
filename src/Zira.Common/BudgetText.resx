@@ -87,7 +87,7 @@
         <value>Месечният бюджет не може да бъде в бъдеще </value>
     </data>
     <data name="WarningThreshold" xml:space="preserve">
-        <value>Бюджетен праг</value>
+        <value>Бюджетен праг(%)</value>
     </data>
     <data name="BudgetExists" xml:space="preserve">
         <value>Вече съществува бюджет за тази категория в избрания месец.</value>
