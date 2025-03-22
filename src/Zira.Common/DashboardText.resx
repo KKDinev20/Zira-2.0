@@ -116,7 +116,7 @@
         <value>Моят профил</value>
     </data>
     <data name="Savings" xml:space="preserve">
-        <value>Спестявания</value>
+        <value>Спестовни фондове</value>
     </data>
     <data name="SemiannualReport" xml:space="preserve">
         <value>Полугодишен отчет</value>
@@ -126,5 +126,8 @@
     </data>
     <data name="months" xml:space="preserve">
         <value>6 месеца</value>
+    </data>
+    <data name="Currency" xml:space="preserve">
+        <value>Валута</value>
     </data>
 </root>

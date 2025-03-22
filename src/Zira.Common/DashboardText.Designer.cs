@@ -159,6 +159,15 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Валута.
+        /// </summary>
+        public static string Currency {
+            get {
+                return ResourceManager.GetString("Currency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Табло.
         /// </summary>
         public static string Dashboard {
@@ -312,7 +321,7 @@ namespace Zira.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Спестявания.
+        ///   Looks up a localized string similar to Спестовни фондове.
         /// </summary>
         public static string Savings {
             get {

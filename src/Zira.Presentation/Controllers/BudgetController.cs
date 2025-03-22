@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using Zira.Common;
 using Zira.Data;
 using Zira.Data.Enums;
@@ -42,6 +44,13 @@ namespace Zira.Presentation.Controllers
         {
             await this.SetGlobalUserInfoAsync(this.userManager, this.context);
             this.ViewBag.Categories = Enum.GetValues(typeof(Categories));
+            var availableCurrencies = await this.context.Currencies
+                .Select(c => c.Code)
+                .ToListAsync();
+            var userId = this.User.GetUserId();
+            var user = await this.userManager.FindByIdAsync(userId.ToString());
+            this.ViewBag.Currencies = availableCurrencies;
+            this.ViewBag.DefaultCurrency = user?.PreferredCurrencyCode ?? "BGN";
 
             return this.View(new BudgetViewModel());
         }
@@ -50,13 +59,20 @@ namespace Zira.Presentation.Controllers
         public async Task<IActionResult> SetBudget(BudgetViewModel viewModel)
         {
             await this.SetGlobalUserInfoAsync(this.userManager, this.context);
+    
+            var availableCurrencies = await this.context.Currencies
+                .Select(c => c.Code)
+                .ToListAsync();
+            var userId = this.User.GetUserId();
+            var user = await this.userManager.FindByIdAsync(userId.ToString());
+            this.ViewBag.Currencies = availableCurrencies;
+            this.ViewBag.DefaultCurrency = user?.PreferredCurrencyCode ?? "BGN";
+            this.ViewBag.Categories = Enum.GetValues(typeof(Categories));
+    
             if (!this.ModelState.IsValid)
             {
-                this.ViewBag.Categories = Enum.GetValues(typeof(Categories));
                 return this.View(viewModel);
             }
-
-            var userId = this.User.GetUserId();
 
             var budgetModel = new Budget
             {
@@ -66,18 +82,19 @@ namespace Zira.Presentation.Controllers
                 Category = viewModel.Category,
                 Month = new DateTime(viewModel.Month.Year, viewModel.Month.Month, 1),
                 Remark = viewModel.Remark,
+                CurrencyCode = viewModel.CurrencyCode ?? user?.PreferredCurrencyCode ?? "BGN"
             };
 
             if (!await this.budgetService.AddBudgetAsync(budgetModel, userId))
             {
                 this.TempData["ErrorMessage"] = @BudgetText.BudgetExists;
-                this.ViewBag.Categories = Enum.GetValues(typeof(Categories));
                 return this.View(viewModel);
             }
 
             this.TempData["SuccessMessage"] = @BudgetText.BudgetSuccess;
             return this.RedirectToAction("ViewBudgets");
         }
+
 
         [HttpGet("/view-budgets/")]
         public async Task<IActionResult> ViewBudgets(int page = 1, int pageSize = 5)

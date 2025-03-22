@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Zira.Common;
 using Zira.Data;
 using Zira.Data.Enums;
 using Zira.Data.Models;
@@ -49,22 +51,23 @@ namespace Zira.Services.Budget.Internals
             budget.Month = new DateTime(budget.Month.Year, budget.Month.Month, 1);
             budget.BudgetId = this.idGenerationService.GenerateDigitIdAsync();
 
-            var user = await this.userManager.FindByIdAsync(userId.ToString());
-
-            if (user == null)
+            if (string.IsNullOrEmpty(budget.CurrencyCode))
             {
-                throw new InvalidOperationException("User not found!");
+                var user = await this.userManager.FindByIdAsync(userId.ToString());
+                if (user == null)
+                {
+                    throw new InvalidOperationException("User not found!");
+                }
+
+                budget.CurrencyCode = user.PreferredCurrencyCode ?? "BGN";
             }
 
-            budget.CurrencyCode = !string.IsNullOrEmpty(budget.CurrencyCode)
-                ? budget.CurrencyCode
-                : user.PreferredCurrencyCode ?? "BGN";
             budget.Currency = await this.context.Currencies
                 .FirstOrDefaultAsync(c => c.Code == budget.CurrencyCode);
 
             if (budget.Currency == null)
             {
-                throw new InvalidOperationException("Currency not found!");
+                throw new InvalidOperationException($"Currency with code '{budget.CurrencyCode}' not found!");
             }
 
             decimal totalSpent = 0;
@@ -100,7 +103,6 @@ namespace Zira.Services.Budget.Internals
             }
 
             var user = await this.userManager.FindByIdAsync(existingBudget.UserId.ToString());
-
             if (user == null)
             {
                 throw new InvalidOperationException("User not found!");
@@ -111,22 +113,6 @@ namespace Zira.Services.Budget.Internals
             existingBudget.Category = budget.Category;
             existingBudget.Month = new DateTime(budget.Month.Year, budget.Month.Month, 1);
             existingBudget.Remark = budget.Remark;
-
-            string originalCurrencyCode = existingBudget.CurrencyCode;
-            string newCurrencyCode = user.PreferredCurrencyCode ?? "BGN";
-
-            if (originalCurrencyCode != newCurrencyCode)
-            {
-                existingBudget.Amount = await this.currencyConverter.ConvertCurrencyAsync(
-                    existingBudget.UserId,
-                    existingBudget.Amount,
-                    originalCurrencyCode,
-                    newCurrencyCode);
-
-                existingBudget.CurrencyCode = newCurrencyCode;
-                existingBudget.Currency = await this.context.Currencies
-                    .FirstOrDefaultAsync(c => c.Code == newCurrencyCode);
-            }
 
             await this.context.SaveChangesAsync();
             return true;
@@ -155,6 +141,7 @@ namespace Zira.Services.Budget.Internals
         {
             var budgets = await this.context.Budgets
                 .Where(b => b.UserId == userId)
+                .Include(b => b.Currency)
                 .OrderByDescending(b => b.Month)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
@@ -200,19 +187,37 @@ namespace Zira.Services.Budget.Internals
                              t.Category == budget.Category &&
                              t.Date.Year == budget.Month.Year &&
                              t.Date.Month == budget.Month.Month)
-                    .SumAsync(t => t.Amount);
+                    .ToListAsync();
 
-                decimal expensePercentage = (totalExpenses / budget.Amount) * 100;
+                decimal convertedTotalExpenses = 0;
+                foreach (var expense in totalExpenses)
+                {
+                    convertedTotalExpenses += await this.currencyConverter.ConvertCurrencyAsync(
+                        userId,
+                        expense.Amount,
+                        expense.CurrencyCode,
+                        budget.CurrencyCode);
+                }
 
-                if (expensePercentage >= 50 && expensePercentage < 100)
+                decimal expensePercentage = budget.Amount > 0 ? (convertedTotalExpenses / budget.Amount) * 100 : 0;
+
+                var resourceManager = ExpenseCategories.ResourceManager;
+                var culture = CultureInfo.CurrentUICulture;
+
+                if (expensePercentage >= 50 && expensePercentage < 80)
                 {
                     warnings.Add(
-                        $"⚠️ Предужпреждение: Използвали сте {expensePercentage:F2}% от своя бюджет за {budget.Category}.");
+                        $"🟡 Предупреждение: Използвали сте {expensePercentage:F2}% от своя {resourceManager.GetString(budget.Category.ToString(), culture)} бюджет.");
+                }
+                else if (expensePercentage >= 80 && expensePercentage < 100)
+                {
+                    warnings.Add(
+                        $"🟠 Внимание: Изхарчили сте {expensePercentage:F2}% от своя {resourceManager.GetString(budget.Category.ToString(), culture)} budget.");
                 }
                 else if (expensePercentage >= 100)
                 {
                     warnings.Add(
-                        $"🚨 Внимание: Надвишили сте бюджета си за {budget.Category} с {expensePercentage - 100:F2}%.");
+                        $"🔴 Опасност: Надвишили сте своя {resourceManager.GetString(budget.Category.ToString(), culture)} бюджет с {expensePercentage - 100:F2}%!");
                 }
             }
 

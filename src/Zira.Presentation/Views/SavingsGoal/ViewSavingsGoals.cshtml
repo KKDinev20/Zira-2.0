@@ -4,6 +4,7 @@
     Layout = "Shared/_SavingsGoalLayout";
 }
 
+
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="container-fluid">
         <div class="row justify-content-center">
@@ -68,6 +69,7 @@
                                                 <div class="progress-bar @progressColorClass"
                                                      role="progressbar"
                                                      style="width: @progress%; transition: width 0.3s ease-in-out;">
+                                                    <span class="sr-only">@progress.ToString("0.0")%</span>
                                                     <span class="innerProgress text-white font-weight-bold">
                                                         @progress.ToString("0.0")% - @completionStatus
                                                     </span>
@@ -143,15 +145,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    document.querySelectorAll('.page-link').forEach(link => {
-        link.addEventListener('click', function(e) {
-            const url = new URL(this.href);
-            const page = url.searchParams.get('page');
-
-            history.pushState(null, '', `?page=${page}`);
-            this.closest('.card').scrollIntoView({ behavior: 'smooth' });
-        });
-    });
-</script>
