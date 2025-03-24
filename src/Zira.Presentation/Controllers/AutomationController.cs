@@ -67,7 +67,7 @@ namespace Zira.Presentation.Controllers
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
-            
+
             var totalPages = (int)Math.Ceiling((double)totalReminders / pageSize);
 
             var viewModel = new PaginatedViewModel<ReminderViewModel>
@@ -107,13 +107,19 @@ namespace Zira.Presentation.Controllers
                 return this.View(model);
             }
 
+
             var user = await this.userManager.GetUserAsync(this.User);
+            var availableCurrencies = await this.context.Currencies
+                .Select(c => c.Code)
+                .ToListAsync();
+            this.ViewBag.Currencies = availableCurrencies;
+            this.ViewBag.DefaultCurrency = user?.PreferredCurrencyCode ?? "BGN";
             if (user == null)
             {
                 this.TempData["ErrorMessage"] = @AccountText.UserNotFound;
                 return this.View(model);
             }
-            
+
             model.Currency = await this.context.Currencies
                 .FirstOrDefaultAsync(c => c.Code == model.CurrencyCode);
 
@@ -165,7 +171,8 @@ namespace Zira.Presentation.Controllers
             var user = await this.userManager.FindByIdAsync(reminder.UserId.ToString());
             if (user != null)
             {
-                var message = $"Известие: {reminder.Title} - {reminder.DueDate:yyyy-MM-dd} със сума ${reminder.Amount}.";
+                var message =
+                    $"Известие: {reminder.Title} - {reminder.DueDate:yyyy-MM-dd} със сума ${reminder.Amount}.";
                 await this.hubContext.Clients.User(user.Id.ToString()).SendAsync("ReceiveNotification", message);
 
                 this.TempData["SuccessMessage"] = @ReminderText.NotificationSuccess;

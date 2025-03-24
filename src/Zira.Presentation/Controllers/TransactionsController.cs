@@ -62,7 +62,6 @@ public class TransactionsController : Controller
     public async Task<IActionResult> AddTransaction(Transaction model)
     {
         TransactionValidator.ValidateTransaction(model, this.ModelState);
-
         if (!this.ModelState.IsValid)
         {
             this.TempData["ErrorMessage"] = @TransactionText.InvalidDetails;
@@ -70,9 +69,15 @@ public class TransactionsController : Controller
         }
 
         var userId = this.User.GetUserId();
+        var user = await this.userManager.GetUserAsync(this.User);
         try
         {
             await this.transactionService.AddTransactionAsync(model, userId);
+            var availableCurrencies = await this.entityContext.Currencies
+                .Select(c => c.Code)
+                .ToListAsync();
+            this.ViewBag.Currencies = availableCurrencies;
+            this.ViewBag.DefaultCurrency = user?.PreferredCurrencyCode ?? "BGN";
             this.TempData["SuccessMessage"] = @TransactionText.TransactionSuccess;
         }
         catch (InvalidOperationException ex)
