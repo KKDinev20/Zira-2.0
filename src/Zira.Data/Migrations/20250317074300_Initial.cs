@@ -20,12 +20,9 @@ namespace Zira.Data.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetRoles", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_AspNetRoles", x => x.Id); });
 
             migrationBuilder.CreateTable(
                 name: "Currencies",
@@ -33,12 +30,9 @@ namespace Zira.Data.Migrations
                 {
                     Code = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Symbol = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Symbol = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Currencies", x => x.Code);
-                });
+                constraints: table => { table.PrimaryKey("PK_Currencies", x => x.Code); });
 
             migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
@@ -48,7 +42,7 @@ namespace Zira.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -84,7 +78,7 @@ namespace Zira.Data.Migrations
                     TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -106,7 +100,7 @@ namespace Zira.Data.Migrations
                     FromCurrencyCode = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ToCurrencyCode = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Rate = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    LastUpdated = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    LastUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -151,7 +145,7 @@ namespace Zira.Data.Migrations
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -169,7 +163,7 @@ namespace Zira.Data.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -372,48 +366,174 @@ namespace Zira.Data.Migrations
                 columns: new[] { "Id", "FromCurrencyCode", "LastUpdated", "Rate", "ToCurrencyCode" },
                 values: new object[,]
                 {
-                    { 1, "BGN", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(420), 0.5539m, "USD" },
-                    { 2, "BGN", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(423), 0.5094m, "EUR" },
-                    { 3, "BGN", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(426), 0.4276m, "GBP" },
-                    { 4, "BGN", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(428), 74.76m, "JPY" },
-                    { 5, "BGN", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(430), 0.7456m, "CAD" },
-                    { 6, "BGN", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(433), 0.8284m, "AUD" },
-                    { 7, "USD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(551), 1.805380032496840584943130529m, "BGN" },
-                    { 8, "EUR", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(555), 1.9630938358853553199842952493m, "BGN" },
-                    { 9, "GBP", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(557), 2.3386342376052385406922357343m, "BGN" },
-                    { 10, "JPY", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(560), 0.01337613697164258962011771m, "BGN" },
-                    { 11, "CAD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(562), 1.3412017167381974248927038627m, "BGN" },
-                    { 12, "AUD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(566), 1.2071463061323032351521004346m, "BGN" },
-                    { 13, "USD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(973), 0.9196605885538905939700306915m, "EUR" },
-                    { 14, "EUR", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(983), 1.0873576756968983117393011385m, "USD" },
-                    { 15, "USD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(990), 0.7719805018956490341216826142m, "GBP" },
-                    { 16, "GBP", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(995), 1.2953695042095416276894293732m, "USD" },
-                    { 17, "USD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1002), 134.97021122946380213034843835m, "JPY" },
-                    { 18, "JPY", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1008), 0.0074090422685928303905831996m, "USD" },
-                    { 19, "USD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1015), 1.3460913522296443401335981224m, "CAD" },
-                    { 20, "CAD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1019), 0.7428916309012875536480686695m, "USD" },
-                    { 21, "USD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1026), 1.4955768189203827405668893302m, "AUD" },
-                    { 22, "AUD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1032), 0.6686383389666827619507484307m, "USD" },
-                    { 23, "EUR", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1040), 0.8394189242245779348252846486m, "GBP" },
-                    { 24, "GBP", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1044), 1.1913002806361085126286248831m, "EUR" },
-                    { 25, "EUR", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1051), 146.76089517078916372202591284m, "JPY" },
-                    { 26, "JPY", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1055), 0.0068138041733547351524879615m, "EUR" },
-                    { 27, "EUR", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1061), 1.4636827640361209265802905379m, "CAD" },
-                    { 28, "CAD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1065), 0.6832081545064377682403433476m, "EUR" },
-                    { 29, "EUR", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1072), 1.6262269336474283470749901845m, "AUD" },
-                    { 30, "AUD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1088), 0.6149203283437952679864799614m, "EUR" },
-                    { 31, "GBP", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1097), 174.8362956033676333021515435m, "JPY" },
-                    { 32, "JPY", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1101), 0.0057196361690743713215623328m, "GBP" },
-                    { 33, "GBP", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1107), 1.7436856875584658559401309635m, "CAD" },
-                    { 34, "CAD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1111), 0.5734978540772532188841201717m, "GBP" },
-                    { 35, "GBP", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1117), 1.9373246024321796071094480823m, "AUD" },
-                    { 36, "AUD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1120), 0.5161757605021728633510381458m, "GBP" },
-                    { 37, "JPY", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1128), 0.0099732477260567148207597646m, "CAD" },
-                    { 38, "CAD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1132), 100.26824034334763948497854057m, "JPY" },
-                    { 39, "JPY", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1141), 0.011080791867308721241305511m, "AUD" },
-                    { 40, "AUD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1145), 90.24625784645098985997102823m, "JPY" },
-                    { 41, "CAD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1154), 1.1110515021459227467811158798m, "AUD" },
-                    { 42, "AUD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1158), 0.900048285852245292129406084m, "CAD" }
+                    {
+                        1, "BGN", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(420), 0.5539m,
+                        "USD"
+                    },
+                    {
+                        2, "BGN", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(423), 0.5094m,
+                        "EUR"
+                    },
+                    {
+                        3, "BGN", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(426), 0.4276m,
+                        "GBP"
+                    },
+                    {
+                        4, "BGN", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(428), 74.76m,
+                        "JPY"
+                    },
+                    {
+                        5, "BGN", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(430), 0.7456m,
+                        "CAD"
+                    },
+                    {
+                        6, "BGN", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(433), 0.8284m,
+                        "AUD"
+                    },
+                    {
+                        7, "USD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(551),
+                        1.805380032496840584943130529m, "BGN"
+                    },
+                    {
+                        8, "EUR", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(555),
+                        1.9630938358853553199842952493m, "BGN"
+                    },
+                    {
+                        9, "GBP", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(557),
+                        2.3386342376052385406922357343m, "BGN"
+                    },
+                    {
+                        10, "JPY", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(560),
+                        0.01337613697164258962011771m, "BGN"
+                    },
+                    {
+                        11, "CAD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(562),
+                        1.3412017167381974248927038627m, "BGN"
+                    },
+                    {
+                        12, "AUD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(566),
+                        1.2071463061323032351521004346m, "BGN"
+                    },
+                    {
+                        13, "USD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(973),
+                        0.9196605885538905939700306915m, "EUR"
+                    },
+                    {
+                        14, "EUR", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(983),
+                        1.0873576756968983117393011385m, "USD"
+                    },
+                    {
+                        15, "USD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(990),
+                        0.7719805018956490341216826142m, "GBP"
+                    },
+                    {
+                        16, "GBP", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(995),
+                        1.2953695042095416276894293732m, "USD"
+                    },
+                    {
+                        17, "USD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1002),
+                        134.97021122946380213034843835m, "JPY"
+                    },
+                    {
+                        18, "JPY", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1008),
+                        0.0074090422685928303905831996m, "USD"
+                    },
+                    {
+                        19, "USD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1015),
+                        1.3460913522296443401335981224m, "CAD"
+                    },
+                    {
+                        20, "CAD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1019),
+                        0.7428916309012875536480686695m, "USD"
+                    },
+                    {
+                        21, "USD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1026),
+                        1.4955768189203827405668893302m, "AUD"
+                    },
+                    {
+                        22, "AUD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1032),
+                        0.6686383389666827619507484307m, "USD"
+                    },
+                    {
+                        23, "EUR", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1040),
+                        0.8394189242245779348252846486m, "GBP"
+                    },
+                    {
+                        24, "GBP", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1044),
+                        1.1913002806361085126286248831m, "EUR"
+                    },
+                    {
+                        25, "EUR", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1051),
+                        146.76089517078916372202591284m, "JPY"
+                    },
+                    {
+                        26, "JPY", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1055),
+                        0.0068138041733547351524879615m, "EUR"
+                    },
+                    {
+                        27, "EUR", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1061),
+                        1.4636827640361209265802905379m, "CAD"
+                    },
+                    {
+                        28, "CAD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1065),
+                        0.6832081545064377682403433476m, "EUR"
+                    },
+                    {
+                        29, "EUR", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1072),
+                        1.6262269336474283470749901845m, "AUD"
+                    },
+                    {
+                        30, "AUD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1088),
+                        0.6149203283437952679864799614m, "EUR"
+                    },
+                    {
+                        31, "GBP", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1097),
+                        174.8362956033676333021515435m, "JPY"
+                    },
+                    {
+                        32, "JPY", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1101),
+                        0.0057196361690743713215623328m, "GBP"
+                    },
+                    {
+                        33, "GBP", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1107),
+                        1.7436856875584658559401309635m, "CAD"
+                    },
+                    {
+                        34, "CAD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1111),
+                        0.5734978540772532188841201717m, "GBP"
+                    },
+                    {
+                        35, "GBP", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1117),
+                        1.9373246024321796071094480823m, "AUD"
+                    },
+                    {
+                        36, "AUD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1120),
+                        0.5161757605021728633510381458m, "GBP"
+                    },
+                    {
+                        37, "JPY", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1128),
+                        0.0099732477260567148207597646m, "CAD"
+                    },
+                    {
+                        38, "CAD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1132),
+                        100.26824034334763948497854057m, "JPY"
+                    },
+                    {
+                        39, "JPY", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1141),
+                        0.011080791867308721241305511m, "AUD"
+                    },
+                    {
+                        40, "AUD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1145),
+                        90.24625784645098985997102823m, "JPY"
+                    },
+                    {
+                        41, "CAD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1154),
+                        1.1110515021459227467811158798m, "AUD"
+                    },
+                    {
+                        42, "AUD", new DateTime(2025, 3, 17, 7, 42, 59, 774, DateTimeKind.Utc).AddTicks(1158),
+                        0.900048285852245292129406084m, "CAD"
+                    }
                 });
 
             migrationBuilder.CreateIndex(
@@ -519,47 +639,33 @@ namespace Zira.Data.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "AspNetRoleClaims");
+            migrationBuilder.DropTable(name: "AspNetRoleClaims");
 
-            migrationBuilder.DropTable(
-                name: "AspNetUserClaims");
+            migrationBuilder.DropTable(name: "AspNetUserClaims");
 
-            migrationBuilder.DropTable(
-                name: "AspNetUserLogins");
+            migrationBuilder.DropTable(name: "AspNetUserLogins");
 
-            migrationBuilder.DropTable(
-                name: "AspNetUserRoles");
+            migrationBuilder.DropTable(name: "AspNetUserRoles");
 
-            migrationBuilder.DropTable(
-                name: "AspNetUserTokens");
+            migrationBuilder.DropTable(name: "AspNetUserTokens");
 
-            migrationBuilder.DropTable(
-                name: "Budgets");
+            migrationBuilder.DropTable(name: "Budgets");
 
-            migrationBuilder.DropTable(
-                name: "ExchangeRates");
+            migrationBuilder.DropTable(name: "ExchangeRates");
 
-            migrationBuilder.DropTable(
-                name: "Reminders");
+            migrationBuilder.DropTable(name: "Reminders");
 
-            migrationBuilder.DropTable(
-                name: "ReminderSettings");
+            migrationBuilder.DropTable(name: "ReminderSettings");
 
-            migrationBuilder.DropTable(
-                name: "SavingsGoals");
+            migrationBuilder.DropTable(name: "SavingsGoals");
 
-            migrationBuilder.DropTable(
-                name: "Transactions");
+            migrationBuilder.DropTable(name: "Transactions");
 
-            migrationBuilder.DropTable(
-                name: "AspNetRoles");
+            migrationBuilder.DropTable(name: "AspNetRoles");
 
-            migrationBuilder.DropTable(
-                name: "AspNetUsers");
+            migrationBuilder.DropTable(name: "AspNetUsers");
 
-            migrationBuilder.DropTable(
-                name: "Currencies");
+            migrationBuilder.DropTable(name: "Currencies");
         }
     }
 }

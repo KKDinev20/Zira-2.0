@@ -17,8 +17,8 @@
             <i class="bx bx-pie-chart-alt text-primary"></i> @AnalyticsText.FinancialOverview
         </h4>
         <div class="d-flex gap-2">
-            <button type="button" class="btn btn-md btn-primary" data-test="export-button">
-                <i class="bx bx-download"></i> Изтегли
+            <button type="button" class="btn btn-md btn-primary" onclick="exportFinancialOverview()">
+                <i class="bx bx-download"></i> Изтегли PDF
             </button>
         </div>
     </div>
@@ -399,4 +399,8 @@
         };
         new ApexCharts(document.querySelector("#budgetComparisonChart"), budgetComparisonOptions).render();
     });
+
+    function exportFinancialOverview() {
+        window.location.href = "/export-financial-overview";
+    }
 </script>

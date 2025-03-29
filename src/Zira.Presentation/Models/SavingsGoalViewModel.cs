@@ -8,7 +8,7 @@ namespace Zira.Presentation.Models
     {
         public Guid Id { get; set; }
 
-        [Required(ErrorMessage = "Името на целта е необходимо.")] 
+        [Required(ErrorMessage = "Името на целта е необходимо.")]
         public string Name { get; set; }
 
         [Required]
@@ -21,9 +21,8 @@ namespace Zira.Presentation.Models
         public DateTime? TargetDate { get; set; }
 
         public string? Remark { get; set; }
-        
+
         public Currency? Currency { get; set; }
         public string CurrencyCode { get; set; }
-        
     }
 }

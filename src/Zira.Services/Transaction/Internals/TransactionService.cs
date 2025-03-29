@@ -171,14 +171,14 @@ public class TransactionService : ITransactionService
         {
             throw new InvalidOperationException("User not found!");
         }
-        
+
         existingTransaction.Source = transactionModel.Source;
         existingTransaction.Category = transactionModel.Category;
         existingTransaction.Amount = transactionModel.Amount;
         existingTransaction.Remark = transactionModel.Remark;
         existingTransaction.Reference = transactionModel.Reference;
         existingTransaction.Date = transactionModel.Date;
-        
+
         await this.context.SaveChangesAsync();
     }
 

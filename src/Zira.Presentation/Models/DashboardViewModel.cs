@@ -24,6 +24,6 @@ public class DashboardViewModel
     public string SelectedType { get; set; }
 
     public string PreferredCurrencySymbol { get; set; } = "лв.";
-    
+
     public int ReminderCount { get; set; }
 }

@@ -4,7 +4,7 @@ using Zira.Data.Models;
 
 namespace Zira.Presentation.Validations;
 
-public static class TransactionValidator
+public static class TransactionValidations
 {
     public static void ValidateTransaction(Transaction transaction, ModelStateDictionary modelState)
     {

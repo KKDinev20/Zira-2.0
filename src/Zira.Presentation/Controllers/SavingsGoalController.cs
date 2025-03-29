@@ -75,8 +75,6 @@ namespace Zira.Presentation.Controllers
         [HttpPost("/create-savings-goal/")]
         public async Task<IActionResult> CreateSavingsGoal(SavingsGoalViewModel model)
         {
-            await this.SetGlobalUserInfoAsync(this.userManager, this.context);
-
             var user = await this.userManager.GetUserAsync(this.User);
             if (user == null)
             {
@@ -85,11 +83,6 @@ namespace Zira.Presentation.Controllers
 
             if (!this.ModelState.IsValid)
             {
-                var availableCurrencies = await this.context.Currencies
-                    .Select(c => c.Code)
-                    .ToListAsync();
-                this.ViewBag.Currencies = availableCurrencies;
-                this.ViewBag.DefaultCurrency = user?.PreferredCurrencyCode ?? "BGN";
                 return this.View(model);
             }
 
@@ -166,7 +159,7 @@ namespace Zira.Presentation.Controllers
 
             if (!this.ModelState.IsValid)
             {
-                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                foreach (var error in this.ModelState.Values.SelectMany(v => v.Errors))
                 {
                     Console.WriteLine(error.ErrorMessage);
                 }
@@ -179,7 +172,6 @@ namespace Zira.Presentation.Controllers
 
                 return this.View(model);
             }
-
 
             model.CurrencyCode = model.CurrencyCode ?? user.PreferredCurrencyCode ?? "BGN";
 

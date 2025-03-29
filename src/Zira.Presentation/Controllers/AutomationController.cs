@@ -62,7 +62,7 @@ namespace Zira.Presentation.Controllers
                         Amount = r.Amount,
                         DueDate = r.DueDate,
                         Currency = r.Currency,
-                        CurrencyCode = r.CurrencyCode
+                        CurrencyCode = r.CurrencyCode,
                     })
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
@@ -107,13 +107,7 @@ namespace Zira.Presentation.Controllers
                 return this.View(model);
             }
 
-
             var user = await this.userManager.GetUserAsync(this.User);
-            var availableCurrencies = await this.context.Currencies
-                .Select(c => c.Code)
-                .ToListAsync();
-            this.ViewBag.Currencies = availableCurrencies;
-            this.ViewBag.DefaultCurrency = user?.PreferredCurrencyCode ?? "BGN";
             if (user == null)
             {
                 this.TempData["ErrorMessage"] = @AccountText.UserNotFound;

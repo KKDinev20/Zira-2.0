@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Zira.Common;
 using Zira.Data;
-using Zira.Data.Enums;
 using Zira.Data.Models;
 using Zira.Presentation.Extensions;
 using Zira.Presentation.Models;
@@ -127,7 +126,9 @@ public class AccountController : Controller
 
             if (!allowedExtensions.Contains(fileExtension))
             {
-                this.ModelState.AddModelError("AvatarFile", "Невалиден файлов тип. Моля използвайте от тип: JPG, PNG, GIF.");
+                this.ModelState.AddModelError(
+                    "AvatarFile",
+                    "Невалиден файлов тип. Моля използвайте от тип: JPG, PNG, GIF.");
                 return this.View("Profile");
             }
 
@@ -236,7 +237,6 @@ public class AccountController : Controller
                     applicationUser.PreferredCurrency = defaultCurrency;
                 }
 
-
                 this.context.Users.Update(applicationUser);
                 await this.context.SaveChangesAsync();
 
@@ -312,8 +312,7 @@ public class AccountController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> UpdateNotificationPreferences(
         bool enableBillReminders,
-        bool enableBudgetAlerts,
-        NotificationType preferredNotification)
+        bool enableBudgetAlerts)
     {
         var user = await this.userManager.GetUserAsync(this.User);
         if (user == null)
@@ -321,7 +320,7 @@ public class AccountController : Controller
             return this.RedirectToAction("Login", "Authentication");
         }
 
-        await this.UpdateReminderSettings(user.Id, enableBillReminders, enableBudgetAlerts, preferredNotification);
+        await this.UpdateReminderSettings(user.Id, enableBillReminders, enableBudgetAlerts);
 
         this.TempData["SuccessMessage"] = @AccountText.NotificationsSuccess;
         return this.RedirectToAction("NotificationPreferences");
@@ -330,8 +329,7 @@ public class AccountController : Controller
     private async Task UpdateReminderSettings(
         Guid userId,
         bool billReminders,
-        bool budgetAlerts,
-        NotificationType notificationType)
+        bool budgetAlerts)
     {
         var settings = await this.context.ReminderSettings.FirstOrDefaultAsync(x => x.UserId == userId);
 

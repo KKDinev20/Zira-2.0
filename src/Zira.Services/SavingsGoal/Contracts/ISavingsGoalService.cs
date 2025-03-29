@@ -20,5 +20,4 @@ public interface ISavingsGoalService
     Task<List<Data.Models.SavingsGoal>> SetAsideForSavingsGoalsAsync(Data.Models.Transaction transaction);
 
     Task<List<Data.Models.SavingsGoal>> GetSavingsGoalsAsync(Guid userId, int page, int pageSize);
-
 }
