@@ -217,7 +217,7 @@ namespace Zira.Services.Budget.Internals
                 else if (expensePercentage >= 100)
                 {
                     warnings.Add(
-                        $"🔴 Опасност: Надвишили сте своя {resourceManager.GetString(budget.Category.ToString(), culture)} бюджет с {expensePercentage - 100:F2}%!");
+                        $"🔴 Внимание: Надвишили сте своя {resourceManager.GetString(budget.Category.ToString(), culture)} бюджет с {expensePercentage - 100:F2}%!");
                 }
             }
 

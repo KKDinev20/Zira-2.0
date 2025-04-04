@@ -100,6 +100,113 @@
         <_ContentIncludedByDefault Remove="Views\Incomes\EditIncome.cshtml" />
         <_ContentIncludedByDefault Remove="Views\Incomes\IncomeList.cshtml" />
         <_ContentIncludedByDefault Remove="Views\Incomes\Shared\_IncomeLayout.cshtml" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\aos\aos.cjs.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\aos\aos.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\aos\aos.esm.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\aos\aos.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\aos\aos.js.map" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap-icons\bootstrap-icons.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap-icons\bootstrap-icons.json" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap-icons\bootstrap-icons.min.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap-icons\bootstrap-icons.scss" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap-icons\fonts\bootstrap-icons.woff" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap-icons\fonts\bootstrap-icons.woff2" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\css\bootstrap-grid.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\css\bootstrap-grid.css.map" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\css\bootstrap-grid.min.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\css\bootstrap-grid.min.css.map" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\css\bootstrap-grid.rtl.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\css\bootstrap-grid.rtl.css.map" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\css\bootstrap-grid.rtl.min.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\css\bootstrap-grid.rtl.min.css.map" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\css\bootstrap-reboot.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\css\bootstrap-reboot.css.map" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\css\bootstrap-reboot.min.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\css\bootstrap-reboot.min.css.map" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\css\bootstrap-reboot.rtl.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\css\bootstrap-reboot.rtl.css.map" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\css\bootstrap-reboot.rtl.min.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\css\bootstrap-reboot.rtl.min.css.map" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\css\bootstrap-utilities.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\css\bootstrap-utilities.css.map" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\css\bootstrap-utilities.min.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\css\bootstrap-utilities.min.css.map" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\css\bootstrap-utilities.rtl.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\css\bootstrap-utilities.rtl.css.map" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\css\bootstrap-utilities.rtl.min.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\css\bootstrap-utilities.rtl.min.css.map" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\css\bootstrap.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\css\bootstrap.css.map" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\css\bootstrap.min.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\css\bootstrap.min.css.map" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\css\bootstrap.rtl.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\css\bootstrap.rtl.css.map" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\css\bootstrap.rtl.min.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\css\bootstrap.rtl.min.css.map" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\css\prb.txt" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\js\bootstrap.bundle.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\js\bootstrap.bundle.js.map" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\js\bootstrap.bundle.min.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\js\bootstrap.bundle.min.js.map" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\js\bootstrap.esm.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\js\bootstrap.esm.js.map" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\js\bootstrap.esm.min.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\js\bootstrap.esm.min.js.map" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\js\bootstrap.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\js\bootstrap.js.map" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\js\bootstrap.min.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\bootstrap\js\bootstrap.min.js.map" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\glightbox\css\glightbox.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\glightbox\css\glightbox.min.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\glightbox\js\glightbox.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\glightbox\js\glightbox.min.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\php-email-form\validate.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\purecounter\purecounter_vanilla.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\purecounter\purecounter_vanilla.js.map" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\swiper\swiper-bundle.min.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\swiper\swiper-bundle.min.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\vendor\swiper\swiper-bundle.min.js.map" />
+        <_ContentIncludedByDefault Remove="wwwroot\dashboard\assets\js\config.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\dashboard\assets\js\dashboards-analytics.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\dashboard\assets\js\extended-ui-perfect-scrollbar.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\dashboard\assets\js\form-basic-inputs.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\dashboard\assets\js\main.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\dashboard\assets\js\pages-account-settings-account.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\dashboard\assets\js\ui-modals.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\dashboard\assets\js\ui-popover.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\dashboard\assets\js\ui-toasts.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\dashboard\assets\img\icons\brands\asana.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\dashboard\assets\img\icons\brands\behance.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\dashboard\assets\img\icons\brands\dribbble.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\dashboard\assets\img\icons\brands\facebook.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\dashboard\assets\img\icons\brands\github.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\dashboard\assets\img\icons\brands\google.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\dashboard\assets\img\icons\brands\instagram.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\dashboard\assets\img\icons\brands\mailchimp.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\dashboard\assets\img\icons\brands\slack.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\dashboard\assets\img\icons\brands\twitter.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\dashboard\assets\img\backgrounds\18.jpg" />
+        <_ContentIncludedByDefault Remove="wwwroot\dashboard\fonts\boxicons.scss" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\img\about-2.webp" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\img\about-5.webp" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\img\apple-touch-icon.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\img\avatar-1.webp" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\img\avatar-2.webp" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\img\avatar-3.webp" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\img\avatar-4.webp" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\img\avatar-5.webp" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\img\favicon.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\img\features-illustration-1.webp" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\img\features-illustration-2.webp" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\img\features-illustration-3.webp" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\img\illustration-1.webp" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\img\logo.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\img\phone-app-screen.webp" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\img\services.jpg" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\img\testimonials\testimonials-1.jpg" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\img\testimonials\testimonials-2.jpg" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\img\testimonials\testimonials-3.jpg" />
+        <_ContentIncludedByDefault Remove="wwwroot\landing page\img\testimonials\testimonials-4.jpg" />
     </ItemGroup>
 
 
@@ -112,7 +219,14 @@
 
 
     <ItemGroup>
+      <Folder Include="wwwroot\dashboard\assets\img\avatars\" />
       <Folder Include="wwwroot\fonts\" />
+    </ItemGroup>
+
+
+
+    <ItemGroup>
+      <Content Remove="wwwroot\dashboard\assets\img\avatars\efe6981a-62cd-4306-b425-a1742e8b3cdf.jpg" />
     </ItemGroup>
 
 </Project>

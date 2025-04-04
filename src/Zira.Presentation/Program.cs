@@ -3,20 +3,14 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using PdfSharp.Fonts;
 using Zira.Data;
 using Zira.Presentation;
-using Zira.Presentation.Utilities;
 using Zira.Services;
 using Zira.Services.Identity.Constants;
 using Zira.Services.Reminder.Internals;
 using Zira.Services.Tests.PerformanceTests;
 
 var builder = WebApplication.CreateBuilder(args);
-
-System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
-GlobalFontSettings.FontResolver = new CustomFontResolver();
-
 builder.Services
     .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(
