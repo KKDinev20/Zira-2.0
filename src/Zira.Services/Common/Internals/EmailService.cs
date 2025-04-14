@@ -12,18 +12,18 @@ namespace Zira.Services.Common.Internals
     {
         private readonly string? apiKey;
         private readonly bool emailEnabled;
-    
+
         public EmailService(IConfiguration configuration)
         {
             this.apiKey = configuration.GetValue<string>("SendGrid:ApiKey");
             this.emailEnabled = configuration.GetValue<bool>("EnableEmailSending");
-    
+
             if (string.IsNullOrEmpty(this.apiKey) && emailEnabled)
             {
                 throw new Exception("SendGrid API key is not configured.");
             }
         }
-    
+
         public async Task SendEmailAsync(EmailModel emailModel)
         {
             if (!emailEnabled)
@@ -31,19 +31,19 @@ namespace Zira.Services.Common.Internals
                 Console.WriteLine("Email sending disabled (dev/offline mode).");
                 return;
             }
-    
+
             try
             {
                 var client = new SendGridClient(this.apiKey);
                 var from = new EmailAddress("kkdinev20@codingburgas.bg");
                 var to = new EmailAddress(emailModel.ToEmail);
                 var msg = MailHelper.CreateSingleEmail(from, to, emailModel.Subject, emailModel.Body, emailModel.Body);
-    
+
                 var response = await client.SendEmailAsync(msg);
-    
+
                 var responseBody = await response.Body.ReadAsStringAsync();
                 Console.WriteLine($@"SendGrid Response: {response.StatusCode}, {responseBody}");
-    
+
                 if (response.StatusCode != System.Net.HttpStatusCode.Accepted)
                 {
                     throw new Exception($"Error sending email. Status Code: {response.StatusCode}");
