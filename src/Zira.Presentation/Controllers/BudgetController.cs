@@ -39,6 +39,7 @@ namespace Zira.Presentation.Controllers
             this.hubContext = hubContext;
         }
 
+        // Set available currencies and default currency in the ViewBags
         [HttpGet("/set-budget/")]
         public async Task<IActionResult> SetBudget()
         {
@@ -55,6 +56,8 @@ namespace Zira.Presentation.Controllers
             return this.View(new BudgetViewModel());
         }
 
+        // Set available currencies, default currency and the categories in the ViewBags
+        // Create a BudgetModel, check if it already exists and add it
         [HttpPost("/set-budget/")]
         public async Task<IActionResult> SetBudget(BudgetViewModel viewModel)
         {
@@ -95,6 +98,7 @@ namespace Zira.Presentation.Controllers
             return this.RedirectToAction("ViewBudgets");
         }
 
+        // Get budgets, total budgets and total pages, and get the warnings
         [HttpGet("/view-budgets/")]
         public async Task<IActionResult> ViewBudgets(int page = 1, int pageSize = 5)
         {
@@ -141,6 +145,7 @@ namespace Zira.Presentation.Controllers
             return this.View(viewModel);
         }
 
+        // Create a new budget from the viewModel and update it 
         [HttpPost("/edit-budget/{id}")]
         public async Task<IActionResult> EditBudget(Guid id, BudgetViewModel viewModel)
         {

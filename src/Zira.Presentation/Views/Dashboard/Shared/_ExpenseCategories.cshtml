@@ -23,6 +23,7 @@
         <ul class="p-0 m-0">
             @foreach (var summary in topCategories)
             {
+                // Selection icons for different categories
                 string iconClass = summary.Category switch
                 {
                     Categories.Food => "bx bx-food-menu",
@@ -56,6 +57,7 @@
 
 
 <script>
+    // Showing the top 5 expense categories
     document.addEventListener('DOMContentLoaded', function () {
         const chartEl = document.querySelector('#topExpenseCategoriesChart');
         const chartOptions = {
@@ -64,6 +66,7 @@
                 height: 240,
                 width: 240
             },
+            // Raw HTML of the serialized series/labels
             series: @Html.Raw(Json.Serialize(series)),
             labels: @Html.Raw(Json.Serialize(labels)),
             colors: [config.colors.primary, config.colors.secondary, config.colors.info, config.colors.success, config.colors.warning],
@@ -116,4 +119,5 @@
             expenseChart.render();
         }
     });
+
 </script>

@@ -105,6 +105,7 @@ public class TransactionService : ITransactionService
         return transaction;
     }
 
+    // Creating main params for transactionModel and descreasing from a budget if they match by category and month
     public async Task AddTransactionAsync(Data.Models.Transaction transactionModel, Guid userId)
     {
         transactionModel.Id = Guid.NewGuid();
@@ -192,6 +193,8 @@ public class TransactionService : ITransactionService
         }
     }
 
+    
+    // Same as add
     public async Task QuickAddTransactionAsync(Data.Models.Transaction transaction, Guid userId)
     {
         var user = await this.userManager.FindByIdAsync(userId.ToString());
@@ -325,6 +328,7 @@ public class TransactionService : ITransactionService
         return transactions;
     }
 
+    // Get transaction for the year and for each income/expense fill it by the month index and month amount
     public async Task<(List<decimal> Incomes, List<decimal> Expenses)> GetMonthlyIncomeAndExpensesAsync(
         Guid userId,
         int year)
@@ -358,6 +362,7 @@ public class TransactionService : ITransactionService
         return (incomes, expenses);
     }
 
+    // Select user transactions by month and the networth
     public async Task<List<(DateTime Month, decimal NetWorth)>> GetNetWorthTrendAsync(Guid userId)
     {
         var transactions = await this.GetUserTransactionsAsync(userId);
@@ -372,6 +377,8 @@ public class TransactionService : ITransactionService
             .ToList();
     }
 
+    // Get current day and the start month as well as create totalsm and labelss
+    // Get the monthly transactions for the past 6 months and its total(convert the expenses before hand to the user's currency)
     public async Task<(List<decimal> MonthlyTotals, List<string> MonthLabels)> GetLastSixMonthsDataAsync(
         Guid userId,
         TransactionType type)
@@ -413,7 +420,9 @@ public class TransactionService : ITransactionService
 
         return (totals, labels);
     }
-
+    
+    // Get today, difference (7 + (today.DayOfWeek - DayOfWeek.Monday)) % 7, monday(-1 * diff).Date and sunday
+    // Get for each transaction type its total
     public async Task<decimal> GetCurrentWeekTotalAsync(Guid userId, TransactionType type)
     {
         var today = DateTime.UtcNow;
@@ -446,6 +455,7 @@ public class TransactionService : ITransactionService
         return total;
     }
 
+    // Same from analytics service
     public async Task<List<CategoryExpenseSummary>> GetTopExpenseCategoriesAsync(Guid userId, int top = 5)
     {
         var user = await this.userManager.FindByIdAsync(userId.ToString());
@@ -519,19 +529,7 @@ public class TransactionService : ITransactionService
         return expenses;
     }
 
-    private async Task<decimal> GetCurrentMonthExpenseByCategoryAsync(Guid userId, Categories category)
-    {
-        var now = DateTime.UtcNow;
-        return await this.context.Transactions
-            .Where(
-                t => t.UserId == userId
-                     && t.Type == TransactionType.Expense
-                     && t.Category == category
-                     && t.Date.Year == now.Year
-                     && t.Date.Month == now.Month)
-            .SumAsync(t => t.Amount);
-    }
-
+    // Get expenses and convert them for each to the preferred currency of the user
     private async Task<decimal> ConvertExpenseByCategoryAsync(Guid userId, Categories category)
     {
         var now = DateTime.UtcNow;

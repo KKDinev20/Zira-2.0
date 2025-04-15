@@ -60,6 +60,7 @@ namespace Zira.Presentation.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
+            // Find user and check application user for valid data then Sign in successfully; If AU data null send to CompleteProfile
             if (this.IsUserAuthenticated())
             {
                 return this.RedirectToDefault();
@@ -112,6 +113,7 @@ namespace Zira.Presentation.Controllers
             return this.View(model);
         }
 
+        // Create new application user and create a user with userManager
         [HttpPost("/register")]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
@@ -164,6 +166,7 @@ namespace Zira.Presentation.Controllers
             return this.View(model);
         }
 
+        // Set tokens and url for the reset password action
         [HttpPost("/forgot-password")]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
@@ -229,6 +232,7 @@ namespace Zira.Presentation.Controllers
             return this.View(model);
         }
 
+        // Find user and reset its password using userManage(user, token, password of the model)
         [HttpPost("/reset-password")]
         [AllowAnonymous]
         public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
@@ -271,6 +275,7 @@ namespace Zira.Presentation.Controllers
             return this.RedirectToAction(nameof(this.Login));
         }
 
+        // Use ClaimsFactory to make a user and set CookieAuthenticationDefaults.AuthenticationScheme
         private async Task SignInAsync(
             ApplicationUser user,
             bool rememberMe)

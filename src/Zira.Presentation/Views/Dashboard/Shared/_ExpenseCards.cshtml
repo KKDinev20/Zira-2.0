@@ -60,6 +60,7 @@
     document.addEventListener('DOMContentLoaded', function () {
     const profileReportChartEl = document.querySelector('#semiannualReport');
     
+    // Raw HTML of the serialized Model's monthly labels and totals
     const monthLabels = @Html.Raw(Json.Serialize(Model.MonthLabels));
     const monthlyTotals = @Html.Raw(Json.Serialize(Model.MonthlyTotals));
 
@@ -91,10 +92,12 @@
         series: [
             {
                 name: 'Income',
+                // Monthly totals
                 data: monthlyTotals
             }
         ],
         xaxis: {
+            // Monthly labels
             categories: monthLabels,
             type: 'category',
             labels: { format: 'MMM' }

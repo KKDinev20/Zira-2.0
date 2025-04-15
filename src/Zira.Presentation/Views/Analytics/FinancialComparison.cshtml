@@ -88,14 +88,17 @@
 
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
+    // Expenses by category chart
     document.addEventListener('DOMContentLoaded', function() {
         var categoryChartOptions = {
             chart: {
                 type: "donut",
                 height: 400
             },
+            //Select labels by taking/serializing the model of the category comparison and selection the categories enumerator.
             labels: @Json.Serialize(Model.CategoryComparison.Select(x => 
             ((Categories)Enum.Parse(typeof(Categories), x.Category)).GetLocalizedExpenseCategory())),
+            // Select data by taking/serializing the model of the category comparison and selection the categories enumerator.
             series: @Json.Serialize(Model.CategoryComparison.Select(x => x.TotalAmount)),
             colors: [
                 "#ff6384", "#36a2eb", "#ffce56", "#4bc0c0",
@@ -103,15 +106,18 @@
                 "#f39c12", "#7f8c8d", "#4169e1", "#32cd32",
                 "#da70d6", "#228b22"
             ],
+            // Position
             legend: {
                 position: "bottom"
             },
+            // Format Data
             dataLabels: {
                 enabled: true,
                 formatter: function (val) {
                     return parseInt(val) + "%";
                 }
             },
+            // Format Y-axis to show the valure and the preferred Currency.
             tooltip: {
                 y: {
                     formatter: function(value) {

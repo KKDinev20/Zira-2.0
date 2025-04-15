@@ -141,10 +141,13 @@
 </div>
 
 <script>
+    
+    // Check which type is selected by the elementId.checked
     function toggleTransactionFields() {
         let isIncome = document.getElementById("type-income").checked;
         let isExpense = document.getElementById("type-expense").checked;
 
+        // show the fields. toggle("d-none", !isType)
         document.getElementById("income-fields").classList.toggle("d-none", !isIncome);
         document.getElementById("expense-fields").classList.toggle("d-none", !isExpense);
     }
@@ -156,4 +159,5 @@
             defaultDate: new Date(),
         });
     });
+
 </script>

@@ -48,6 +48,10 @@ public class AnalyticsController : Controller
         this.budgetService = budgetService;
     }
 
+    // Call the top expenses, the savingTips, the monthly expenses = new ExpenseAnalyticsVM
+    // Get the user transactions, sum of incomes/expenses, the saving Goals, the totalSavings, networth and budgets
+    // Budget Comparion use the budget amount and category and calculate the actual amount - the category of both match
+    // Savings progress has the name, target/current amount, and progress of each SG ( current / target * 100)
     [HttpGet("/financial-overview")]
     public async Task<IActionResult> FinancialOverview()
     {
@@ -112,6 +116,9 @@ public class AnalyticsController : Controller
         return this.View(viewModel);
     }
 
+
+    // Select monthly & category comparison and calculate the monthly savings rate
+    // Combine them all into the ExpenseComparison model
     [HttpGet("/expense-comparison")]
     public async Task<IActionResult> FinancialComparison()
     {

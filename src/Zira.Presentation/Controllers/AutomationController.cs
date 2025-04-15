@@ -12,7 +12,6 @@ using Zira.Data.Enums;
 using Zira.Data.Models;
 using Zira.Presentation.Extensions;
 using Zira.Presentation.Models;
-using Zira.Services.Currency.Contracts;
 using Zira.Services.Identity.Constants;
 using Zira.Services.Identity.Extensions;
 using Zira.Services.Reminder.Internals;
@@ -25,20 +24,18 @@ namespace Zira.Presentation.Controllers
         private readonly EntityContext context;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IHubContext<NotificationHub> hubContext;
-        private readonly ICurrencyConverter currencyConverter;
 
         public AutomationController(
             EntityContext context,
             UserManager<ApplicationUser> userManager,
-            IHubContext<NotificationHub> hubContext,
-            ICurrencyConverter currencyConverter)
+            IHubContext<NotificationHub> hubContext)
         {
             this.context = context;
             this.userManager = userManager;
             this.hubContext = hubContext;
-            this.currencyConverter = currencyConverter;
         }
 
+        // Get the total reminders, the reminders for the view, calculate the total pages in order to map them all in PaginatedViewModel<ReminderViewModel>
         [HttpGet("/bill-reminders")]
         public async Task<IActionResult> BillReminders(int page = 1, int pageSize = 5)
         {
@@ -97,6 +94,8 @@ namespace Zira.Presentation.Controllers
             return this.View(new ReminderViewModel());
         }
 
+        // Create reminder and add it in the model
+        // Set the title, remark, amount, duedate in the TempData
         [HttpPost("/create-reminder")]
         public async Task<IActionResult> CreateReminder(ReminderViewModel model)
         {
@@ -151,6 +150,7 @@ namespace Zira.Presentation.Controllers
             }
         }
 
+        // Generate the message body and add it to the receiveNotification method
         [HttpPost("/send-notification/{reminderId}")]
         public async Task<IActionResult> SendNotification(Guid reminderId)
         {

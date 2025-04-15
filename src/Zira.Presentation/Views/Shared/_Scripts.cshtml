@@ -26,6 +26,22 @@
 <script async defer src="https://buttons.github.io/buttons.js"></script>
 
 <script>
+    function toggleTransactionFields() {
+        let isIncome = document.getElementById("type-income").checked;
+        let isExpense = document.getElementById("type-expense").checked;
+
+        document.getElementById("income-fields").classList.toggle("d-none", !isIncome);
+        document.getElementById("expense-fields").classList.toggle("d-none", !isExpense);
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        flatpickr(".datepicker", {
+            dateFormat: "d/m/Y",
+            allowInput: true,
+            defaultDate: new Date(),
+        });
+    });
+    
     const connection = new signalR.HubConnectionBuilder()
         .withUrl("/notificationHub")
         .build();
@@ -43,10 +59,13 @@
         }
 
         const toast = document.createElement("div");
+        // Set parameters of the toast message
         toast.className = "toast align-items-center text-white bg-dark show";
         toast.role = "alert";
         toast.ariaLive = "assertive";
         toast.ariaAtomic = "true";
+        
+        // Set body of the toast ${message}
         toast.innerHTML = `
         <div class="d-flex">
             <div class="toast-body">
@@ -69,5 +88,6 @@
         console.error("Error starting SignalR connection: " + err.toString());
     });
     
+
 </script>
 

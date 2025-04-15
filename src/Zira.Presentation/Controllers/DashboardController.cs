@@ -32,6 +32,7 @@ public class DashboardController : Controller
         this.transactionService = transactionService;
     }
 
+    // Get all params for the dashboard and combine them into a DashboardViewModel
     [HttpGet("")]
     [Authorize(Policies.UserPolicy)]
     public async Task<IActionResult> Index(string type = "Income")

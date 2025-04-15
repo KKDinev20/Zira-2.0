@@ -34,6 +34,7 @@ public class AccountController : Controller
         this.webHostEnvironment = webHostEnvironment;
     }
 
+    // Create ProfileVM to return in the View
     [HttpGet("/profile")]
     public async Task<IActionResult> Profile()
     {
@@ -66,6 +67,8 @@ public class AccountController : Controller
         return this.View(viewModel);
     }
 
+    // Get user and update its fields
+    // Check if user wants to reset photo or not -> Set fileName, filePath and use FileStream to set it the image there
     [HttpPost("/profile/update")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> UpdateProfile(
@@ -180,6 +183,7 @@ public class AccountController : Controller
         return this.View(viewModel);
     }
 
+    // Take params from the fields -> same as UpdateProfile
     [HttpPost("/complete-profile")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CompleteProfile(CompleteProfileViewModel model, IFormFile? avatarUrl)
@@ -253,6 +257,7 @@ public class AccountController : Controller
         return this.View(model);
     }
 
+    // Get user and change its password with userManager.ChangePasswordAsync
     [HttpPost("/profile/change-password")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ChangePasswordAsync(ChangePasswordViewModel model)
@@ -308,6 +313,7 @@ public class AccountController : Controller
         return this.View(settings);
     }
 
+    // Call UpdateReminderSettings when getting the user
     [HttpPost("/profile/update-notifications")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> UpdateNotificationPreferences(
@@ -326,6 +332,7 @@ public class AccountController : Controller
         return this.RedirectToAction("NotificationPreferences");
     }
 
+    // Create new ReminderSettings Model and add it to the db, else update it with the user's preferences
     private async Task UpdateReminderSettings(
         Guid userId,
         bool billReminders,

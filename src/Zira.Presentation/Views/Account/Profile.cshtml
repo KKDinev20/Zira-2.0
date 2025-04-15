@@ -122,10 +122,12 @@
 
 <script>
     document.getElementById('upload').addEventListener('change', function (event) {
+        // set fileInout
         const fileInput = event.target;
         if (fileInput.files.length > 0) {
             const file = fileInput.files[0];
 
+            // check for types image/jpeg, /png, /gif
             const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
             if (!allowedTypes.includes(file.type)) {
                 alert("Невалиден файлов тип. Моля използвайте от тип: JPG, PNG, or GIF.");
@@ -133,6 +135,7 @@
                 return;
             }
 
+            // FileReader reader to get uploadedAvatar.src to target.result
             const reader = new FileReader();
             reader.onload = function (e) {
                 document.getElementById('uploadedAvatar').src = e.target.result;
@@ -143,9 +146,11 @@
         }
     });
 
+    // Reset avatar option
     document.getElementById('resetImage').addEventListener('click', function () {
+        // reset image path
         document.getElementById('uploadedAvatar').src = "/dashboard/assets/img/avatars/default.jpg";
-
+        
         document.getElementById('resetAvatar').value = "true";
 
         document.getElementById('upload').value = "";

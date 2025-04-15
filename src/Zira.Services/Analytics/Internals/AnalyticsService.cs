@@ -192,6 +192,10 @@ namespace Zira.Services.Analytics.Internals
                 });
         }
 
+        // Get top 5 expense categories
+        // Select all expense transaction and convert & track the expenses for each Category in a dictionary
+        // Select and order the expenses from expenses category by amount
+        // Use binary search algorithm to search the biggest expenses
         public async Task<List<CategoryExpenseSummary>> GetTopExpenseCategoriesAsync(Guid userId, int top = 5)
         {
             var user = await this.userManager.FindByIdAsync(userId.ToString());
@@ -265,6 +269,7 @@ namespace Zira.Services.Analytics.Internals
             return expenses;
         }
 
+        // Get for each expense category its financial tips
         public Dictionary<Categories, List<string>> GetCostSavingTips(List<CategoryExpenseSummary> expenseCategories)
         {
             var tips = new Dictionary<Categories, List<string>>();
@@ -284,6 +289,9 @@ namespace Zira.Services.Analytics.Internals
             return tips;
         }
 
+        // Select the transactions list where they are expenses at the same year
+        // Group and order them by month
+        // Map them to the MonthlyExpenseSummary
         public async Task<List<MonthlyExpenseSummary>> GetMonthlyExpensesAsync(Guid userId, int year)
         {
             return await this.context.Transactions
@@ -299,6 +307,7 @@ namespace Zira.Services.Analytics.Internals
                 .ToListAsync();
         }
 
+        // Add the list tips for each category
         private void AddTips(Categories category, string[] tipsToAdd)
         {
             foreach (var tip in tipsToAdd)

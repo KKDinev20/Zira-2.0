@@ -20,6 +20,9 @@ namespace Zira.Services.Reminder.Internals
             this.scopeFactory = scopeFactory;
         }
 
+        // Add dbCOntext, emailServices and add Users with enabled settings
+        // Set body for email, if notif is enabled, add body for upcoming bills, if budget alerts are enabled add body for budgets
+        // Delay the task for 1 day
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)

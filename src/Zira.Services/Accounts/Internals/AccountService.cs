@@ -20,6 +20,7 @@ public class AccountService : IAccountService
         this.logger = logger;
     }
 
+    // Add in User new AUser with Id and save the changes.
     public async Task CreateAccountServiceAsync(Guid identityUserId)
     {
         try

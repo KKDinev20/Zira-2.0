@@ -49,9 +49,11 @@
 </div>
 
 <script>
+    // Chart for income/expenses for the year
     document.addEventListener('DOMContentLoaded', function () {
         const balanceChartEl = document.querySelector('#balancesChart');
         const balanceChartOptions = {
+            // Raw HTML of the serialized monthly totals
             series: [
                 {
                     name: '@selectedType',
@@ -82,6 +84,7 @@
                 strokeDashArray: 3,
                 padding: { top: -20, bottom: -8, left: 20, right: 8 }
             },
+            // Raw HTML of the serialized monthly labels
             xaxis: {
                 categories: @Html.Raw(Json.Serialize(monthLabels)),
                 labels: { style: { fontSize: '13px', colors: config.colors.axisColor } },
@@ -102,9 +105,10 @@
             const balanceChart = new ApexCharts(balanceChartEl, balanceChartOptions);
             balanceChart.render();
         }
-
+        
         const weeklyChartEl = document.querySelector('#expensesOfTheWeek');
         const weeklyChartConfig = {
+            // Series containing the weekly totals
             series: [@weeklyTotal],
             chart: { width: 60, height: 60, type: 'radialBar' },
             plotOptions: {
@@ -140,4 +144,5 @@
             weeklyChart.render();
         }
     });
+
 </script>

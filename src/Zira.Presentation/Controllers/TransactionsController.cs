@@ -57,7 +57,7 @@ public class TransactionsController : Controller
         this.ViewBag.DefaultCurrency = user?.PreferredCurrencyCode ?? "BGN";
         return this.View();
     }
-
+    
     [HttpPost("/add-transaction/")]
     public async Task<IActionResult> AddTransaction(Transaction model)
     {
@@ -105,6 +105,7 @@ public class TransactionsController : Controller
         return this.View(model);
     }
 
+    // Set IsIncome, Categories/Sources in the ViewBags
     [HttpGet("/edit-transaction/{id}")]
     public async Task<IActionResult> EditTransaction(Guid id)
     {

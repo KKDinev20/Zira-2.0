@@ -31,8 +31,11 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        // Select query by the tag
         const incomeVsExpensesChartEl = document.querySelector('#incomeVsExpensesChart');
 
+        
+        // Raw HTML of the Serialized monthly incomes/expenses
         const monthlyIncome = @Html.Raw(Json.Serialize(monthlyIncomes));
         const monthlyExpenses = @Html.Raw(Json.Serialize(monthlyExpenses));
 
@@ -142,10 +145,11 @@
 
         const growthChartEl = document.querySelector('#growthsChart');
 
+        // Raw HTML of the Serialized total incomes/expenses
         const totalIncome = Number(@Html.Raw(Json.Serialize(Model.TotalIncome)));
         const totalExpenses = Number(@Html.Raw(Json.Serialize(Model.TotalExpenses)));
 
-
+        // Growth which is (total incomes - total expenses) / total incomes * 100
         const savingsGrowth = totalIncome > 0 ? ((totalIncome - totalExpenses) / totalIncome) * 100 : 0;
 
         const growthChartOptions = {

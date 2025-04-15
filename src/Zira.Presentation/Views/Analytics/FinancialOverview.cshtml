@@ -139,7 +139,9 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        // Bar chart for TotalIncome and TotalExpenses
         var incomeExpensesOptions = {
+            // Set chart params
             chart: {
                 type: 'bar',
                 height: 350,
@@ -155,6 +157,7 @@
                     opacity: 0.15
                 }
             },
+            // Parse to float the totals of both income/expenses from the model FinancialSummary
             series: [{
                 name: "Сума",
                 data: [parseFloat(@Model.FinancialSummary.TotalIncome), parseFloat(@Model.FinancialSummary.TotalExpenses)],
@@ -170,6 +173,7 @@
                     endingShape: 'rounded'
                 }
             },
+            // Set xaxis categories
             xaxis: {
                 categories: ["Приходи", "Разходи"],
                 labels: {
@@ -212,6 +216,7 @@
                 strokeDashArray: 5,
                 opacity: 0.3
             },
+            // Format data to *.00 standard
             dataLabels: {
                 enabled: true,
                 formatter: function(val) {
@@ -249,10 +254,12 @@
         };
         new ApexCharts(document.querySelector("#incomeExpensesChart"), incomeExpensesOptions).render();
 
+        // Serialize from FinancialSummary.BudgetComparison model the categories, budgeted amount and actual amount
         var categories = @Html.Raw(Json.Serialize(Model.FinancialSummary.BudgetComparison.Select(b => b.Category)));
         var budgetedAmounts = @Html.Raw(Json.Serialize(Model.FinancialSummary.BudgetComparison.Select(b => b.BudgetedAmount)));
         var actualAmounts = @Html.Raw(Json.Serialize(Model.FinancialSummary.BudgetComparison.Select(b => b.ActualAmount)));
 
+        // Budget Comparison graph
         var budgetComparisonOptions = {
             chart: {
                 type: 'line',
@@ -269,6 +276,7 @@
                     opacity: 0.15
                 }
             },
+            // Set series - budgeted/actual
             series: [
                 {
                     name: "Бюджетирано",
@@ -342,6 +350,7 @@
                     text: "Сума"
                 },
                 labels: {
+                    // Format val to *.00
                     formatter: function(val) {
                         return val.toFixed(2);
                     },
@@ -356,6 +365,7 @@
                 shared: true,
                 intersect: false,
                 y: {
+                    // Format val to *.00
                     formatter: function(val) {
                         return val.toFixed(2);
                     }

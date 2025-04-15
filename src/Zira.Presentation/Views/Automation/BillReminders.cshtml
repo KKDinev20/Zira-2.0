@@ -111,11 +111,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script>
     $(document).ready(function () {
+        // From tempData call the title, remark, due date and amount
         var title = '@TempData["ReminderTitle"]';
         var remark = '@TempData["ReminderRemark"]';
         var dueDate = '@TempData["ReminderDueDate"]';
         var amount = '@TempData["ReminderAmount"]';
 
+        
+        // create innerbody where you show the duedate, remark and amount
         if (title) {
             var toastHtml = `
         <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1050;">
@@ -134,8 +137,10 @@
             </div>
         </div>`;
 
+            //add to body
             $('body').append(toastHtml);
 
+            // delete after 5000 ms
             setTimeout(function () {
                 $('.toast').toast('hide');
             }, 5000);

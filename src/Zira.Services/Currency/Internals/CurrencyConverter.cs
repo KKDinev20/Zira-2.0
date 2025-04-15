@@ -28,6 +28,7 @@ namespace Zira.Services.Currency
             this.context = context;
         }
 
+        // Get the exchange rate for from and to currencies and calculate - Math.Round amount * rate, 2
         public async Task<decimal> ConvertCurrencyAsync(
             Guid userId,
             decimal amount,
@@ -48,6 +49,9 @@ namespace Zira.Services.Currency
             return Math.Round(amount * rate, 2);
         }
 
+        // Load rates from the database and if they exist return the rate
+        // If neither are BGN return fromToBgn * bgnToTo
+        //
         private async Task<decimal> GetExchangeRate(string fromCurrency, string toCurrency)
         {
             fromCurrency = fromCurrency.ToUpperInvariant();
@@ -105,6 +109,9 @@ namespace Zira.Services.Currency
             return 1.0m;
         }
 
+        // Get the rate from a dictionary
+        // if TryGetValue for rates and from rates are equal map them
+        // if its reverseRate rate = 1 / reverseRate
         private bool TryGetRateFromDictionary(
             Dictionary<string, Dictionary<string, decimal>> rates,
             string fromCurrency,
@@ -131,6 +138,9 @@ namespace Zira.Services.Currency
             return false;
         }
 
+        // Get the rates from the dictionary and strign compare to ignore ordinal case
+        // Get the exchange rate and for each rate check if it is contained, if not, add them in new dictionary
+        // Rates[From][To] equals the rate of each exchange rate
         private async Task<Dictionary<string, Dictionary<string, decimal>>> LoadRatesFromDatabaseAsync()
         {
             var rates = new Dictionary<string, Dictionary<string, decimal>>(StringComparer.OrdinalIgnoreCase);
