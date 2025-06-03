@@ -58,50 +58,5 @@
 ```bash
 git clone https://github.com/codingburgas/2425-dzi-csharp-KKDinev20
 ```
-За достъп до проекта създайте appsettings.json в Zira.Presentation и добавете в него:
-
-```bash
-Ако клонирате проекта във виртуалната машина, добавете в appsettings.json:
-
-{
-  "SendGrid": {
-    "Enabled": true,
-    "ApiKey": "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",
-    "EnableEmailSending": false  //при наличие на интернет се променя на true
-  },
-  "ConnectionStrings": {
-    "DefaultConnection": "Server=GP-TEMPLATE\\SQLEXPRESS;Database=Zira;TrustServerCertificate=True;Integrated Security=true;"
-  },
-  "Logging": {
-    "LogLevel": {
-      "Default": "Information",
-      "Microsoft.AspNetCore": "Warning"
-    }
-  },
-  "AllowedHosts": "*"
-}
-```
-
-```bash
-В останалите случаи, в които имате LocalDB инсталиран, добавете в appsettings.json:
-
-{
-  "SendGrid": {
-    "Enabled": true,
-    "ApiKey": "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",
-    "EnableEmailSending": false //при наличие на интернет се променя на true
-  },
-  "ConnectionStrings": {
-    "DefaultConnection": "Server=(LocalDB)\MSSQLLocalDB;Database=Zira;TrustServerCertificate=True;Integrated Security=true;"
-  },
-  "Logging": {
-    "LogLevel": {
-      "Default": "Information",
-      "Microsoft.AspNetCore": "Warning"
-    }
-  },
-  "AllowedHosts": "*"
-}
-```
 
 След това можете да го стартирате в IDE, например Rider или Visual Studio
