@@ -16,7 +16,7 @@ namespace Zira.Services.Common.Internals
         public EmailService(IConfiguration configuration)
         {
             this.apiKey = configuration.GetValue<string>("SendGrid:ApiKey");
-            this.emailEnabled = configuration.GetValue<bool>("SendGrid:EnableEmailSending");
+            this.emailEnabled = false;
 
             if (string.IsNullOrEmpty(this.apiKey) && emailEnabled)
             {

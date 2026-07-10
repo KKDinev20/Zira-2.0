@@ -8,7 +8,6 @@ using Zira.Presentation;
 using Zira.Services;
 using Zira.Services.Identity.Constants;
 using Zira.Services.Reminder.Internals;
-using Zira.Services.Tests.PerformanceTests;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services
@@ -41,8 +40,6 @@ builder.Services.AddServices(builder.Configuration);
 
 builder.Services.AddMvc();
 
-//dotnet run -c Release
-var summary = BenchmarkRunner.Run<TransactionPerformanceTests>();
 
 var app = builder.Build();
 
