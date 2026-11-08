@@ -5,30 +5,30 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Zira.Data;
 using Zira.Services.Currency.Contracts;
+using Zira.Services.Currency.Exceptions;
 
 namespace Zira.Services.Currency
 {
     public class CurrencyConverter : ICurrencyConverter
     {
         private const string CacheKey = "ExchangeRates";
+        private const string PivotCurrency = "BGN";
+
         private readonly IMemoryCache cache;
-        private readonly IConfiguration configuration;
         private readonly EntityContext context;
+        private readonly ILogger<CurrencyConverter> logger;
         private readonly TimeSpan cacheExpirationTime = TimeSpan.FromHours(24);
 
-        public CurrencyConverter(
-            IMemoryCache cache,
-            IConfiguration configuration,
-            EntityContext context)
+        public CurrencyConverter(IMemoryCache cache, EntityContext context, ILogger<CurrencyConverter> logger)
         {
             this.cache = cache;
-            this.configuration = configuration;
             this.context = context;
+            this.logger = logger;
         }
 
-        // Get the exchange rate for from and to currencies and calculate - Math.Round amount * rate, 2
         public async Task<decimal> ConvertCurrencyAsync(
             Guid userId,
             decimal amount,
@@ -57,56 +57,28 @@ namespace Zira.Services.Currency
             fromCurrency = fromCurrency.ToUpperInvariant();
             toCurrency = toCurrency.ToUpperInvariant();
 
-            var cachedRates = await this.cache.GetOrCreateAsync(
-                CacheKey,
-                async entry =>
-                {
-                    entry.AbsoluteExpirationRelativeToNow = this.cacheExpirationTime;
-                    return await this.LoadRatesFromDatabaseAsync();
-                });
+            var rates = await this.cache.GetOrCreateAsync(CacheKey, async entry =>
+            {
+                entry.AbsoluteExpirationRelativeToNow = this.cacheExpirationTime;
+                return await this.LoadRatesFromDatabaseAsync();
+            }) ?? new Dictionary<string, Dictionary<string, decimal>>();
 
-            if (this.TryGetRateFromDictionary(cachedRates, fromCurrency, toCurrency, out decimal rate))
+            // Direct rate, or its inverse (handled inside TryGetRateFromDictionary)
+            if (this.TryGetRateFromDictionary(rates, fromCurrency, toCurrency, out var rate))
             {
                 return rate;
             }
 
-            if (fromCurrency != "BGN" && toCurrency != "BGN")
+            // Cross rate through the pivot currency
+            if (fromCurrency != PivotCurrency && toCurrency != PivotCurrency
+                                              && this.TryGetRateFromDictionary(rates, fromCurrency, PivotCurrency, out var fromToPivot)
+                                              && this.TryGetRateFromDictionary(rates, PivotCurrency, toCurrency, out var pivotToTo))
             {
-                if (this.TryGetRateFromDictionary(cachedRates, fromCurrency, "BGN", out decimal fromToBgn) &&
-                    this.TryGetRateFromDictionary(cachedRates, "BGN", toCurrency, out decimal bgnToTo))
-                {
-                    return fromToBgn * bgnToTo;
-                }
+                return fromToPivot * pivotToTo;
             }
 
-            var exchangeRate = await this.context.ExchangeRates
-                .Where(r => r.FromCurrencyCode == fromCurrency && r.ToCurrencyCode == toCurrency)
-                .FirstOrDefaultAsync();
-
-            if (exchangeRate != null)
-            {
-                return exchangeRate.Rate;
-            }
-
-            if (fromCurrency != "BGN" && toCurrency != "BGN")
-            {
-                var fromToBgn = await this.context.ExchangeRates
-                    .Where(r => r.FromCurrencyCode == fromCurrency && r.ToCurrencyCode == "BGN")
-                    .Select(r => r.Rate)
-                    .FirstOrDefaultAsync();
-
-                var bgnToTo = await this.context.ExchangeRates
-                    .Where(r => r.FromCurrencyCode == "BGN" && r.ToCurrencyCode == toCurrency)
-                    .Select(r => r.Rate)
-                    .FirstOrDefaultAsync();
-
-                if (fromToBgn != 0 && bgnToTo != 0)
-                {
-                    return fromToBgn * bgnToTo;
-                }
-            }
-
-            return 1.0m;
+            this.logger.LogWarning("Missing exchange rate {From} -> {To}", fromCurrency, toCurrency);
+            throw new ExchangeRateNotFoundException(fromCurrency, toCurrency);
         }
 
         // Get the rate from a dictionary

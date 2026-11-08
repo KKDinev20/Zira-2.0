@@ -1,0 +1,20 @@
+﻿@using System.Globalization
+@{
+    var current = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+    var returnUrl = Context.Request.Path + Context.Request.QueryString;
+    var isBg = current == "bg";
+    var isEn = !isBg;
+}
+
+<form asp-controller="Home" asp-action="SetLanguage" method="post"
+      class="d-inline-flex align-items-center ms-3">
+    <input type="hidden" name="returnUrl" value="@returnUrl" />
+    <div class="btn-group btn-group-sm" role="group" aria-label="Language">
+        <button type="submit" name="culture" value="bg"
+                class="btn @(isBg ? "btn-primary" : "btn-outline-primary")"
+                disabled="@isBg">BG</button>
+        <button type="submit" name="culture" value="en"
+                class="btn @(isEn ? "btn-primary" : "btn-outline-primary")"
+                disabled="@isEn">EN</button>
+    </div>
+</form>

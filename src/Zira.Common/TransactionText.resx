@@ -171,4 +171,7 @@
     <data name="UnavailableGoals" xml:space="preserve">
         <value>Няма налични спестовни фондове за този месец</value>
     </data>
+    <data name="SavingsSetAside" xml:space="preserve">
+        <value>10% oт {0} са заделени за ‘{1}’.</value>
+    </data>
 </root>

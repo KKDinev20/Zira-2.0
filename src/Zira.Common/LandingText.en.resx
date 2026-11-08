@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="ManagingYourFinances" xml:space="preserve">
+        <value>Managing Your Finances</value>
+    </data>
+    <data name="TakeControl" xml:space="preserve">
+        <value>Take control of</value>
+    </data>
+    <data name="YourBudget" xml:space="preserve">
+        <value>your budget</value>
+    </data>
+    <data name="WithEase" xml:space="preserve">
+        <value>with ease</value>
+    </data>
+    <data name="AboutSection" xml:space="preserve">
+        <value>Track your expenses, set budget limits and reach your financial goals effortlessly.
+ Our system helps you stay on top of your finances with real-time updates and insightful reports.</value>
+    </data>
+    <data name="Video" xml:space="preserve">
+        <value>Demo</value>
+    </data>
+    <data name="GetStarted" xml:space="preserve">
+        <value>Get Started</value>
+    </data>
+    <data name="Awards1" xml:space="preserve">
+        <value>3x award winner</value>
+    </data>
+    <data name="AwardsDesc1" xml:space="preserve">
+        <value>Recognized for excellence</value>
+    </data>
+    <data name="Awards2" xml:space="preserve">
+        <value>6.5K users</value>
+    </data>
+    <data name="AwardsDesc2" xml:space="preserve">
+        <value>Managing their budgets every day</value>
+    </data>
+    <data name="Awards3" xml:space="preserve">
+        <value>80K transactions</value>
+    </data>
+    <data name="Awards4" xml:space="preserve">
+        <value>Featured 6x</value>
+    </data>
+    <data name="AwardsDesc3" xml:space="preserve">
+        <value>Tracked every month</value>
+    </data>
+    <data name="AwardsDesc4" xml:space="preserve">
+        <value>In top finance blogs</value>
+    </data>
+    <data name="FeatureBox1" xml:space="preserve">
+        <value>Expense Tracking</value>
+    </data>
+    <data name="FeatureBoxDesc1" xml:space="preserve">
+        <value>Monitor your daily spending and categorize it automatically to keep an eye on your spending habits.</value>
+    </data>
+    <data name="FeatureBox2" xml:space="preserve">
+        <value>Budget Planning</value>
+    </data>
+    <data name="FeatureBoxDesc2" xml:space="preserve">
+        <value>Set budget limits and financial goals so you stick to your spending and saving plans.</value>
+    </data>
+    <data name="FeatureBox3" xml:space="preserve">
+        <value>Financial Analytics</value>
+    </data>
+    <data name="FeatureBox4" xml:space="preserve">
+        <value>Secure Transactions</value>
+    </data>
+    <data name="FeatureBoxDesc3" xml:space="preserve">
+        <value>Get a clear picture of your finances with detailed reports and visualizations of your spending patterns.</value>
+    </data>
+    <data name="FeatureBoxDesc4" xml:space="preserve">
+        <value>Rest assured your financial data is safe with our top-tier security features and encryption protocols.</value>
+    </data>
+    <data name="Features" xml:space="preserve">
+       <value>Features</value> 
+    </data>
+    <data name="Services" xml:space="preserve">
+       <value>Services</value> 
+    </data>
+    <data name="FAQ" xml:space="preserve">
+       <value>FAQ</value> 
+    </data>
+    <data name="ServicesDesc" xml:space="preserve">
+        <value>Explore the range of services we offer to help you manage your finances effectively.</value>
+    </data>
+    <data name="ActiveUsers" xml:space="preserve">
+        <value>Active Users</value>
+    </data>
+    <data name="BudgetsCreated" xml:space="preserve">
+        <value>Budgets Created</value>
+    </data>
+    <data name="TransactionsTracked" xml:space="preserve">
+        <value>Transactions Tracked</value>
+    </data>
+    <data name="FinancialAdvisors" xml:space="preserve">
+        <value>Financial Reports</value>
+    </data>
+    <data name="UsefulLink" xml:space="preserve">
+        <value>Useful Resources</value>
+    </data>
+    <data name="AboutUs" xml:space="preserve">
+        <value>About Us</value>
+    </data>
+    <data name="TermsOfService" xml:space="preserve">
+        <value>Terms of Service</value>
+    </data>
+    <data name="FAQTitle" xml:space="preserve">
+        <value>Have a question? Check our FAQ</value>
+    </data>
+    <data name="FAQDesc" xml:space="preserve">
+        <value>Find answers to common questions about managing your budget and using our system.</value>
+    </data>
+    <data name="Question1" xml:space="preserve">
+        <value>How do I track my expenses?</value>
+    </data>
+    <data name="Question2" xml:space="preserve">
+        <value>Can I set budget limits?</value>
+    </data>
+    <data name="Question3" xml:space="preserve">
+       <value>How do I view financial reports?</value>
+    </data>
+    <data name="Question4" xml:space="preserve">
+       <value>Is my financial data secure?</value>
+    </data>
+    <data name="Question5" xml:space="preserve">
+       <value>How can I get help?</value>
+    </data>
+    <data name="Answer1" xml:space="preserve">
+        <value>Our system automatically categorizes your expenses and gives you real-time updates. You can also add expenses manually from the dashboard.</value>
+    </data>
+    <data name="Answer2" xml:space="preserve">
+        <value>Yes, you can set monthly or yearly budget limits for different categories. Our system will alert you when you are close to going over your limits.</value>
+    </data>
+    <data name="Answer3" xml:space="preserve">
+        <value>You can view detailed financial reports and visualizations in the “Reports” section of the dashboard. These reports help you understand your spending patterns and make informed decisions.</value>
+    </data>
+    <data name="Answer4" xml:space="preserve">
+        <value>We use top-tier security features and encryption protocols to make sure your financial data is safe and protected.</value>
+    </data>
+    <data name="Answer5" xml:space="preserve">
+        <value>You can contact our support team through the “Support” section of the dashboard or email us at support@zira.com. We're here to help 24/7.</value>
+    </data>
+    <data name="FeaturesDesc" xml:space="preserve">
+        <value>Discover the powerful tools that help you manage your finances effectively</value>
+    </data>
+    <data name="Feature1" xml:space="preserve">
+        <value>Track your expenses</value>
+    </data>
+    <data name="Feature2" xml:space="preserve">
+        <value>Plan your budget</value>
+    </data>
+    <data name="Feature3" xml:space="preserve">
+        <value>Get financial insights</value>
+    </data>
+    <data name="FeatureDesc1" xml:space="preserve">
+        <value>Keep a detailed record of your spending habits and find areas where you can save.</value>
+    </data>
+    <data name="FeatureDesc2" xml:space="preserve">
+        <value>Set budget limits and goals to make sure you stick to your financial plans.</value>
+    </data>
+    <data name="FeatureDesc3" xml:space="preserve">
+        <value>Make informed decisions with detailed insights into your financial situation.</value>
+    </data>
+    <data name="Feature1Point1" xml:space="preserve">
+        <value>Automatic expense categorization.</value>
+    </data>
+    <data name="Feature1Point2" xml:space="preserve">
+        <value>Real-time updates on your spending.</value>
+    </data>
+    <data name="Feature1Point3" xml:space="preserve">
+        <value>Detailed reports and visualizations.</value>
+    </data>
+    <data name="Feature2Point1" xml:space="preserve">
+        <value>Customizable budget categories.</value>
+    </data>
+    <data name="Feature2Point2" xml:space="preserve">
+        <value>Budget limit alerts.</value>
+    </data>
+    <data name="Feature2Point3" xml:space="preserve">
+        <value>Monthly and yearly budget planning.</value>
+    </data>
+    <data name="Feature3Point1" xml:space="preserve">
+        <value>Comprehensive financial reports.</value>
+    </data>
+    <data name="Feature3Point2" xml:space="preserve">
+        <value>Insight into your spending patterns.</value>
+    </data>
+    <data name="Feature3Point3" xml:space="preserve">
+        <value>Recommendations for improving your finances.</value>
+    </data>
+</root>

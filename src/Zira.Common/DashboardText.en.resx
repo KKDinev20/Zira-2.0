@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Dashboard" xml:space="preserve">
+        <value>Dashboard</value>
+    </data>
+    <data name="TransactionManagement" xml:space="preserve">
+        <value>Transaction Management</value>
+    </data>
+    <data name="AddExpenses" xml:space="preserve">
+        <value>Add Transaction</value>
+    </data>
+    <data name="ExpenseList" xml:space="preserve">
+        <value>Transaction List</value>
+    </data>
+    <data name="Budgeting" xml:space="preserve">
+        <value>Budgeting</value>
+    </data>
+    <data name="SetBudget" xml:space="preserve">
+        <value>Set Budget</value>
+    </data>
+    <data name="BudgetOverview" xml:space="preserve">
+        <value>Budget Overview</value>
+    </data>
+    <data name="Analytics" xml:space="preserve">
+        <value>Analytics</value>
+    </data>
+    <data name="FinancialSummary" xml:space="preserve">
+        <value>Financial Summary</value>
+    </data>
+    <data name="Comparison" xml:space="preserve">
+        <value>Expense Comparison</value>
+    </data>
+    <data name="AccountSettings" xml:space="preserve">
+        <value>Account Settings</value>
+    </data>
+    <data name="Profile" xml:space="preserve">
+        <value>Profile</value>
+    </data>
+    <data name="NotificationPreferences" xml:space="preserve">
+        <value>Notification Preferences</value>
+    </data>
+    <data name="Automation" xml:space="preserve">
+        <value>Notifications</value>
+    </data>
+    <data name="BillReminders" xml:space="preserve">
+        <value>Bill Reminders</value>
+    </data>
+    <data name="NotificationConfig" xml:space="preserve">
+        <value>Notification Settings</value>
+    </data>
+    <data name="Documentation" xml:space="preserve">
+        <value>Documentation</value>
+    </data>
+    <data name="AdditionalInformation" xml:space="preserve">
+        <value>Additional Information</value>
+    </data>
+    <data name="Account" xml:space="preserve">
+        <value>Account</value>
+    </data>
+    <data name="Groceries" xml:space="preserve">
+        <value>Food</value>
+    </data>
+    <data name="Utilities" xml:space="preserve">
+        <value>Utilities</value>
+    </data>
+    <data name="Balance" xml:space="preserve">
+    <value>Balance</value>
+</data>
+    <data name="Expenses" xml:space="preserve">
+    <value>Expenses</value>
+</data>
+    <data name="TotalBalance" xml:space="preserve">
+    <value>Total Balance</value>
+</data>
+    <data name="ExpensesThisWeek" xml:space="preserve">
+    <value>Expenses This Week</value>
+</data>
+    <data name="LessThanLastWeek" xml:space="preserve">
+    <value>$39 less than last week</value>
+</data>
+    <data name="WelcomeBack" xml:space="preserve">
+    <value>Welcome back, {0}!</value>
+</data>
+    <data name="StayOnTrack" xml:space="preserve">
+    <value>Stay on track and review your latest expenses.</value>
+</data>
+    <data name="MonthlyIncome" xml:space="preserve">
+    <value>Monthly Income</value>
+</data>
+    <data name="MonthlyExpenses" xml:space="preserve">
+    <value>Monthly Expenses</value>
+</data>
+    <data name="NoRecentTransactions" xml:space="preserve">
+        <value>No recent transactions</value>
+    </data>
+    <data name="Settings" xml:space="preserve">
+        <value>Settings</value>
+    </data>
+    <data name="MyProfile" xml:space="preserve">
+        <value>My Profile</value>
+    </data>
+    <data name="Savings" xml:space="preserve">
+        <value>Savings Goals</value>
+    </data>
+    <data name="SemiannualReport" xml:space="preserve">
+        <value>Six-Month Report</value>
+    </data>
+    <data name="incomes" xml:space="preserve">
+        <value>Income</value>
+    </data>
+    <data name="months" xml:space="preserve">
+        <value>6 months</value>
+    </data>
+    <data name="Currency" xml:space="preserve">
+        <value>Currency</value>
+    </data>
+</root>

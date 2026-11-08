@@ -1,0 +1,180 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>2.0</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="BackToLogin" xml:space="preserve">
+    <value>Back to login</value>
+  </data>
+    <data name="ConfirmPassword" xml:space="preserve">
+    <value>Confirm password</value>
+  </data>
+    <data name="EmailIsInvalidErrorMessage" xml:space="preserve">
+    <value>The email format is invalid</value>
+  </data>
+    <data name="EmailIsRequiredErrorMessage" xml:space="preserve">
+    <value>Email is required</value>
+  </data>
+  <data name="EmailLabel" xml:space="preserve">
+    <value>Email</value>
+  </data>
+    <data name="ForgotPasswordButton" xml:space="preserve">
+    <value>Forgot password?</value>
+  </data>
+    <data name="ForgotPasswordSubtitle" xml:space="preserve">
+    <value>Enter your email address and we'll send you instructions to reset your password</value>
+  </data>
+    <data name="ForgotPasswordSuccessMessage" xml:space="preserve">
+    <value>Your request was successful. Please check your email for a link to reset your password.</value>
+  </data>
+    <data name="InvalidLoginErrorMessage" xml:space="preserve">
+    <value>The email or password is incorrect</value>
+  </data>
+    <data name="LoginSubtitle" xml:space="preserve">
+    <value>Sign in to your account to start the adventure</value>
+  </data>
+    <data name="LoginTitle" xml:space="preserve">
+    <value>Log In</value>
+  </data>
+    <data name="NewUser" xml:space="preserve">
+    <value>New on our platform?</value>
+  </data>
+    <data name="PageNotFoundMessage" xml:space="preserve">
+    <value>Oops! 😖 The requested URL was not found on this server.</value>
+  </data>
+    <data name="PageNotFoundTitle" xml:space="preserve">
+    <value>Page Not Found :(</value>
+  </data>
+    <data name="PasswordIsDifferentThanConfirmedErrorMessage" xml:space="preserve">
+    <value>The confirmed password does not match</value>
+  </data>
+    <data name="PasswordIsRequiredErrorMessage" xml:space="preserve">
+    <value>Password is required</value>
+  </data>
+    <data name="PasswordTitle" xml:space="preserve">
+    <value>Password</value>
+  </data>
+    <data name="RegisterSlogan" xml:space="preserve">
+    <value>Adventure starts here 🚀</value>
+  </data>
+    <data name="RegisterSubtitle" xml:space="preserve">
+    <value>Make managing your money easy and fun!</value>
+  </data>
+    <data name="RegisterSuccessMessage" xml:space="preserve">
+    <value>Your registration was successful. Use your details to log in.</value>
+  </data>
+    <data name="RegisterTitle" xml:space="preserve">
+    <value>Adventure starts here 🚀</value>
+  </data>
+    <data name="ResetPasswordButtonText" xml:space="preserve">
+    <value>Change password</value>
+  </data>
+    <data name="ResetPasswordTitle" xml:space="preserve">
+    <value>Reset your password</value>
+  </data>
+    <data name="SendResetLinkButton" xml:space="preserve">
+    <value>Send reset link</value>
+  </data>
+    <data name="SignInButton" xml:space="preserve">
+    <value>Sign in</value>
+  </data>
+    <data name="SignUpButton" xml:space="preserve">
+    <value>Create an account</value>
+  </data>
+    <data name="UserLockedOutErrorMessage" xml:space="preserve">
+    <value>Your account is temporarily locked</value>
+  </data>
+  <data name="AlreadyHaveAccount" xml:space="preserve">
+    <value>Already have an account?</value>
+  </data>
+  <data name="SignInInstead" xml:space="preserve">
+    <value>Sign in instead</value>
+  </data>
+  <data name="PasswordLabel" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="ConfirmPasswordLabel" xml:space="preserve">
+    <value>Confirm your password</value>
+  </data>
+  <data name="CurrentPasswordIsRequiredErrorMessage" xml:space="preserve">
+    <value>Please enter your current password.</value>
+  </data>
+  <data name="NewPasswordIsRequiredErrorMessage" xml:space="preserve">
+    <value>Please enter a new password.</value>
+  </data>
+  <data name="NewEmailIsRequiredErrorMessage" xml:space="preserve">
+    <value>Please enter your new email address.</value>
+  </data>
+  <data name="NewEmailIsInvalidErrorMessage" xml:space="preserve">
+    <value>Invalid email address.</value>
+  </data>
+  <data name="NewEmailLabel" xml:space="preserve">
+    <value>New email address</value>
+  </data>
+  <data name="CurrentPasswordLabel" xml:space="preserve">
+    <value>Current password</value>
+  </data>
+  <data name="NewPasswordLabel" xml:space="preserve">
+    <value>New password</value>
+  </data>
+  <data name="ConfirmNewPasswordIsRequiredErrorMessage" xml:space="preserve">
+    <value>Please confirm your new password.</value>
+  </data>
+  <data name="PasswordsDoNotMatchErrorMessage" xml:space="preserve">
+    <value>The new password and the confirmed password do not match.</value>
+  </data>
+  <data name="ConfirmNewPasswordLabel" xml:space="preserve">
+    <value>Confirm new password</value>
+  </data>
+  <data name="ChangeEmailTitle" xml:space="preserve">
+    <value>Change email address</value>
+  </data>
+  <data name="ChangeEmailButtonText" xml:space="preserve">
+    <value>Change email address</value>
+  </data>
+  <data name="ChangePasswordButtonText" xml:space="preserve">
+    <value>Change password</value>
+  </data>
+  <data name="OldPasswordLabel" xml:space="preserve">
+    <value>Old Password</value>
+  </data>
+  <data name="ChangePasswordTitle" xml:space="preserve">
+    <value>Change password</value>
+  </data>
+  <data name="EmailChangeSuccess" xml:space="preserve">
+    <value>Your email and username were changed successfully. Please log in again.</value>
+  </data>
+    <data name="PasswordChangeSuccess" xml:space="preserve">
+      <value>Your password was changed successfully. Please log in again.</value>
+  </data>
+  <data name="PasswordChangeFailed" xml:space="preserve">
+      <value>We couldn't change your password. Please try again.</value>
+  </data>
+  <data name="EmailChangeFailed" xml:space="preserve">
+      <value>We couldn't change your email. Please try again.</value>
+  </data>
+  <data name="UsernameChangeFailed" xml:space="preserve">
+      <value>We couldn't update your username. Please try again.</value>
+  </data>
+  <data name="UserNotExisting" xml:space="preserve">
+    <value>The user does not exist.</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Log out</value>
+  </data>
+  <data name="ForgotPassword" xml:space="preserve">
+    <value>Forgot password</value>
+  </data>
+  <data name="AccessDenied" xml:space="preserve">
+    <value>Access denied</value>
+  </data>
+</root>

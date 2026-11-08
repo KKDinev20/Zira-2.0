@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="SavingsGoals" xml:space="preserve">
+        <value>Savings Goals</value>
+    </data>
+    <data name="Edit" xml:space="preserve">
+        <value>Edit</value>
+    </data>
+    <data name="Delete" xml:space="preserve">
+        <value>Delete</value>
+    </data>
+    <data name="CreateGoal" xml:space="preserve">
+        <value>Create Goal</value>
+    </data>
+    <data name="GoalName" xml:space="preserve">
+        <value>Goal name</value>
+    </data>
+    <data name="TargetAmount" xml:space="preserve">
+        <value>Target amount</value>
+    </data>
+    <data name="TargetDate" xml:space="preserve">
+        <value>Target date</value>
+    </data>
+    <data name="NewSavingsGoal" xml:space="preserve">
+        <value>New Savings Goal</value>
+    </data>
+    <data name="CreateSavingsGoal" xml:space="preserve">
+        <value>Create a new savings goal</value>
+    </data>
+    <data name="AddNewGoal" xml:space="preserve">
+        <value>Add new goal</value>
+    </data>
+    <data name="NoSavingsMessage" xml:space="preserve">
+        <value>No savings goals set yet. Start saving today!</value>
+    </data>
+    <data name="Progress" xml:space="preserve">
+        <value>Progress</value>
+    </data>
+    <data name="CurrentAmount" xml:space="preserve">
+        <value>Current amount</value>
+    </data>
+    <data name="Actions" xml:space="preserve">
+        <value>Actions</value>
+    </data>
+    <data name="Cancel" xml:space="preserve">
+        <value>Cancel</value>
+    </data>
+    <data name="EditSavingsGoal" xml:space="preserve">
+        <value>Edit savings goal</value>
+    </data>
+    <data name="DeleteSavingsGoal" xml:space="preserve">
+        <value>Delete savings goal</value>
+    </data>
+    <data name="SaveChanges" xml:space="preserve">
+        <value>Save changes</value>
+    </data>
+    <data name="DeleteWarning" xml:space="preserve">
+        <value>Are you sure you want to delete the savings goal: </value>
+    </data>
+    <data name="SavingsGoalSuccess" xml:space="preserve">
+        <value>Savings goal created successfully</value>
+    </data>
+    <data name="SavingsGoalNotFound" xml:space="preserve">
+        <value>Savings goal not found</value>
+    </data>
+    <data name="DeleteSuccess" xml:space="preserve">
+        <value>Savings goal deleted successfully!</value>
+    </data>
+    <data name="UpdateSuccess" xml:space="preserve">
+        <value>Savings goal updated successfully</value>
+    </data>
+</root>

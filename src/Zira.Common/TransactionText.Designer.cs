@@ -366,6 +366,15 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 10% oт {0} са заделени за ‘{1}’..
+        /// </summary>
+        public static string SavingsSetAside {
+            get {
+                return ResourceManager.GetString("SavingsSetAside", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Избиране на категория.
         /// </summary>
         public static string SelectACategory {

@@ -1,6 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Zira.Data;
 using Zira.Data.Models;
@@ -31,5 +34,26 @@ public class HomeController : Controller
     public async Task<IActionResult> Index()
     {
         return this.View();
+    }
+
+    [HttpPost("/set-language")]
+    public IActionResult SetLanguage(string culture, string returnUrl)
+    {
+        if (culture is not ("en" or "bg"))
+        {
+            culture = "en";
+        }
+
+        this.Response.Cookies.Append(
+            CookieRequestCultureProvider.DefaultCookieName,
+            CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+            new CookieOptions
+            {
+                Expires = DateTimeOffset.UtcNow.AddYears(1),
+                IsEssential = true,
+                SameSite = SameSiteMode.Lax,
+            });
+
+        return this.LocalRedirect(string.IsNullOrEmpty(returnUrl) ? "/" : returnUrl);
     }
 }

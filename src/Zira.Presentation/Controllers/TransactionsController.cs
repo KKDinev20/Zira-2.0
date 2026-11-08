@@ -92,7 +92,7 @@ public class TransactionsController : Controller
         var transactions = await this.transactionService.GetTransactionsAsync(userId, page, pageSize, category);
         var totalRecords = await this.transactionService.GetTotalTransactionRecordsAsync(userId);
 
-        this.ViewBag.SelectedCategory = category?.ToString() ?? "Всички";
+        this.ViewBag.SelectedCategory = category?.ToString() ?? TransactionText.AllCategories;
 
         var model = new TransactionsListViewModel
         {
@@ -223,12 +223,14 @@ public class TransactionsController : Controller
             return this.RedirectToAction("TransactionList");
         }
 
-        if (savingsGoals.Count == 1)
+        /*if (savingsGoals.Count == 1)
         {
-            this.TempData["SuccessMessage"] =
-                $"10% от {transaction.Amount:C} са заделени за '{savingsGoals[0].Name}'.";
+            this.TempData["SuccessMessage"] = string.Format(
+                TransactionText.SavingsSetAside,
+                $"{amount:N2} {transaction.CurrencyCode}",
+                goal.Name);
             return this.RedirectToAction("TransactionList");
-        }
+        }*/
 
         return this.RedirectToAction("ChooseSavingsGoal", new { transactionId });
     }

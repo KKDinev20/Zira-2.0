@@ -11,6 +11,10 @@
     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
         <ul class="navbar-nav flex-row align-items-center ms-auto">
 
+            <li class="nav-item">
+                <partial name="_LanguageToggle"/>
+            </li>
+
             <li class="nav-item dropdown">
                 <a class="nav-link d-flex align-items-center gap-2"
                    href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -21,13 +25,14 @@
                         <img src="@ViewBag.UserAvatar" alt="User Avatar" class="w-px-40 h-px-40 rounded-circle"/>
                     </div>
                 </a>
-
+                
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                     <li>
                         <a class="dropdown-item" asp-controller="Account" asp-action="Profile">
                             <div class="d-flex align-items-center">
                                 <div class="avatar me-3">
-                                    <img src="@ViewBag.UserAvatar" alt="User Avatar" class="w-px-40 h-px-40 rounded-circle"/>
+                                    <img src="@ViewBag.UserAvatar" alt="User Avatar"
+                                         class="w-px-40 h-px-40 rounded-circle"/>
                                 </div>
                                 <div>
                                     <span class="fw-semibold d-block">@ViewBag.FirstName @ViewBag.LastName</span>
@@ -36,15 +41,23 @@
                             </div>
                         </a>
                     </li>
-                    <li><div class="dropdown-divider"></div></li>
-                    <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile"><i class="bx bx-user me-2"></i> @DashboardText.MyProfile</a></li>
-                    <li><a class="dropdown-item" asp-controller="Account" asp-action="NotificationPreferences"><i class="bx bx-cog me-2"></i> @DashboardText.Settings</a></li>
-                    <li><a class="dropdown-item" asp-controller="Automation" asp-action="BillReminders"><i class="bx bx-credit-card me-2"></i>@DashboardText.Automation</a></li>
-                    <li><div class="dropdown-divider"></div></li>
+                    <li>
+                        <div class="dropdown-divider"></div>
+                    </li>
+                    <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile"><i
+                                class="bx bx-user me-2"></i> @DashboardText.MyProfile</a></li>
+                    <li><a class="dropdown-item" asp-controller="Account" asp-action="NotificationPreferences"><i
+                                class="bx bx-cog me-2"></i> @DashboardText.Settings</a></li>
+                    <li><a class="dropdown-item" asp-controller="Automation" asp-action="BillReminders"><i
+                                class="bx bx-credit-card me-2"></i>@DashboardText.Automation</a></li>
+                    <li>
+                        <div class="dropdown-divider"></div>
+                    </li>
                     <li>
                         <form method="post" asp-controller="Authentication" asp-action="Logout">
                             @Html.AntiForgeryToken()
-                            <button type="submit" class="dropdown-item"><i class="bx bx-power-off me-2"></i>@AuthenticationText.Logout</button>
+                            <button type="submit" class="dropdown-item"><i
+                                    class="bx bx-power-off me-2"></i>@AuthenticationText.Logout</button>
                         </form>
                     </li>
                 </ul>

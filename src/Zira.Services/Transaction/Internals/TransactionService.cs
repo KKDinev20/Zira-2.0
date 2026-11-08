@@ -60,6 +60,7 @@ public class TransactionService : ITransactionService
     public async Task<List<Data.Models.Transaction>> GetUserTransactionsAsync(Guid userId)
     {
         var transactions = await this.context.Transactions
+            .AsNoTracking()
             .Include(t => t.Currency)
             .Where(t => t.UserId == userId)
             .OrderByDescending(t => t.Date)
@@ -95,14 +96,7 @@ public class TransactionService : ITransactionService
             .Include(t => t.Currency)
             .FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
 
-        if (transaction == null)
-        {
-            return null;
-        }
-
-        var user = await this.userManager.FindByIdAsync(userId.ToString());
-
-        return transaction;
+        return transaction ?? null;
     }
 
     // Creating main params for transactionModel and descreasing from a budget if they match by category and month
@@ -138,17 +132,7 @@ public class TransactionService : ITransactionService
                                       && b.Month.Year == transactionModel.Date.Year
                                       && b.Month.Month == transactionModel.Date.Month);
 
-        if (budget != null && transactionModel.Type == TransactionType.Expense)
-        {
-            budget.Amount -= transactionModel.Amount;
-
-            if (budget.Amount < 0)
-            {
-                throw new InvalidOperationException("Expense exceeds budget!");
-            }
-
-            this.context.Budgets.Update(budget);
-        }
+        await this.AdjustBudgetAsync(transactionModel, userId, transactionModel.Amount);
 
         this.context.Transactions.Add(transactionModel);
         await this.context.SaveChangesAsync();
@@ -156,75 +140,44 @@ public class TransactionService : ITransactionService
 
     public async Task UpdateTransactionAsync(Data.Models.Transaction transactionModel, Guid userId)
     {
-        var existingTransaction = await this.context.Transactions
-                                      .FirstOrDefaultAsync(t => t.Id == transactionModel.Id && t.UserId == userId)
-                                  ?? throw new KeyNotFoundException("Transaction not found");
+        var existing = await this.context.Transactions
+                           .FirstOrDefaultAsync(t => t.Id == transactionModel.Id && t.UserId == userId)
+                       ?? throw new KeyNotFoundException("Transaction not found");
 
-        existingTransaction.Source = transactionModel.Source;
-        existingTransaction.Category = transactionModel.Category;
-        existingTransaction.Amount = transactionModel.Amount;
-        existingTransaction.Remark = transactionModel.Remark;
-        existingTransaction.Reference = transactionModel.Reference;
-        existingTransaction.Date = transactionModel.Date;
+        await this.AdjustBudgetAsync(existing, userId, -existing.Amount);
+
+        existing.Source = transactionModel.Source;
+        existing.Category = transactionModel.Category;
+        existing.Amount = transactionModel.Amount;
+        existing.Remark = transactionModel.Remark;
+        existing.Reference = transactionModel.Reference;
+        existing.Date = transactionModel.Date;
+
+        await this.AdjustBudgetAsync(existing, userId, existing.Amount);
 
         await this.context.SaveChangesAsync();
     }
 
     public async Task DeleteTransactionAsync(Guid id, Guid userId)
     {
-        var transaction = await this.context.Transactions.FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
-        if (transaction != null)
+        var transaction = await this.context.Transactions
+            .FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
+
+        if (transaction == null)
         {
-            this.context.Transactions.Remove(transaction);
-            await this.context.SaveChangesAsync();
+            return;
         }
+
+        await this.AdjustBudgetAsync(transaction, userId, -transaction.Amount);
+        this.context.Transactions.Remove(transaction);
+        await this.context.SaveChangesAsync();
     }
 
     // Same as add
-    public async Task QuickAddTransactionAsync(Data.Models.Transaction transaction, Guid userId)
+    public Task QuickAddTransactionAsync(Data.Models.Transaction transaction, Guid userId)
     {
-        var user = await this.userManager.FindByIdAsync(userId.ToString());
-        if (user == null)
-        {
-            throw new InvalidOperationException("User not found!");
-        }
-
-        transaction.Id = Guid.NewGuid();
-        transaction.UserId = userId;
-        transaction.Date = transaction.Date == default ? DateTime.UtcNow : transaction.Date;
         transaction.Type = TransactionType.Expense;
-        transaction.TransactionId = this.idGenerationService.GenerateDigitIdAsync();
-
-        transaction.CurrencyCode = user.PreferredCurrencyCode ?? "BGN";
-
-        transaction.Currency = await this.context.Currencies
-            .FirstOrDefaultAsync(c => c.Code == transaction.CurrencyCode);
-
-        if (transaction.Currency == null)
-        {
-            throw new InvalidOperationException("Currency not found!");
-        }
-
-        var budget = await this.context.Budgets
-            .FirstOrDefaultAsync(b => b.UserId == userId
-                                      && b.Category == transaction.Category
-                                      && b.Month.Year == transaction.Date.Year
-                                      && b.Month.Month == transaction.Date.Month);
-
-        if (budget != null)
-        {
-            budget.Amount -= transaction.Amount;
-
-            if (budget.Amount < 0)
-            {
-                throw new InvalidOperationException("Expense exceeds budget!");
-            }
-
-            this.context.Budgets.Update(budget);
-        }
-
-        this.context.Transactions.Add(transaction);
-        await this.context.SaveChangesAsync();
+        return this.AddTransactionAsync(transaction, userId);
     }
 
     public async Task<decimal> GetCurrentMonthIncomeAsync(Guid userId)
@@ -316,21 +269,24 @@ public class TransactionService : ITransactionService
         Guid userId,
         int year)
     {
-        var transactions = await this.context.Transactions
-            .Include(t => t.Currency)
-            .Where(t => t.UserId == userId && t.Date.Year == year)
-            .ToListAsync();
-
         var user = await this.userManager.FindByIdAsync(userId.ToString());
         var preferredCurrency = user?.PreferredCurrencyCode ?? "BGN";
 
-        var incomes = new List<decimal>(new decimal[12]);
-        var expenses = new List<decimal>(new decimal[12]);
+        var transactions = await this.context.Transactions
+            .AsNoTracking()
+            .Where(t => t.UserId == userId && t.Date.Year == year)
+            .Select(t => new { t.Date, t.Type, t.Amount, t.CurrencyCode })
+            .ToListAsync();
+
+        var incomes = new decimal[12];
+        var expenses = new decimal[12];
 
         foreach (var t in transactions)
         {
-            int monthIndex = t.Date.Month - 1;
-            decimal amount = t.Amount;
+            var amount = await this.currencyConverter.ConvertCurrencyAsync(userId,
+                t.Amount, t.CurrencyCode, preferredCurrency);
+
+            var monthIndex = t.Date.Month - 1;
 
             if (t.Type == TransactionType.Income)
             {
@@ -342,7 +298,7 @@ public class TransactionService : ITransactionService
             }
         }
 
-        return (incomes, expenses);
+        return (incomes.ToList(), expenses.ToList());
     }
 
     // Select user transactions by month and the networth
@@ -537,5 +493,31 @@ public class TransactionService : ITransactionService
         }
 
         return totalExpense;
+    }
+    
+    private async Task AdjustBudgetAsync(Data.Models.Transaction t, Guid userId, decimal amount)
+    {
+        if (t.Type != TransactionType.Expense)
+        {
+            return;
+        }
+
+        var budget = await this.context.Budgets.FirstOrDefaultAsync(b =>
+            b.UserId == userId
+            && b.Category == t.Category
+            && b.Month.Year == t.Date.Year
+            && b.Month.Month == t.Date.Month);
+
+        if (budget == null)
+        {
+            return;
+        }
+
+        if (budget.Amount - amount < 0)
+        {
+            throw new InvalidOperationException("Expense exceeds budget!");
+        }
+
+        budget.Amount -= amount;
     }
 }
