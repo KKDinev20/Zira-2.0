@@ -133,11 +133,10 @@ public class TransactionService : ITransactionService
         }
 
         var budget = await this.context.Budgets
-            .FirstOrDefaultAsync(
-                b => b.UserId == userId
-                     && b.Category == transactionModel.Category
-                     && b.Month.Year == transactionModel.Date.Year
-                     && b.Month.Month == transactionModel.Date.Month);
+            .FirstOrDefaultAsync(b => b.UserId == userId
+                                      && b.Category == transactionModel.Category
+                                      && b.Month.Year == transactionModel.Date.Year
+                                      && b.Month.Month == transactionModel.Date.Month);
 
         if (budget != null && transactionModel.Type == TransactionType.Expense)
         {
@@ -155,23 +154,11 @@ public class TransactionService : ITransactionService
         await this.context.SaveChangesAsync();
     }
 
-    public async Task UpdateTransactionAsync(Data.Models.Transaction transactionModel)
+    public async Task UpdateTransactionAsync(Data.Models.Transaction transactionModel, Guid userId)
     {
         var existingTransaction = await this.context.Transactions
-            .Include(t => t.Currency)
-            .FirstOrDefaultAsync(t => t.Id == transactionModel.Id);
-
-        if (existingTransaction == null)
-        {
-            throw new KeyNotFoundException("Transaction not found");
-        }
-
-        var user = await this.userManager.FindByIdAsync(existingTransaction.UserId.ToString());
-
-        if (user == null)
-        {
-            throw new InvalidOperationException("User not found!");
-        }
+                                      .FirstOrDefaultAsync(t => t.Id == transactionModel.Id && t.UserId == userId)
+                                  ?? throw new KeyNotFoundException("Transaction not found");
 
         existingTransaction.Source = transactionModel.Source;
         existingTransaction.Category = transactionModel.Category;
@@ -193,7 +180,6 @@ public class TransactionService : ITransactionService
         }
     }
 
-    
     // Same as add
     public async Task QuickAddTransactionAsync(Data.Models.Transaction transaction, Guid userId)
     {
@@ -220,11 +206,10 @@ public class TransactionService : ITransactionService
         }
 
         var budget = await this.context.Budgets
-            .FirstOrDefaultAsync(
-                b => b.UserId == userId
-                     && b.Category == transaction.Category
-                     && b.Month.Year == transaction.Date.Year
-                     && b.Month.Month == transaction.Date.Month);
+            .FirstOrDefaultAsync(b => b.UserId == userId
+                                      && b.Category == transaction.Category
+                                      && b.Month.Year == transaction.Date.Year
+                                      && b.Month.Month == transaction.Date.Month);
 
         if (budget != null)
         {
@@ -247,11 +232,10 @@ public class TransactionService : ITransactionService
         var now = DateTime.UtcNow;
 
         var incomeTransactions = await this.context.Transactions
-            .Where(
-                t => t.UserId == userId
-                     && t.Type == TransactionType.Income
-                     && t.Date.Year == now.Year
-                     && t.Date.Month == now.Month)
+            .Where(t => t.UserId == userId
+                        && t.Type == TransactionType.Income
+                        && t.Date.Year == now.Year
+                        && t.Date.Month == now.Month)
             .Select(t => new { t.Amount, t.CurrencyCode })
             .ToListAsync();
 
@@ -279,11 +263,10 @@ public class TransactionService : ITransactionService
         var now = DateTime.UtcNow;
 
         var expenseTransactions = await this.context.Transactions
-            .Where(
-                t => t.UserId == userId
-                     && t.Type == TransactionType.Expense
-                     && t.Date.Year == now.Year
-                     && t.Date.Month == now.Month)
+            .Where(t => t.UserId == userId
+                        && t.Type == TransactionType.Expense
+                        && t.Date.Year == now.Year
+                        && t.Date.Month == now.Month)
             .Select(t => new { t.Amount, t.CurrencyCode })
             .ToListAsync();
 
@@ -369,10 +352,9 @@ public class TransactionService : ITransactionService
 
         return transactions
             .GroupBy(t => new { t.Date.Year, t.Date.Month })
-            .Select(
-                g => (
-                    Month: new DateTime(g.Key.Year, g.Key.Month, 1),
-                    NetWorth: g.Sum(t => t.Type == TransactionType.Income ? t.Amount : -t.Amount)))
+            .Select(g => (
+                Month: new DateTime(g.Key.Year, g.Key.Month, 1),
+                NetWorth: g.Sum(t => t.Type == TransactionType.Income ? t.Amount : -t.Amount)))
             .OrderBy(x => x.Month)
             .ToList();
     }
@@ -396,12 +378,11 @@ public class TransactionService : ITransactionService
             var month = startMonth.AddMonths(i);
             labels.Add(month.ToString("MMM"));
 
-            var monthlyTransactions = await this.context.Transactions.Where(
-                    t =>
-                        t.UserId == userId &&
-                        t.Type == type &&
-                        t.Date.Year == month.Year &&
-                        t.Date.Month == month.Month)
+            var monthlyTransactions = await this.context.Transactions.Where(t =>
+                    t.UserId == userId &&
+                    t.Type == type &&
+                    t.Date.Year == month.Year &&
+                    t.Date.Month == month.Month)
                 .ToListAsync();
 
             decimal total = 0;
@@ -420,7 +401,7 @@ public class TransactionService : ITransactionService
 
         return (totals, labels);
     }
-    
+
     // Get today, difference (7 + (today.DayOfWeek - DayOfWeek.Monday)) % 7, monday(-1 * diff).Date and sunday
     // Get for each transaction type its total
     public async Task<decimal> GetCurrentWeekTotalAsync(Guid userId, TransactionType type)
@@ -434,21 +415,19 @@ public class TransactionService : ITransactionService
         if (type == TransactionType.Income)
         {
             total = await this.context.Transactions
-                .Where(
-                    t => t.UserId == userId &&
-                         t.Type == TransactionType.Income &&
-                         t.Date >= monday &&
-                         t.Date < sunday)
+                .Where(t => t.UserId == userId &&
+                            t.Type == TransactionType.Income &&
+                            t.Date >= monday &&
+                            t.Date < sunday)
                 .SumAsync(t => t.Amount);
         }
         else if (type == TransactionType.Expense)
         {
             total = await this.context.Transactions
-                .Where(
-                    t => t.UserId == userId &&
-                         t.Type == TransactionType.Expense &&
-                         t.Date >= monday &&
-                         t.Date < sunday)
+                .Where(t => t.UserId == userId &&
+                            t.Type == TransactionType.Expense &&
+                            t.Date >= monday &&
+                            t.Date < sunday)
                 .SumAsync(t => t.Amount);
         }
 
@@ -463,13 +442,12 @@ public class TransactionService : ITransactionService
 
         var transactions = await this.context.Transactions
             .Where(t => t.UserId == userId && t.Type == TransactionType.Expense && t.Category != null)
-            .Select(
-                t => new
-                {
-                    Category = t.Category.Value,
-                    Amount = t.Amount,
-                    Currency = t.CurrencyCode ?? "BGN",
-                })
+            .Select(t => new
+            {
+                Category = t.Category.Value,
+                Amount = t.Amount,
+                Currency = t.CurrencyCode ?? "BGN",
+            })
             .ToListAsync();
 
         var expensesByCategory = new Dictionary<Categories, decimal>();
@@ -493,12 +471,11 @@ public class TransactionService : ITransactionService
         }
 
         var expenses = expensesByCategory
-            .Select(
-                kvp => new CategoryExpenseSummary
-                {
-                    Category = kvp.Key,
-                    TotalAmount = kvp.Value
-                })
+            .Select(kvp => new CategoryExpenseSummary
+            {
+                Category = kvp.Key,
+                TotalAmount = kvp.Value
+            })
             .OrderByDescending(x => x.TotalAmount)
             .ToList();
 
@@ -535,12 +512,11 @@ public class TransactionService : ITransactionService
         var now = DateTime.UtcNow;
 
         var expenses = await this.context.Transactions
-            .Where(
-                t => t.UserId == userId
-                     && t.Type == TransactionType.Expense
-                     && t.Category == category
-                     && t.Date.Year == now.Year
-                     && t.Date.Month == now.Month)
+            .Where(t => t.UserId == userId
+                        && t.Type == TransactionType.Expense
+                        && t.Category == category
+                        && t.Date.Year == now.Year
+                        && t.Date.Month == now.Month)
             .Select(t => new { t.Amount, t.CurrencyCode })
             .ToListAsync();
 

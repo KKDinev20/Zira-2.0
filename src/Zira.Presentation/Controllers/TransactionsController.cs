@@ -137,7 +137,7 @@ public class TransactionsController : Controller
 
         try
         {
-            await this.transactionService.UpdateTransactionAsync(model);
+            await this.transactionService.UpdateTransactionAsync(model, this.User.GetUserId());
             this.TempData["SuccessMessage"] = @TransactionText.UpdateSuccess;
         }
         catch (KeyNotFoundException)

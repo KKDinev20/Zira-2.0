@@ -1,6 +1,6 @@
-using BenchmarkDotNet.Running;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Zira.Data;
@@ -33,23 +33,19 @@ builder.Services.AddAuthorization(
             });
     });
 
+builder.Services.AddControllersWithViews(options => options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
+
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddData(builder.Configuration);
 builder.Services.AddServices(builder.Configuration);
-
-builder.Services.AddMvc();
 
 
 var app = builder.Build();
 
 await app.PrepareAsync();
 
-if (app.Environment.IsDevelopment())
-{
-    // do nothing
-}
-else
+if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();

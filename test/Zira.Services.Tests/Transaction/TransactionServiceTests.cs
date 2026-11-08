@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
@@ -262,11 +263,37 @@ public class TransactionServiceTests
         var updatedTransaction = new Data.Models.Transaction
             { Id = transactionId,             TransactionId = "20250320091998", UserId = userId, Amount = 100, Remark = "New Remark" };
 
-        await service.UpdateTransactionAsync(updatedTransaction);
+        await service.UpdateTransactionAsync(updatedTransaction, userId);
 
         var modifiedTransaction = await dbContext.Transactions.FindAsync(transactionId);
         modifiedTransaction.Should().NotBeNull();
         modifiedTransaction.Amount.Should().Be(100);
         modifiedTransaction.Remark.Should().Be("New Remark");
+    }
+    
+    [Fact]
+    public async Task UpdateTransactionAsync_OnOtherUsersTransaction_ShouldThrowAndNotChange()
+    {
+        var ownerId = Guid.NewGuid();
+        var attackerId = Guid.NewGuid();
+        var transactionId = Guid.NewGuid();
+        var dbContext = TestHelpers.CreateDbContext();
+
+        dbContext.Transactions.Add(new Data.Models.Transaction
+            { Id = transactionId, UserId = ownerId, Amount = 100, Date = DateTime.UtcNow });
+        await dbContext.SaveChangesAsync();
+
+        var service = new TransactionService(
+            dbContext,
+            TestHelpers.CreateIdGenerationService(),
+            TestHelpers.CreateCurrencyConverterService(),
+            TestHelpers.CreateMockUserManager());
+
+        var forged = new Data.Models.Transaction { Id = transactionId, UserId = ownerId, Amount = 1 };
+
+        var act = () => service.UpdateTransactionAsync(forged, attackerId);
+
+        await act.Should().ThrowAsync<KeyNotFoundException>();
+        (await dbContext.Transactions.FindAsync(transactionId))!.Amount.Should().Be(100);
     }
 }
