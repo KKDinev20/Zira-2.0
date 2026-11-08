@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using PdfSharp.Drawing;
-using PdfSharp.Pdf;
 using Zira.Data;
 using Zira.Data.Enums;
 using Zira.Data.Models;

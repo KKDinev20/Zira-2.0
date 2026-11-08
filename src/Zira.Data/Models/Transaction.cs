@@ -22,5 +22,7 @@ public class Transaction
     public bool IsRecurring { get; set; } = false;
     public RecurrenceType? Recurrence { get; set; }
 
+    public bool IsSetAside { get; set; }
+
     public ApplicationUser? User { get; set; }
 }

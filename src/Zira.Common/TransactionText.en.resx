@@ -174,4 +174,7 @@
     <data name="SavingsSetAside" xml:space="preserve">
         <value>10% of {0} has been set aside for ‘{1}’.</value>
     </data>
+    <data name="AlreadySetAside" xml:space="preserve">
+        <value>Sum has already been set aside.</value>
+    </data>
 </root>

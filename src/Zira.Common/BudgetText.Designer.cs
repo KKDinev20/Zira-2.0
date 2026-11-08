@@ -213,6 +213,15 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Валутата „{0}“ не е намерена..
+        /// </summary>
+        public static string CurrencyNotFound {
+            get {
+                return ResourceManager.GetString("CurrencyNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Изтрий.
         /// </summary>
         public static string Delete {
@@ -321,11 +330,29 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Надвишили сте бюджета си за {0} с {1:F2}%!.
+        /// </summary>
+        public static string WarningExceeded {
+            get {
+                return ResourceManager.GetString("WarningExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Бюджетен праг(%).
         /// </summary>
         public static string WarningThreshold {
             get {
                 return ResourceManager.GetString("WarningThreshold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Внимание: Изхарчили сте {1:F2}% от бюджета си за {0}..
+        /// </summary>
+        public static string WarningThresholdReached {
+            get {
+                return ResourceManager.GetString("WarningThresholdReached", resourceCulture);
             }
         }
     }

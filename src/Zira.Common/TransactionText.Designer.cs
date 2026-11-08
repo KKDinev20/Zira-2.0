@@ -87,6 +87,15 @@ namespace Zira.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Сумата е вече била заделена..
+        /// </summary>
+        public static string AlreadySetAside {
+            get {
+                return ResourceManager.GetString("AlreadySetAside", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Сума.
         /// </summary>
         public static string Amount {

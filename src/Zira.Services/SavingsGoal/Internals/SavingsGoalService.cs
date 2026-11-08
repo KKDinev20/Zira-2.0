@@ -147,49 +147,40 @@ namespace Zira.Services.SavingsGoal.Internals
             await this.context.SaveChangesAsync();
             return true;
         }
-
-        public async Task<List<Data.Models.SavingsGoal>> SetAsideForSavingsGoalsAsync(
-            Data.Models.Transaction transactionModel)
+        
+        // Read-only: which goals can receive money from this income
+        public Task<List<Data.Models.SavingsGoal>> GetEligibleGoalsAsync(Data.Models.Transaction income)
         {
-            if (transactionModel.Type != TransactionType.Income)
-            {
-                return new List<Data.Models.SavingsGoal>();
-            }
-
-            decimal goalAmount = transactionModel.Amount * 0.10m;
-            Guid userId = transactionModel.UserId;
-            var month = transactionModel.Date.Month;
-            var year = transactionModel.Date.Year;
-
-            var savingsGoals = await this.context.SavingsGoals
-                .Where(
-                    sg => sg.UserId == userId &&
-                          sg.TargetDate.Value.Month == month &&
-                          sg.TargetDate.Value.Year == year)
+            return this.context.SavingsGoals
+                .Where(g => g.UserId == income.UserId
+                            && g.CurrentAmount < g.TargetAmount
+                            && (g.TargetDate == null || g.TargetDate >= income.Date))
                 .ToListAsync();
+        }
 
-            if (!savingsGoals.Any())
+// The only method that moves money; runs once per income
+        public async Task<SetAsideResult> SetAsideAsync(Guid userId, Guid transactionId, Guid goalId)
+        {
+            var income = await this.context.Transactions.FirstOrDefaultAsync(t =>
+                             t.Id == transactionId && t.UserId == userId && t.Type == TransactionType.Income)
+                         ?? throw new KeyNotFoundException("Transaction not found");
+
+            if (income.IsSetAside)
             {
-                return new List<Data.Models.SavingsGoal>();
+                throw new InvalidOperationException("Savings were already set aside from this income.");
             }
 
-            if (savingsGoals.Count == 1)
-            {
-                var goal = savingsGoals.First();
-                goal.CurrentAmount += goalAmount;
+            var goal = await this.context.SavingsGoals.FirstOrDefaultAsync(g => g.Id == goalId && g.UserId == userId)
+                       ?? throw new KeyNotFoundException("Savings goal not found");
 
-                if (goal.CurrentAmount > goal.TargetAmount)
-                {
-                    goal.CurrentAmount = goal.TargetAmount;
-                }
+            var amount = await this.currencyConverter.ConvertCurrencyAsync(
+                userId, income.Amount * 0.10m, income.CurrencyCode, goal.CurrencyCode ?? income.CurrencyCode);
 
-                transactionModel.Amount -= goalAmount;
+            goal.CurrentAmount = Math.Min(goal.CurrentAmount + amount, goal.TargetAmount);
+            income.IsSetAside = true;
 
-                await this.context.SaveChangesAsync();
-                return new List<Data.Models.SavingsGoal> { goal };
-            }
-
-            return savingsGoals;
+            await this.context.SaveChangesAsync();
+            return new SetAsideResult(amount, goal.CurrencyCode, goal.Name);
         }
 
         public async Task<List<Data.Models.SavingsGoal>> GetSavingsGoalsAsync(Guid userId, int page, int pageSize)

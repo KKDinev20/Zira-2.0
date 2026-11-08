@@ -377,7 +377,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 1,
                             FromCurrencyCode = "BGN",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(2671),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(5746),
                             Rate = 0.5539m,
                             ToCurrencyCode = "USD"
                         },
@@ -385,7 +385,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 2,
                             FromCurrencyCode = "BGN",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(2676),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(5751),
                             Rate = 0.5094m,
                             ToCurrencyCode = "EUR"
                         },
@@ -393,7 +393,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 3,
                             FromCurrencyCode = "BGN",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(2678),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(5753),
                             Rate = 0.4276m,
                             ToCurrencyCode = "GBP"
                         },
@@ -401,7 +401,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 4,
                             FromCurrencyCode = "BGN",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(2680),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(5755),
                             Rate = 74.76m,
                             ToCurrencyCode = "JPY"
                         },
@@ -409,7 +409,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 5,
                             FromCurrencyCode = "BGN",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(2682),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(5757),
                             Rate = 0.7456m,
                             ToCurrencyCode = "CAD"
                         },
@@ -417,7 +417,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 6,
                             FromCurrencyCode = "BGN",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(2685),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(5761),
                             Rate = 0.8284m,
                             ToCurrencyCode = "AUD"
                         },
@@ -425,7 +425,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 7,
                             FromCurrencyCode = "USD",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(2786),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(5862),
                             Rate = 1.805380032496840584943130529m,
                             ToCurrencyCode = "BGN"
                         },
@@ -433,7 +433,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 8,
                             FromCurrencyCode = "EUR",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(2792),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(5866),
                             Rate = 1.9630938358853553199842952493m,
                             ToCurrencyCode = "BGN"
                         },
@@ -441,7 +441,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 9,
                             FromCurrencyCode = "GBP",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(2795),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(5868),
                             Rate = 2.3386342376052385406922357343m,
                             ToCurrencyCode = "BGN"
                         },
@@ -449,7 +449,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 10,
                             FromCurrencyCode = "JPY",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(2799),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(5870),
                             Rate = 0.01337613697164258962011771m,
                             ToCurrencyCode = "BGN"
                         },
@@ -457,7 +457,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 11,
                             FromCurrencyCode = "CAD",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(2803),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(5872),
                             Rate = 1.3412017167381974248927038627m,
                             ToCurrencyCode = "BGN"
                         },
@@ -465,7 +465,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 12,
                             FromCurrencyCode = "AUD",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(2808),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(5876),
                             Rate = 1.2071463061323032351521004346m,
                             ToCurrencyCode = "BGN"
                         },
@@ -473,7 +473,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 13,
                             FromCurrencyCode = "USD",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(3449),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(6457),
                             Rate = 0.9196605885538905939700306915m,
                             ToCurrencyCode = "EUR"
                         },
@@ -481,7 +481,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 14,
                             FromCurrencyCode = "EUR",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(3465),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(6466),
                             Rate = 1.0873576756968983117393011385m,
                             ToCurrencyCode = "USD"
                         },
@@ -489,7 +489,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 15,
                             FromCurrencyCode = "USD",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(3474),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(6473),
                             Rate = 0.7719805018956490341216826142m,
                             ToCurrencyCode = "GBP"
                         },
@@ -497,7 +497,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 16,
                             FromCurrencyCode = "GBP",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(3481),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(6477),
                             Rate = 1.2953695042095416276894293732m,
                             ToCurrencyCode = "USD"
                         },
@@ -505,7 +505,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 17,
                             FromCurrencyCode = "USD",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(3490),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(6483),
                             Rate = 134.97021122946380213034843835m,
                             ToCurrencyCode = "JPY"
                         },
@@ -513,7 +513,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 18,
                             FromCurrencyCode = "JPY",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(3498),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(6488),
                             Rate = 0.0074090422685928303905831996m,
                             ToCurrencyCode = "USD"
                         },
@@ -521,7 +521,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 19,
                             FromCurrencyCode = "USD",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(3507),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(6494),
                             Rate = 1.3460913522296443401335981224m,
                             ToCurrencyCode = "CAD"
                         },
@@ -529,7 +529,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 20,
                             FromCurrencyCode = "CAD",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(3513),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(6497),
                             Rate = 0.7428916309012875536480686695m,
                             ToCurrencyCode = "USD"
                         },
@@ -537,7 +537,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 21,
                             FromCurrencyCode = "USD",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(3522),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(6504),
                             Rate = 1.4955768189203827405668893302m,
                             ToCurrencyCode = "AUD"
                         },
@@ -545,7 +545,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 22,
                             FromCurrencyCode = "AUD",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(3529),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(6508),
                             Rate = 0.6686383389666827619507484307m,
                             ToCurrencyCode = "USD"
                         },
@@ -553,7 +553,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 23,
                             FromCurrencyCode = "EUR",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(3538),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(6513),
                             Rate = 0.8394189242245779348252846486m,
                             ToCurrencyCode = "GBP"
                         },
@@ -561,7 +561,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 24,
                             FromCurrencyCode = "GBP",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(3544),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(6517),
                             Rate = 1.1913002806361085126286248831m,
                             ToCurrencyCode = "EUR"
                         },
@@ -569,7 +569,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 25,
                             FromCurrencyCode = "EUR",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(3553),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(6523),
                             Rate = 146.76089517078916372202591284m,
                             ToCurrencyCode = "JPY"
                         },
@@ -577,7 +577,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 26,
                             FromCurrencyCode = "JPY",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(3558),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(6526),
                             Rate = 0.0068138041733547351524879615m,
                             ToCurrencyCode = "EUR"
                         },
@@ -585,7 +585,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 27,
                             FromCurrencyCode = "EUR",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(3568),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(6532),
                             Rate = 1.4636827640361209265802905379m,
                             ToCurrencyCode = "CAD"
                         },
@@ -593,7 +593,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 28,
                             FromCurrencyCode = "CAD",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(3573),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(6536),
                             Rate = 0.6832081545064377682403433476m,
                             ToCurrencyCode = "EUR"
                         },
@@ -601,7 +601,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 29,
                             FromCurrencyCode = "EUR",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(3583),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(6610),
                             Rate = 1.6262269336474283470749901845m,
                             ToCurrencyCode = "AUD"
                         },
@@ -609,7 +609,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 30,
                             FromCurrencyCode = "AUD",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(3590),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(6615),
                             Rate = 0.6149203283437952679864799614m,
                             ToCurrencyCode = "EUR"
                         },
@@ -617,7 +617,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 31,
                             FromCurrencyCode = "GBP",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(3600),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(6624),
                             Rate = 174.8362956033676333021515435m,
                             ToCurrencyCode = "JPY"
                         },
@@ -625,7 +625,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 32,
                             FromCurrencyCode = "JPY",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(3606),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(6627),
                             Rate = 0.0057196361690743713215623328m,
                             ToCurrencyCode = "GBP"
                         },
@@ -633,7 +633,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 33,
                             FromCurrencyCode = "GBP",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(3615),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(6634),
                             Rate = 1.7436856875584658559401309635m,
                             ToCurrencyCode = "CAD"
                         },
@@ -641,7 +641,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 34,
                             FromCurrencyCode = "CAD",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(3620),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(6638),
                             Rate = 0.5734978540772532188841201717m,
                             ToCurrencyCode = "GBP"
                         },
@@ -649,7 +649,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 35,
                             FromCurrencyCode = "GBP",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(3630),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(6645),
                             Rate = 1.9373246024321796071094480823m,
                             ToCurrencyCode = "AUD"
                         },
@@ -657,7 +657,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 36,
                             FromCurrencyCode = "AUD",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(3635),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(6648),
                             Rate = 0.5161757605021728633510381458m,
                             ToCurrencyCode = "GBP"
                         },
@@ -665,7 +665,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 37,
                             FromCurrencyCode = "JPY",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(3645),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(6655),
                             Rate = 0.0099732477260567148207597646m,
                             ToCurrencyCode = "CAD"
                         },
@@ -673,7 +673,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 38,
                             FromCurrencyCode = "CAD",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(3650),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(6659),
                             Rate = 100.26824034334763948497854057m,
                             ToCurrencyCode = "JPY"
                         },
@@ -681,7 +681,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 39,
                             FromCurrencyCode = "JPY",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(3660),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(6667),
                             Rate = 0.011080791867308721241305511m,
                             ToCurrencyCode = "AUD"
                         },
@@ -689,7 +689,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 40,
                             FromCurrencyCode = "AUD",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(3666),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(6671),
                             Rate = 90.24625784645098985997102823m,
                             ToCurrencyCode = "JPY"
                         },
@@ -697,7 +697,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 41,
                             FromCurrencyCode = "CAD",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(3677),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(6679),
                             Rate = 1.1110515021459227467811158798m,
                             ToCurrencyCode = "AUD"
                         },
@@ -705,7 +705,7 @@ namespace Zira.Data.Migrations
                         {
                             Id = 42,
                             FromCurrencyCode = "AUD",
-                            LastUpdated = new DateTime(2025, 4, 13, 14, 34, 52, 891, DateTimeKind.Utc).AddTicks(3682),
+                            LastUpdated = new DateTime(2026, 11, 8, 17, 49, 54, 888, DateTimeKind.Utc).AddTicks(6683),
                             Rate = 0.900048285852245292129406084m,
                             ToCurrencyCode = "CAD"
                         });
@@ -831,6 +831,9 @@ namespace Zira.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsRecurring")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSetAside")
                         .HasColumnType("bit");
 
                     b.Property<int?>("Recurrence")

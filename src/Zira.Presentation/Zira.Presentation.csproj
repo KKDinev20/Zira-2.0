@@ -205,6 +205,19 @@
         <_ContentIncludedByDefault Remove="wwwroot\landing page\img\testimonials\testimonials-2.jpg" />
         <_ContentIncludedByDefault Remove="wwwroot\landing page\img\testimonials\testimonials-3.jpg" />
         <_ContentIncludedByDefault Remove="wwwroot\landing page\img\testimonials\testimonials-4.jpg" />
+        <_ContentIncludedByDefault Remove="wwwroot\dashboard\js\bootstrap.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\dashboard\js\helpers.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\dashboard\js\menu.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\dashboard\libs\apex-charts\apex-charts.scss" />
+        <_ContentIncludedByDefault Remove="wwwroot\dashboard\libs\apex-charts\apexcharts.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\dashboard\libs\highlight\highlight-github.scss" />
+        <_ContentIncludedByDefault Remove="wwwroot\dashboard\libs\highlight\highlight.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\dashboard\libs\highlight\highlight.scss" />
+        <_ContentIncludedByDefault Remove="wwwroot\dashboard\libs\jquery\jquery.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\dashboard\libs\masonry\masonry.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\dashboard\libs\perfect-scrollbar\perfect-scrollbar.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\dashboard\libs\perfect-scrollbar\perfect-scrollbar.scss" />
+        <_ContentIncludedByDefault Remove="wwwroot\dashboard\libs\popper\popper.js" />
     </ItemGroup>
 
 

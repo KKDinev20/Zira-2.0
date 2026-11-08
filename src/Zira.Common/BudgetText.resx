@@ -107,4 +107,13 @@
     <data name="SpentPercentage" xml:space="preserve">
         <value>Изразходван процент</value>
     </data>
+    <data name="CurrencyNotFound" xml:space="preserve">
+        <value>Валутата „{0}“ не е намерена.</value>
+    </data>
+    <data name="WarningThresholdReached" xml:space="preserve">
+        <value>Внимание: Изхарчили сте {1:F2}% от бюджета си за {0}.</value>
+    </data>
+    <data name="WarningExceeded" xml:space="preserve">
+        <value>Надвишили сте бюджета си за {0} с {1:F2}%!</value>
+    </data>
 </root>
